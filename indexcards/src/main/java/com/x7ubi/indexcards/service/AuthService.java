@@ -21,6 +21,11 @@ public class AuthService {
     @Transactional
     public User registerNewUserAccount(SignupRequest signupRequest) {
         User user = new User();
+
+        if(userRepo.findByUsername(signupRequest.getUsername()).isPresent()){
+            return null;
+        }
+
         user.setUsername(signupRequest.getUsername());
         user.setFirstname(signupRequest.getFirstname());
         user.setSurname(signupRequest.getSurname());

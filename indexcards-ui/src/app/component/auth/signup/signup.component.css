@@ -1,0 +1,42 @@
+form {
+    text-align: center;
+    position: relative;
+    margin-top: 30px;
+}
+
+input {
+    padding: 15px;
+    border: 1px solid #3500D3;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat;
+    color: #240090;
+    font-size: 13px;
+}
+
+label {
+    font-size: larger;
+    float: left;
+    padding-bottom: 10px;
+}
+
+div {
+    background: #190061;
+    border: 0 none;
+    border-radius: 0px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    box-sizing: border-box;
+    width: 80%;
+    margin: 0 10%;
+
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+
+button {
+    margin-top: 10px;
+    width: 100%;
+}

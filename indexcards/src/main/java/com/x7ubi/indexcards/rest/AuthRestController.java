@@ -24,10 +24,12 @@ public class AuthRestController {
     @PostMapping("/signup")
     public ResponseEntity<String> Signup(
             @RequestBody SignupRequest signupRequest
-    ){
+    ) {
         logger.info("Signing up new account");
-        authService.registerNewUserAccount(signupRequest);
-
-        return new ResponseEntity<>("Account created", HttpStatus.OK);
+        if(authService.registerNewUserAccount(signupRequest) != null) {
+            return new ResponseEntity<>("Account created", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with this Username already exists", HttpStatus.BAD_REQUEST);
+        }
     }
 }
