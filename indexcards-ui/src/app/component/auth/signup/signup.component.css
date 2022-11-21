@@ -6,14 +6,14 @@ form {
 
 input {
     padding: 15px;
-    border: 1px solid #3500D3;
-    border-radius: 0px;
+    border-radius: 5px;
+    border: 3px solid #3500D3;
     margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
-    font-family: montserrat;
+    font-family: montserrat, serif;
     color: #240090;
-    font-size: 13px;
+    font-size: larger;
 }
 
 label {
@@ -22,11 +22,10 @@ label {
     padding-bottom: 10px;
 }
 
-div {
+.container {
     background: #190061;
     border: 0 none;
     border-radius: 0px;
-    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
     padding: 20px 30px;
     box-sizing: border-box;
     width: 80%;
@@ -39,4 +38,9 @@ div {
 button {
     margin-top: 10px;
     width: 100%;
+}
+
+.error {
+    font-size: x-large;
+    color: #ff008d;
 }

@@ -1,21 +1,24 @@
-<form>
-    <div>
+<form #signup="ngForm" (ngSubmit)="createAccount(signup)">
+    <div class="container">
         <label for="username">
             Username
         </label>
-        <input id="username" type="text" required />
+        <input #username="ngModel" name="username" id="username" type="text" ngModel required>
+        <div *ngIf="username.touched && username.invalid" class="error">
+            Username is required
+        </div>
         <label for="firstname">
             Firstname
         </label>
-        <input id="firstname" type="text" required />
+        <input name="firstname" id="firstname" type="text" ngModel required>
         <label for="surname">
             Lastname
         </label>
-        <input id="surname" type="text" required />
+        <input name="surname" id="surname" type="text" ngModel required>
         <label for="password">
             Password
         </label>
-        <input id="password" type="password" required />
+        <input name="password" id="password" type="password" ngModel minlength="8" required>
         <button type="submit">Create an account</button>
     </div>
 </form>
