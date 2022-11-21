@@ -14,7 +14,7 @@ export class SignupComponent {
   }
  
   createAccount(signup: NgForm) {
-    this.http.post('http://localhost:8080/api/auth/signup', signup.value)
+    this.http.post('http://localhost:8080/api/auth/signup', signup.value, {responseType: 'text'})
       .subscribe((res) => {
         console.log(res);
       });

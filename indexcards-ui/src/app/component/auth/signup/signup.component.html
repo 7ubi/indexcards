@@ -5,20 +5,29 @@
         </label>
         <input #username="ngModel" name="username" id="username" type="text" ngModel required>
         <div *ngIf="username.touched && username.invalid" class="error">
-            Username is required
+            Username is required!
         </div>
         <label for="firstname">
             Firstname
         </label>
-        <input name="firstname" id="firstname" type="text" ngModel required>
+        <input #firstname="ngModel" name="firstname" id="firstname" type="text" ngModel required>
+        <div *ngIf="firstname.touched && firstname.invalid" class="error">
+            Firstname is required!
+        </div>
         <label for="surname">
             Lastname
         </label>
-        <input name="surname" id="surname" type="text" ngModel required>
+        <input #surname="ngModel" name="surname" id="surname" type="text" ngModel required>
+        <div *ngIf="surname.touched && surname.invalid" class="error">
+            Lastname is required!
+        </div>
         <label for="password">
             Password
         </label>
         <input name="password" id="password" type="password" ngModel minlength="8" required>
+        <div *ngIf="surname.touched && surname.invalid" class="error">
+            Password is required and must be at least 8 characters long!
+        </div>
         <button type="submit">Create an account</button>
     </div>
 </form>
