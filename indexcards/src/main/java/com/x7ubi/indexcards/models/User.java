@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER")
@@ -23,13 +24,18 @@ public class User implements Serializable {
     @Column(nullable = false, length = 100)
     private String password;
 
+    @OneToMany
+    private Set<Project> projects;
+
     public User() {}
 
-    public User(String username, String firstname, String surname, String password) {
+    public User(Long user_id, String username, String firstname, String surname, String password, Set<Project> projects) {
+        this.user_id = user_id;
         this.username = username;
         this.firstname = firstname;
         this.surname = surname;
         this.password = password;
+        this.projects = projects;
     }
 
     public Long getId() {
@@ -66,5 +72,13 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 }
