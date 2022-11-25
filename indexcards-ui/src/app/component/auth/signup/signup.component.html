@@ -24,8 +24,8 @@
         <label for="password">
             Password
         </label>
-        <input name="password" id="password" type="password" ngModel minlength="8" required>
-        <div *ngIf="surname.touched && surname.invalid" class="error">
+        <input #password="ngModel" name="password" id="password" type="password" ngModel minlength="8" required>
+        <div *ngIf="password.touched && password.invalid" class="error">
             Password is required and must be at least 8 characters long!
         </div>
         <button type="submit">Create an account</button>

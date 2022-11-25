@@ -1,0 +1,19 @@
+<form #login="ngForm" (ngSubmit)="makeLogin(login)">
+    <div class="container">
+        <label for="username">
+            Username
+        </label>
+        <input #username="ngModel" name="username" id="username" type="text" ngModel required>
+        <div *ngIf="username.touched && username.invalid" class="error">
+            Username invalid
+        </div>
+        <label for="password">
+            Password
+        </label>
+        <input #password="ngModel" name="password" id="password" type="password" ngModel minlength="8" required>
+        <div *ngIf="password.touched && password.invalid" class="error">
+            Password invalid
+        </div>
+        <button type="submit">Login</button>
+    </div>
+</form>
