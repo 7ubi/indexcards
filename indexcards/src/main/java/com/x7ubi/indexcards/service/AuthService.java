@@ -1,12 +1,9 @@
 package com.x7ubi.indexcards.service;
 
+import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.SignupRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +21,11 @@ public class AuthService {
     }
 
     @Transactional
-    public User registerNewUserAccount(SignupRequest signupRequest) {
+    public void registerNewUserAccount(SignupRequest signupRequest) throws UsernameExistsException {
         User user = new User();
 
-        if(userRepo.findByUsername(signupRequest.getUsername()).isPresent()){
-            return null;
+        if(userRepo.existsByUsername(signupRequest.getUsername())){
+            throw new UsernameExistsException("Username already exists");
         }
 
         user.setUsername(signupRequest.getUsername());
@@ -37,7 +34,7 @@ public class AuthService {
 
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 
-        return userRepo.save(user);
+        userRepo.save(user);
     }
 
 }

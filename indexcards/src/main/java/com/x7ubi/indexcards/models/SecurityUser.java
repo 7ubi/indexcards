@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class SecurityUser implements UserDetails {
 
@@ -54,5 +55,15 @@ public class SecurityUser implements UserDetails {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        SecurityUser securityUser = (SecurityUser) o;
+        return Objects.equals(user.getId(), securityUser.getUser().getId());
     }
 }
