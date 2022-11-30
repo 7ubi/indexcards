@@ -19,6 +19,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+indexcards-ui.iml
 
 # Visual Studio Code
 .vscode/*
