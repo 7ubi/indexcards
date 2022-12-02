@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.request;
+package com.x7ubi.indexcards.request.auth;
 
 public class SignupRequest {
     private String username;

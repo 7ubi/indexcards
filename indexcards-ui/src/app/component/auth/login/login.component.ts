@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
+import {LoginResponse} from "../../../app.response";
 import {LoginService} from "./login.service";
-import {map} from "rxjs";
-import {LocalService} from "../../../local.service";
 
 @Component({
   selector: 'app-login',
@@ -16,20 +15,11 @@ export class LoginComponent {
   }
 
   makeLogin(login: NgForm) {
-    this.http.post<LoginService>('http://localhost:8080/api/auth/login', login.value)
-      .pipe(
-        map(response => {
-          return new LoginService(
-            response.token,
-            response.type,
-            response.id,
-            response.username
-          );
-        })
-      ).subscribe(
+    this.http.post<LoginResponse>('http://localhost:8080/api/auth/login', login.value)
+      .subscribe(
         response => {
-          LocalService.saveEncryptedData(response.type, response.token);
+          LoginService.saveBearer(response);
         }
-    );
+      );
   }
 }

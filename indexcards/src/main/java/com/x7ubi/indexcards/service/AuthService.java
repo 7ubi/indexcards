@@ -3,7 +3,7 @@ package com.x7ubi.indexcards.service;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.UserRepo;
-import com.x7ubi.indexcards.request.SignupRequest;
+import com.x7ubi.indexcards.request.auth.SignupRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
+import org.springframework.util.StringUtils;
 
 @Component
 public class JwtUtils {
@@ -33,7 +34,15 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getUsernameFromAuthorizationHeader(String authorization) {
+        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+            return this.getUsernameFromJwtToken(authorization.split(" ")[1]);
+        }
+
+        return null;
+    }
+
+    public String getUsernameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

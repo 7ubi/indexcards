@@ -2,6 +2,8 @@ package com.x7ubi.indexcards.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity

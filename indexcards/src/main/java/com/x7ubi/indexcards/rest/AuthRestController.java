@@ -3,8 +3,8 @@ package com.x7ubi.indexcards.rest;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.SecurityUser;
-import com.x7ubi.indexcards.request.LoginRequest;
-import com.x7ubi.indexcards.request.SignupRequest;
+import com.x7ubi.indexcards.request.auth.LoginRequest;
+import com.x7ubi.indexcards.request.auth.SignupRequest;
 import com.x7ubi.indexcards.response.JwtResponse;
 import com.x7ubi.indexcards.response.MessageResponse;
 import com.x7ubi.indexcards.service.AuthService;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/auth")
 public class AuthRestController {
 
     Logger logger = LoggerFactory.getLogger(AuthRestController.class);
@@ -36,7 +36,7 @@ public class AuthRestController {
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("/api/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> signup(
         @RequestBody SignupRequest signupRequest
     ) {
@@ -49,11 +49,11 @@ public class AuthRestController {
         } catch (UsernameExistsException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("User with this Username already exists"));
+                    .body(new MessageResponse(e.getMessage()));
         }
     }
 
-    @PostMapping("/api/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(
         @RequestBody LoginRequest loginRequest
     ) {
@@ -68,10 +68,5 @@ public class AuthRestController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getUser().getId(),
                 userDetails.getUsername()));
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "Hello World";
     }
 }

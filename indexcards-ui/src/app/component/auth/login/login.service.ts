@@ -1,29 +1,21 @@
+import {LocalService} from "../../../local.service";
+import {Injectable} from "@angular/core";
+import {LoginResponse} from "../../../app.response";
+
+@Injectable({
+  providedIn: 'root'
+})
 export class LoginService {
-  readonly _token: string;
-  readonly _type: string;
-  readonly _id: string;
-  readonly _username: string;
 
-  constructor(token: string, type: string, id: string, username: string) {
-    this._token = token;
-    this._type = type;
-    this._id = id;
-    this._username = username;
+  private static type: string = 'Bearer';
+
+  constructor() {  }
+
+  public static saveBearer(loginResponse: LoginResponse) {
+    LocalService.saveEncryptedData(loginResponse.type, loginResponse.token);
   }
 
-  get token(): string {
-    return this._token;
-  }
-
-  get type(): string {
-    return this._type;
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  get username(): string {
-    return this._username;
+  public static getBearer(): string {
+    return LocalService.getEncryptedData(this.type);
   }
 }
