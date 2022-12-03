@@ -6,6 +6,7 @@ import com.x7ubi.indexcards.response.MessageResponse;
 import com.x7ubi.indexcards.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,17 @@ public class ProjectRestController {
     public ResponseEntity<?> getProjects(
         @RequestHeader("Authorization") String authorization
     ){
-        logger.info(jwtUtils.getUsernameFromAuthorizationHeader(authorization));
-        return null;
+        try {
+            logger.info("Getting projects from User");
+            return ResponseEntity
+                    .ok()
+                    .body(projectService.getUserProjects(authorization));
+        } catch (UsernameNotFoundException usernameNotFoundException) {
+            logger.error(usernameNotFoundException.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse(usernameNotFoundException.getMessage()));
+        }
     }
 
     @PostMapping("/create")
@@ -38,11 +48,14 @@ public class ProjectRestController {
             @RequestBody CreateProjectRequest createProjectRequest
     ){
         try {
+            logger.info("Creating Project");
             projectService.createProject(authorization, createProjectRequest);
+            logger.info("Project created");
             return ResponseEntity
                     .ok()
                     .body(new MessageResponse("Project created"));
         } catch (UsernameNotFoundException usernameNotFoundException) {
+            logger.error(usernameNotFoundException.getMessage());
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse(usernameNotFoundException.getMessage()));

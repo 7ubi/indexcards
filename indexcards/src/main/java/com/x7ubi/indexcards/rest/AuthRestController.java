@@ -43,10 +43,12 @@ public class AuthRestController {
         logger.info("Signing up new account");
         try {
             authService.registerNewUserAccount(signupRequest);
+            logger.info("Account was created");
             return ResponseEntity
                     .ok()
                     .body(new MessageResponse("Account was created"));
         } catch (UsernameExistsException e) {
+            logger.error(e.getMessage());
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse(e.getMessage()));
