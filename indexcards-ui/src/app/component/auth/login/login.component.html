@@ -14,6 +14,9 @@
         <div *ngIf="password.touched && password.invalid" class="error">
             Password invalid
         </div>
+        <div *ngIf="error" class="error">
+            {{error}}
+        </div>
         <button type="submit">Login</button>
     </div>
 </form>

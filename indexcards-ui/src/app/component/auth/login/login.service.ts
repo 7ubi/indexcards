@@ -18,4 +18,8 @@ export class LoginService {
   public static getBearer(): string {
     return LocalService.getEncryptedData(this.type);
   }
+
+  public static isLoggedIn(): boolean {
+    return LocalService.getEncryptedData(this.type) !== '';
+  }
 }

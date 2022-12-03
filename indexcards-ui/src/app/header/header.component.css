@@ -1,5 +1,11 @@
 .header {
     background-color: #0C0032;
     padding: 60px;
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+fa-icon {
+    font-size: x-large;
 }
