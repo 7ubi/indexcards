@@ -28,6 +28,9 @@
         <div *ngIf="password.touched && password.invalid" class="error">
             Password is required and must be at least 8 characters long!
         </div>
+        <p>
+            Already have an Account? Then login <a routerLink="/login">here</a>!
+        </p>
         <button type="submit">Create an account</button>
     </div>
 </form>

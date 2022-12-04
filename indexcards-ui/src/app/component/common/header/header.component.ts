@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import {LocalService} from "../local.service";
+import {LocalService} from "../../../local.service";
 import {Router} from "@angular/router";
+import { LoginService } from "../../auth/login/login.service";
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,10 @@ export class HeaderComponent {
   faArrowRightFromBracket = faArrowRightFromBracket;
 
   constructor(private router: Router) {
+  }
+
+  isLoggedIn() {
+    return LoginService.isLoggedIn();
   }
 
   logout() {

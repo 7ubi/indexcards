@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         response => {
           LoginService.saveBearer(response);
+
           this.router.navigate(['/']);
         }, error => {
           if(error.status === 401){
