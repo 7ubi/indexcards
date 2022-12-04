@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
 html {
     font-family: 'Montserrat', sans-serif;
-    background: #282828;
+    background: #A8DADC;
     color: white;
     width: 100%;
-    
+
 }
 app-root {
     display: flex;
@@ -14,7 +14,7 @@ app-root {
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0; 
+    right: 0;
     width: 100%;
 }
 
@@ -29,7 +29,7 @@ button {
     font-size: larger;
     background-color: transparent;
     border-radius: 5px;
-    border: 2px solid #3500D3;
+    border: 2px solid #F1FAEE;
     color: white;
 }
 
@@ -42,13 +42,14 @@ form {
 input {
     padding: 15px;
     border-radius: 5px;
-    border: 3px solid #3500D3;
+    border: 3px solid #F1FAEE;
     margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
     font-family: montserrat, serif;
-    color: #240090;
+    color: #000000;
     font-size: larger;
+    background-color: #fbfdf6;
 }
 
 label {
@@ -58,9 +59,9 @@ label {
 }
 
 .container {
-    background: #190061;
+    background: #457B9D;
     border: 0 none;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 20px 30px;
     box-sizing: border-box;
     width: 80%;
@@ -72,5 +73,6 @@ label {
 
 .error {
     font-size: x-large;
-    color: #ff008d;
+    color: #E63946;
+    text-align: left;
 }
