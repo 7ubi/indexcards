@@ -4,3 +4,7 @@ export interface LoginResponse {
   readonly id: string;
   readonly username: string;
 }
+
+export interface ProjectResponse {
+  readonly name: string;
+}

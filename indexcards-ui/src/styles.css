@@ -33,12 +33,6 @@ button {
     color: white;
 }
 
-form {
-    text-align: center;
-    position: relative;
-    margin-top: 30px;
-}
-
 input {
     padding: 15px;
     border-radius: 5px;
@@ -65,7 +59,8 @@ label {
     padding: 20px 30px;
     box-sizing: border-box;
     width: 80%;
-    margin: 0 10%;
+    margin: 30px 10% 0 10%;
+    text-align: center;
 
     /*stacking fieldsets above each other*/
     position: relative;

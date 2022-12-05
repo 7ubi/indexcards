@@ -1,6 +1,7 @@
 import {LocalService} from "../../../local.service";
 import {Injectable} from "@angular/core";
 import {LoginResponse} from "../../../app.response";
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,12 @@ export class LoginService {
 
   public isLoggedIn(): boolean {
     return LocalService.getEncryptedData(this.type) !== '';
+  }
+
+  public getHeaderWithBearer(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getBearer()}`
+    })
   }
 }
