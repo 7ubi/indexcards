@@ -12,11 +12,11 @@ import { LoginService } from "../../auth/login/login.service";
 export class HeaderComponent {
   faArrowRightFromBracket = faArrowRightFromBracket;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private loginService: LoginService) {
   }
 
   isLoggedIn() {
-    return LoginService.isLoggedIn();
+    return this.loginService.isLoggedIn();
   }
 
   logout() {

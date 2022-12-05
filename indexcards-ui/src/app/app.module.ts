@@ -11,13 +11,18 @@ import { LoginComponent } from './component/auth/login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
+import {LoginRequired} from "./LoginRequired";
+import { PageNotFoundComponent } from './component/common/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    AllProjectsComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +40,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
       lastOnBottom: true
     }),
   ],
-  providers: [],
+  providers: [LoginRequired,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

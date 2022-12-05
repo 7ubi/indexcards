@@ -7,19 +7,19 @@ import {LoginResponse} from "../../../app.response";
 })
 export class LoginService {
 
-  private static type: string = 'Bearer';
+  private type: string = 'Bearer';
 
   constructor() {  }
 
-  public static saveBearer(loginResponse: LoginResponse) {
+  public saveBearer(loginResponse: LoginResponse) {
     LocalService.saveEncryptedData(loginResponse.type, loginResponse.token);
   }
 
-  public static getBearer(): string {
+  public getBearer(): string {
     return LocalService.getEncryptedData(this.type);
   }
 
-  public static isLoggedIn(): boolean {
+  public isLoggedIn(): boolean {
     return LocalService.getEncryptedData(this.type) !== '';
   }
 }

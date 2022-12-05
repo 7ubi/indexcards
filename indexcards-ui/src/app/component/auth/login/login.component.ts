@@ -12,13 +12,13 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private loginService: LoginService) {
   }
 
   error: string = '';
 
   ngOnInit(): void {
-    if(LoginService.isLoggedIn()) {
+    if(this.loginService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
   }
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     this.http.post<LoginResponse>('http://localhost:8080/api/auth/login', login.value)
       .subscribe(
         response => {
-          LoginService.saveBearer(response);
+          this.loginService.saveBearer(response);
 
           this.router.navigate(['/']);
         }, error => {
