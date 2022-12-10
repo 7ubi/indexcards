@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {LoginResponse} from "../../../app.response";
 import {LoginService} from "./login.service";
 import {Router} from "@angular/router";
+import {environment} from "../../../../environment/environment";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   makeLogin(login: NgForm) {
-    this.http.post<LoginResponse>('http://localhost:8080/api/auth/login', login.value)
+    this.http.post<LoginResponse>(environment.apiUrl + 'auth/login', login.value)
       .subscribe(
         response => {
           this.loginService.saveBearer(response);

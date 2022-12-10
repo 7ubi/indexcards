@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Router} from "@angular/router";
 import {NotificationsService} from "angular2-notifications";
+import {environment} from "../../../../environment/environment";
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,7 @@ export class SignupComponent {
   ) { }
 
   createAccount(signup: NgForm) {
-    this.http.post('http://localhost:8080/api/auth/signup', signup.value)
+    this.http.post(environment.apiUrl + 'auth/signup', signup.value)
       .subscribe((response) => {
         this.router.navigate(['/login']);
         this.notificationService.success(

@@ -1,16 +1,19 @@
 package com.x7ubi.indexcards.service;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
+import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
+import com.x7ubi.indexcards.response.IndexCardResponse;
 import com.x7ubi.indexcards.response.UserProjectResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Service
@@ -51,7 +54,7 @@ public class ProjectService {
         user.setProjects(userProjects);
     }
 
-    public UserProjectResponse[] getUserProjects(String authorization) {
+    public ArrayList<UserProjectResponse> getUserProjects(String authorization) {
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         if(!userRepo.existsByUsername(username)){
@@ -63,10 +66,16 @@ public class ProjectService {
         Project[] projects = new Project[user.getProjects().size()];
         projects = user.getProjects().toArray(projects);
 
-        UserProjectResponse[] userProjectResponses = new UserProjectResponse[projects.length];
+        ArrayList<UserProjectResponse> userProjectResponses = new ArrayList<>();
 
-        for(int i = 0; i < projects.length; i++) {
-            userProjectResponses[i] = new UserProjectResponse(projects[i].getName());
+        for(Project project: projects) {
+            ArrayList<IndexCardResponse> indexCardResponses = new ArrayList<>();
+
+            for(IndexCard indexCard: project.getIndexCards()) {
+                indexCardResponses.add(new IndexCardResponse(indexCard.getName()));
+            }
+
+            userProjectResponses.add(new UserProjectResponse(project.getName(), indexCardResponses));
         }
 
         return userProjectResponses;

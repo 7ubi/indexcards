@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { ProjectResponse } from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
+import {environment} from "../../../../environment/environment";
 
 @Component({
   selector: 'app-all-projects',
@@ -20,7 +21,7 @@ export class AllProjectsComponent implements OnInit {
   }
 
   getAllProjects() {
-    this.http.get<ProjectResponse[]>('http://localhost:8080/api/project/projects'
+    this.http.get<ProjectResponse[]>(environment.apiUrl + 'project/projects'
       , { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {

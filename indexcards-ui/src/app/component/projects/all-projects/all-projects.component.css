@@ -1,0 +1,16 @@
+.project {
+    background-color: #F1FAEE;
+    color: black;
+    margin: 5px 0 5px 0;
+    font-size: larger;
+    border-radius: 10px;
+}
+
+.projectName {
+    text-align: left;
+    padding: 5px;
+}
+
+.title {
+  text-align: left;
+}

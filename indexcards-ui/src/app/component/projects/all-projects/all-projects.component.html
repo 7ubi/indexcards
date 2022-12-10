@@ -1,5 +1,11 @@
 <div class="container">
-  <div *ngFor="let project of projects">
-    {{ project.name }}
-  </div>
+    <h1 class="title">
+        Your Projects
+    </h1>
+    <div *ngFor="let project of projects">
+        <div class="project">
+            <div class="projectName">{{ project.name }}</div>
+            {{ project.indexCardResponses.length }}
+        </div>
+    </div>
 </div>
