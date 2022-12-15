@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  # TODO MySql container
+  backend:
+    container_name: backendcontainer
+    build: ./indexcards
+    volumes:
+      - './indexcards:/usr/src/app'
+    ports:
+      - '8080:8080'
+  frontend:
+    container_name: frontendcontainer
+    build: ./indexcards-ui
+    volumes:
+      - './indexcards-ui:/usr/src/app'
+    ports:
+      - '4200:4200'
+
