@@ -1,13 +1,31 @@
 version: '3.8'
 services:
-  # TODO MySql container
+  mysqldb:
+    container_name: dbcontainer
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'indexcardsdb'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '1234'
+    networks:
+      - springmysql-net
+    ports:
+      - '3307:3306'
+    volumes:
+      - my-db:/var/lib/mysql
   backend:
     container_name: backendcontainer
     build: ./indexcards
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?autoReconnect=true&useSSL=false
     volumes:
       - './indexcards:/usr/src/app'
     ports:
       - '8080:8080'
+    networks:
+      - springmysql-net
+    depends_on:
+      - mysqldb
   frontend:
     container_name: frontendcontainer
     build: ./indexcards-ui
@@ -16,3 +34,8 @@ services:
     ports:
       - '4200:4200'
 
+networks:
+  springmysql-net:
+
+volumes:
+  my-db:

@@ -3,5 +3,6 @@ FROM maven:3.6.3-jdk-11
 WORKDIR /app
 COPY . .
 RUN mvn clean install -DskipTests
-
-CMD mvn spring-boot:run
+ADD target/indexcards-0.0.1-SNAPSHOT.jar indexcards-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "indexcards-0.0.1-SNAPSHOT.jar"]

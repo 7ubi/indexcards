@@ -1,5 +1,5 @@
 # Get node
-FROM node:leatest
+FROM node:latest
 
 # Make working directory
 RUN mkdir -p /app
