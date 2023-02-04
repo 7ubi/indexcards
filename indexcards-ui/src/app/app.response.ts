@@ -1,3 +1,12 @@
+export interface MessageResponse {
+  readonly message: string;
+}
+
+export interface ResultResponse {
+  readonly success: boolean;
+  readonly errorMessages: MessageResponse[];
+}
+
 export interface LoginResponse {
   readonly token: string;
   readonly type: string;
@@ -14,6 +23,4 @@ export interface ProjectResponse {
   readonly indexCardResponses: IndexCardResponse[];
 }
 
-export interface MessageResponse {
-  readonly message: string;
-}
+

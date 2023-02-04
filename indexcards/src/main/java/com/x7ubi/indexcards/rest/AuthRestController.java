@@ -5,8 +5,8 @@ import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.auth.LoginRequest;
 import com.x7ubi.indexcards.request.auth.SignupRequest;
-import com.x7ubi.indexcards.response.JwtResponse;
-import com.x7ubi.indexcards.response.MessageResponse;
+import com.x7ubi.indexcards.response.common.JwtResponse;
+import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,18 +41,10 @@ public class AuthRestController {
         @RequestBody SignupRequest signupRequest
     ) {
         logger.info("Signing up new account");
-        try {
-            authService.registerNewUserAccount(signupRequest);
-            logger.info("Account was created");
-            return ResponseEntity
-                    .ok()
-                    .body(new MessageResponse("Account was created"));
-        } catch (UsernameExistsException e) {
-            logger.error(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(e.getMessage()));
-        }
+
+        return ResponseEntity
+            .ok()
+            .body(authService.registerNewUserAccount(signupRequest));
     }
 
     @PostMapping("/login")

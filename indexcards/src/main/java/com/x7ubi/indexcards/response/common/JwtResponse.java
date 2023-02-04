@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.response;
+package com.x7ubi.indexcards.response.common;
 
 public class JwtResponse {
     private String token;
