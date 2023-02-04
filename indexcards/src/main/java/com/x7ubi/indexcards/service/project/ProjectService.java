@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.service;
+package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.IndexCard;

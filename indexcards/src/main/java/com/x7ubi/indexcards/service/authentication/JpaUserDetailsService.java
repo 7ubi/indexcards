@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.service;
+package com.x7ubi.indexcards.service.authentication;
 
 import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.repository.UserRepo;

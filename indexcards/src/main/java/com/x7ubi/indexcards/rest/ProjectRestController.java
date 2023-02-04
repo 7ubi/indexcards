@@ -3,7 +3,7 @@ package com.x7ubi.indexcards.rest;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.common.MessageResponse;
-import com.x7ubi.indexcards.service.ProjectService;
+import com.x7ubi.indexcards.service.project.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,11 @@
 package com.x7ubi.indexcards.rest;
 
-import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.auth.LoginRequest;
 import com.x7ubi.indexcards.request.auth.SignupRequest;
 import com.x7ubi.indexcards.response.common.JwtResponse;
-import com.x7ubi.indexcards.response.common.MessageResponse;
-import com.x7ubi.indexcards.service.AuthService;
+import com.x7ubi.indexcards.service.authentication.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

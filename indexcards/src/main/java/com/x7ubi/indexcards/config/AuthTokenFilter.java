@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
-import com.x7ubi.indexcards.service.JpaUserDetailsService;
+import com.x7ubi.indexcards.service.authentication.JpaUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
