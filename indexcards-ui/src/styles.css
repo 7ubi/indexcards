@@ -31,6 +31,11 @@ button {
     border-radius: 5px;
     border: 2px solid #F1FAEE;
     color: white;
+    transition: 0.1s;
+}
+
+button:hover {
+    background-color: #00000050
 }
 
 input {
@@ -90,4 +95,8 @@ a:hover {
 /* selected link */
 a:active {
   color: #1D3557;
+}
+
+.title {
+  text-align: left;
 }

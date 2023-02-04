@@ -4,6 +4,7 @@ import {NgForm} from '@angular/forms';
 import {Router} from "@angular/router";
 import {NotificationsService} from "angular2-notifications";
 import {environment} from "../../../../environment/environment";
+import {ResultResponse} from "../../../app.response";
 
 @Component({
   selector: 'app-signup',
@@ -19,18 +20,23 @@ export class SignupComponent {
   ) { }
 
   createAccount(signup: NgForm) {
-    this.http.post(environment.apiUrl + 'auth/signup', signup.value)
+    this.http.post<ResultResponse>(environment.apiUrl + 'auth/signup', signup.value)
       .subscribe((response) => {
-        this.router.navigate(['/login']);
-        this.notificationService.success(
-          'SUCCESS',
-          'Account was created! Please login!',
-        );
-      }, (error) => {
-        this.notificationService.error(
-          'ERROR',
-          'Username is already taken',
-        );
+        if(response.success) {
+          this.router.navigate(['/login']);
+
+          this.notificationService.success(
+            'SUCCESS',
+            'Account was created! Please login!',
+          );
+        } else {
+          response.errorMessages.forEach((error) => {
+            this.notificationService.error(
+              'ERROR',
+              error.message
+            );
+          });
+        }
       });
   }
 }

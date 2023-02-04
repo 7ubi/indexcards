@@ -1,4 +1,6 @@
-package com.x7ubi.indexcards.response;
+package com.x7ubi.indexcards.response.project;
+
+import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 
 import java.util.ArrayList;
 

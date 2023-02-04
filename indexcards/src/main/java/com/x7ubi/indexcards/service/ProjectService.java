@@ -7,8 +7,8 @@ import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.IndexCardResponse;
-import com.x7ubi.indexcards.response.UserProjectResponse;
+import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
+import com.x7ubi.indexcards.response.project.UserProjectResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
