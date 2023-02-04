@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
 import {LoginRequired} from "./LoginRequired";
 import { PageNotFoundComponent } from './component/common/page-not-found/page-not-found.component';
+import { CreateProjectComponent } from './component/projects/create-project/create-project.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PageNotFoundComponent } from './component/common/page-not-found/page-no
     SignupComponent,
     LoginComponent,
     AllProjectsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    CreateProjectComponent
   ],
   imports: [
     BrowserModule,

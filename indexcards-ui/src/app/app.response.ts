@@ -13,3 +13,7 @@ export interface ProjectResponse {
   readonly name: string;
   readonly indexCardResponses: IndexCardResponse[];
 }
+
+export interface MessageResponse {
+  readonly message: string;
+}

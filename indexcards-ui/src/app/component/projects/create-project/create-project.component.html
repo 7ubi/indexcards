@@ -1,0 +1,12 @@
+<form #project="ngForm" (ngSubmit)="createProject(project)">
+    <div class="container">
+        <h1 class="title">
+          Create a new Project
+        </h1>
+        <label for="name">
+            Project Name
+        </label>
+        <input #name="ngModel" name="name" id="name" type="text" ngModel required>
+        <button type="submit">Create Project</button>
+    </div>
+</form>
