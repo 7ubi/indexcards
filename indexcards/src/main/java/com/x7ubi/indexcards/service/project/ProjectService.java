@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class ProjectService {
 
-    private Logger logger = LoggerFactory.getLogger(ProjectService.class);
+    private final Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
     private final ProjectRepo projectRepo;
 
@@ -40,13 +40,14 @@ public class ProjectService {
 
         UserProjectsResponse userProjectResponse = new UserProjectsResponse();
 
-        userProjectResponse.setErrorMessages(findGetProjectErrors(authorization));
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        userProjectResponse.setErrorMessages(findGetProjectErrors(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
         }
 
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         User user = this.userRepo.findByUsername(username).get();
 
@@ -69,16 +70,14 @@ public class ProjectService {
         return userProjectResponse;
     }
 
-    private List<MessageResponse> findGetProjectErrors(String authorization) {
-        List<MessageResponse> errors = new ArrayList<>();
-
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+    private List<MessageResponse> findGetProjectErrors(String username) {
+        List<MessageResponse> error = new ArrayList<>();
 
         if(!userRepo.existsByUsername(username)) {
             logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
-            errors.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+            error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
         }
 
-        return errors;
+        return error;
     }
 }

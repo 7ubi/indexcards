@@ -47,18 +47,9 @@ public class ProjectRestController {
             @RequestHeader("Authorization") String authorization,
             @RequestBody CreateProjectRequest createProjectRequest
     ){
-        try {
-            logger.info("Creating Project");
-            createProjectService.createProject(authorization, createProjectRequest);
-            logger.info("Project created");
-            return ResponseEntity
-                    .ok()
-                    .body(new MessageResponse("Project created"));
-        } catch (UsernameNotFoundException usernameNotFoundException) {
-            logger.error(usernameNotFoundException.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(usernameNotFoundException.getMessage()));
-        }
+        logger.info("Creating Project");
+        return ResponseEntity
+                .ok()
+                .body(createProjectService.createProject(authorization, createProjectRequest));
     }
 }
