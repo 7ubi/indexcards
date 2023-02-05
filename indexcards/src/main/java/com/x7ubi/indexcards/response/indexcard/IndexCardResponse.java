@@ -3,6 +3,8 @@ package com.x7ubi.indexcards.response.indexcard;
 public class IndexCardResponse {
     private String name;
 
+    public IndexCardResponse() {}
+
     public IndexCardResponse(String name) {
         this.name = name;
     }
