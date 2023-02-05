@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.rest;
+package com.x7ubi.indexcards.controller;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;

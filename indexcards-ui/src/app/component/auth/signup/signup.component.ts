@@ -29,14 +29,13 @@ export class SignupComponent {
             'SUCCESS',
             'Account was created! Please login!',
           );
-        } else {
-          response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
-          });
         }
+        response.errorMessages.forEach((error) => {
+          this.notificationService.error(
+            'ERROR',
+            error.message
+          );
+        });
       });
   }
 }

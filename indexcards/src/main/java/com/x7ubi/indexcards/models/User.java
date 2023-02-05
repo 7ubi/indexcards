@@ -2,8 +2,7 @@ package com.x7ubi.indexcards.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,11 +26,11 @@ public class User implements Serializable {
     private String password;
 
     @OneToMany
-    private Set<Project> projects;
+    private List<Project> projects;
 
     public User() {}
 
-    public User(Long user_id, String username, String firstname, String surname, String password, Set<Project> projects) {
+    public User(Long user_id, String username, String firstname, String surname, String password, List<Project> projects) {
         this.user_id = user_id;
         this.username = username;
         this.firstname = firstname;
@@ -76,11 +75,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Set<Project> getProjects() {
+    public List<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(Set<Project> projects) {
+    public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 }

@@ -1,7 +1,7 @@
 package com.x7ubi.indexcards.config;
 
 import com.x7ubi.indexcards.jwt.AuthEntryPointJwt;
-import com.x7ubi.indexcards.service.JpaUserDetailsService;
+import com.x7ubi.indexcards.service.authentication.JpaUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

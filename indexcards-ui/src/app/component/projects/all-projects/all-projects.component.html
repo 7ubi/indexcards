@@ -7,7 +7,7 @@
             Create Project
         </button>
     </div>
-    <div *ngFor="let project of projects">
+    <div *ngFor="let project of userProjectsResponse!.projectResponses">
         <div class="project">
             <div class="projectName">{{ project.name }}</div>
             {{ project.indexCardResponses.length }}

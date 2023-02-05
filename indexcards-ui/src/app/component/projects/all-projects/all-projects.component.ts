@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { ProjectResponse } from "../../../app.response";
+import { UserProjectsResponse } from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
-import {environment} from "../../../../environment/environment";
+import { environment } from "../../../../environment/environment";
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
   selector: 'app-all-projects',
@@ -11,9 +12,13 @@ import {environment} from "../../../../environment/environment";
 })
 export class AllProjectsComponent implements OnInit {
 
-  projects: ProjectResponse[] | undefined;
+  userProjectsResponse?: UserProjectsResponse;
 
-  constructor(private http: HttpClient, private loginService: LoginService) {
+  constructor(
+    private http: HttpClient,
+    private loginService: LoginService,
+    private notificationService: NotificationsService
+  ) {
   }
 
   ngOnInit(): void {
@@ -21,11 +26,19 @@ export class AllProjectsComponent implements OnInit {
   }
 
   getAllProjects() {
-    this.http.get<ProjectResponse[]>(environment.apiUrl + 'project/projects'
+    this.http.get<UserProjectsResponse>(environment.apiUrl + 'project/projects'
       , { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {
-          this.projects = response;
+          if(response.success) {
+            this.userProjectsResponse = response;
+          }
+          response.errorMessages.forEach((error) => {
+            this.notificationService.error(
+              'ERROR',
+              error.message
+            );
+          });
         }
       )
   }
