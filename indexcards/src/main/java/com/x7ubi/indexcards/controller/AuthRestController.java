@@ -1,4 +1,4 @@
-package com.x7ubi.indexcards.rest;
+package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.SecurityUser;

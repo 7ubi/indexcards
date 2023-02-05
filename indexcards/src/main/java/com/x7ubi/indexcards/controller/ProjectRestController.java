@@ -1,8 +1,9 @@
-package com.x7ubi.indexcards.rest;
+package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.common.MessageResponse;
+import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,26 +20,26 @@ public class ProjectRestController {
 
     private final ProjectService projectService;
 
-    public ProjectRestController(JwtUtils jwtUtils, ProjectService projectService) {
+    private final CreateProjectService createProjectService;
+
+    public ProjectRestController(
+        JwtUtils jwtUtils,
+        ProjectService projectService,
+        CreateProjectService createProjectService
+    ) {
         this.jwtUtils = jwtUtils;
         this.projectService = projectService;
+        this.createProjectService = createProjectService;
     }
 
     @GetMapping("/projects")
     public ResponseEntity<?> getProjects(
         @RequestHeader("Authorization") String authorization
     ){
-        try {
-            logger.info("Getting projects from User");
-            return ResponseEntity
-                    .ok()
-                    .body(projectService.getUserProjects(authorization));
-        } catch (UsernameNotFoundException usernameNotFoundException) {
-            logger.error(usernameNotFoundException.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(usernameNotFoundException.getMessage()));
-        }
+        logger.info("Getting projects from User");
+        return ResponseEntity
+            .ok()
+            .body(projectService.getUserProjects(authorization));
     }
 
     @PostMapping("/create")
@@ -48,7 +49,7 @@ public class ProjectRestController {
     ){
         try {
             logger.info("Creating Project");
-            projectService.createProject(authorization, createProjectRequest);
+            createProjectService.createProject(authorization, createProjectRequest);
             logger.info("Project created");
             return ResponseEntity
                     .ok()

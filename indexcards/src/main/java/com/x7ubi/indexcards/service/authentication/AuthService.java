@@ -43,7 +43,6 @@ public class AuthService {
         user.setUsername(signupRequest.getUsername());
         user.setFirstname(signupRequest.getFirstname());
         user.setSurname(signupRequest.getSurname());
-
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 
         userRepo.save(user);
@@ -59,6 +58,7 @@ public class AuthService {
         List<MessageResponse> errors = new ArrayList<>();
 
         if(userRepo.existsByUsername(signupRequest.getUsername())){
+            logger.error(ErrorMessage.Authentication.USERNAME_EXITS);
             errors.add(new MessageResponse(ErrorMessage.Authentication.USERNAME_EXITS));
         }
 

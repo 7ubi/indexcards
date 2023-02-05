@@ -1,23 +1,27 @@
 package com.x7ubi.indexcards.service.project;
 
+import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
-import com.x7ubi.indexcards.request.project.CreateProjectRequest;
+import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
-import com.x7ubi.indexcards.response.project.UserProjectResponse;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.x7ubi.indexcards.response.project.ProjectResponse;
+import com.x7ubi.indexcards.response.project.UserProjectsResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class ProjectService {
+
+    private Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
     private final ProjectRepo projectRepo;
 
@@ -31,53 +35,50 @@ public class ProjectService {
         this.jwtUtils = jwtUtils;
     }
 
-    @Transactional
-    public void createProject(String authorization, CreateProjectRequest createProjectRequest)
-            throws UsernameNotFoundException {
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        if(!userRepo.existsByUsername(username)){
-            throw new UsernameNotFoundException("Username not found");
+    public UserProjectsResponse getUserProjects(String authorization) {
+
+        UserProjectsResponse userProjectResponse = new UserProjectsResponse();
+
+        userProjectResponse.setErrorMessages(findGetProjectErrors(authorization));
+
+        if(userProjectResponse.getErrorMessages().size() > 0) {
+            return userProjectResponse;
         }
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         User user = this.userRepo.findByUsername(username).get();
 
-        Project project = new Project();
+        List<Project> projects = user.getProjects();
 
-        project.setName(createProjectRequest.getName());
-
-        this.projectRepo.save(project);
-
-        Set<Project> userProjects = user.getProjects();
-        userProjects.add(project);
-
-        user.setProjects(userProjects);
-    }
-
-    public ArrayList<UserProjectResponse> getUserProjects(String authorization) {
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
-
-        if(!userRepo.existsByUsername(username)){
-            throw new UsernameNotFoundException("Username not found");
-        }
-
-        User user = this.userRepo.findByUsername(username).get();
-
-        Project[] projects = new Project[user.getProjects().size()];
-        projects = user.getProjects().toArray(projects);
-
-        ArrayList<UserProjectResponse> userProjectResponses = new ArrayList<>();
+        userProjectResponse.setProjectResponses(new ArrayList<>());
+        userProjectResponse.setSuccess(true);
 
         for(Project project: projects) {
-            ArrayList<IndexCardResponse> indexCardResponses = new ArrayList<>();
-
+            List<IndexCardResponse> indexCardResponses = new ArrayList<>();
             for(IndexCard indexCard: project.getIndexCards()) {
                 indexCardResponses.add(new IndexCardResponse(indexCard.getName()));
             }
-
-            userProjectResponses.add(new UserProjectResponse(project.getName(), indexCardResponses));
+            userProjectResponse.getProjectResponses()
+                    .add(new ProjectResponse(project.getName(), indexCardResponses));
         }
 
-        return userProjectResponses;
+        logger.info("Found all projects from {}", user.getUsername());
+
+        return userProjectResponse;
+    }
+
+    private List<MessageResponse> findGetProjectErrors(String authorization) {
+        List<MessageResponse> errors = new ArrayList<>();
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        if(!userRepo.existsByUsername(username)) {
+            logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
+            errors.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+        }
+
+        return errors;
     }
 }
