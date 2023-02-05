@@ -59,7 +59,7 @@ public class ProjectService {
         for(Project project: projects) {
             List<IndexCardResponse> indexCardResponses = new ArrayList<>();
             for(IndexCard indexCard: project.getIndexCards()) {
-                indexCardResponses.add(new IndexCardResponse(indexCard.getName()));
+                indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
             }
             userProjectResponse.getProjectResponses()
                     .add(new ProjectResponse(project.getName(), indexCardResponses));

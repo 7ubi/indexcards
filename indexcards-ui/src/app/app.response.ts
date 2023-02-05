@@ -15,7 +15,8 @@ export interface LoginResponse {
 }
 
 export interface IndexCardResponse {
-  readonly name: string;
+  readonly question: string;
+  readonly answer:string;
 }
 
 export interface ProjectResponse {
