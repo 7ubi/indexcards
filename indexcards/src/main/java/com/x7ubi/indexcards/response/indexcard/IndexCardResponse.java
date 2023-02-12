@@ -1,17 +1,30 @@
 package com.x7ubi.indexcards.response.indexcard;
 
 public class IndexCardResponse {
-    private String name;
+    private String question;
 
-    public IndexCardResponse(String name) {
-        this.name = name;
+    private String answer;
+
+    public IndexCardResponse() {}
+
+    public IndexCardResponse(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
     }
 
-    public String getName() {
-        return name;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }
