@@ -22,11 +22,11 @@ public class IndexCardsRestController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createIndexCard(
-            @RequestHeader("Authorization") String authorization,
-            @RequestBody CreateIndexCardRequest createProjectRequest
+        @RequestBody CreateIndexCardRequest createProjectRequest
     ) {
+        logger.info("Creating Index Card");
         return ResponseEntity
                 .ok()
-                .body(this.createIndexCardService.createIndexCard());
+                .body(this.createIndexCardService.createIndexCard(createProjectRequest));
     }
 }

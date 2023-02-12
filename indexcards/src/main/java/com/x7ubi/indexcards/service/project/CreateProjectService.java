@@ -81,6 +81,11 @@ public class CreateProjectService {
             error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
         }
 
+        if(createProjectRequest.getName().length() > 100) {
+            logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
+            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_TOO_LONG));
+        }
+
         return error;
     }
 }
