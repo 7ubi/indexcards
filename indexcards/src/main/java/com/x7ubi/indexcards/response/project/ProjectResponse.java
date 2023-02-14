@@ -6,13 +6,17 @@ import java.util.List;
 
 public class ProjectResponse {
 
+
+    private Long id;
+
     private String name;
 
     private List<IndexCardResponse> indexCardResponses;
 
     public ProjectResponse() {}
 
-    public ProjectResponse(String name, List<IndexCardResponse> indexCardResponses) {
+    public ProjectResponse(Long id, String name, List<IndexCardResponse> indexCardResponses) {
+        this.id = id;
         this.name = name;
         this.indexCardResponses = indexCardResponses;
     }
@@ -31,5 +35,13 @@ public class ProjectResponse {
 
     public void setIndexCardResponses(List<IndexCardResponse> indexCardResponses) {
         this.indexCardResponses = indexCardResponses;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -15,6 +15,7 @@ import { AllProjectsComponent } from './component/projects/all-projects/all-proj
 import {LoginRequired} from "./LoginRequired";
 import { PageNotFoundComponent } from './component/common/page-not-found/page-not-found.component';
 import { CreateProjectComponent } from './component/projects/create-project/create-project.component';
+import { ProjectComponent } from './component/projects/project/project.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CreateProjectComponent } from './component/projects/create-project/crea
     LoginComponent,
     AllProjectsComponent,
     PageNotFoundComponent,
-    CreateProjectComponent
+    CreateProjectComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,

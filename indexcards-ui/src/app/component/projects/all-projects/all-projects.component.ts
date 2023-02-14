@@ -4,6 +4,7 @@ import { UserProjectsResponse } from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
 import { environment } from "../../../../environment/environment";
 import { NotificationsService } from "angular2-notifications";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all-projects',
@@ -17,8 +18,9 @@ export class AllProjectsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
-    private notificationService: NotificationsService
-  ) {
+    private notificationService: NotificationsService,
+    private router: Router
+) {
   }
 
   ngOnInit(): void {
@@ -41,5 +43,9 @@ export class AllProjectsComponent implements OnInit {
           });
         }
       )
+  }
+
+  goToProject(id: number) {
+    this.router.navigate(['/project', id]);
   }
 }

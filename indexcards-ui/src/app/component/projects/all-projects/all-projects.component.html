@@ -9,7 +9,9 @@
     </div>
     <div *ngFor="let project of userProjectsResponse!.projectResponses">
         <div class="project">
-            <div class="projectName">{{ project.name }}</div>
+            <div (click)="goToProject(project.id)" class="projectName">
+             {{ project.name }}
+            </div>
             {{ project.indexCardResponses.length }}
         </div>
     </div>

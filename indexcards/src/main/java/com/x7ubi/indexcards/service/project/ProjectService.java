@@ -62,7 +62,7 @@ public class ProjectService {
                 indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
             }
             userProjectResponse.getProjectResponses()
-                    .add(new ProjectResponse(project.getName(), indexCardResponses));
+                    .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
         }
 
         logger.info("Found all projects from {}", user.getUsername());
