@@ -12,6 +12,8 @@ public class ErrorMessage {
 
         public static String PROJECT_NAME_TOO_LONG
             = "The name of the project was too long, only 100 characters are allowed";
+
+        public static String PROJECT_NOT_FOUND = "Project not found";
     }
 
     public static class IndexCards {

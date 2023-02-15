@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ProjectResponse {
 
-
     private Long id;
 
     private String name;

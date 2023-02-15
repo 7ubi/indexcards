@@ -7,12 +7,14 @@
             Create Project
         </button>
     </div>
-    <div *ngFor="let project of userProjectsResponse!.projectResponses">
-        <div class="project">
-            <div (click)="goToProject(project.id)" class="projectName">
-             {{ project.name }}
-            </div>
-            {{ project.indexCardResponses.length }}
-        </div>
+    <div *ngIf="userProjectsResponse!">
+      <div *ngFor="let project of userProjectsResponse!.projectResponses">
+          <div class="project">
+              <div (click)="goToProject(project.id)" class="projectName">
+               {{ project.name }}
+              </div>
+              {{ project.indexCardResponses.length }}
+          </div>
+      </div>
     </div>
 </div>

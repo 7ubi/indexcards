@@ -42,7 +42,7 @@ public class ProjectService {
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        userProjectResponse.setErrorMessages(findGetProjectErrors(username));
+        userProjectResponse.setErrorMessages(findGetProjectsError(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
@@ -70,12 +70,35 @@ public class ProjectService {
         return userProjectResponse;
     }
 
-    private List<MessageResponse> findGetProjectErrors(String username) {
+    public UserProjectsResponse getProject(long id) {
+        UserProjectsResponse projectResponse = new UserProjectsResponse();
+
+        projectResponse.setErrorMessages(this.findGetProjectError(id));
+
+        if(projectResponse.getErrorMessages().size() > 0) {
+            return projectResponse;
+        }
+
+        return projectResponse;
+    }
+
+    private List<MessageResponse> findGetProjectsError(String username) {
         List<MessageResponse> error = new ArrayList<>();
 
         if(!userRepo.existsByUsername(username)) {
             logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
             error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+        }
+
+        return error;
+    }
+
+    private List<MessageResponse> findGetProjectError(long id) {
+        List<MessageResponse> error = new ArrayList<>();
+
+        if(!projectRepo.existsById(id)) {
+            logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
+            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NOT_FOUND));
         }
 
         return error;

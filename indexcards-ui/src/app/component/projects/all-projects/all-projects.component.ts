@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class AllProjectsComponent implements OnInit {
 
-  userProjectsResponse?: UserProjectsResponse;
+  userProjectsResponse!: UserProjectsResponse;
 
   constructor(
     private http: HttpClient,

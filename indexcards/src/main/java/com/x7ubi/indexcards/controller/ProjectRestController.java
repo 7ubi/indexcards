@@ -42,6 +42,17 @@ public class ProjectRestController {
             .body(projectService.getUserProjects(authorization));
     }
 
+    @GetMapping("project")
+    public ResponseEntity<?> getProject(
+        @RequestBody long id
+    ) {
+        logger.info("Getting project");
+
+        return ResponseEntity
+            .ok()
+            .body(projectService.getProject(id));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createProject(
             @RequestHeader("Authorization") String authorization,
