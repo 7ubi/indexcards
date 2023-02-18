@@ -8,8 +8,8 @@ import java.util.Set;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long project_id;
+    @Column(name = "project_id", nullable = false, updatable = false)
+    private Long projectId;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -25,7 +25,7 @@ public class Project {
     }
 
     public Long getId() {
-        return project_id;
+        return projectId;
     }
 
     public String getName() {

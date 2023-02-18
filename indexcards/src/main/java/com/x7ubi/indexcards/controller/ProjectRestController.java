@@ -44,7 +44,8 @@ public class ProjectRestController {
 
     @GetMapping("project")
     public ResponseEntity<?> getProject(
-        @RequestBody long id
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id
     ) {
         logger.info("Getting project");
 
