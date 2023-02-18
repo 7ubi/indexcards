@@ -20,6 +20,7 @@ export interface IndexCardResponse {
 }
 
 export interface ProjectResponse {
+  readonly id: number;
   readonly name: string;
   readonly indexCardResponses: IndexCardResponse[];
 }
@@ -28,4 +29,6 @@ export interface UserProjectsResponse extends ResultResponse {
   readonly projectResponses: ProjectResponse[];
 }
 
-
+export interface UserProjectResponse extends ResultResponse {
+  readonly projectResponse: ProjectResponse;
+}

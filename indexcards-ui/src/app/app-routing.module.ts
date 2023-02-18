@@ -6,6 +6,7 @@ import { LoginRequired } from './LoginRequired';
 import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
 import {PageNotFoundComponent} from "./component/common/page-not-found/page-not-found.component";
 import {CreateProjectComponent} from "./component/projects/create-project/create-project.component";
+import {ProjectComponent} from "./component/projects/project/project.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
   {
     path: 'createProject',
     component: CreateProjectComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id',
+    component: ProjectComponent,
     canActivate: [LoginRequired]
   },
   {

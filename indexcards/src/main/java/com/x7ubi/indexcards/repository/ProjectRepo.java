@@ -9,5 +9,9 @@ public interface ProjectRepo extends JpaRepository<Project, Long> {
 
     Project findProjectByName(String name);
 
+    Project findProjectByProjectId(Long projectId);
+
     Boolean existsByName(String name);
+
+    Boolean existsByProjectId(Long projectId);
 }

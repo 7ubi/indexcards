@@ -65,12 +65,12 @@ public class CreateIndexCardService {
         }
 
         if(createIndexCardRequest.getQuestion().length() > 500) {
-            logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
+            logger.error(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG);
             error.add(new MessageResponse(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG));
         }
 
         if(createIndexCardRequest.getAnswer().length() > 500) {
-            logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
+            logger.error(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG);
             error.add(new MessageResponse(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG));
         }
 

@@ -10,6 +10,7 @@ import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
+import com.x7ubi.indexcards.response.project.UserProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class ProjectService {
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        userProjectResponse.setErrorMessages(findGetProjectErrors(username));
+        userProjectResponse.setErrorMessages(findGetProjectsError(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
@@ -62,7 +63,7 @@ public class ProjectService {
                 indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
             }
             userProjectResponse.getProjectResponses()
-                    .add(new ProjectResponse(project.getName(), indexCardResponses));
+                    .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
         }
 
         logger.info("Found all projects from {}", user.getUsername());
@@ -70,12 +71,49 @@ public class ProjectService {
         return userProjectResponse;
     }
 
-    private List<MessageResponse> findGetProjectErrors(String username) {
+    public UserProjectResponse getProject(long id) {
+    UserProjectResponse userProjectResponse = new UserProjectResponse();
+
+        userProjectResponse.setErrorMessages(this.findGetProjectError(id));
+
+        if(userProjectResponse.getErrorMessages().size() > 0) {
+            return userProjectResponse;
+        }
+
+        Project project = this.projectRepo.findProjectByProjectId(id);
+
+        ProjectResponse projectResponse = new ProjectResponse();
+        projectResponse.setId(project.getId());
+        projectResponse.setName(project.getName());
+
+        List<IndexCardResponse> indexCardResponses = new ArrayList<>();
+        for(IndexCard indexCard: project.getIndexCards()) {
+            indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
+        }
+        projectResponse.setIndexCardResponses(indexCardResponses);
+        userProjectResponse.setSuccess(true);
+        userProjectResponse.setProjectResponse(projectResponse);
+
+        return userProjectResponse;
+    }
+
+    private List<MessageResponse> findGetProjectsError(String username) {
         List<MessageResponse> error = new ArrayList<>();
 
         if(!userRepo.existsByUsername(username)) {
             logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
             error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+        }
+
+        return error;
+    }
+
+    private List<MessageResponse> findGetProjectError(long id) {
+        List<MessageResponse> error = new ArrayList<>();
+
+        if(!projectRepo.existsByProjectId(id)) {
+            logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
+            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NOT_FOUND));
         }
 
         return error;
