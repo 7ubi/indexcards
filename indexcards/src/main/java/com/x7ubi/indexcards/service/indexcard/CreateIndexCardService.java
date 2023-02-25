@@ -1,15 +1,13 @@
 package com.x7ubi.indexcards.service.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
-import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.IndexCard;
+import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
-import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.common.ResultResponse;
-import com.x7ubi.indexcards.service.project.CreateProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,14 +21,11 @@ public class CreateIndexCardService {
 
     private final Logger logger = LoggerFactory.getLogger(CreateIndexCardService.class);
 
-    private final JwtUtils jwtUtils;
-
     private final ProjectRepo projectRepo;
 
     private final IndexCardRepo indexCardRepo;
 
-    CreateIndexCardService(JwtUtils jwtUtils, ProjectRepo projectRepo, IndexCardRepo indexCardRepo) {
-        this.jwtUtils = jwtUtils;
+    CreateIndexCardService(ProjectRepo projectRepo, IndexCardRepo indexCardRepo) {
         this.projectRepo = projectRepo;
         this.indexCardRepo = indexCardRepo;
     }
@@ -51,7 +46,14 @@ public class CreateIndexCardService {
             = new IndexCard(createIndexCardRequest.getQuestion(), createIndexCardRequest.getAnswer());
 
         this.indexCardRepo.save(indexCard);
+
+        Project project = this.projectRepo.findProjectByProjectId(createIndexCardRequest.getProjectId());
+        project.getIndexCards().add(indexCard);
+        this.projectRepo.save(project);
+
         logger.info("Index Card was created successfully!");
+
+        resultResponse.setSuccess(true);
 
         return resultResponse;
     }
