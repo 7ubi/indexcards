@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {NotificationsService} from "angular2-notifications";
 import {UserProjectResponse} from "../../../app.response";
@@ -19,7 +19,8 @@ export class ProjectComponent implements OnInit{
     private route: ActivatedRoute,
     private http: HttpClient,
     private notificationService: NotificationsService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
   ) {
   }
 
@@ -41,5 +42,9 @@ export class ProjectComponent implements OnInit{
           });
         }
       );
+  }
+
+  onClickCreateIndexcardButton() {
+    this.router.navigate(['createIndexCard'], {relativeTo: this.route});
   }
 }

@@ -51,6 +51,10 @@ input {
     background-color: #fbfdf6;
 }
 
+textarea {
+  width: 100%;
+}
+
 label {
     font-size: larger;
     float: left;

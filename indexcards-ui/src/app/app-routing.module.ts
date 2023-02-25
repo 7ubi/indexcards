@@ -7,6 +7,7 @@ import { AllProjectsComponent } from './component/projects/all-projects/all-proj
 import {PageNotFoundComponent} from "./component/common/page-not-found/page-not-found.component";
 import {CreateProjectComponent} from "./component/projects/create-project/create-project.component";
 import {ProjectComponent} from "./component/projects/project/project.component";
+import {CreateIndexcardComponent} from "./component/indexcard/create-indexcard/create-indexcard.component";
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'project/:id',
     component: ProjectComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id/createIndexCard',
+    component: CreateIndexcardComponent,
     canActivate: [LoginRequired]
   },
   {
