@@ -1,10 +1,19 @@
 <div class="container">
   <div class="header-container">
     <h1 class="title">
-      {{ userProject.projectResponse.name }}
+      {{ userProject!.projectResponse!.name! }}
     </h1>
     <button (click)="onClickCreateIndexcardButton()">
       Create Index Card
     </button>
+  </div>
+  <div class="indexcardContainer">
+    <div *ngFor="let indexcard of userProject!.projectResponse!.indexCardResponses">
+      <div class="indexcard">
+        <h2>
+          {{ indexcard.question }}
+        </h2>
+      </div>
+    </div>
   </div>
 </div>
