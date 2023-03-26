@@ -36,8 +36,7 @@ public class CreateProjectService {
     }
 
     @Transactional
-    public ResultResponse createProject(String authorization, CreateProjectRequest createProjectRequest) {
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+    public ResultResponse createProject(String username, CreateProjectRequest createProjectRequest) {
 
         ResultResponse resultResponse = new ResultResponse();
 
