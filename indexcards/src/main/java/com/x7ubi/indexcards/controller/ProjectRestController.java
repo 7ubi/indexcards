@@ -60,8 +60,9 @@ public class ProjectRestController {
             @RequestBody CreateProjectRequest createProjectRequest
     ){
         logger.info("Creating Project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
         return ResponseEntity
                 .ok()
-                .body(createProjectService.createProject(authorization, createProjectRequest));
+                .body(createProjectService.createProject(username, createProjectRequest));
     }
 }

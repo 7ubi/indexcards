@@ -3,7 +3,6 @@ package com.x7ubi.indexcards.models;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "USER")
@@ -30,8 +29,7 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(Long user_id, String username, String firstname, String surname, String password, List<Project> projects) {
-        this.user_id = user_id;
+    public User(String username, String firstname, String surname, String password, List<Project> projects) {
         this.username = username;
         this.firstname = firstname;
         this.surname = surname;
