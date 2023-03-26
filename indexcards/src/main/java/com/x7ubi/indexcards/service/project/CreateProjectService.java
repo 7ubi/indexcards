@@ -1,7 +1,6 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
-import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.ProjectRepo;
@@ -11,7 +10,6 @@ import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,12 +25,9 @@ public class CreateProjectService {
 
     private final UserRepo userRepo;
 
-    private final JwtUtils jwtUtils;
-
-    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo, JwtUtils jwtUtils) {
+    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
-        this.jwtUtils = jwtUtils;
     }
 
     @Transactional
@@ -43,6 +38,7 @@ public class CreateProjectService {
         resultResponse.setErrorMessages(findCreateProjectErrors(username, createProjectRequest));
 
         if(resultResponse.getErrorMessages().size() > 0) {
+            resultResponse.setSuccess(false);
             return resultResponse;
         }
 
@@ -73,12 +69,22 @@ public class CreateProjectService {
         if(!userRepo.existsByUsername(username)) {
             logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
             error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+        } else {
+            User user = this.userRepo.findByUsername(username).stream().findFirst().orElse(null);
+            boolean projectNameExists = user.getProjects().stream().anyMatch(project ->
+                    project.getName().equals(createProjectRequest.getName())
+            );
+
+            if(projectNameExists) {
+                logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);
+                error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
+            }
         }
 
-        if(projectRepo.existsByName(createProjectRequest.getName())) {
-            logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
-        }
+        //if(projectRepo.existsByName(createProjectRequest.getName())) {
+        //    logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);
+        //    error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
+        //}
 
         if(createProjectRequest.getName().length() > 100) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);

@@ -30,9 +30,17 @@ public abstract class ProjectTestConfig {
         user.setFirstname("Max");
         user.setSurname("Muster");
         user.setProjects(new ArrayList<>());
-        user.setPassword(passwordEncoder.encode("1234"));
+        user.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(user);
-    }
 
+        User user2 = new User();
+        user2.setUsername("test2");
+        user2.setFirstname("Max");
+        user2.setSurname("Muster");
+        user2.setProjects(new ArrayList<>());
+        user2.setPassword(this.passwordEncoder.encode("1234"));
+
+        this.userRepo.save(user2);
+    }
 }
