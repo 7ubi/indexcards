@@ -27,12 +27,6 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CreateProjectServiceTest extends ProjectTestConfig {
 
-    private static final String WRONGFULLY_UNSUCCESSFUL = "Success was expected!";
-
-    private static final String WRONGFULLY_SUCCESSFUL = "Failure was expected!";
-
-    private static final String WRONG_NUMBER_OF_ERRORS = "A different number of Errors was expected";
-
     @Test
     public void createProjectTest() {
         // Given
