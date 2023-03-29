@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,19 +37,16 @@ public class ProjectService {
         this.jwtUtils = jwtUtils;
     }
 
-
-    public UserProjectsResponse getUserProjects(String authorization) {
+    @Transactional
+    public UserProjectsResponse getUserProjects(String username) {
 
         UserProjectsResponse userProjectResponse = new UserProjectsResponse();
-
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         userProjectResponse.setErrorMessages(findGetProjectsError(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
         }
-
 
         User user = this.userRepo.findByUsername(username).get();
 

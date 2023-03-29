@@ -24,7 +24,7 @@ public class User implements Serializable {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Project> projects;
 
     public User() {}

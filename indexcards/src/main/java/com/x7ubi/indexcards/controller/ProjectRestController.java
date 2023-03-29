@@ -37,9 +37,10 @@ public class ProjectRestController {
         @RequestHeader("Authorization") String authorization
     ){
         logger.info("Getting projects from User");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
         return ResponseEntity
             .ok()
-            .body(projectService.getUserProjects(authorization));
+            .body(projectService.getUserProjects(username));
     }
 
     @GetMapping("project")
