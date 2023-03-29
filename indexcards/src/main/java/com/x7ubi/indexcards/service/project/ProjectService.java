@@ -29,12 +29,9 @@ public class ProjectService {
 
     private final UserRepo userRepo;
 
-    private final JwtUtils jwtUtils;
-
-    public ProjectService(ProjectRepo projectRepo, UserRepo userRepo, JwtUtils jwtUtils) {
+    public ProjectService(ProjectRepo projectRepo, UserRepo userRepo) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
-        this.jwtUtils = jwtUtils;
     }
 
     @Transactional
@@ -69,12 +66,14 @@ public class ProjectService {
         return userProjectResponse;
     }
 
+    @Transactional
     public UserProjectResponse getProject(long id) {
     UserProjectResponse userProjectResponse = new UserProjectResponse();
 
         userProjectResponse.setErrorMessages(this.findGetProjectError(id));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
+            userProjectResponse.setSuccess(false);
             return userProjectResponse;
         }
 
