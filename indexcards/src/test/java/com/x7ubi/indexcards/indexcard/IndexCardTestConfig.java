@@ -1,18 +1,19 @@
-package com.x7ubi.indexcards.project;
+package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.TestConfig;
+import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
-import com.x7ubi.indexcards.service.project.CreateProjectService;
-import com.x7ubi.indexcards.service.project.ProjectService;
+import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
-public abstract class ProjectTestConfig extends TestConfig {
+public abstract class IndexCardTestConfig extends TestConfig {
     @Autowired
     protected UserRepo userRepo;
 
@@ -20,19 +21,22 @@ public abstract class ProjectTestConfig extends TestConfig {
     protected ProjectRepo projectRepo;
 
     @Autowired
-    protected PasswordEncoder passwordEncoder;
-    @Autowired
-    protected CreateProjectService createProjectService;
+    protected IndexCardRepo indexCardRepo;
 
     @Autowired
-    protected ProjectService projectService;
+    protected PasswordEncoder passwordEncoder;
+
+    @Autowired
+    protected CreateIndexCardService createIndexCardService;
 
     protected User user;
 
     protected User user2;
 
+    protected ArrayList<Project> projects;
+
     @BeforeEach
-    void projectTestSetup() {
+    void indexCardTestSetup() {
         this.user = new User();
         this.user.setUsername("test");
         this.user.setFirstname("Max");
@@ -50,5 +54,12 @@ public abstract class ProjectTestConfig extends TestConfig {
         this.user2.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(this.user2);
+
+        this.projects = new ArrayList<>();
+        this.projects.add(new Project("TestProject", null));
+        this.projectRepo.save(this.projects.get(0));
+
+        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).get();
+        userToEdit.setProjects(projects);
     }
 }

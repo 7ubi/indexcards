@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IndexCardRepo extends JpaRepository<IndexCard, Long> {
+    IndexCard findIndexCardByQuestion(String question);
 }
