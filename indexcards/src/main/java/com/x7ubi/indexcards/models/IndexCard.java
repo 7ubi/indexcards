@@ -16,6 +16,10 @@ public class IndexCard {
     @Column(nullable = false, length = 500)
     private String answer;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Assessment assessment = Assessment.UNRATED;
+
     public IndexCard(String question, String answer) {
         this.question = question;
         this.answer = answer;
@@ -41,5 +45,13 @@ public class IndexCard {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public Assessment getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(Assessment assessment) {
+        this.assessment = assessment;
     }
 }
