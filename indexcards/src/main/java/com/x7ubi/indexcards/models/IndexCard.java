@@ -7,8 +7,8 @@ import javax.persistence.*;
 public class IndexCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long indexcard_id;
+    @Column(name = "indexcard_id", nullable = false, updatable = false)
+    private Long indexcardId;
 
     @Column(nullable = false, length = 500)
     private String question;
@@ -28,7 +28,7 @@ public class IndexCard {
     public IndexCard() {}
 
     public Long getId() {
-        return indexcard_id;
+        return indexcardId;
     }
 
     public String getQuestion() {
