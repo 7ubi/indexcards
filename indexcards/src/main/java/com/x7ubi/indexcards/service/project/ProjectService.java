@@ -1,7 +1,6 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
-import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -55,7 +54,8 @@ public class ProjectService {
         for(Project project: projects) {
             List<IndexCardResponse> indexCardResponses = new ArrayList<>();
             for(IndexCard indexCard: project.getIndexCards()) {
-                indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
+                indexCardResponses.add(
+                    new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
             }
             userProjectResponse.getProjectResponses()
                     .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
@@ -85,7 +85,8 @@ public class ProjectService {
 
         List<IndexCardResponse> indexCardResponses = new ArrayList<>();
         for(IndexCard indexCard: project.getIndexCards()) {
-            indexCardResponses.add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer()));
+            indexCardResponses
+                .add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
         }
         projectResponse.setIndexCardResponses(indexCardResponses);
         userProjectResponse.setSuccess(true);
