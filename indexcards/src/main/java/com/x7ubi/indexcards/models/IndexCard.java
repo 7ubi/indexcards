@@ -7,14 +7,18 @@ import javax.persistence.*;
 public class IndexCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long indexcard_id;
+    @Column(name = "indexcard_id", nullable = false, updatable = false)
+    private Long indexcardId;
 
     @Column(nullable = false, length = 500)
     private String question;
 
     @Column(nullable = false, length = 500)
     private String answer;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Assessment assessment = Assessment.UNRATED;
 
     public IndexCard(String question, String answer) {
         this.question = question;
@@ -24,7 +28,7 @@ public class IndexCard {
     public IndexCard() {}
 
     public Long getId() {
-        return indexcard_id;
+        return indexcardId;
     }
 
     public String getQuestion() {
@@ -41,5 +45,13 @@ public class IndexCard {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public Assessment getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(Assessment assessment) {
+        this.assessment = assessment;
     }
 }

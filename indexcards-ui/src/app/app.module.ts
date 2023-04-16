@@ -12,7 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
-import {LoginRequired} from "./LoginRequired";
+import {LoginRequired} from "./login-required";
 import { PageNotFoundComponent } from './component/common/page-not-found/page-not-found.component';
 import { CreateProjectComponent } from './component/projects/create-project/create-project.component';
 import { ProjectComponent } from './component/projects/project/project.component';

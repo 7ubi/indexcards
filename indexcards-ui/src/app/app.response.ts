@@ -17,6 +17,7 @@ export interface LoginResponse {
 export interface IndexCardResponse {
   readonly question: string;
   readonly answer:string;
+  readonly assessment: Assessment;
 }
 
 export interface ProjectResponse {
@@ -32,3 +33,11 @@ export interface UserProjectsResponse extends ResultResponse {
 export interface UserProjectResponse extends ResultResponse {
   readonly projectResponse: ProjectResponse;
 }
+
+export enum Assessment {
+  UNRATED,
+  BAD,
+  OK,
+  GOOD
+}
+

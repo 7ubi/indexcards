@@ -20,9 +20,10 @@ public class ErrorMessage {
 
         public static String PROJECT_NOT_FOUND = "Project not found";
 
+        public static String INDEX_CARD_NOT_FOUND = "Index card not found";
+
         public static String INDEXCARD_QUESTION_TOO_LONG
                 = "The question of the index card was too long, only 500 characters are allowed";
-
 
         public static String INDEXCARD_ANSWER_TOO_LONG
                 = "The answer of the index card was too long, only 500 characters are allowed";
