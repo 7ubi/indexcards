@@ -13,7 +13,7 @@ import {LoginService} from "../../auth/login/login.service";
 })
 export class ProjectComponent implements OnInit{
 
-  userProject!: UserProjectResponse;
+  userProject?: UserProjectResponse;
 
   constructor(
     private route: ActivatedRoute,

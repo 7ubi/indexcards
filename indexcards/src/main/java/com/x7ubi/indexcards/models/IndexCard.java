@@ -17,7 +17,7 @@ public class IndexCard {
     private String answer;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Assessment assessment = Assessment.UNRATED;
 
     public IndexCard(String question, String answer) {
