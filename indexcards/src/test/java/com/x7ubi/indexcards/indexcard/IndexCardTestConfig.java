@@ -7,6 +7,7 @@ import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
+import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,9 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     @Autowired
     protected CreateIndexCardService createIndexCardService;
+
+    @Autowired
+    protected IndexCardAssessmentService indexCardAssessmentService;
 
     protected User user;
 

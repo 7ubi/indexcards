@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
@@ -23,7 +24,6 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-
 public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
     @Test
@@ -44,6 +44,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
         assertThat(indexCard.getQuestion()).isEqualTo(createIndexCardRequest.getQuestion());
         assertThat(indexCard.getAnswer()).isEqualTo(createIndexCardRequest.getAnswer());
+        assertThat(indexCard.getAssessment()).isEqualTo(Assessment.UNRATED);
     }
 
     @Test
