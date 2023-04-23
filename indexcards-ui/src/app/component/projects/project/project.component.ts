@@ -47,4 +47,8 @@ export class ProjectComponent implements OnInit{
   onClickCreateIndexcardButton() {
     this.router.navigate(['createIndexCard'], {relativeTo: this.route});
   }
+
+  onClickQuizButton() {
+    this.router.navigate(['quiz'], {relativeTo: this.route});
+  }
 }
