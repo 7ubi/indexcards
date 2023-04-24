@@ -1,1 +1,15 @@
-<p>indexcard-quiz works!</p>
+<div style="height: 60vh" class="container">
+  <div class="indexcard-container">
+    <div class="indexcard">
+      <h2>
+        {{ getIndexCard()?.question }}
+      </h2>
+      <button class="show-answer-button" (click)="showAnswer = !showAnswer">
+        {{ showAnswer ? "Hide Answer": "Show Answer" }}
+      </button>
+      <div *ngIf="showAnswer">
+        <h2>{{ getIndexCard()?.answer }}</h2>
+      </div>
+    </div>
+  </div>
+</div>

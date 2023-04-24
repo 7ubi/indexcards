@@ -1,0 +1,17 @@
+.indexcard-container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.indexcard {
+  width: 50%;
+  background: #1D3557;
+  height: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.show-answer-button {
+}
