@@ -12,7 +12,19 @@
       </div>
       <div class="assessment-button-container">
         <fa-icon
+          class="assessment-button assessment-left"
+          [icon]="faCheck"
+          (click)="assessIndexCard('BAD')"
+        >
+        </fa-icon>
+        <fa-icon
           class="assessment-button"
+          [icon]="faCheck"
+          (click)="assessIndexCard('OK')"
+        >
+        </fa-icon>
+        <fa-icon
+          class="assessment-button assessment-right"
           [icon]="faCheck"
           (click)="assessIndexCard('GOOD')"
         >

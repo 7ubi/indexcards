@@ -14,11 +14,19 @@
 }
 
 .assessment-button-container {
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: nowrap;              /* default value; can be omitted */
+  justify-content: space-between;
+  justify-items: baseline;
 }
 
 .assessment-button {
-  position: absolute;
   font-size: 2em;
   padding-bottom: 30px;
-  bottom: 5px;
+  transform: translate(0%, 100%);
+}
+
+.assessment-left {
+  justify-content: left;
 }
