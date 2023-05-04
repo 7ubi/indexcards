@@ -10,6 +10,14 @@
       <div *ngIf="showAnswer">
         <h2>{{ getIndexCard()?.answer }}</h2>
       </div>
+      <div class="assessment-button-container">
+        <fa-icon
+          class="assessment-button"
+          [icon]="faCheck"
+          (click)="assessIndexCard('GOOD')"
+        >
+        </fa-icon>
+      </div>
     </div>
   </div>
 </div>

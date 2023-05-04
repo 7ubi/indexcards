@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {UserProjectResponse} from "../../../app.response";
+import {ResultResponse, UserProjectResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {HttpClient} from "@angular/common/http";
 import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-indexcard-quiz',
@@ -13,6 +14,8 @@ import {IndexCardResponse } from "../../../app.response";
   styleUrls: ['./indexcard-quiz.component.css']
 })
 export class IndexcardQuizComponent implements OnInit {
+
+  faCheck = faCheck;
 
   userProject?: UserProjectResponse;
 
@@ -50,5 +53,34 @@ export class IndexcardQuizComponent implements OnInit {
 
   getIndexCard(): IndexCardResponse | undefined {
     return this.userProject?.projectResponse?.indexCardResponses[this.index];
+  }
+
+  assessIndexCard(assessment: string): void  {
+    const request = this.createAssessmentRequest(assessment);
+
+    console.log(request)
+
+    this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/assess',
+      request, { headers: this.loginService.getHeaderWithBearer()})
+      .subscribe(
+        response => {
+          if(response.success) {
+            this.index++;
+          }
+          response.errorMessages.forEach((error) => {
+            this.notificationService.error(
+              'ERROR',
+              error.message
+            );
+          });
+        }
+      );
+  }
+
+  createAssessmentRequest(assessment: string) {
+    return {
+      indexCardId: this.getIndexCard()?.indexCardId,
+      assessment: assessment
+    };
   }
 }

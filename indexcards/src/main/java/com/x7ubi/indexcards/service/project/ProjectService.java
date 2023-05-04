@@ -55,7 +55,8 @@ public class ProjectService {
             List<IndexCardResponse> indexCardResponses = new ArrayList<>();
             for(IndexCard indexCard: project.getIndexCards()) {
                 indexCardResponses.add(
-                    new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
+                    new IndexCardResponse(
+                        indexCard.getId(), indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
             }
             userProjectResponse.getProjectResponses()
                     .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
@@ -86,7 +87,8 @@ public class ProjectService {
         List<IndexCardResponse> indexCardResponses = new ArrayList<>();
         for(IndexCard indexCard: project.getIndexCards()) {
             indexCardResponses
-                .add(new IndexCardResponse(indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
+                .add(new IndexCardResponse(
+                    indexCard.getId(), indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
         }
         projectResponse.setIndexCardResponses(indexCardResponses);
         userProjectResponse.setSuccess(true);

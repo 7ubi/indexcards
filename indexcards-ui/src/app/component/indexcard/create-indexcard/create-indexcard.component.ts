@@ -53,6 +53,6 @@ export class CreateIndexcardComponent implements OnInit {
       projectId: this.id,
       question: indexcard.value.question,
       answer: indexcard.value.answer
-    }
+    };
   }
 }
