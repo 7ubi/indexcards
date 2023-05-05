@@ -6,7 +6,7 @@ import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import {faCheck, faThumbsUp, faXmark} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-indexcard-quiz',
@@ -16,6 +16,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 export class IndexcardQuizComponent implements OnInit {
 
   faCheck = faCheck;
+  faThumbsUp = faThumbsUp;
+  faXmark = faXmark;
 
   userProject?: UserProjectResponse;
 
