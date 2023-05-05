@@ -15,9 +15,9 @@ import {faCheck, faThumbsUp, faXmark} from '@fortawesome/free-solid-svg-icons';
 })
 export class IndexcardQuizComponent implements OnInit {
 
-  faCheck = faCheck;
-  faThumbsUp = faThumbsUp;
-  faXmark = faXmark;
+  readonly faCheck = faCheck;
+  readonly faThumbsUp = faThumbsUp;
+  readonly faXmark = faXmark;
 
   userProject?: UserProjectResponse;
 
@@ -52,11 +52,6 @@ export class IndexcardQuizComponent implements OnInit {
         }
       );
   }
-
-  getIndexCard(): IndexCardResponse | undefined {
-    return this.userProject?.projectResponse?.indexCardResponses[this.index];
-  }
-
   assessIndexCard(assessment: string): void  {
     const request = this.createAssessmentRequest(assessment);
 
@@ -67,7 +62,7 @@ export class IndexcardQuizComponent implements OnInit {
       .subscribe(
         response => {
           if(response.success) {
-            this.index++;
+            this.nextIndexCard();
           }
           response.errorMessages.forEach((error) => {
             this.notificationService.error(
@@ -77,6 +72,28 @@ export class IndexcardQuizComponent implements OnInit {
           });
         }
       );
+  }
+
+  nextIndexCard() {
+    this.index++;
+
+    if(this.index >= this.getIndexCardLength()) {
+      this.notificationService.success(
+        'SUCCESS',
+        'You played through all index cards!'
+      );
+    }
+  }
+
+  getIndexCardLength(): number {
+    if(this.userProject?.projectResponse?.indexCardResponses) {
+      return this.userProject?.projectResponse?.indexCardResponses.length;
+    }
+    return 0;
+  }
+
+  getIndexCard(): IndexCardResponse | undefined {
+    return this.userProject?.projectResponse?.indexCardResponses[this.index];
   }
 
   createAssessmentRequest(assessment: string) {
