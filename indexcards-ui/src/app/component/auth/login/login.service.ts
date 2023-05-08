@@ -1,4 +1,4 @@
-import {LocalService} from "../../../local.service";
+import {LocalService} from "../../../services/local.service";
 import {Injectable} from "@angular/core";
 import {LoginResponse} from "../../../app.response";
 import {HttpHeaders} from "@angular/common/http";

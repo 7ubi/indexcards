@@ -1,0 +1,35 @@
+<div style="height: 60vh" class="container">
+  <div class="indexcard-container">
+    <div class="indexcard">
+      <h2>
+        {{ getIndexCard()?.question }}
+      </h2>
+      <button class="show-answer-button" (click)="showAnswer = !showAnswer">
+        {{ showAnswer ? "Hide Answer": "Show Answer" }}
+      </button>
+      <div *ngIf="showAnswer">
+        <h2>{{ getIndexCard()?.answer }}</h2>
+      </div>
+    </div>
+    <div class="assessment-button-container">
+      <fa-icon
+        class="assessment-button"
+        [icon]="faXmark"
+        (click)="assessIndexCard('BAD')"
+      >
+      </fa-icon>
+      <fa-icon
+        class="assessment-button"
+        [icon]="faThumbsUp"
+        (click)="assessIndexCard('OK')"
+      >
+      </fa-icon>
+      <fa-icon
+        class="assessment-button"
+        [icon]="faCheck"
+        (click)="assessIndexCard('GOOD')"
+      >
+      </fa-icon>
+    </div>
+  </div>
+</div>

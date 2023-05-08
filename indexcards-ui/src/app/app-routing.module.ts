@@ -8,6 +8,7 @@ import {PageNotFoundComponent} from "./component/common/page-not-found/page-not-
 import {CreateProjectComponent} from "./component/projects/create-project/create-project.component";
 import {ProjectComponent} from "./component/projects/project/project.component";
 import {CreateIndexcardComponent} from "./component/indexcard/create-indexcard/create-indexcard.component";
+import {IndexcardQuizComponent} from "./component/indexcard/indexcard-quiz/indexcard-quiz.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'project/:id/createIndexCard',
     component: CreateIndexcardComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id/quiz',
+    component: IndexcardQuizComponent,
     canActivate: [LoginRequired]
   },
   {

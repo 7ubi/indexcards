@@ -11,18 +11,18 @@ export class LocalService {
   constructor() { }
 
   public static saveData(key: string, value: string) {
-    localStorage.setItem(key, value);
+    sessionStorage.setItem(key, value);
   }
 
   public static getData(key: string) {
-    return localStorage.getItem(key)
+    return sessionStorage.getItem(key)
   }
   public static removeData(key: string) {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 
   public static clearData() {
-    localStorage.clear();
+    sessionStorage.clear();
   }
 
   private static encrypt(txt: string): string {
@@ -34,11 +34,11 @@ export class LocalService {
   }
 
   public static saveEncryptedData(key: string, value: string) {
-    localStorage.setItem(key, this.encrypt(value));
+    sessionStorage.setItem(key, this.encrypt(value));
   }
 
   public static getEncryptedData(key: string) {
-    let data = localStorage.getItem(key)|| "";
+    let data = sessionStorage.getItem(key)|| "";
     return this.decrypt(data);
   }
 }

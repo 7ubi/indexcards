@@ -3,9 +3,14 @@
     <h1 class="title">
       {{ userProject?.projectResponse?.name }}
     </h1>
-    <button (click)="onClickCreateIndexcardButton()">
-      Create Index Card
-    </button>
+    <div>
+      <button (click)="onClickCreateIndexcardButton()">
+        Create Index Card
+      </button>
+      <button (click)="onClickQuizButton()">
+        quiz
+      </button>
+    </div>
   </div>
   <div class="indexcardContainer">
     <div *ngFor="let indexcard of userProject?.projectResponse?.indexCardResponses">

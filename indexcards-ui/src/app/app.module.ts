@@ -17,6 +17,7 @@ import { PageNotFoundComponent } from './component/common/page-not-found/page-no
 import { CreateProjectComponent } from './component/projects/create-project/create-project.component';
 import { ProjectComponent } from './component/projects/project/project.component';
 import { CreateIndexcardComponent } from './component/indexcard/create-indexcard/create-indexcard.component';
+import { IndexcardQuizComponent } from './component/indexcard/indexcard-quiz/indexcard-quiz.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { CreateIndexcardComponent } from './component/indexcard/create-indexcard
     PageNotFoundComponent,
     CreateProjectComponent,
     ProjectComponent,
-    CreateIndexcardComponent
+    CreateIndexcardComponent,
+    IndexcardQuizComponent
   ],
   imports: [
     BrowserModule,
