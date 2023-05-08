@@ -4,7 +4,7 @@ import {environment} from "../../../../environment/environment";
 import {HttpClient} from "@angular/common/http";
 import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
 import {faCheck, faThumbsUp, faXmark} from '@fortawesome/free-solid-svg-icons';
 
@@ -25,8 +25,11 @@ export class IndexcardQuizComponent implements OnInit {
 
   showAnswer: boolean = false;
 
+  id: string | null = "";
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private http: HttpClient,
     private notificationService: NotificationsService,
     private loginService: LoginService
@@ -34,9 +37,9 @@ export class IndexcardQuizComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>(environment.apiUrl + 'project/project?id=' + id,
+    this.http.get<UserProjectResponse>(environment.apiUrl + 'project/project?id=' + this.id,
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
@@ -54,8 +57,6 @@ export class IndexcardQuizComponent implements OnInit {
   }
   assessIndexCard(assessment: string): void  {
     const request = this.createAssessmentRequest(assessment);
-
-    console.log(request)
 
     this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/assess',
       request, { headers: this.loginService.getHeaderWithBearer()})
@@ -78,6 +79,8 @@ export class IndexcardQuizComponent implements OnInit {
     this.index++;
 
     if(this.index >= this.getIndexCardLength()) {
+
+      this.router.navigate(["/project", this.id]);
       this.notificationService.success(
         'SUCCESS',
         'You played through all index cards!'
