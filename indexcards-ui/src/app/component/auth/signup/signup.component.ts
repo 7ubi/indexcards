@@ -12,6 +12,10 @@ import {ResultResponse} from "../../../app.response";
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
+  password: any;
+  surname: any;
+  username: any;
+  firstname: any;
 
   constructor(
     private http: HttpClient,

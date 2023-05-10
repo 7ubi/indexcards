@@ -18,6 +18,7 @@ import { CreateProjectComponent } from './component/projects/create-project/crea
 import { ProjectComponent } from './component/projects/project/project.component';
 import { CreateIndexcardComponent } from './component/indexcard/create-indexcard/create-indexcard.component';
 import { IndexcardQuizComponent } from './component/indexcard/indexcard-quiz/indexcard-quiz.component';
+import {PasswordModule} from "primeng/password";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { IndexcardQuizComponent } from './component/indexcard/indexcard-quiz/ind
       pauseOnHover: false,
       lastOnBottom: true
     }),
+    PasswordModule,
   ],
   providers: [LoginRequired,],
   bootstrap: [AppComponent]

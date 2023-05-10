@@ -1,4 +1,7 @@
-button {
-    margin-top: 10px;
-    width: 100%;
+label {
+  color: white;
+}
+
+span.p-float-label {
+  width: 80%;
 }

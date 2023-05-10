@@ -1,33 +1,21 @@
 <form #signup="ngForm" (ngSubmit)="createAccount(signup)">
     <div class="container">
-        <label for="username">
-            Username
-        </label>
-        <input #username="ngModel" name="username" id="username" type="text" ngModel required>
-        <div *ngIf="username.touched && username.invalid" class="error">
-            Username is required!
-        </div>
-        <label for="firstname">
-            Firstname
-        </label>
-        <input #firstname="ngModel" name="firstname" id="firstname" type="text" ngModel required>
-        <div *ngIf="firstname.touched && firstname.invalid" class="error">
-            Firstname is required!
-        </div>
-        <label for="surname">
-            Lastname
-        </label>
-        <input #surname="ngModel" name="surname" id="surname" type="text" ngModel required>
-        <div *ngIf="surname.touched && surname.invalid" class="error">
-            Lastname is required!
-        </div>
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="username" />
+          <label htmlFor="username">Username</label>
+        </span>
+      <span class="p-float-label">
+          <input pInputText id="firstname" [(ngModel)]="firstname" />
+          <label htmlFor="firstname">Firstname</label>
+        </span>
+        <span class="p-float-label">
+          <input pInputText id="surname" [(ngModel)]="surname" />
+          <label htmlFor="surname">Lastname</label>
+        </span>
         <label for="password">
             Password
         </label>
-        <input #password="ngModel" name="password" id="password" type="password" ngModel minlength="8" required>
-        <div *ngIf="password.touched && password.invalid" class="error">
-            Password is required and must be at least 8 characters long!
-        </div>
+        <p-password [(ngModel)]="password" [feedback]="true" [toggleMask]="true" id="password"></p-password>
         <p>
             Already have an Account? Then login <a routerLink="/login">here</a>!
         </p>
