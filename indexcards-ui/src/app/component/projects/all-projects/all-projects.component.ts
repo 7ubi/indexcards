@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { UserProjectsResponse } from "../../../app.response";
+import {ResultResponse, UserProjectsResponse} from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
 import { environment } from "../../../../environment/environment";
 import { NotificationsService } from "angular2-notifications";
@@ -35,7 +35,10 @@ export class AllProjectsComponent implements OnInit {
           if(response.success) {
             this.userProjectsResponse = response;
           }
-          response.errorMessages.forEach((error) => {
+        }, err => {
+          const errorMessages: ResultResponse = err.error;
+
+          errorMessages.errorMessages.forEach(error => {
             this.notificationService.error(
               'ERROR',
               error.message
