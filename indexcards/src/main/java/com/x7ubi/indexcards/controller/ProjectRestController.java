@@ -2,13 +2,12 @@ package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.MessageResponse;
+import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -62,8 +61,13 @@ public class ProjectRestController {
     ){
         logger.info("Creating Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
-        return ResponseEntity
-                .ok()
-                .body(createProjectService.createProject(username, createProjectRequest));
+
+        ResultResponse result = createProjectService.createProject(username, createProjectRequest);
+
+        if(result.isSuccess()) {
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
     }
 }

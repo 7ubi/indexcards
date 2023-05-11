@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {MessageResponse, ResultResponse} from "../../../app.response";
+import {ResultResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
@@ -26,11 +26,12 @@ export class CreateProjectComponent {
       { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {
-          if(response.success) {
             this.notificationService.success("SUCCESS", "Project was created!");
             this.router.navigate(['/']);
-          }
-          response.errorMessages.forEach((error) => {
+        }, err => {
+          const errorMessages: ResultResponse = err.error;
+
+          errorMessages.errorMessages.forEach(error => {
             this.notificationService.error(
               'ERROR',
               error.message
