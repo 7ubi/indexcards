@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +20,7 @@ import { CreateIndexcardComponent } from './component/indexcard/create-indexcard
 import { IndexcardQuizComponent } from './component/indexcard/indexcard-quiz/indexcard-quiz.component';
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {ButtonModule} from "primeng/button";
     IndexcardQuizComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -51,8 +53,11 @@ import {ButtonModule} from "primeng/button";
     }),
     PasswordModule,
     ButtonModule,
+    InputTextModule,
+    ReactiveFormsModule,
   ],
   providers: [LoginRequired,],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [ FormsModule, ReactiveFormsModule]
 })
 export class AppModule { }

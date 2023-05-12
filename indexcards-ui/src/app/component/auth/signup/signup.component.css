@@ -1,7 +1,17 @@
 label {
   color: white;
+  float: left;
 }
 
-span.p-float-label {
+input {
+  width: 100%;
+}
+
+.form-container {
   width: 80%;
+}
+
+.p-button {
+  display: block;
+  background-color: var(--deepPurpleA100);
 }
