@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from "@angular/router";
-import {NotificationsService} from "angular2-notifications";
-import {environment} from "../../../../environment/environment";
-import {ResultResponse} from "../../../app.response";
+import {Router} from '@angular/router';
+import {environment} from '../../../../environment/environment';
+import {ResultResponse} from '../../../app.response';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +17,7 @@ export class SignupComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private formBuilder: FormBuilder
   ) {
     this.signUpFormGroup = this.formBuilder.group({
@@ -28,24 +28,26 @@ export class SignupComponent {
       repeatPassword: ['', Validators.required]
     });
   }
-
   createAccount() {
     console.log(this.getCreateAccountParameter())
     this.http.post<ResultResponse>(environment.apiUrl + 'auth/signup', this.getCreateAccountParameter())
       .subscribe((response) => {
         if(response.success) {
+          this.messageService.add({
+            key: 'tr',
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'Account was created! Please login!',
+          });
           this.router.navigate(['/login']);
-
-          this.notificationService.success(
-            'SUCCESS',
-            'Account was created! Please login!',
-          );
         }
         response.errorMessages.forEach((error) => {
-          this.notificationService.error(
-            'ERROR',
-            error.message
-          );
+          this.messageService.add({
+            key: 'tr',
+            severity: 'success',
+            summary: 'ERROR',
+            detail: error.message,
+          });
         });
       });
   }

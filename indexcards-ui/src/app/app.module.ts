@@ -21,6 +21,8 @@ import { IndexcardQuizComponent } from './component/indexcard/indexcard-quiz/ind
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -55,8 +57,9 @@ import {InputTextModule} from "primeng/inputtext";
     ButtonModule,
     InputTextModule,
     ReactiveFormsModule,
+    ToastModule,
   ],
-  providers: [LoginRequired,],
+  providers: [LoginRequired, MessageService],
   bootstrap: [AppComponent],
   exports: [ FormsModule, ReactiveFormsModule]
 })
