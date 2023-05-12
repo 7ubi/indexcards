@@ -1,4 +1,13 @@
-button {
-    margin-top: 10px;
-    width: 100%;
+.p-button {
+  width: 100%;
+  display: block;
+  background-color: var(--deepPurpleA100);
+}
+
+label {
+  margin-top: 5px;
+}
+
+input {
+  width: 100%;
 }

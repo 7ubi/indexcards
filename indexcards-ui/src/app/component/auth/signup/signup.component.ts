@@ -25,11 +25,11 @@ export class SignupComponent {
       surname: ['', Validators.required],
       firstname: ['', Validators.required],
       password: ['', Validators.required],
-      repeatPassword: ['', Validators.required]
     });
   }
   createAccount() {
-    console.log(this.getCreateAccountParameter())
+    // TODO if not valid dont make request
+
     this.http.post<ResultResponse>(environment.apiUrl + 'auth/signup', this.getCreateAccountParameter())
       .subscribe((response) => {
         if(response.success) {
@@ -44,7 +44,7 @@ export class SignupComponent {
         response.errorMessages.forEach((error) => {
           this.messageService.add({
             key: 'tr',
-            severity: 'success',
+            severity: 'error',
             summary: 'ERROR',
             detail: error.message,
           });
