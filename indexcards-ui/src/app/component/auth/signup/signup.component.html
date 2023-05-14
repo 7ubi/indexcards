@@ -25,6 +25,13 @@
       <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password" [feedback]="true"
         [toggleMask]="true" id="password"></p-password><br>
     </div>
+    <div class="form-input">
+      <label for="repeat-password">
+        Repeat Password
+      </label><br>
+      <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="repeatPassword"
+        [feedback]="true" [toggleMask]="true" id="repeat-password"></p-password><br>
+    </div>
     <p>
         Already have an Account? Then login <a routerLink="/login">here</a>!
     </p>

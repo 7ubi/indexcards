@@ -25,10 +25,29 @@ export class SignupComponent {
       surname: ['', Validators.required],
       firstname: ['', Validators.required],
       password: ['', Validators.required],
+      repeatPassword: ['', Validators.required]
     });
   }
   createAccount() {
-    // TODO if not valid dont make request
+    if(!this.signUpFormGroup.valid) {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'error',
+        summary: 'ERROR',
+        detail: 'All fields are required!',
+      });
+      return;
+    }
+
+    if(this.signUpFormGroup.get('password')?.value !== this.signUpFormGroup.get('repeatPassword')?.value) {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'error',
+        summary: 'ERROR',
+        detail: 'Passwords do not match!',
+      });
+      return;
+    }
 
     this.http.post<ResultResponse>(environment.apiUrl + 'auth/signup', this.getCreateAccountParameter())
       .subscribe((response) => {
