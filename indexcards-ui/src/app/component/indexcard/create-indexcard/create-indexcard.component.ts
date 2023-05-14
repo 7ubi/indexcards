@@ -55,6 +55,8 @@ export class CreateIndexcardComponent implements OnInit {
             });
             this.router.navigate(["/project", this.id]);
           }
+        }, err => {
+          const response: ResultResponse = err.error;
 
           response.errorMessages.forEach(error => {
             this.messageService.add({

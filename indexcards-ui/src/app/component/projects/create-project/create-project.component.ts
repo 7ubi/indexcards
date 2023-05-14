@@ -47,7 +47,10 @@ export class CreateProjectComponent {
             });
             this.router.navigate(['/']);
           }
-          response.errorMessages.forEach((error) => {
+        }, err => {
+          const response: ResultResponse = err.error;
+
+          response.errorMessages.forEach(error => {
             this.messageService.add({
               key: 'tr',
               severity: 'error',

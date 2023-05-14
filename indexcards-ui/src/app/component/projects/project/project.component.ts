@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {UserProjectResponse} from "../../../app.response";
+import {ResultResponse, UserProjectResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {LoginService} from "../../auth/login/login.service";
 import {MessageService} from "primeng/api";
@@ -31,8 +31,11 @@ export class ProjectComponent implements OnInit{
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
+          this.userProject = response;
+        }, err => {
+          const response: ResultResponse = err.error;
 
-          response.errorMessages.forEach((error) => {
+          response.errorMessages.forEach(error => {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
@@ -40,11 +43,7 @@ export class ProjectComponent implements OnInit{
               detail: error.message,
             });
           });
-          if(response.success) {
-            this.userProject = response;
-          } else {
-            this.router.navigate(['']);
-          }
+          this.router.navigate(['']);
         }
       );
   }
