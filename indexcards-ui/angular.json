@@ -27,7 +27,8 @@
             "styles": [
               "src/styles.css",
               "primeng/resources/themes/md-light-deeppurple/theme.css",
-              "node_modules/primeng/resources/primeng.min.css"
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [

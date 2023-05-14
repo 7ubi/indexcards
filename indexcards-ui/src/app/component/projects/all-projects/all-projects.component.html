@@ -1,20 +1,18 @@
 <div class="container">
-    <div class="header-container">
-        <h1 class="title">
-            Your Projects
-        </h1>
-        <button routerLink="createProject">
-            Create Project
-        </button>
-    </div>
-    <div *ngIf="userProjectsResponse!">
-      <div *ngFor="let project of userProjectsResponse!.projectResponses">
-          <div class="project">
-              <div (click)="goToProject(project.id)" class="projectName">
-               {{ project.name }}
-              </div>
-              {{ project.indexCardResponses.length }}
-          </div>
+  <div class="header-container">
+    <h1 class="title">
+      Your Projects
+    </h1>
+    <i class="pi pi-plus header-icon" routerLink="createProject"></i>
+  </div>
+  <div *ngIf="userProjectsResponse!">
+    <div *ngFor="let project of userProjectsResponse!.projectResponses">
+      <div class="project">
+        <div (click)="goToProject(project.id)" class="projectName">
+          {{ project.name }}
+        </div>
+        {{ project.indexCardResponses.length }}
       </div>
     </div>
+  </div>
 </div>
