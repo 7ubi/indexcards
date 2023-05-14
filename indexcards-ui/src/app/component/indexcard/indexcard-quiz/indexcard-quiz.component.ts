@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {HttpClient} from "@angular/common/http";
-import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
-import {faCheck, faThumbsUp, faXmark} from '@fortawesome/free-solid-svg-icons';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-indexcard-quiz',
@@ -14,11 +13,6 @@ import {faCheck, faThumbsUp, faXmark} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./indexcard-quiz.component.css']
 })
 export class IndexcardQuizComponent implements OnInit {
-
-  readonly faCheck = faCheck;
-  readonly faThumbsUp = faThumbsUp;
-  readonly faXmark = faXmark;
-
   userProject?: UserProjectResponse;
 
   index: number = 0;
@@ -31,7 +25,7 @@ export class IndexcardQuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private loginService: LoginService
   ) {
   }
@@ -47,10 +41,12 @@ export class IndexcardQuizComponent implements OnInit {
             this.userProject = response;
           }
           response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
           });
         }
       );
@@ -65,11 +61,14 @@ export class IndexcardQuizComponent implements OnInit {
           if(response.success) {
             this.nextIndexCard();
           }
+
           response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
           });
         }
       );
@@ -81,10 +80,12 @@ export class IndexcardQuizComponent implements OnInit {
     if(this.index >= this.getIndexCardLength()) {
 
       this.router.navigate(["/project", this.id]);
-      this.notificationService.success(
-        'SUCCESS',
-        'You played through all index cards!'
-      );
+      this.messageService.add({
+        key: 'tr',
+        severity: 'success',
+        summary: 'SUCCESS',
+        detail: 'You played through all index cards!',
+      });
     }
   }
 

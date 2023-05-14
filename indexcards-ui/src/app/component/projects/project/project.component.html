@@ -3,13 +3,9 @@
     <h1 class="title">
       {{ userProject?.projectResponse?.name }}
     </h1>
-    <div>
-      <button (click)="onClickCreateIndexcardButton()">
-        Create Index Card
-      </button>
-      <button (click)="onClickQuizButton()">
-        quiz
-      </button>
+    <div class="header-icon-container">
+      <i class="pi pi-plus header-icon" pTooltip="Create a new index card" (click)="onClickCreateIndexcardButton()"></i>
+      <i class="pi pi-check-square header-icon" pTooltip="Start a quiz" (click)="onClickQuizButton()"></i>
     </div>
   </div>
   <div class="indexcardContainer">

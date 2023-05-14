@@ -1,25 +1,23 @@
-<form #login="ngForm" (ngSubmit)="makeLogin(login)">
-    <div class="container">
+<form [formGroup]="loginFormGroup" (ngSubmit)="makeLogin()">
+  <div class="container">
+    <div class="container center">
+      <div class="form-input form-group">
         <label for="username">
-            Username
-        </label>
-        <input #username="ngModel" name="username" id="username" type="text" ngModel required>
-        <div *ngIf="username.touched && username.invalid" class="error">
-            Username invalid
-        </div>
+          Username
+        </label><br>
+        <input pInputText formControlName="username" name="username" id="username" type="text"><br>
+      </div>
+      <div class="form-input form-group">
         <label for="password">
-            Password
-        </label>
-        <input #password="ngModel" name="password" id="password" type="password" ngModel minlength="8" required>
-        <div *ngIf="password.touched && password.invalid" class="error">
-            Password invalid
-        </div>
-        <div *ngIf="error" class="error">
-            {{error}}
-        </div>
-        <p>
-          Don't have an Account? Then create one <a routerLink="/signup">here</a>!
-        </p>
-        <button type="submit">Login</button>
+          Password
+        </label><br>
+        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password"
+          [feedback]="false" [toggleMask]="true" id="password"></p-password>
+      </div>
+      <p>
+        Don't have an Account? Then create one <a routerLink="/signup">here</a>!
+      </p>
+      <button pButton type="submit">Login</button>
     </div>
+  </div>
 </form>

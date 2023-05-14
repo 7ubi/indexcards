@@ -1,17 +1,26 @@
 .project {
-    background-color: #F1FAEE;
-    color: black;
-    margin: 5px 0 5px 0;
-    font-size: larger;
-    border-radius: 10px;
+  background-color: var(--deepPurple300);
+  color: white;
+  margin: 10px 0 10px 0;
+  font-size: 1.875em;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .projectName {
-    text-align: left;
-    padding: 5px;
+  text-align: left;
+  padding: 5px;
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.header-icon {
+  color: var(--deepPurple100);
+  font-size: 2.5em;
+  display: flex;
+  align-items: center;
 }

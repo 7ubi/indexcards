@@ -1,11 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
+:root {
+  /*https://m2.material.io/design/color/the-color-system.html#color-theme-creation*/
+  --darkgrey: #232323;
+  --deepPurple50: #EDE7F6;
+  --deepPurple100: #D1C4E9;
+  --deepPurple200: #B39DDB;
+  --deepPurple300: #9575CD;
+  --deepPurple400: #7E57C2;
+  --deepPurple500: #673AB7;
+  --deepPurple600: #5E35B1;
+  --deepPurple700: #512DA8;
+  --deepPurple800: #4527A0;
+  --deepPurple900: #311B92;
+  --deepPurpleA100: #B388FF;
+  --deepPurpleA200: #7C4DFF;
+  --deepPurpleA400: #651FFF;
+  --deepPurpleA700: #6200EA;
+}
+
 html {
     font-family: 'Montserrat', sans-serif;
-    background: #A8DADC;
     color: white;
     width: 100%;
-
+    background: var(--darkgrey);
 }
 app-root {
     display: flex;
@@ -21,34 +39,7 @@ app-root {
 .center{
     display: flex;
     justify-content: center;
-}
-
-button {
-    font-family: 'Montserrat', sans-serif;
-    padding: 4px;
-    font-size: larger;
-    background-color: transparent;
-    border-radius: 5px;
-    border: 2px solid #F1FAEE;
-    color: white;
-    transition: 0.1s;
-}
-
-button:hover {
-    background-color: #00000050
-}
-
-input {
-    padding: 15px;
-    border-radius: 5px;
-    border: 3px solid #F1FAEE;
-    margin-bottom: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: montserrat, serif;
-    color: #000000;
-    font-size: larger;
-    background-color: #fbfdf6;
+    flex-direction: column;
 }
 
 textarea {
@@ -62,7 +53,6 @@ label {
 }
 
 .container {
-    background: #457B9D;
     border: 0 none;
     border-radius: 10px;
     padding: 20px 30px;
@@ -70,37 +60,42 @@ label {
     width: 80%;
     margin: 30px 10% 0 10%;
     text-align: center;
-
-    /*stacking fieldsets above each other*/
-    position: relative;
 }
 
 .error {
-    font-size: x-large;
+    font-size: large;
     color: #E63946;
     text-align: left;
 }
 
 /* unvisited link */
 a:link {
-  color: #1D3557;
+  color: var(--deepPurple200);
 }
 
 /* visited link */
 a:visited {
-  color: #1D3557;
+  color: var(--deepPurple300);
 }
 
 /* mouse over link */
 a:hover {
-  color: #F1FAEE;
+  color: var(--deepPurple50);
 }
 
 /* selected link */
 a:active {
-  color: #1D3557;
+  color: var(--deepPurple50);
 }
 
 .title {
   text-align: left;
+}
+
+.p-inputtextarea:focus:valid {
+  border-color: var(--deepPurple700);
+}
+
+.p-inputtext:focus:valid {
+  border-color: var(--deepPurple700);
 }
