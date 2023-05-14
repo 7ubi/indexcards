@@ -1,0 +1,14 @@
+.p-inputtextarea {
+  border-width: 3px;
+  margin-bottom: 10px;
+}
+
+.p-inputtextarea:focus:valid {
+  border-color: var(--deepPurple700);
+}
+
+.p-button {
+  width: 100%;
+  display: block;
+  background-color: var(--deepPurpleA100);
+}

@@ -1,21 +1,23 @@
-<form #indexcard="ngForm" (ngSubmit)="createIndexcard(indexcard)">
+<form [formGroup]="createIndexCardFormGroup" (ngSubmit)="createIndexcard()">
   <div class="container">
     <h1 class="title">
       Create Index Card
     </h1>
 
-    <label for="question">
-      Question
-    </label>
-    <textarea #question="ngModel" name="question" id="question" type="text" rows=3 ngModel required>
-    </textarea>
+    <div class="form-input form-group">
+      <label for="question">
+        Question
+      </label><br>
+      <textarea pInputTextarea formControlName="question" name="question" id="question" type="text"></textarea><br>
+    </div>
 
-    <label for="answer">
-      Answer
-    </label>
-    <textarea #answer="ngModel" name="answer" id="answer" type="text" rows=3 ngModel required>
-    </textarea>
+    <div class="form-input form-group">
+      <label for="question">
+        Answer
+      </label><br>
+      <textarea pInputTextarea formControlName="answer" name="answer" id="answer" type="text"></textarea><br>
+    </div>
 
-    <button type="submit">Create Index Card</button>
+    <button pButton type="submit">Create Index Card</button>
   </div>
 </form>

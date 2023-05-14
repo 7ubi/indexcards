@@ -29,6 +29,11 @@ export class CreateProjectComponent {
   }
 
   createProject(): void {
+    if(!this.createProjectFormGroup.valid) {
+      this.throwInvalidForm();
+      return;
+    }
+
     this.http.post<ResultResponse>(environment.apiUrl + 'project/create', this.getCreateProjectRequestParameter(),
       { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
@@ -58,5 +63,14 @@ export class CreateProjectComponent {
     return {
       name: this.createProjectFormGroup.get('name')?.value
     };
+  }
+
+  throwInvalidForm() {
+    this.messageService.add({
+      key: 'tr',
+      severity: 'error',
+      summary: 'ERROR',
+      detail: 'Enter a project name to create a project!',
+    });
   }
 }
