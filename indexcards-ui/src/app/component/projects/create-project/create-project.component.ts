@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {MessageResponse, ResultResponse} from "../../../app.response";
+import {ResultResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
-import {NotificationsService} from "angular2-notifications";
 import {LoginService} from "../../auth/login/login.service";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-create-project',
@@ -14,29 +14,49 @@ import {Router} from "@angular/router";
 })
 export class CreateProjectComponent {
 
+  createProjectFormGroup: FormGroup
+
   constructor(
     private http: HttpClient,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private loginService: LoginService,
-    private router: Router
-  ){}
+    private router: Router,
+    private formBuilder: FormBuilder
+  ){
+    this.createProjectFormGroup = this.formBuilder.group({
+      name: ['', Validators.required]
+    });
+  }
 
-  createProject(createProject: NgForm): void {
-    this.http.post<ResultResponse>(environment.apiUrl + 'project/create', createProject.value,
+  createProject(): void {
+    this.http.post<ResultResponse>(environment.apiUrl + 'project/create', this.getCreateProjectRequestParameter(),
       { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {
           if(response.success) {
-            this.notificationService.success("SUCCESS", "Project was created!");
+            this.messageService.add({
+              key: 'tr',
+              severity: 'success',
+              summary: 'SUCCESS',
+              detail: 'Project was created!',
+            });
             this.router.navigate(['/']);
           }
           response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
           });
         }
       );
+  }
+
+  getCreateProjectRequestParameter() {
+    return {
+      name: this.createProjectFormGroup.get('name')?.value
+    };
   }
 }
