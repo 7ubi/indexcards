@@ -91,3 +91,11 @@ a:active {
 .title {
   text-align: left;
 }
+
+.p-inputtextarea:focus:valid {
+  border-color: var(--deepPurple700);
+}
+
+.p-inputtext:focus:valid {
+  border-color: var(--deepPurple700);
+}

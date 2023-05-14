@@ -4,7 +4,7 @@
       <h2>
         {{ getIndexCard()?.question }}
       </h2>
-      <button class="show-answer-button" (click)="showAnswer = !showAnswer">
+      <button pButton class="show-answer-button" (click)="showAnswer = !showAnswer">
         {{ showAnswer ? "Hide Answer": "Show Answer" }}
       </button>
       <div *ngIf="showAnswer">
@@ -12,24 +12,9 @@
       </div>
     </div>
     <div class="assessment-button-container">
-      <fa-icon
-        class="assessment-button"
-        [icon]="faXmark"
-        (click)="assessIndexCard('BAD')"
-      >
-      </fa-icon>
-      <fa-icon
-        class="assessment-button"
-        [icon]="faThumbsUp"
-        (click)="assessIndexCard('OK')"
-      >
-      </fa-icon>
-      <fa-icon
-        class="assessment-button"
-        [icon]="faCheck"
-        (click)="assessIndexCard('GOOD')"
-      >
-      </fa-icon>
+      <i class="pi pi-times assessment-button" (click)="assessIndexCard('BAD')"></i>
+      <i class="pi pi-minus assessment-button" (click)="assessIndexCard('OK')"></i>
+      <i class="pi pi-check assessment-button" (click)="assessIndexCard('GOOD')"></i>
     </div>
   </div>
 </div>

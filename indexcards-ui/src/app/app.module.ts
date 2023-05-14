@@ -8,8 +8,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './component/common/header/header.component';
 import { SignupComponent } from './component/auth/signup/signup.component';
 import { LoginComponent } from './component/auth/login/login.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {SimpleNotificationsModule} from "angular2-notifications";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
 import {LoginRequired} from "./login-required";
@@ -46,15 +44,6 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    FontAwesomeModule,
-    SimpleNotificationsModule.forRoot({
-      position: ["top", "right"],
-      timeOut: 5000,
-      showProgressBar: true,
-      clickToClose: true,
-      pauseOnHover: false,
-      lastOnBottom: true
-    }),
     PasswordModule,
     ButtonModule,
     InputTextModule,

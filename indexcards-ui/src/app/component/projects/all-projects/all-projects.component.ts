@@ -3,8 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { UserProjectsResponse } from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
 import { environment } from "../../../../environment/environment";
-import { NotificationsService } from "angular2-notifications";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-all-projects',
@@ -18,7 +18,7 @@ export class AllProjectsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private router: Router
 ) {
   }
@@ -36,10 +36,12 @@ export class AllProjectsComponent implements OnInit {
             this.userProjectsResponse = response;
           }
           response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
           });
         }
       )
