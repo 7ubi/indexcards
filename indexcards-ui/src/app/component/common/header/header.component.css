@@ -7,6 +7,6 @@
     color: var(--deepPurple50);
 }
 
-fa-icon {
-    font-size: x-large;
+.header-icon {
+  font-size: 1.75em;
 }

@@ -23,6 +23,7 @@ import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import {MessageService} from "primeng/api";
     InputTextModule,
     ReactiveFormsModule,
     ToastModule,
+    TooltipModule,
   ],
   providers: [LoginRequired, MessageService],
   bootstrap: [AppComponent],

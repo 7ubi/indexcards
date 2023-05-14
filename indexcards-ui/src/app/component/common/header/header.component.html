@@ -1,6 +1,6 @@
 <div class="header">
-    <h1>
-        Indexcards
-    </h1>
-    <fa-icon *ngIf="isLoggedIn()" (click)="logout()" [icon]="faArrowRightFromBracket"></fa-icon>
+  <h1>
+    Indexcards
+  </h1>
+  <i *ngIf="isLoggedIn()" class="pi pi-sign-out header-icon" pTooltip="Logout" (click)="logout()"></i>
 </div>
