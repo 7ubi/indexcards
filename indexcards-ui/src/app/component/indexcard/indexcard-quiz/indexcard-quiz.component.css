@@ -9,10 +9,26 @@
 
 .indexcard {
   width: 50%;
-  background: #1D3557;
+  background-color: var(--deepPurple300);
   height: 80%;
   margin-bottom: 20px;
   border-radius: 10px;
+}
+
+.p-button {
+  background-color: var(--deepPurpleA200);
+}
+
+.p-button:enabled {
+  background-color: var(--deepPurpleA200);
+}
+
+.p-button:hover {
+  background-color: var(--deepPurpleA400);
+}
+
+.p-button:enabled:hover {
+  background-color: var(--deepPurpleA400);
 }
 
 
@@ -22,6 +38,7 @@
   display: flex;
   justify-content: space-between;
   justify-items: center;
+  color: var(--deepPurpleA100);
 }
 
 .assessment-button {

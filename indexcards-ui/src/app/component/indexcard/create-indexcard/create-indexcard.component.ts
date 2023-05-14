@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ResultResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {LoginService} from "../../auth/login/login.service";
-import {NotificationsService} from "angular2-notifications";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-create-indexcard',
@@ -16,43 +16,72 @@ export class CreateIndexcardComponent implements OnInit {
 
   id: string | null | undefined;
 
+  createIndexCardFormGroup: FormGroup;
+
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {
+    this.createIndexCardFormGroup = this.formBuilder.group({
+      answer: ['', Validators.required],
+      question: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {
       this.id = this.route.snapshot.paramMap.get('id');
     }
 
-  createIndexcard(indexcard: NgForm) {
-    const request = this.createRequest(indexcard);
+  createIndexcard() {
+    if(!this.createIndexCardFormGroup.valid) {
+      this.throwInvalidForm();
+      return;
+    }
 
-    this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/create', request,
+    this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/create', this.createRequest(),
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
           if(response.success) {
-            this.notificationService.success("SUCCESS", "Index Card was created");
+            this.messageService.add({
+              key: 'tr',
+              severity: 'success',
+              summary: 'SUCCESS',
+              detail: 'Index card was created!',
+            });
             this.router.navigate(["/project", this.id]);
           }
 
           response.errorMessages.forEach(error => {
-            this.notificationService.error("ERROR", error.message)
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
           })
         }
       )
   }
 
-  createRequest(indexcard: NgForm) {
+  createRequest() {
     return {
       projectId: this.id,
-      question: indexcard.value.question,
-      answer: indexcard.value.answer
+      question: this.createIndexCardFormGroup.get('question')?.value,
+      answer: this.createIndexCardFormGroup.get('answer')?.value
     };
+  }
+
+  throwInvalidForm() {
+    this.messageService.add({
+      key: 'tr',
+      severity: 'error',
+      summary: 'ERROR',
+      detail: 'Answer and Question are required to create an index card!',
+    });
   }
 }

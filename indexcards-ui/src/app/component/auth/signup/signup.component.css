@@ -1,4 +1,16 @@
-button {
-    margin-top: 10px;
-    width: 100%;
+label {
+  margin-top: 5px;
+}
+
+input {
+  width: 100%;
+}
+
+.form-container {
+  width: 80%;
+}
+
+.p-button {
+  display: block;
+  background-color: var(--deepPurpleA100);
 }

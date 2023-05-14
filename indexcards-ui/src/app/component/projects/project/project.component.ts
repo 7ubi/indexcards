@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {NotificationsService} from "angular2-notifications";
-import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {UserProjectResponse} from "../../../app.response";
 import {environment} from "../../../../environment/environment";
 import {LoginService} from "../../auth/login/login.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-project',
@@ -18,7 +18,7 @@ export class ProjectComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private notificationService: NotificationsService,
+    private messageService: MessageService,
     private loginService: LoginService,
     private router: Router
   ) {
@@ -31,26 +31,20 @@ export class ProjectComponent implements OnInit{
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
+
+          response.errorMessages.forEach((error) => {
+            this.messageService.add({
+              key: 'tr',
+              severity: 'error',
+              summary: 'ERROR',
+              detail: error.message,
+            });
+          });
           if(response.success) {
             this.userProject = response;
+          } else {
+            this.router.navigate(['']);
           }
-          response.errorMessages.forEach((error) => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
-          });
-        }, err => {
-          const errorMessages: ResultResponse = err.error;
-
-          errorMessages.errorMessages.forEach(error => {
-            this.notificationService.error(
-              'ERROR',
-              error.message
-            );
-          });
-
-          this.router.navigate(['']);
         }
       );
   }

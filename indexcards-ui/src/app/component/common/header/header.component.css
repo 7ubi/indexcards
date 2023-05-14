@@ -1,11 +1,12 @@
 .header {
-    background-color: #1D3557;
+    background-color: var(--deepPurple700);
     padding: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: var(--deepPurple50);
 }
 
-fa-icon {
-    font-size: x-large;
+.header-icon {
+  font-size: 1.75em;
 }
