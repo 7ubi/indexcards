@@ -72,7 +72,7 @@ public class CreateProjectService {
         } else {
             User user = this.userRepo.findByUsername(username).stream().findFirst().orElse(null);
             boolean projectNameExists = user.getProjects().stream().anyMatch(project ->
-                    project.getName().equals(createProjectRequest.getName())
+                project.getName().equals(createProjectRequest.getName())
             );
 
             if(projectNameExists) {
@@ -80,11 +80,6 @@ public class CreateProjectService {
                 error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
             }
         }
-
-        //if(projectRepo.existsByName(createProjectRequest.getName())) {
-        //    logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);
-        //    error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
-        //}
 
         if(createProjectRequest.getName().length() > 100) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);

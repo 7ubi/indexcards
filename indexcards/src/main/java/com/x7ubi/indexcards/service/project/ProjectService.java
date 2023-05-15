@@ -80,6 +80,8 @@ public class ProjectService {
 
         Project project = this.projectRepo.findProjectByProjectId(id);
 
+        logger.info("Found project {}", project.getName());
+
         ProjectResponse projectResponse = new ProjectResponse();
         projectResponse.setId(project.getId());
         projectResponse.setName(project.getName());

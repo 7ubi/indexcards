@@ -40,14 +40,19 @@ export class IndexcardQuizComponent implements OnInit {
           if(response.success) {
             this.userProject = response;
           }
-          response.errorMessages.forEach((error) => {
+        }, err => {
+          const response: ResultResponse = err.error;
+
+          response.errorMessages.forEach(error => {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
               summary: 'ERROR',
               detail: error.message,
             });
-          });
+          })
+
+          this.router.navigate(['']);
         }
       );
   }
@@ -61,15 +66,17 @@ export class IndexcardQuizComponent implements OnInit {
           if(response.success) {
             this.nextIndexCard();
           }
+        }, err => {
+          const response: ResultResponse = err.error;
 
-          response.errorMessages.forEach((error) => {
+          response.errorMessages.forEach(error => {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
               summary: 'ERROR',
               detail: error.message,
             });
-          });
+          })
         }
       );
   }

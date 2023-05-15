@@ -54,6 +54,6 @@ import {InputTextareaModule} from "primeng/inputtextarea";
   ],
   providers: [LoginRequired, MessageService],
   bootstrap: [AppComponent],
-  exports: [ FormsModule, ReactiveFormsModule]
+  exports: [FormsModule, ReactiveFormsModule]
 })
 export class AppModule { }
