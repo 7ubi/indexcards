@@ -43,9 +43,7 @@ public class ProjectRestController {
         UserProjectsResponse response = projectService.getUserProjects(username);
 
         if(response.isSuccess()) {
-            return ResponseEntity
-                .ok()
-                .body(response);
+            return ResponseEntity.ok().body(response);
         }
 
         return ResponseEntity.badRequest().body(response);

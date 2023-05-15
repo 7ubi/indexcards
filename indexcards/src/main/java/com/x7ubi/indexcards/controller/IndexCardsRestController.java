@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
+import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,14 @@ public class IndexCardsRestController {
         @RequestBody CreateIndexCardRequest createProjectRequest
     ) {
         logger.info("Creating Index Card");
-        return ResponseEntity
-                .ok()
-                .body(this.createIndexCardService.createIndexCard(createProjectRequest));
+
+        ResultResponse response = this.createIndexCardService.createIndexCard(createProjectRequest);
+
+        if(response.isSuccess()) {
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.badRequest().body(response);
     }
 
     @PostMapping("/assess")
@@ -42,6 +48,12 @@ public class IndexCardsRestController {
         @RequestBody AssessmentRequest assessmentRequest
     ) {
         logger.info("Assessing Index Card");
-        return ResponseEntity.ok().body(this.indexCardAssessmentService.assessIndexCard(assessmentRequest));
+        ResultResponse response = this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+
+        if(response.isSuccess()) {
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.badRequest().body(response);
     }
 }
