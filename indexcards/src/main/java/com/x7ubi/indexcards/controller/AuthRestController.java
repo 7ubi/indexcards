@@ -5,6 +5,7 @@ import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.auth.LoginRequest;
 import com.x7ubi.indexcards.request.auth.SignupRequest;
 import com.x7ubi.indexcards.response.common.JwtResponse;
+import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.service.authentication.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +41,13 @@ public class AuthRestController {
     ) {
         logger.info("Signing up new account");
 
-        return ResponseEntity
-            .ok()
-            .body(authService.registerNewUserAccount(signupRequest));
+        ResultResponse response = authService.registerNewUserAccount(signupRequest);
+
+        if(response.isSuccess()) {
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.badRequest().body(response);
     }
 
     @PostMapping("/login")

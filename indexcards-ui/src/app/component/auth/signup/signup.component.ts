@@ -60,6 +60,10 @@ export class SignupComponent {
           });
           this.router.navigate(['/login']);
         }
+
+      }, err => {
+        const response: ResultResponse = err.error;
+
         response.errorMessages.forEach((error) => {
           this.messageService.add({
             key: 'tr',
