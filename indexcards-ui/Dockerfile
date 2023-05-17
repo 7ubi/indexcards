@@ -8,6 +8,6 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
-RUN npm run build --prod --host 0.0.0.0
+RUN npm run build --prod
 
 CMD ["npm", "start"]
