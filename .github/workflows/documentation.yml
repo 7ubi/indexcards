@@ -10,7 +10,7 @@ permissions:
   pages: write
   id-token: write
 jobs:
-  deploy docs:
+  deploydocs:
     name: Deploy docs to GitHub Pages
     runs-on: ubuntu-latest
     steps:
