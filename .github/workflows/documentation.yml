@@ -26,4 +26,4 @@ jobs:
           CONFIG_FILE: ../../indexcards-doku/mkdocs.yml
           EXTRA_PACKAGES: build-base
           # GITHUB_DOMAIN: github.myenterprise.com
-          REQUIREMENTS: folder/requirements.txt
+          REQUIREMENTS: ../../indexcards-doku/requirements.txt
