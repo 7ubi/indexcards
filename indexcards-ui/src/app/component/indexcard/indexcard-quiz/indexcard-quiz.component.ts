@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
-import {environment} from "../../../../environment/environment";
+import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";

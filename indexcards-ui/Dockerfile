@@ -5,16 +5,9 @@ FROM node:latest
 RUN mkdir -p /app
 WORKDIR /app
 
-# Download Angular
-RUN npm install -g @angular/cli
+COPY . .
 
-# Copy the app package and package-lock.json file
-COPY package*.json ./
-
-# Install packages and run on Port 4200
 RUN npm install
+RUN npm run build --prod
 
-# Copy or project directory (locally) in the current directory of our docker image (/app)
-COPY ./ .
-
-CMD ng serve --host 0.0.0.0 --port 4200
+CMD ["npm", "start"]
