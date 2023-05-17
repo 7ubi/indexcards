@@ -11,6 +11,7 @@ services:
       - springmysql-net
     ports:
       - '3307:3306'
+    restart: always
     volumes:
       - my-db:/var/lib/mysql
   backend:
@@ -24,6 +25,8 @@ services:
       - '8081:8080'
     networks:
       - springmysql-net
+      - backend
+    restart: always
     depends_on:
       - mysqldb
   frontend:
@@ -31,11 +34,23 @@ services:
     build: ./indexcards-ui
     volumes:
       - './indexcards-ui:/usr/src/app'
+    restart: always
     ports:
       - '4200:4200'
+  reverse-proxy:
+    container_name: reverseproxycontianer
+    build: ./indexcards-reverse-proxy
+    ports:
+      - 8081:8081
+      - 4200:4200
+      - 3307:3307
+    restart: always
+    networks:
+      - backend
 
 networks:
   springmysql-net:
+  backend:
 
 volumes:
   my-db:
