@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {LoginResponse} from "../../../app.response";
 import {LoginService} from "./login.service";
 import {Router} from "@angular/router";
-import {environment} from "../../../../environment/environment";
+import {environment} from "../../../../environments/environment";
 import {MessageService} from "primeng/api";
 
 @Component({
