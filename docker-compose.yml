@@ -37,16 +37,6 @@ services:
     restart: always
     ports:
       - '4200:4200'
-  reverse-proxy:
-    container_name: reverseproxycontianer
-    build: ./indexcards-reverse-proxy
-    ports:
-      - 8081:8081
-      - 4200:4200
-      - 3307:3307
-    restart: always
-    networks:
-      - backend
 
 networks:
   springmysql-net:
