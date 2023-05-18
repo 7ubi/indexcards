@@ -1,0 +1,19 @@
+version: "3.3"
+
+networks:
+  springmysql-net:
+  backend:
+  nginx_frontend:
+    external: true
+  nginx_backend:
+    external: true
+
+services:
+  mkdocs:
+    container_name: mkdocs
+    build: .
+    ports:
+      - "8005:8005"
+    networks:
+      - nginx_frontend
+      - nginx_backend
