@@ -1,4 +1,5 @@
 site_name: Indexcards Documentation
+repo_url: https://github.com/7ubi/indexcards
 theme:
   name: material
   palette:
