@@ -1,5 +1,13 @@
 site_name: Indexcards Documentation
 repo_url: https://github.com/7ubi/indexcards
+nav:
+  - Indexcards: index.md
+  - Project Structure: projectStructure.md
+  - Database: database.md
+  - Pages:
+    - Authentication: pages/authentication.md
+  - License: license.md
+
 extra_css: [extra.css]
 
 theme:
