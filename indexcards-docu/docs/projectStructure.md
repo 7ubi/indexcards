@@ -4,4 +4,12 @@ The project is separated in to three parts:
 
 - `indexcards` - Backend
 - `indexcards-ui` - Frontend
-- `indexcards-docu`
+- `indexcards-docu` - Documentation
+
+## Backend
+
+
+
+## Frontend
+
+## Documentation

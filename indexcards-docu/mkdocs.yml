@@ -4,6 +4,7 @@ nav:
   - Indexcards: index.md
   - Project Structure: projectStructure.md
   - Database: database.md
+  - Pipeline: pipeline.md
   - Pages:
     - Authentication: pages/authentication.md
   - License: license.md
