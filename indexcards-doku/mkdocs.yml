@@ -1,27 +1,8 @@
 site_name: Indexcards Documentation
 repo_url: https://github.com/7ubi/indexcards
+extra_css: [extra.css]
+
 theme:
   name: material
   palette:
-    # Palette toggle for automatic mode
-    - media: "(prefers-color-scheme)"
-      accent: deep purple
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
-
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      accent: deep purple
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      accent: deep purple
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
+    primary: custom
