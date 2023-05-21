@@ -83,6 +83,7 @@ export class IndexcardQuizComponent implements OnInit {
 
   nextIndexCard() {
     this.index++;
+    this.showAnswer = false;
 
     if(this.index >= this.getIndexCardLength()) {
 

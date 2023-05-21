@@ -15,6 +15,13 @@
   border-radius: 10px;
 }
 
+
+@media (max-width: 480px) {
+  .indexcard {
+    width: 100%;
+  }
+}
+
 .p-button {
   background-color: var(--deepPurpleA200);
 }
