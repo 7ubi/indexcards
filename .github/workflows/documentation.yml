@@ -12,6 +12,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SECRET_KEY }}
           port: ${{ secrets.PORT }}
           script: bash deploy_indexcard_docu.sh
