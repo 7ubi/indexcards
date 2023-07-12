@@ -28,7 +28,6 @@ services:
     networks:
       - springmysql-net
       - backend
-      - nginx_frontend
       - nginx_backend
     restart: always
     depends_on:
@@ -39,18 +38,17 @@ services:
     volumes:
       - './indexcards-ui:/usr/src/app'
     restart: always
+    depends_on:
+      - backend
     networks:
       - backend
-      - nginx_frontend
       - nginx_backend
     ports:
-      - '4200:4200'
+      - '4200:80'
 
 networks:
   springmysql-net:
   backend:
-  nginx_frontend:
-    external: true
   nginx_backend:
     external: true
 
