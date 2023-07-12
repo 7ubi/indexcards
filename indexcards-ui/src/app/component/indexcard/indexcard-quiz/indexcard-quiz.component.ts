@@ -33,7 +33,7 @@ export class IndexcardQuizComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>(environment.apiUrl + 'project/project?id=' + this.id,
+    this.http.get<UserProjectResponse>('/api/project/project?id=' + this.id,
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
@@ -59,7 +59,7 @@ export class IndexcardQuizComponent implements OnInit {
   assessIndexCard(assessment: string): void  {
     const request = this.createAssessmentRequest(assessment);
 
-    this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/assess',
+    this.http.post<ResultResponse>('/api/indexCard/assess',
       request, { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {

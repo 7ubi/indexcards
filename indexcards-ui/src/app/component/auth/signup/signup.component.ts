@@ -49,7 +49,7 @@ export class SignupComponent {
       return;
     }
 
-    this.http.post<ResultResponse>(environment.apiUrl + 'auth/signup', this.getCreateAccountParameter())
+    this.http.post<ResultResponse>('/api/auth/signup', this.getCreateAccountParameter())
       .subscribe((response) => {
         if(response.success) {
           this.messageService.add({

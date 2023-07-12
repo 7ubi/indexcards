@@ -11,7 +11,7 @@ services:
     networks:
       - springmysql-net
     ports:
-      - '3307:3306'
+      - '3306:3306'
     restart: always
     volumes:
       - my-db:/var/lib/mysql
@@ -20,6 +20,7 @@ services:
     build: ./indexcards
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_PASSWORD: '1234'
     volumes:
       - './indexcards:/usr/src/app'
     ports:

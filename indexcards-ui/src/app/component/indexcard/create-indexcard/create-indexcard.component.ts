@@ -42,7 +42,7 @@ export class CreateIndexcardComponent implements OnInit {
       return;
     }
 
-    this.http.post<ResultResponse>(environment.apiUrl + 'indexCard/create', this.createRequest(),
+    this.http.post<ResultResponse>('/api/indexCard/create', this.createRequest(),
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {

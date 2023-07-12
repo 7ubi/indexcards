@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.http.post<LoginResponse>(environment.apiUrl + 'auth/login', this.getLoginRequestParameter())
+    this.http.post<LoginResponse>('/api/auth/login', this.getLoginRequestParameter())
       .subscribe(
         response => {
           this.loginService.saveBearer(response);

@@ -28,7 +28,7 @@ export class AllProjectsComponent implements OnInit {
   }
 
   getAllProjects() {
-    this.http.get<UserProjectsResponse>(environment.apiUrl + 'project/projects'
+    this.http.get<UserProjectsResponse>('/api/project/projects'
       , { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {

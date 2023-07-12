@@ -34,7 +34,7 @@ export class CreateProjectComponent {
       return;
     }
 
-    this.http.post<ResultResponse>(environment.apiUrl + 'project/create', this.getCreateProjectRequestParameter(),
+    this.http.post<ResultResponse>('/api/project/create', this.getCreateProjectRequestParameter(),
       { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
         response => {

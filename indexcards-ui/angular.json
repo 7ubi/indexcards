@@ -75,7 +75,8 @@
               "browserTarget": "indexcards-ui:build:production"
             },
             "development": {
-              "browserTarget": "indexcards-ui:build:development"
+              "browserTarget": "indexcards-ui:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

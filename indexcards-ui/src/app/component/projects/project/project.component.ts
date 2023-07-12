@@ -27,7 +27,7 @@ export class ProjectComponent implements OnInit{
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>(environment.apiUrl + 'project/project?id=' + id,
+    this.http.get<UserProjectResponse>('/api/project/project?id=' + id,
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
