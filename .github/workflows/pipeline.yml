@@ -60,5 +60,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SECRET_KEY }}
           port: ${{ secrets.PORT }}
-          script: bash deploy_indexcard_docu.sh
+          script: bash deploy_indexcard.sh
         if: github.event_name != 'pull_request'
