@@ -23,6 +23,7 @@ import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {TooltipModule} from "primeng/tooltip";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import { FooterComponent } from './component/common/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     CreateProjectComponent,
     ProjectComponent,
     CreateIndexcardComponent,
-    IndexcardQuizComponent
+    IndexcardQuizComponent,
+    FooterComponent
   ],
   imports: [
     FormsModule,

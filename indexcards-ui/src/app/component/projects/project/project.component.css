@@ -28,3 +28,19 @@
   align-items: center;
   margin: 5px;
 }
+
+.unrated {
+  border: 2px solid var(--lightgrey);
+}
+
+.bad {
+  border: 2px solid var(--bad);
+}
+
+.ok {
+  border: 2px solid var(--ok);
+}
+
+.good {
+  border: 2px solid var(--good);
+}

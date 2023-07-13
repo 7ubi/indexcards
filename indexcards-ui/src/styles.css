@@ -3,6 +3,7 @@
 :root {
   /*https://m2.material.io/design/color/the-color-system.html#color-theme-creation*/
   --darkgrey: #232323;
+  --lightgrey: #ababab;
   --deepPurple50: #EDE7F6;
   --deepPurple100: #D1C4E9;
   --deepPurple200: #B39DDB;
@@ -17,6 +18,10 @@
   --deepPurpleA200: #7C4DFF;
   --deepPurpleA400: #651FFF;
   --deepPurpleA700: #6200EA;
+  --error: #E63946;
+  --bad: #CD7575;
+  --ok: #CDC475;
+  --good: #87CD75;
 }
 
 html {
@@ -71,7 +76,7 @@ label {
 
 .error {
     font-size: large;
-    color: #E63946;
+    color: var(--error);
     text-align: left;
 }
 
