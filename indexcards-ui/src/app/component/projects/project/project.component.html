@@ -10,7 +10,7 @@
   </div>
   <div class="indexcardContainer">
     <div *ngFor="let indexcard of userProject?.projectResponse?.indexCardResponses">
-      <div class="indexcard">
+      <div class="indexcard {{ indexcard.assessment.toString() | lowercase }}">
         <h2>
           {{ indexcard.question }}
         </h2>
