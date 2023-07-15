@@ -1,6 +1,8 @@
 package com.x7ubi.indexcards.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "INDEXCARDS")
@@ -19,6 +21,9 @@ public class IndexCard {
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private Assessment assessment = Assessment.UNRATED;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    private Set<IndexCardAssessment> assessmentHistory = new HashSet<>();
 
     public IndexCard(String question, String answer) {
         this.question = question;
@@ -53,5 +58,21 @@ public class IndexCard {
 
     public void setAssessment(Assessment assessment) {
         this.assessment = assessment;
+    }
+
+    public Long getIndexcardId() {
+        return indexcardId;
+    }
+
+    public void setIndexcardId(Long indexcardId) {
+        this.indexcardId = indexcardId;
+    }
+
+    public Set<IndexCardAssessment> getAssessmentHistory() {
+        return assessmentHistory;
+    }
+
+    public void setAssessmentHistory(Set<IndexCardAssessment> assessmentHistory) {
+        this.assessmentHistory = assessmentHistory;
     }
 }
