@@ -29,6 +29,23 @@ jobs:
           cache: maven
       - name: Build and Test with Maven
         run: mvn -B package --file indexcards/pom.xml
+  linting:
+    name: Linting # job name (unique id)
+    runs-on: ubuntu-latest # on which machine to run
+    steps: # list of steps
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.14.0
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: cd indexcard-ui && npm ci
+
+      - name: Code Linting
+        run: cd indexcard-ui && npm run lint
   #sonarqube:
   #   name: Sonarqube analysis
   #   runs-on: ubuntu-latest

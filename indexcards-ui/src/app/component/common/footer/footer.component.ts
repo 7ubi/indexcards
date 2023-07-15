@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import packageInfo from '../../../../../package.json';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   public year: number = new Date().getFullYear();
-  public version: number = require('../../../../../package.json').version;
+  public version = packageInfo.version;
 }

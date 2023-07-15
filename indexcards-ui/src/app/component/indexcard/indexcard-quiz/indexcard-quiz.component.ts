@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
-import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -15,9 +14,9 @@ import {MessageService} from "primeng/api";
 export class IndexcardQuizComponent implements OnInit {
   userProject?: UserProjectResponse;
 
-  index: number = 0;
+  index = 0;
 
-  showAnswer: boolean = false;
+  showAnswer = false;
 
   id: string | null = "";
 

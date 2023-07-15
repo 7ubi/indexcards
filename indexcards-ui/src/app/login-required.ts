@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
+import {CanActivate, Router} from "@angular/router";
 import {LoginService} from "./component/auth/login/login.service";
 import {Observable} from "rxjs";
 import {MessageService} from "primeng/api";
@@ -13,8 +13,6 @@ export class LoginRequired implements CanActivate {
   ) {}
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
   ): Observable<boolean>|Promise<boolean>|boolean {
     if (!this.loginService.isLoggedIn()) {
       this.messageService.add({

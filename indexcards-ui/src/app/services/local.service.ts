@@ -6,9 +6,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class LocalService {
 
-  private static key: string = 'SECRET';
-
-  constructor() { }
+  private static key = 'SECRET';
 
   public static saveData(key: string, value: string) {
     sessionStorage.setItem(key, value);
@@ -38,7 +36,7 @@ export class LocalService {
   }
 
   public static getEncryptedData(key: string) {
-    let data = sessionStorage.getItem(key)|| "";
+    const data = sessionStorage.getItem(key)|| "";
     return this.decrypt(data);
   }
 }
