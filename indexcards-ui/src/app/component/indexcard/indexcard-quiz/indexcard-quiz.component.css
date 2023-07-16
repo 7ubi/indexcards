@@ -43,11 +43,12 @@
   height: 10%;
   width: 50%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   justify-items: center;
   color: var(--deepPurpleA100);
 }
 
 .assessment-button {
-  font-size: 2em;
+  width: 100%;
+  margin: 3px;
 }

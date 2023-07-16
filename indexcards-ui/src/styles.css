@@ -20,8 +20,11 @@
   --deepPurpleA700: #6200EA;
   --error: #E63946;
   --bad: #CD7575;
+  --badDark: #a02727;
   --ok: #CDC475;
+  --okDark: #a09427;
   --good: #87CD75;
+  --goodDark: #40a027;
 }
 
 html {

@@ -24,6 +24,7 @@ import {MessageService} from "primeng/api";
 import {TooltipModule} from "primeng/tooltip";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import { FooterComponent } from './component/common/footer/footer.component';
+import { AssessmentButtonComponent } from './component/indexcard/assessment-button/assessment-button.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FooterComponent } from './component/common/footer/footer.component';
     ProjectComponent,
     CreateIndexcardComponent,
     IndexcardQuizComponent,
-    FooterComponent
+    FooterComponent,
+    AssessmentButtonComponent
   ],
   imports: [
     FormsModule,
