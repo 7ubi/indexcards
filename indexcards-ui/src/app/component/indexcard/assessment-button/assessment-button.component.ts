@@ -6,5 +6,5 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./assessment-button.component.css']
 })
 export class AssessmentButtonComponent {
-  @Input() assessment: string = '';
+  @Input() assessment = '';
 }
