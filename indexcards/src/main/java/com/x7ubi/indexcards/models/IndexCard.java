@@ -22,7 +22,7 @@ public class IndexCard {
     @Enumerated(EnumType.ORDINAL)
     private Assessment assessment = Assessment.UNRATED;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<IndexCardAssessment> assessmentHistory = new HashSet<>();
 
     public IndexCard(String question, String answer) {
