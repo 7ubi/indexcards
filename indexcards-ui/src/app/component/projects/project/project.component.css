@@ -1,9 +1,10 @@
 .header-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.indexcardContainer {
+.indexcard-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
@@ -26,7 +27,7 @@
   font-size: 2.5em;
   display: flex;
   align-items: center;
-  margin: 5px;
+  margin: 0 5px 0 5px;
 }
 
 .unrated {

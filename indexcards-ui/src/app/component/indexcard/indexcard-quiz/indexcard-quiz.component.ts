@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {IndexCardResponses, ResultResponse} from "../../../app.response";
 import {HttpClient} from "@angular/common/http";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -12,7 +12,7 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./indexcard-quiz.component.css']
 })
 export class IndexcardQuizComponent implements OnInit {
-  userProject?: UserProjectResponse;
+  indexCards?: IndexCardResponses;
 
   index = 0;
 
@@ -32,12 +32,12 @@ export class IndexcardQuizComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>('/api/project/project?id=' + this.id,
+    this.http.get<IndexCardResponses>('/api/indexCard/quizIndexCards?id=' + this.id,
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
           if(response.success) {
-            this.userProject = response;
+            this.indexCards = response;
           }
         }, err => {
           const response: ResultResponse = err.error;
@@ -97,14 +97,14 @@ export class IndexcardQuizComponent implements OnInit {
   }
 
   getIndexCardLength(): number {
-    if(this.userProject?.projectResponse?.indexCardResponses) {
-      return this.userProject?.projectResponse?.indexCardResponses.length;
+    if(this.indexCards?.indexCardResponses) {
+      return this.indexCards?.indexCardResponses.length;
     }
     return 0;
   }
 
   getIndexCard(): IndexCardResponse | undefined {
-    return this.userProject?.projectResponse?.indexCardResponses[this.index];
+    return this.indexCards?.indexCardResponses[this.index];
   }
 
   createAssessmentRequest(assessment: string) {
