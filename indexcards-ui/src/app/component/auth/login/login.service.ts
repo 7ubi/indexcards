@@ -8,9 +8,7 @@ import {HttpHeaders} from "@angular/common/http";
 })
 export class LoginService {
 
-  private type: string = 'Bearer';
-
-  constructor() {  }
+  private type = 'Bearer';
 
   public saveBearer(loginResponse: LoginResponse) {
     LocalService.saveEncryptedData(loginResponse.type, loginResponse.token);

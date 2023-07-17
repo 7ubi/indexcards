@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ResultResponse} from "../../../app.response";
-import {environment} from "../../../../environments/environment";
 import {LoginService} from "../../auth/login/login.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";

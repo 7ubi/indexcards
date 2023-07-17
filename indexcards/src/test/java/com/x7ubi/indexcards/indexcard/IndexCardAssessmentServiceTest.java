@@ -3,6 +3,7 @@ package com.x7ubi.indexcards.indexcard;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
+import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -58,11 +62,15 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
+        List<IndexCardAssessment> history = new ArrayList<>(newIndexCard.getAssessmentHistory());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
         assertThat(newIndexCard.getQuestion()).isEqualTo(newIndexCard.getQuestion());
         assertThat(newIndexCard.getAnswer()).isEqualTo(newIndexCard.getAnswer());
         assertThat(newIndexCard.getAssessment()).isEqualTo(Assessment.GOOD);
+        assertThat(history.size()).isEqualTo(1);
+        assertThat(history.get(0).getAssessment()).isEqualTo(Assessment.GOOD);
+        assertThat(history.get(0).getDate().getDayOfYear()).isEqualTo(LocalDateTime.now().getDayOfYear());
     }
 
     @Test
@@ -77,11 +85,13 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
+        List<IndexCardAssessment> history = new ArrayList<>(newIndexCard.getAssessmentHistory());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND);
         assertThat(newIndexCard.getQuestion()).isEqualTo(newIndexCard.getQuestion());
         assertThat(newIndexCard.getAnswer()).isEqualTo(newIndexCard.getAnswer());
         assertThat(newIndexCard.getAssessment()).isEqualTo(Assessment.UNRATED);
+        assertThat(history.size()).isEqualTo(0);
     }
 }

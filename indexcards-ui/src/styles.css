@@ -20,8 +20,11 @@
   --deepPurpleA700: #6200EA;
   --error: #E63946;
   --bad: #CD7575;
+  --badDark: #a02727;
   --ok: #CDC475;
+  --okDark: #a09427;
   --good: #87CD75;
+  --goodDark: #40a027;
 }
 
 html {
@@ -65,6 +68,7 @@ label {
     width: 80%;
     margin: 30px 10% 0 10%;
     text-align: center;
+    min-height: 70vh;
 }
 
 @media (max-width: 480px) {

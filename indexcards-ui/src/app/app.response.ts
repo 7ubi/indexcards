@@ -35,6 +35,10 @@ export interface UserProjectResponse extends ResultResponse {
   readonly projectResponse: ProjectResponse;
 }
 
+export interface IndexCardResponses extends ResultResponse {
+  readonly indexCardResponses: IndexCardResponse[];
+}
+
 export enum Assessment {
   UNRATED,
   BAD,

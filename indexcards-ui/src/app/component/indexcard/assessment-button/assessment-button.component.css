@@ -1,0 +1,21 @@
+.assessment-button {
+  font-size: 1.5em;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.bad {
+  border: 2px solid var(--badDark);
+  background-color: var(--bad);
+}
+
+.ok {
+  border: 2px solid var(--okDark);
+  background-color: var(--ok);
+}
+
+.good {
+  border: 2px solid var(--goodDark);
+  background-color: var(--good);
+}

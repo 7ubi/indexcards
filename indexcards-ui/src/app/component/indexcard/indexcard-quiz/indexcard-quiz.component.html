@@ -12,9 +12,9 @@
       </div>
     </div>
     <div class="assessment-button-container">
-      <i class="pi pi-times assessment-button" (click)="assessIndexCard('BAD')"></i>
-      <i class="pi pi-minus assessment-button" (click)="assessIndexCard('OK')"></i>
-      <i class="pi pi-check assessment-button" (click)="assessIndexCard('GOOD')"></i>
+      <app-assessment-button class="assessment-button" [assessment]="'BAD'" (click)="assessIndexCard('BAD')"></app-assessment-button >
+      <app-assessment-button class="assessment-button"  [assessment]="'OK'" (click)="assessIndexCard('OK')"></app-assessment-button >
+      <app-assessment-button class="assessment-button"  [assessment]="'GOOD'" (click)="assessIndexCard('GOOD')"></app-assessment-button >
     </div>
   </div>
 </div>

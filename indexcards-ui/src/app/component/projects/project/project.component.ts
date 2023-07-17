@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
-import {environment} from "../../../../environments/environment";
 import {LoginService} from "../../auth/login/login.service";
 import {MessageService} from "primeng/api";
 
