@@ -86,7 +86,7 @@ export class IndexcardQuizComponent implements OnInit {
 
     if(this.index >= this.getIndexCardLength()) {
 
-      this.router.navigate(["/project", this.id]);
+      this.router.navigate(["/project", this.id, "quiz", "stat"]);
       this.messageService.add({
         key: 'tr',
         severity: 'success',
