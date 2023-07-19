@@ -21,6 +21,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
       SPRING_DATASOURCE_PASSWORD: '1234'
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: "org.hibernate.dialect.MySQL57Dialect"
     volumes:
       - './indexcards:/usr/src/app'
     ports:
