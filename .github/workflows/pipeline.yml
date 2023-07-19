@@ -53,18 +53,24 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
           docker-compose down
           docker-compose up --build -d
+        if: github.event_name != 'pull_request'
   documentation:
     name: Deploy documentation
     runs-on: self-hosted
     needs:
       - deploy
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
           cd indexcards-docu
           docker-compose down
           docker-compose up --build -d
+        if: github.event_name != 'pull_request'

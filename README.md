@@ -1,6 +1,6 @@
 # Indexcards
 
-[![indexcard pipeline](https://github.com/7ubi/indexcards/actions/workflows/pipeline.yml/badge.svg)](https://github.com/7ubi/indexcards/actions/workflows/pipeline.yml) [![Deploy documentation](https://github.com/7ubi/indexcards/actions/workflows/documentation.yml/badge.svg?branch=main)](https://github.com/7ubi/indexcards/actions/workflows/documentation.yml)
+[![indexcard pipeline](https://github.com/7ubi/indexcards/actions/workflows/pipeline.yml/badge.svg)](https://github.com/7ubi/indexcards/actions/workflows/pipeline.yml)
 
 
 
