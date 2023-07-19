@@ -15,10 +15,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
-
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -47,15 +46,25 @@ jobs:
       - name: Code Linting
         run: cd indexcards-ui && npm run lint
   deploy:
+    name: Deployment
     runs-on: self-hosted
     needs:
-      - test
+      - build
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
           docker-compose down
           docker-compose up --build -d
-        if: github.event_name != 'pull_request'
+  documentation:
+    name: Deploy documentation
+    runs-on: self-hosted
+    needs:
+      - deploy
+    steps:
+      - name: Start docker-compose
+        run: |
+          cd indexcards-docu
+          docker-compose down
+          docker-compose up --build -d
