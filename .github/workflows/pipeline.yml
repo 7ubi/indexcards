@@ -65,17 +65,28 @@ jobs:
       #   timeout-minutes: 5
       #   env:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs:
+#      - test
+#    steps:
+#      - name: executing remote ssh commands using password
+#        uses: appleboy/ssh-action@v0.1.10
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          key: ${{ secrets.SECRET_KEY }}
+#          port: ${{ secrets.PORT }}
+#          script: bash deploy_indexcard.sh
+#        if: github.event_name != 'pull_request'
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - test
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SECRET_KEY }}
-          port: ${{ secrets.PORT }}
-          script: bash deploy_indexcard.sh
-        if: github.event_name != 'pull_request'
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Start docker-compose
+        run: |
+          docker-compose down
+          docker-compose up --build -d
