@@ -5,13 +5,14 @@ on:
 
 jobs:
   deploy-docs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    needs:
+      - test
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SECRET_KEY }}
-          port: ${{ secrets.PORT }}
-          script: bash deploy_indexcard_docu.sh
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Start docker-compose
+        run: |
+          cd indexcards-docu
+          docker-compose down
+          docker-compose up --build -d
