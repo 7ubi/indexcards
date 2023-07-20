@@ -14,6 +14,8 @@ export class IndexcardQuizStatComponent implements OnInit{
 
   userProject?: UserProjectResponse;
 
+  private id: string | null = '';
+
   data: any;
 
   chartOptions: any;
@@ -28,9 +30,9 @@ export class IndexcardQuizStatComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>('/api/project/project?id=' + id,
+    this.http.get<UserProjectResponse>('/api/project/project?id=' + this.id,
       { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => {
@@ -82,5 +84,13 @@ export class IndexcardQuizStatComponent implements OnInit{
         }
       ]
     }
+  }
+
+  onClickQuizButton() {
+    this.router.navigate(['project', this.id, 'quiz']);
+  }
+
+  onClickToProject() {
+    this.router.navigate(['project', this.id]);
   }
 }
