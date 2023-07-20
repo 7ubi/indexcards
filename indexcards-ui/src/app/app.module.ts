@@ -26,6 +26,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import { FooterComponent } from './component/common/footer/footer.component';
 import { AssessmentButtonComponent } from './component/indexcard/assessment-button/assessment-button.component';
 import { IndexcardQuizStatComponent } from './component/indexcard/indexcard-quiz-stat/indexcard-quiz-stat.component';
+import {ChartModule} from "primeng/chart";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { IndexcardQuizStatComponent } from './component/indexcard/indexcard-quiz
     ToastModule,
     TooltipModule,
     InputTextareaModule,
+    ChartModule,
   ],
   providers: [LoginRequired, MessageService],
   bootstrap: [AppComponent],

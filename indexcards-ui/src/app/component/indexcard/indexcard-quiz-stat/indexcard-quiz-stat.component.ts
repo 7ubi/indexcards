@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {Assessment, ResultResponse, UserProjectResponse} from "../../../app.response";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MessageService} from "primeng/api";
@@ -13,6 +13,10 @@ import {LoginService} from "../../auth/login/login.service";
 export class IndexcardQuizStatComponent implements OnInit{
 
   userProject?: UserProjectResponse;
+
+  data: any;
+
+  chartOptions: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +35,7 @@ export class IndexcardQuizStatComponent implements OnInit{
       .subscribe(
         response => {
           this.userProject = response;
+          this.generateChartData();
         }, err => {
           const response: ResultResponse = err.error;
 
@@ -47,4 +52,35 @@ export class IndexcardQuizStatComponent implements OnInit{
       );
   }
 
+  generateChartData(): void {
+    this.chartOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            color: '#495057'
+          }
+        }
+      }
+    };
+
+    const datasets = [];
+    const colors = [];
+    const documentStyle = getComputedStyle(document.documentElement);
+    for(const assessment in Object.keys(Assessment).filter((item) => {return isNaN(Number(item));})) {
+      datasets.push( this.userProject?.projectResponse.indexCardResponses
+          .filter(v => Assessment[v.assessment].toString() === assessment.toString()).length
+      );
+      colors.push(documentStyle.getPropertyValue('--' + Assessment[assessment].toString().toLowerCase()))
+    }
+    this.data = {
+      title: "Status",
+      labels: Object.keys(Assessment).filter((item) => {return isNaN(Number(item));}),
+      datasets: [
+        {
+          data: datasets,
+          backgroundColor: colors
+        }
+      ]
+    }
+  }
 }
