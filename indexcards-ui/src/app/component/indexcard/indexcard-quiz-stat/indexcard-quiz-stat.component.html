@@ -1,0 +1,11 @@
+
+<div class="container">
+  <h1>Current Stats for {{ userProject?.projectResponse?.name }}</h1>
+  <div class="chart-container">
+    <p-chart type="pie" [data]="data" [options]="chartOptions"></p-chart>
+  </div>
+  <div class="footer-container">
+    <p-button pTooltip="Go back to project" (click)="onClickToProject()">Back to Project</p-button>
+    <p-button pTooltip="Repeat" (click)="onClickQuizButton()">Spaced Repetition</p-button>
+  </div>
+</div>

@@ -10,3 +10,7 @@
 .header-icon {
   font-size: 1.75em;
 }
+
+h1 {
+  cursor: pointer;
+}

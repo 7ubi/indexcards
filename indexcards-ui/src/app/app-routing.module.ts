@@ -9,6 +9,7 @@ import {CreateProjectComponent} from "./component/projects/create-project/create
 import {ProjectComponent} from "./component/projects/project/project.component";
 import {CreateIndexcardComponent} from "./component/indexcard/create-indexcard/create-indexcard.component";
 import {IndexcardQuizComponent} from "./component/indexcard/indexcard-quiz/indexcard-quiz.component";
+import {IndexcardQuizStatComponent} from "./component/indexcard/indexcard-quiz-stat/indexcard-quiz-stat.component";
 
 const routes: Routes = [
   {
@@ -42,6 +43,11 @@ const routes: Routes = [
   {
     path: 'project/:id/quiz',
     component: IndexcardQuizComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id/quiz/stat',
+    component: IndexcardQuizStatComponent,
     canActivate: [LoginRequired]
   },
   {

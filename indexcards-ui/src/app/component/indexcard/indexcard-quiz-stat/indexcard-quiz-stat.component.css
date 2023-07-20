@@ -1,0 +1,18 @@
+.chart-container {
+  width: 30%;
+  display:block;
+  margin-right:auto;
+  margin-left:auto;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .chart-container {
+    width: 100%;
+  }
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-evenly;
+}
