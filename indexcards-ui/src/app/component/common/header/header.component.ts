@@ -20,4 +20,8 @@ export class HeaderComponent {
     LocalService.clearData();
     this.router.navigate(['/login']);
   }
+
+  onClickHome() {
+    this.router.navigate(['/']);
+  }
 }
