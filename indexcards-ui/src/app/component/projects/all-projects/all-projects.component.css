@@ -1,4 +1,5 @@
 .project {
+  cursor: pointer;
   background-color: var(--deepPurple300);
   color: white;
   margin: 10px 0 10px 0;
@@ -19,6 +20,7 @@
 }
 
 .header-icon {
+  cursor: pointer;
   color: var(--deepPurple100);
   font-size: 2.5em;
   display: flex;
