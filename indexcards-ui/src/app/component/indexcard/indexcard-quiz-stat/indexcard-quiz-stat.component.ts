@@ -57,7 +57,7 @@ export class IndexcardQuizStatComponent implements OnInit{
       plugins: {
         legend: {
           labels: {
-            color: '#495057'
+            color: '#FFFFFF'
           }
         }
       }
@@ -68,9 +68,9 @@ export class IndexcardQuizStatComponent implements OnInit{
     const documentStyle = getComputedStyle(document.documentElement);
     for(const assessment in Object.keys(Assessment).filter((item) => {return isNaN(Number(item));})) {
       datasets.push( this.userProject?.projectResponse.indexCardResponses
-          .filter(v => Assessment[v.assessment].toString() === assessment.toString()).length
+          .filter(v => Assessment[v.assessment].toString() === assessment).length
       );
-      colors.push(documentStyle.getPropertyValue('--' + Assessment[assessment].toString().toLowerCase()))
+      colors.push(documentStyle.getPropertyValue(`--${Assessment[assessment].toString().toLowerCase()}`));
     }
     this.data = {
       title: "Status",
