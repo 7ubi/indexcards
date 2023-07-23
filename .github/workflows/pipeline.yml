@@ -57,7 +57,7 @@ jobs:
       - name: Make .env
         uses: SpicyPizza/create-envfile@v1
         with:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           file_name: .env
         if: github.event_name != 'pull_request'
       - name: Start docker-compose
