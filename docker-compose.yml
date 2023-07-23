@@ -4,7 +4,6 @@ services:
   mysqldb:
     container_name: dbcontainer
     image: mysql:5.7
-    env_file: .env
     environment:
       MYSQL_DATABASE: 'indexcardsdb'
       # Password for root access
@@ -19,7 +18,6 @@ services:
   backend:
     container_name: backendcontainer
     build: ./indexcards
-    env_file: .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: 'root'
