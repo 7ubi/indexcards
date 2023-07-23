@@ -54,11 +54,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         if: github.event_name != 'pull_request'
+      - name: Make .env
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          file_name: .env
+        if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
           docker-compose down
-          touch .env
-          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
           docker-compose up --build -d
         if: github.event_name != 'pull_request'
   documentation:
