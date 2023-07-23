@@ -61,7 +61,7 @@ jobs:
       - name: Start docker-compose
         run: |
           docker-compose down
-          docker-compose up --env-file ./.env --build -d
+          docker-compose --env-file ./.env up --build -d
         if: github.event_name != 'pull_request'
   documentation:
     name: Deploy documentation
