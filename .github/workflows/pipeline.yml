@@ -56,7 +56,7 @@ jobs:
         if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
-          export ${{ secrets.DB_PASSWORD }}
+          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           docker-compose down
           docker-compose up --build -d
         if: github.event_name != 'pull_request'
