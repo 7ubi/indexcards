@@ -59,7 +59,7 @@ jobs:
           docker-compose down
           touch .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-          docker-compose --env-file ./.env up --build -d
+          docker-compose up --build -d
         if: github.event_name != 'pull_request'
   documentation:
     name: Deploy documentation
