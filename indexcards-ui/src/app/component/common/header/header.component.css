@@ -1,10 +1,29 @@
-.header {
-    background-color: var(--deepPurple700);
-    padding: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--deepPurple50);
+:host ::ng-deep .p-menubar {
+  background-color: var(--deepPurple700);
+  color: var(--deepPurple50);
+  border: none;
+}
+
+:host ::ng-deep .p-menubar-button {
+  color: var(--deepPurple50);
+}
+
+:host ::ng-deep .p-menubar-root-list {
+  background-color: var(--deepPurple700);
+}
+:host ::ng-deep .p-menuitem {
+  margin: 0 10px 0 10px;
+  background-color: var(--deepPurple700);
+}
+
+@media only screen and (max-width: 768px) {
+  :host ::ng-deep .p-menuitem {
+    margin: 0;
+  }
+}
+
+:host ::ng-deep .p-menuitem > a > span {
+  color: var(--deepPurple50) !important;
 }
 
 .header-icon {
@@ -13,4 +32,10 @@
 
 h1 {
   cursor: pointer;
+  margin: 0;
+  color: var(--deepPurple50);
+}
+
+i {
+  color: var(--deepPurple50);
 }

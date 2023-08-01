@@ -1,7 +1,11 @@
-<div class="header">
-  <h1 (click)="onClickHome()">
-    Indexcards
-  </h1>
-  <i *ngIf="isLoggedIn()" class="pi pi-sign-out header-icon" tooltipPosition="left" pTooltip="Logout"
-     (click)="logout()"></i>
-</div>
+<p-menubar [model]="items" class="header">
+  <ng-template pTemplate="start">
+    <h1 (click)="onClickHome()">
+      Indexcards
+    </h1>
+  </ng-template>
+  <ng-template pTemplate="end" >
+    <i *ngIf="isLoggedIn()" class="pi pi-sign-out header-icon" tooltipPosition="left" pTooltip="Logout"
+       (click)="logout()"></i>
+  </ng-template>
+</p-menubar>

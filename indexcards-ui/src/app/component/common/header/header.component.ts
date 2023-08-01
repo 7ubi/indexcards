@@ -1,15 +1,24 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocalService} from "../../../services/local.service";
 import {Router} from "@angular/router";
 import { LoginService } from "../../auth/login/login.service";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+
+  items: MenuItem[] = [];
+
   constructor(private router: Router, private loginService: LoginService) {
+    router.events.subscribe(() => this.setMenuItems());
+  }
+
+  ngOnInit(): void {
+    this.setMenuItems();
   }
 
   isLoggedIn() {
@@ -23,5 +32,18 @@ export class HeaderComponent {
 
   onClickHome() {
     this.router.navigate(['/']);
+  }
+
+  setMenuItems() {
+    if(this.isLoggedIn()) {
+      this.items = [
+        {
+          label: 'Projects',
+          icon: 'pi pi-book',
+        }
+      ];
+    } else {
+      this.items = [{}];
+    }
   }
 }
