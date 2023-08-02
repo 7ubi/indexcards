@@ -35,15 +35,15 @@ export class HeaderComponent implements OnInit {
   }
 
   setMenuItems() {
+    this.items = [];
     if(this.isLoggedIn()) {
-      this.items = [
+      this.items.push(
         {
           label: 'Projects',
           icon: 'pi pi-book',
+          command: () => this.router.navigate(['/']),
         }
-      ];
-    } else {
-      this.items = [{}];
+      );
     }
   }
 }
