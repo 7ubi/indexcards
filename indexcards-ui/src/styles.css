@@ -68,7 +68,7 @@ label {
     width: 80%;
     margin: 30px 10% 0 10%;
     text-align: center;
-    min-height: 70vh;
+    min-height: 85vh;
 }
 
 @media (max-width: 480px) {
