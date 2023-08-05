@@ -97,4 +97,19 @@ public class ProjectRestController {
 
         return ResponseEntity.badRequest().body(result);
     }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editProject(
+            @RequestParam Long id,
+            @RequestBody CreateProjectRequest createProjectRequest
+    ) {
+        logger.info("Editing Project");
+        ResultResponse result = projectService.editProject(createProjectRequest, id);
+
+        if(result.isSuccess()) {
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
 }

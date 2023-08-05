@@ -7,6 +7,7 @@ import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
+import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
@@ -131,6 +132,27 @@ public class ProjectService {
         response.setSuccess(true);
         logger.info("Project was deleted");
 
+        return response;
+    }
+
+    @Transactional
+    public ResultResponse editProject(CreateProjectRequest createProjectService, Long id) {
+        ResultResponse response = new ResultResponse();
+
+        response.setErrorMessages(findGetProjectByIdError(id));
+
+        if(response.getErrorMessages().size() > 0) {
+            response.setSuccess(false);
+            return response;
+        }
+
+        Project project = projectRepo.findProjectByProjectId(id);
+        project.setName(createProjectService.getName());
+        projectRepo.save(project);
+
+        logger.info("Project was edited");
+
+        response.setSuccess(true);
         return response;
     }
 

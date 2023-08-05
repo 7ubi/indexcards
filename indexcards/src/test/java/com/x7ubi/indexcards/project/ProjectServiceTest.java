@@ -5,6 +5,7 @@ import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
+import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.project.UserProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectsResponse;
@@ -164,5 +165,21 @@ public class ProjectServiceTest extends ProjectTestConfig {
         assertThat(user.getProjects().size()).isEqualTo(1);
         assertThat(project).isNotEqualTo(null);
         assertThat(indexCard).isNotEqualTo(null);
+    }
+
+    @Test
+    public void editProjectTest() {
+        // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest("edited project");
+
+        // when
+        ResultResponse result = this.projectService.editProject(createProjectRequest, project.getId());
+
+        // then
+        project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
+        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
+        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
+        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
     }
 }
