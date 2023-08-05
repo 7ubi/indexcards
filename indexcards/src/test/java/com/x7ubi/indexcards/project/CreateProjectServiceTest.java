@@ -31,22 +31,22 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
     public void createProjectTest() {
         // Given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject");
+        createProjectRequest.setName("TestProject1");
 
         // When
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
 
         // Then
-        Project project = this.projectRepo.findProjectByName("TestProject").get(0);
+        Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.getName()).isEqualTo("TestProject");
+        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
     }
     @Test
     public void createProjectWithNonexistentUser() {
         // Given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject");
+        createProjectRequest.setName("TestProject1");
 
         // When
         ResultResponse result = this.createProjectService.createProject("nonexistent", createProjectRequest);
@@ -61,17 +61,17 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
     public void createProjectTwiceTest() {
         // Given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject");
+        createProjectRequest.setName("TestProject1");
 
         // When
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
         ResultResponse resultDouble = this.createProjectService.createProject("test", createProjectRequest);
 
         // Then
-        Project project = this.projectRepo.findProjectByName("TestProject").get(0);
+        Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.getName()).isEqualTo("TestProject");
+        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
         assertEquals(WRONGFULLY_SUCCESSFUL, resultDouble.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, resultDouble.getErrorMessages().size(), 1);
         assertThat(resultDouble.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.PROJECT_NAME_EXISTS);
@@ -81,20 +81,20 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
     public void createProjectTwiceFromDifferentUserTest() {
         // Given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject");
+        createProjectRequest.setName("TestProject1");
 
         // When
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
         ResultResponse resultDouble = this.createProjectService.createProject("test2", createProjectRequest);
 
         // Then
-        List<Project> project = this.projectRepo.findProjectByName("TestProject");
+        List<Project> project = this.projectRepo.findProjectByName(createProjectRequest.getName());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.get(0).getName()).isEqualTo("TestProject");
+        assertThat(project.get(0).getName()).isEqualTo(createProjectRequest.getName());
         assertEquals(WRONGFULLY_SUCCESSFUL, resultDouble.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, resultDouble.getErrorMessages().size(), 0);
-        assertThat(project.get(1).getName()).isEqualTo("TestProject");
+        assertThat(project.get(1).getName()).isEqualTo(createProjectRequest.getName());
     }
 
     @Test

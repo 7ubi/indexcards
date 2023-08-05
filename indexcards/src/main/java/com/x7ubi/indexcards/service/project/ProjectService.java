@@ -25,11 +25,8 @@ public class ProjectService extends AbstractProjectService {
 
     private final Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
-    private final IndexCardRepo indexCardRepo;
-
     public ProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
-        super(projectRepo, userRepo);
-        this.indexCardRepo = indexCardRepo;
+        super(projectRepo, userRepo, indexCardRepo);
     }
 
     @Transactional
@@ -98,35 +95,7 @@ public class ProjectService extends AbstractProjectService {
         return userProjectResponse;
     }
 
-    @Transactional
-    public ResultResponse deleteProject(String username, Long id) {
-        ResultResponse response = new ResultResponse();
 
-        response.setErrorMessages(findGetProjectByIdError(id));
-
-        if(response.getErrorMessages().size() > 0) {
-            response.setSuccess(false);
-            return response;
-        }
-
-        User user = userRepo.findByUsername(username).get();
-        Project project = projectRepo.findProjectByProjectId(id);
-        user.getProjects().remove(project);
-        userRepo.save(user);
-
-        List<IndexCard> indexCardsOfProject = new ArrayList<>(project.getIndexCards());
-
-        projectRepo.deleteProjectByProjectId(id);
-
-        for(IndexCard indexCard: indexCardsOfProject) {
-            indexCardRepo.deleteIndexCardByIndexcardId(indexCard.getIndexcardId());
-        }
-
-        response.setSuccess(true);
-        logger.info("Project was deleted");
-
-        return response;
-    }
 
     @Transactional
     public ResultResponse editProject(CreateProjectRequest createProjectService, Long id) {

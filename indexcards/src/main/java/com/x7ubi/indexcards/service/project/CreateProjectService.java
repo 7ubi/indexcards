@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
@@ -18,8 +19,8 @@ public class CreateProjectService extends AbstractProjectService {
 
     private final Logger logger = LoggerFactory.getLogger(CreateProjectService.class);
 
-    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo) {
-        super(projectRepo, userRepo);
+    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
+        super(projectRepo, userRepo, indexCardRepo);
     }
 
     @Transactional

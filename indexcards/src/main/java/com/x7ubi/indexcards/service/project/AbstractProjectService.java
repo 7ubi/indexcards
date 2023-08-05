@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
@@ -18,10 +19,12 @@ public class AbstractProjectService {
     protected final ProjectRepo projectRepo;
 
     protected final UserRepo userRepo;
+    protected final IndexCardRepo indexCardRepo;
 
-    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo) {
+    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
+        this.indexCardRepo = indexCardRepo;
     }
 
     protected List<MessageResponse> getUserExists(String username) {
