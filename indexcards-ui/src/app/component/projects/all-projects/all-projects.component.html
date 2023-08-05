@@ -11,9 +11,12 @@
         <div (click)="goToProject(project.id)" class="projectName">
           {{ project.name }}
         </div>
-        <p-toast></p-toast>
-        <p-confirmPopup></p-confirmPopup>
-        <i class="pi pi-trash trash-icon" (click)="confirm($event, project.id)"></i>
+        <div>
+          <i class="pi pi-pencil icon edit"></i>
+          <p-toast></p-toast>
+          <p-confirmPopup></p-confirmPopup>
+          <i class="pi pi-trash trash icon" (click)="confirm($event, project.id)"></i>
+        </div>
       </div>
     </div>
   </div>
