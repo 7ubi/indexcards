@@ -2,8 +2,6 @@ package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.Project;
-import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.project.UserProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectsResponse;
 import org.junit.jupiter.api.Test;
@@ -83,21 +81,5 @@ public class ProjectServiceTest extends ProjectTestConfig {
         assertEquals(WRONG_NUMBER_OF_ERRORS, userProjectResponse.getErrorMessages().get(0).getMessage(),
                 ErrorMessage.Project.PROJECT_NOT_FOUND);
         assertThat(userProjectResponse.getProjectResponse()).isEqualTo(null);
-    }
-
-    @Test
-    public void editProjectTest() {
-        // given
-        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
-        CreateProjectRequest createProjectRequest = new CreateProjectRequest("edited project");
-
-        // when
-        ResultResponse result = this.projectService.editProject(createProjectRequest, project.getId());
-
-        // then
-        project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
     }
 }

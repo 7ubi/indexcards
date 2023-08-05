@@ -7,6 +7,7 @@ import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.DeleteProjectService;
+import com.x7ubi.indexcards.service.project.EditProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public abstract class ProjectTestConfig extends TestConfig {
 
     @Autowired
     protected DeleteProjectService deleteProjectService;
+
+    @Autowired
+    protected EditProjectService editProjectService;
 
     protected User user;
 

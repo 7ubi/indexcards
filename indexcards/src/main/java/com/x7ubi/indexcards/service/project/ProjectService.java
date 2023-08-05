@@ -6,8 +6,6 @@ import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
-import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectResponse;
@@ -93,30 +91,5 @@ public class ProjectService extends AbstractProjectService {
         userProjectResponse.setProjectResponse(projectResponse);
 
         return userProjectResponse;
-    }
-
-
-
-    @Transactional
-    public ResultResponse editProject(CreateProjectRequest createProjectService, Long id) {
-        ResultResponse response = new ResultResponse();
-
-        // TODO Project Name check
-        // TODO refactor separate class for edit and delete
-        response.setErrorMessages(findGetProjectByIdError(id));
-
-        if(response.getErrorMessages().size() > 0) {
-            response.setSuccess(false);
-            return response;
-        }
-
-        Project project = projectRepo.findProjectByProjectId(id);
-        project.setName(createProjectService.getName());
-        projectRepo.save(project);
-
-        logger.info("Project was edited");
-
-        response.setSuccess(true);
-        return response;
     }
 }
