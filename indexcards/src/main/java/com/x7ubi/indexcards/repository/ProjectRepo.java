@@ -14,4 +14,6 @@ public interface ProjectRepo extends JpaRepository<Project, Long> {
     Project findProjectByProjectId(Long projectId);
 
     Boolean existsByProjectId(Long projectId);
+
+    void deleteProjectByProjectId(Long projectId);
 }

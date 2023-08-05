@@ -12,4 +12,6 @@ public interface IndexCardRepo extends JpaRepository<IndexCard, Long> {
     boolean existsIndexCardByIndexcardId(Long id);
 
     IndexCard findIndexCardByQuestion(String question);
+
+    void deleteIndexCardByIndexcardId(Long indexcardId);
 }
