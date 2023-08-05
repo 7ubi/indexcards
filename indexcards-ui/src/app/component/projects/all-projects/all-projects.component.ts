@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import {ResultResponse, UserProjectsResponse} from "../../../app.response";
 import { LoginService } from "../../auth/login/login.service";
 import {Router} from "@angular/router";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-all-projects',
@@ -18,6 +18,7 @@ export class AllProjectsComponent implements OnInit {
     private http: HttpClient,
     private loginService: LoginService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     private router: Router
   ) {}
 
@@ -74,6 +75,17 @@ export class AllProjectsComponent implements OnInit {
             detail: error.message,
           });
         });
+    });
+  }
+
+  confirm(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to delete this Project?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteProject(id);
+      }
     });
   }
 }
