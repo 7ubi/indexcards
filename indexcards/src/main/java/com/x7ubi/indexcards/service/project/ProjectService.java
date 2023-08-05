@@ -1,6 +1,5 @@
 package com.x7ubi.indexcards.service.project;
 
-import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -8,7 +7,6 @@ import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
@@ -23,19 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProjectService {
+public class ProjectService extends AbstractProjectService {
 
     private final Logger logger = LoggerFactory.getLogger(ProjectService.class);
-
-    private final ProjectRepo projectRepo;
-
-    private final UserRepo userRepo;
 
     private final IndexCardRepo indexCardRepo;
 
     public ProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
-        this.projectRepo = projectRepo;
-        this.userRepo = userRepo;
+        super(projectRepo, userRepo);
         this.indexCardRepo = indexCardRepo;
     }
 
@@ -44,7 +37,7 @@ public class ProjectService {
 
         UserProjectsResponse userProjectResponse = new UserProjectsResponse();
 
-        userProjectResponse.setErrorMessages(findGetProjectByUsernameError(username));
+        userProjectResponse.setErrorMessages(getUserExists(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
@@ -139,6 +132,8 @@ public class ProjectService {
     public ResultResponse editProject(CreateProjectRequest createProjectService, Long id) {
         ResultResponse response = new ResultResponse();
 
+        // TODO Project Name check
+        // TODO refactor separate class for edit and delete
         response.setErrorMessages(findGetProjectByIdError(id));
 
         if(response.getErrorMessages().size() > 0) {
@@ -154,27 +149,5 @@ public class ProjectService {
 
         response.setSuccess(true);
         return response;
-    }
-
-    private List<MessageResponse> findGetProjectByUsernameError(String username) {
-        List<MessageResponse> error = new ArrayList<>();
-
-        if(!userRepo.existsByUsername(username)) {
-            logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
-            error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
-        }
-
-        return error;
-    }
-
-    private List<MessageResponse> findGetProjectByIdError(long id) {
-        List<MessageResponse> error = new ArrayList<>();
-
-        if(!projectRepo.existsByProjectId(id)) {
-            logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NOT_FOUND));
-        }
-
-        return error;
     }
 }
