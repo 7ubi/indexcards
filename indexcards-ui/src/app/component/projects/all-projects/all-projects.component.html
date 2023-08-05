@@ -11,7 +11,7 @@
         <div (click)="goToProject(project.id)" class="projectName">
           {{ project.name }}
         </div>
-        <i class="pi pi-trash trash-icon"></i>
+        <i class="pi pi-trash trash-icon" (click)="deleteProject(project.id)"></i>
       </div>
     </div>
   </div>
