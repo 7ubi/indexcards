@@ -159,6 +159,8 @@ public class ProjectServiceTest extends ProjectTestConfig {
         assertEquals(WRONGFULLY_SUCCESSFUL, resultResponse.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, resultResponse.getErrorMessages().isEmpty(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, resultResponse.getErrorMessages().size(), 1);
+        assertThat(resultResponse.getErrorMessages().get(0).getMessage())
+                .isEqualTo(ErrorMessage.Project.PROJECT_NOT_FOUND);
         assertThat(user.getProjects().size()).isEqualTo(1);
         assertThat(project).isNotEqualTo(null);
         assertThat(indexCard).isNotEqualTo(null);
