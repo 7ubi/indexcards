@@ -4,9 +4,11 @@ import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.response.common.MessageResponse;
+import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectResponse;
@@ -28,9 +30,12 @@ public class ProjectService {
 
     private final UserRepo userRepo;
 
-    public ProjectService(ProjectRepo projectRepo, UserRepo userRepo) {
+    private final IndexCardRepo indexCardRepo;
+
+    public ProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
+        this.indexCardRepo = indexCardRepo;
     }
 
     @Transactional
@@ -38,7 +43,7 @@ public class ProjectService {
 
         UserProjectsResponse userProjectResponse = new UserProjectsResponse();
 
-        userProjectResponse.setErrorMessages(findGetProjectsError(username));
+        userProjectResponse.setErrorMessages(findGetProjectByUsernameError(username));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             return userProjectResponse;
@@ -71,7 +76,7 @@ public class ProjectService {
     public UserProjectResponse getProject(long id) {
     UserProjectResponse userProjectResponse = new UserProjectResponse();
 
-        userProjectResponse.setErrorMessages(this.findGetProjectError(id));
+        userProjectResponse.setErrorMessages(this.findGetProjectByIdError(id));
 
         if(userProjectResponse.getErrorMessages().size() > 0) {
             userProjectResponse.setSuccess(false);
@@ -99,7 +104,37 @@ public class ProjectService {
         return userProjectResponse;
     }
 
-    private List<MessageResponse> findGetProjectsError(String username) {
+    @Transactional
+    public ResultResponse deleteProject(String username, Long id) {
+        ResultResponse response = new ResultResponse();
+
+        response.setErrorMessages(findGetProjectByIdError(id));
+
+        if(response.getErrorMessages().size() > 0) {
+            response.setSuccess(false);
+            return response;
+        }
+
+        User user = userRepo.findByUsername(username).get();
+        Project project = projectRepo.findProjectByProjectId(id);
+        user.getProjects().remove(project);
+        userRepo.save(user);
+
+        List<IndexCard> indexCardsOfProject = new ArrayList<>(project.getIndexCards());
+
+        projectRepo.deleteProjectByProjectId(id);
+
+        for(IndexCard indexCard: indexCardsOfProject) {
+            indexCardRepo.deleteIndexCardByIndexcardId(indexCard.getIndexcardId());
+        }
+
+        response.setSuccess(true);
+        logger.info("Project was deleted");
+
+        return response;
+    }
+
+    private List<MessageResponse> findGetProjectByUsernameError(String username) {
         List<MessageResponse> error = new ArrayList<>();
 
         if(!userRepo.existsByUsername(username)) {
@@ -110,7 +145,7 @@ public class ProjectService {
         return error;
     }
 
-    private List<MessageResponse> findGetProjectError(long id) {
+    private List<MessageResponse> findGetProjectByIdError(long id) {
         List<MessageResponse> error = new ArrayList<>();
 
         if(!projectRepo.existsByProjectId(id)) {

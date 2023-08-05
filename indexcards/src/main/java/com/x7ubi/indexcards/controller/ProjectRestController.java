@@ -51,7 +51,6 @@ public class ProjectRestController {
 
     @GetMapping("project")
     public ResponseEntity<?> getProject(
-            @RequestHeader("Authorization") String authorization,
             @RequestParam Long id
     ) {
         logger.info("Getting project");
@@ -74,6 +73,23 @@ public class ProjectRestController {
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         ResultResponse result = createProjectService.createProject(username, createProjectRequest);
+
+        if(result.isSuccess()) {
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteProject(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id
+    ) {
+        logger.info("Deleting Project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        ResultResponse result = projectService.deleteProject(username, id);
 
         if(result.isSuccess()) {
             return ResponseEntity.ok().body(result);
