@@ -15,9 +15,9 @@
           [feedback]="false" [toggleMask]="true" id="password"></p-password>
       </div>
       <p>
-        Don't have an Account? Then create one <a routerLink="/signup">here</a>!
+        {{ 'auth.no_account' | translate }} <a routerLink="/signup">{{ 'auth.here' | translate }}</a>!
       </p>
-      <button pButton type="submit">Login</button>
+      <button pButton type="submit">{{ 'auth.login' | translate }}</button>
     </div>
   </div>
 </form>

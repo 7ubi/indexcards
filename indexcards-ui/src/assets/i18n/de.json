@@ -4,7 +4,15 @@
   },
   "auth": {
     "username": "Nutzername",
-    "password": "Passwort"
+    "password": "Passwort",
+    "no_account": "Du hast noch kein Konto? Erstelle eins",
+    "here": "hier",
+    "login": "Anmelden",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "repeat_password": "Passwort Wiederholen",
+    "signup": "Registrieren",
+    "have_account": "Du hast bereits ein Konto? Dann melde dich an: "
   },
   "project": {
 
