@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.x7ubi</groupId>
 	<artifactId>indexcards</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.1.4-SNAPSHOT</version>
 	<name>indexcards</name>
 	<description>Index Cards project for Spring Boot</description>
 	<properties>
