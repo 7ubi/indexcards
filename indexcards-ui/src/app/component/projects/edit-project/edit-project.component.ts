@@ -60,6 +60,18 @@ export class EditProjectComponent implements OnInit {
     }
 
   editProject() {
+    if(this.editProjectFormGroup.get('name')?.value === this.userProject?.projectResponse.name) {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'warn',
+        summary: 'WARNING',
+        detail: 'Project name did not change',
+      });
+
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.http.put<ResultResponse>(`/api/project/edit?id=${(this.id)}`, this.getEditProjectRequestParameter(),
       { headers: this.loginService.getHeaderWithBearer() })
       .subscribe(
@@ -69,7 +81,7 @@ export class EditProjectComponent implements OnInit {
               key: 'tr',
               severity: 'success',
               summary: 'SUCCESS',
-              detail: 'Project was created!',
+              detail: 'Project successfully edited!',
             });
             this.router.navigate(['/']);
           }

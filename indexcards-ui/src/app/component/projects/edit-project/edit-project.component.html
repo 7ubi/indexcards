@@ -1,7 +1,7 @@
 <form [formGroup]="editProjectFormGroup" (ngSubmit)="editProject()">
   <div class="container">
     <h1 class="title">
-      Create a new Project
+      Edit {{ userProject?.projectResponse?.name }}
     </h1>
     <div class="form-input form-group">
       <label for="name">
