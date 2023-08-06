@@ -6,6 +6,8 @@ import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.project.UserProjectResponse;
 import com.x7ubi.indexcards.response.project.UserProjectsResponse;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
+import com.x7ubi.indexcards.service.project.DeleteProjectService;
+import com.x7ubi.indexcards.service.project.EditProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +25,20 @@ public class ProjectRestController {
 
     private final CreateProjectService createProjectService;
 
+    private final DeleteProjectService deleteProjectService;
+
+    private final EditProjectService editProjectService;
+
     public ProjectRestController(
-        JwtUtils jwtUtils,
-        ProjectService projectService,
-        CreateProjectService createProjectService
-    ) {
+            JwtUtils jwtUtils,
+            ProjectService projectService,
+            CreateProjectService createProjectService,
+            DeleteProjectService deleteProjectService, EditProjectService editProjectService) {
         this.jwtUtils = jwtUtils;
         this.projectService = projectService;
         this.createProjectService = createProjectService;
+        this.deleteProjectService = deleteProjectService;
+        this.editProjectService = editProjectService;
     }
 
     @GetMapping("/projects")
@@ -89,7 +97,25 @@ public class ProjectRestController {
         logger.info("Deleting Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        ResultResponse result = projectService.deleteProject(username, id);
+        ResultResponse result = deleteProjectService.deleteProject(username, id);
+
+        if(result.isSuccess()) {
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editProject(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id,
+            @RequestBody CreateProjectRequest createProjectRequest
+    ) {
+        logger.info("Editing Project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        ResultResponse result = editProjectService.editProject(createProjectRequest, id, username);
 
         if(result.isSuccess()) {
             return ResponseEntity.ok().body(result);

@@ -30,6 +30,7 @@ import {ChartModule} from "primeng/chart";
 import {SidebarModule} from "primeng/sidebar";
 import {MenubarModule} from "primeng/menubar";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
+import { EditProjectComponent } from './component/projects/edit-project/edit-project.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {ConfirmPopupModule} from "primeng/confirmpopup";
     IndexcardQuizComponent,
     FooterComponent,
     AssessmentButtonComponent,
-    IndexcardQuizStatComponent
+    IndexcardQuizStatComponent,
+    EditProjectComponent
   ],
     imports: [
         FormsModule,

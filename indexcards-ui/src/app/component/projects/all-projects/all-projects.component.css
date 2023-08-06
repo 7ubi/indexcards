@@ -30,13 +30,20 @@
   align-items: center;
 }
 
-.trash-icon {
-  color: var(--bad);
-  margin-right: 10px;
-  font-size: 1em;
-  transition: color 0.25s;
+.edit {
+  color: var(--deepPurple100);
 }
 
-.trash-icon:hover {
-  color: var(--badDark);
+.trash {
+  color: var(--bad);
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 1em;
+  transition: filter 0.25s;
+}
+
+.icon:hover {
+  filter: brightness(80%);
 }

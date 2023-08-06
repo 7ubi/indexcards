@@ -1,10 +1,13 @@
 package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.TestConfig;
+import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
+import com.x7ubi.indexcards.service.project.DeleteProjectService;
+import com.x7ubi.indexcards.service.project.EditProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +30,17 @@ public abstract class ProjectTestConfig extends TestConfig {
     @Autowired
     protected ProjectService projectService;
 
+    @Autowired
+    protected DeleteProjectService deleteProjectService;
+
+    @Autowired
+    protected EditProjectService editProjectService;
+
     protected User user;
 
     protected User user2;
+
+    protected ArrayList<Project> projects;
 
     @BeforeEach
     void projectTestSetup() {
@@ -50,5 +61,16 @@ public abstract class ProjectTestConfig extends TestConfig {
         this.user2.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(this.user2);
+    }
+
+    @BeforeEach
+    public void createProjects() {
+        this.projects = new ArrayList<>();
+        this.projects.add(new Project("TestProject", null));
+        this.projectRepo.save(this.projects.get(0));
+
+        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).get();
+        userToEdit.setProjects(projects);
+        this.userRepo.save(userToEdit);
     }
 }

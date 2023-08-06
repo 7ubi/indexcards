@@ -25,80 +25,69 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class CreateProjectServiceTest extends ProjectTestConfig {
+public class EditProjectServiceTest extends ProjectTestConfig {
 
     @Test
-    public void createProjectTest() {
+    public void editProjectTest() {
         // given
-        CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject1");
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest("edited project");
 
         // when
-        ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
+        ResultResponse result = this.editProjectService
+                .editProject(createProjectRequest, project.getId(), user.getUsername());
 
         // then
-        Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
+        project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
         assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
     }
+
     @Test
-    public void createProjectWithNonexistentUser() {
+    public void editProjectWithNonexistentUser() {
         // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
         // when
-        ResultResponse result = this.createProjectService.createProject("nonexistent", createProjectRequest);
+        ResultResponse result
+                = this.editProjectService.editProject(createProjectRequest, project.getId(), "nonexistent");
 
         // then
         assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.USERNAME_NOT_FOUND);
+        assertThat(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty()).isTrue();
+        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
     }
 
     @Test
-    public void createProjectTwiceTest() {
+    public void editProjectNameExistsTest() {
         // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
         // when
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
-        ResultResponse resultDouble = this.createProjectService.createProject("test", createProjectRequest);
+        ResultResponse resultDouble = this.editProjectService.editProject(createProjectRequest, project.getId(), "test");
 
         // then
-        Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
+        project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
         assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
         assertEquals(WRONGFULLY_SUCCESSFUL, resultDouble.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, resultDouble.getErrorMessages().size(), 1);
         assertThat(resultDouble.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.PROJECT_NAME_EXISTS);
+        assertThat(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty()).isFalse();
+        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
     }
 
     @Test
-    public void createProjectTwiceFromDifferentUserTest() {
-        // given
-        CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-        createProjectRequest.setName("TestProject1");
-
-        // when
-        ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
-        ResultResponse resultDouble = this.createProjectService.createProject("test2", createProjectRequest);
-
-        // then
-        List<Project> project = this.projectRepo.findProjectByName(createProjectRequest.getName());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.get(0).getName()).isEqualTo(createProjectRequest.getName());
-        assertEquals(WRONGFULLY_SUCCESSFUL, resultDouble.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, resultDouble.getErrorMessages().size(), 0);
-        assertThat(project.get(1).getName()).isEqualTo(createProjectRequest.getName());
-    }
-
-    @Test
-    public void createProjectWithTooLongName() {
+    public void editProjectWithTooLongName() {
         // given
         String projectName = new String(new char[101]).replace('\0', 'A');
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
@@ -113,5 +102,6 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
         assertThat(project.size()).isEqualTo(0);
+        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
     }
 }
