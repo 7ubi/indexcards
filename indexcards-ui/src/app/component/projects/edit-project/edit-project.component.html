@@ -1,0 +1,14 @@
+<form [formGroup]="editProjectFormGroup" (ngSubmit)="editProject()">
+  <div class="container">
+    <h1 class="title">
+      Create a new Project
+    </h1>
+    <div class="form-input form-group">
+      <label for="name">
+        Project name
+      </label><br>
+      <input pInputText formControlName="name" name="name" id="name" type="text"><br>
+    </div>
+    <button pButton type="submit">Edit Project</button>
+  </div>
+</form>

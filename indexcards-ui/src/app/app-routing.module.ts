@@ -10,6 +10,7 @@ import {ProjectComponent} from "./component/projects/project/project.component";
 import {CreateIndexcardComponent} from "./component/indexcard/create-indexcard/create-indexcard.component";
 import {IndexcardQuizComponent} from "./component/indexcard/indexcard-quiz/indexcard-quiz.component";
 import {IndexcardQuizStatComponent} from "./component/indexcard/indexcard-quiz-stat/indexcard-quiz-stat.component";
+import {EditProjectComponent} from "./component/projects/edit-project/edit-project.component";
 
 const routes: Routes = [
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path: 'project/:id',
     component: ProjectComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id/edit',
+    component: EditProjectComponent,
     canActivate: [LoginRequired]
   },
   {

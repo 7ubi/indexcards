@@ -12,7 +12,7 @@
           {{ project.name }}
         </div>
         <div>
-          <i class="pi pi-pencil icon edit"></i>
+          <i class="pi pi-pencil icon edit" (click)="editProject(project.id)"></i>
           <p-toast></p-toast>
           <p-confirmPopup></p-confirmPopup>
           <i class="pi pi-trash trash icon" (click)="confirm($event, project.id)"></i>

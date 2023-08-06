@@ -88,4 +88,8 @@ export class AllProjectsComponent implements OnInit {
       }
     });
   }
+
+  editProject(id: number) {
+    this.router.navigate(['/project', id, 'edit']);
+  }
 }
