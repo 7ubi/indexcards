@@ -1,0 +1,15 @@
+{
+  "common": {
+
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password"
+  },
+  "project": {
+
+  },
+  "indexcard": {
+
+  }
+}

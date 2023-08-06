@@ -3,13 +3,13 @@
     <div class="center">
       <div class="form-input form-group">
         <label for="username">
-          Username
+          {{ 'auth.username' | translate }}
         </label><br>
         <input pInputText formControlName="username" name="username" id="username" type="text"><br>
       </div>
       <div class="form-input form-group">
         <label for="password">
-          Password
+          {{ 'auth.password' | translate }}
         </label><br>
         <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password"
           [feedback]="false" [toggleMask]="true" id="password"></p-password>
