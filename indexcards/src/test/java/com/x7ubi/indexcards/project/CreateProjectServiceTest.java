@@ -29,14 +29,14 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
 
     @Test
     public void createProjectTest() {
-        // Given
+        // given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
-        // When
+        // when
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
 
-        // Then
+        // then
         Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
@@ -44,14 +44,14 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
     }
     @Test
     public void createProjectWithNonexistentUser() {
-        // Given
+        // given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
-        // When
+        // when
         ResultResponse result = this.createProjectService.createProject("nonexistent", createProjectRequest);
 
-        // Then
+        // then
         assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.USERNAME_NOT_FOUND);
@@ -59,15 +59,15 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
 
     @Test
     public void createProjectTwiceTest() {
-        // Given
+        // given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
-        // When
+        // when
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
         ResultResponse resultDouble = this.createProjectService.createProject("test", createProjectRequest);
 
-        // Then
+        // then
         Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
@@ -79,15 +79,15 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
 
     @Test
     public void createProjectTwiceFromDifferentUserTest() {
-        // Given
+        // given
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
-        // When
+        // when
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
         ResultResponse resultDouble = this.createProjectService.createProject("test2", createProjectRequest);
 
-        // Then
+        // then
         List<Project> project = this.projectRepo.findProjectByName(createProjectRequest.getName());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
@@ -99,15 +99,15 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
 
     @Test
     public void createProjectWithTooLongName() {
-        // Given
+        // given
         String projectName = new String(new char[101]).replace('\0', 'A');
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName(projectName);
 
-        // When
+        // when
         ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
 
-        // Then
+        // then
         List<Project> project = this.projectRepo.findProjectByName(projectName);
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);

@@ -25,7 +25,10 @@ public class EditProjectService extends AbstractProjectService {
         ResultResponse response = new ResultResponse();
 
         response.setErrorMessages(findGetProjectByIdError(id));
-        response.getErrorMessages().addAll(getProjectError(createProjectService, username));
+        response.getErrorMessages().addAll(getUserExists(username));
+        if(response.getErrorMessages().isEmpty()) {
+            response.getErrorMessages().addAll(getProjectError(createProjectService, username));
+        }
 
         if(response.getErrorMessages().size() > 0) {
             response.setSuccess(false);
