@@ -4457,10 +4457,13 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 1rem 1rem;
 }
 .p-confirm-popup .p-confirm-popup-footer button {
+  color: var(--deepPurpleA100);
   margin: 0 0.5rem 0 0;
   width: auto;
 }
 .p-confirm-popup .p-confirm-popup-footer button:last-child {
+  color: white;
+  background: var(--deepPurpleA100);
   margin: 0;
 }
 .p-confirm-popup:after {
@@ -6021,34 +6024,31 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   color: #01579B;
 }
 .p-toast .p-toast-message.p-toast-message-success {
-  background: #C8E6C9;
-  border: solid transparent;
-  border-width: 0 0 0 0;
-  color: #1B5E20;
+  background: var(--good);
+  border: 3px solid var(--goodDark);
+  color: white;
 }
 .p-toast .p-toast-message.p-toast-message-success .p-toast-message-icon,
 .p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close {
-  color: #1B5E20;
+  color: white;
 }
 .p-toast .p-toast-message.p-toast-message-warn {
-  background: #FFECB3;
-  border: solid transparent;
-  border-width: 0 0 0 0;
-  color: #7f6003;
+  background: var(--ok);
+  border: 3px solid var(--okDark);
+  color: white;
 }
 .p-toast .p-toast-message.p-toast-message-warn .p-toast-message-icon,
 .p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close {
-  color: #7f6003;
+  color: white;
 }
 .p-toast .p-toast-message.p-toast-message-error {
-  background: #FFCDD2;
-  border: solid transparent;
-  border-width: 0 0 0 0;
-  color: #B71C1C;
+  background: var(--bad);
+  border: 3px solid var(--badDark);
+  color: white;
 }
 .p-toast .p-toast-message.p-toast-message-error .p-toast-message-icon,
 .p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close {
-  color: #B71C1C;
+  color: white;
 }
 
 .p-galleria .p-galleria-close {
