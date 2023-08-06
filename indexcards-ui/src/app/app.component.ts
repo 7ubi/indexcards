@@ -8,7 +8,6 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class AppComponent {
   title = 'indexcards-ui';
-  lang: string = "en";
 
   constructor(
     public translate: TranslateService,
@@ -17,7 +16,7 @@ export class AppComponent {
     translate.setDefaultLang('en');
 
     const browserLang = translate.getBrowserLang();
-    let lang = browserLang?.match(/en|de/) ? browserLang : 'en';
+    const lang = browserLang?.match(/en|de/) ? browserLang : 'en';
     this.changeLang(lang);
   }
 
