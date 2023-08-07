@@ -1,6 +1,6 @@
 {
   "common": {
-
+    "page_not_found": "Seite wurde nicht gefunden!"
   },
   "auth": {
     "username": "Nutzername",
