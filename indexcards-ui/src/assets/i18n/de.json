@@ -1,6 +1,9 @@
 {
   "common": {
-    "page_not_found": "Seite wurde nicht gefunden!"
+    "page_not_found": "Seite wurde nicht gefunden!",
+    "projects": "Projekte",
+    "success": "Erfolg",
+    "error": "Fehler"
   },
   "auth": {
     "username": "Nutzername",
@@ -15,7 +18,15 @@
     "have_account": "Du hast bereits ein Konto? Dann melde dich an: "
   },
   "project": {
-
+    "your_projects": "Deine Projekte",
+    "create_project": "Erstelle ein neues Projekt",
+    "project_name": "Projektname",
+    "create_project_button": "Erstelle Projekt",
+    "edit": "Editiere das Projekt",
+    "yes": "Ja",
+    "no": "Nein",
+    "delete_confirmation": "Bist du dir sicher, dass du das Projekt löschen willst?",
+    "created": "Projekt wurde erstellt!"
   },
   "indexcard": {
 

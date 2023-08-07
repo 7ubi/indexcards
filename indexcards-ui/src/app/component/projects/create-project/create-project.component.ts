@@ -5,6 +5,7 @@ import {ResultResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-create-project',
@@ -20,7 +21,8 @@ export class CreateProjectComponent {
     private messageService: MessageService,
     private loginService: LoginService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ){
     this.createProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required]
@@ -41,8 +43,8 @@ export class CreateProjectComponent {
             this.messageService.add({
               key: 'tr',
               severity: 'success',
-              summary: 'SUCCESS',
-              detail: 'Project was created!',
+              summary: this.translateService.instant('common.success'),
+              detail: this.translateService.instant('project.created'),
             });
             this.router.navigate(['/']);
           }
@@ -53,7 +55,7 @@ export class CreateProjectComponent {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });

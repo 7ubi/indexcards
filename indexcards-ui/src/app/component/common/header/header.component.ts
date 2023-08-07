@@ -3,6 +3,7 @@ import {LocalService} from "../../../services/local.service";
 import {Router} from "@angular/router";
 import { LoginService } from "../../auth/login/login.service";
 import {MenuItem} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-header',
@@ -13,12 +14,17 @@ export class HeaderComponent implements OnInit {
 
   items: MenuItem[] = [];
 
-  constructor(private router: Router, private loginService: LoginService) {
-    router.events.subscribe(() => this.setMenuItems());
+  constructor(
+    private router: Router,
+    private loginService: LoginService,
+    private translateService: TranslateService
+  ) {
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe(() => this.setMenuItems());
     this.setMenuItems();
+    this.translateService.onLangChange.subscribe(() => this.setMenuItems())
   }
 
   isLoggedIn() {
@@ -39,11 +45,13 @@ export class HeaderComponent implements OnInit {
     if(this.isLoggedIn()) {
       this.items.push(
         {
-          label: 'Projects',
+          label: this.translateService.instant('common.projects'),
           icon: 'pi pi-book',
           command: () => this.router.navigate(['/']),
+          escape: false,
         }
       );
     }
+
   }
 }
