@@ -5,6 +5,7 @@ import {MessageService} from "primeng/api";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-edit-project',
@@ -24,7 +25,8 @@ export class EditProjectComponent implements OnInit {
     private messageService: MessageService,
     private loginService: LoginService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
     this.editProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required]
@@ -50,7 +52,7 @@ export class EditProjectComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });
@@ -64,8 +66,8 @@ export class EditProjectComponent implements OnInit {
       this.messageService.add({
         key: 'tr',
         severity: 'warn',
-        summary: 'WARNING',
-        detail: 'Project name did not change',
+        summary: this.translateService.instant('common.warning'),
+        detail: this.translateService.instant('project.not_changed'),
       });
 
       this.router.navigate(['/']);
@@ -80,8 +82,8 @@ export class EditProjectComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'success',
-              summary: 'SUCCESS',
-              detail: 'Project successfully edited!',
+              summary: this.translateService.instant('common.success'),
+              detail: this.translateService.instant('project.edited'),
             });
             this.router.navigate(['/']);
           }
@@ -92,7 +94,7 @@ export class EditProjectComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });

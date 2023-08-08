@@ -40,7 +40,7 @@ export class AllProjectsComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });
@@ -60,8 +60,8 @@ export class AllProjectsComponent implements OnInit {
           this.messageService.add({
             key: 'tr',
             severity: 'success',
-            summary: 'SUCCESS',
-            detail: 'Project was deleted successfully!',
+            summary: this.translateService.instant('common.success'),
+            detail: this.translateService.instant('project.deleted'),
           });
 
           const index
@@ -73,7 +73,7 @@ export class AllProjectsComponent implements OnInit {
           this.messageService.add({
             key: 'tr',
             severity: 'error',
-            summary: 'ERROR',
+            summary: this.translateService.instant('common.error'),
             detail: error.message,
           });
         });

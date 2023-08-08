@@ -3,7 +3,8 @@
     "page_not_found": "Seite wurde nicht gefunden!",
     "projects": "Projekte",
     "success": "Erfolg",
-    "error": "Fehler"
+    "error": "Fehler",
+    "warning": "Warnung"
   },
   "auth": {
     "username": "Nutzername",
@@ -26,7 +27,11 @@
     "yes": "Ja",
     "no": "Nein",
     "delete_confirmation": "Bist du dir sicher, dass du das Projekt löschen willst?",
-    "created": "Projekt wurde erstellt!"
+    "created": "Das Projekt wurde erfolgreich erstellt!",
+    "edited": "Das Projekt wurde erfolgreich editiert!",
+    "deleted": "Das Projekt wurde erfolgreich gelöscht!",
+    "not_changed": "Projektname hat sich nicht geändert",
+    "no_name": "Ein Projektname ist erforderlich, um ein Projekt zu erstellen!"
   },
   "indexcard": {
 

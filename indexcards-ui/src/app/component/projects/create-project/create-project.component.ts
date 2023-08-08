@@ -73,8 +73,8 @@ export class CreateProjectComponent {
     this.messageService.add({
       key: 'tr',
       severity: 'error',
-      summary: 'ERROR',
-      detail: 'Enter a project name to create a project!',
+      summary: this.translateService.instant('common.error'),
+      detail: this.translateService.instant('project.no_name'),
     });
   }
 }
