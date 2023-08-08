@@ -4,4 +4,4 @@ WORKDIR /app
 COPY . .
 RUN mvn clean install -DskipTests
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "target/indexcards-0.1.4-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "target/indexcards-0.1.5-SNAPSHOT.jar"]
