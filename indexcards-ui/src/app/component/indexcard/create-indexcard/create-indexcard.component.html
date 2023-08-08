@@ -1,23 +1,23 @@
 <form [formGroup]="createIndexCardFormGroup" (ngSubmit)="createIndexcard()">
   <div class="container">
     <h1 class="title">
-      Create Index Card
+      {{ 'indexcard.create' | translate }}
     </h1>
 
     <div class="form-input form-group">
       <label for="question">
-        Question
+        {{ 'indexcard.question' | translate }}
       </label><br>
       <textarea pInputTextarea formControlName="question" name="question" id="question" type="text"></textarea><br>
     </div>
 
     <div class="form-input form-group">
-      <label for="question">
-        Answer
+      <label for="answer">
+        {{ 'indexcard.answer' | translate }}
       </label><br>
       <textarea pInputTextarea formControlName="answer" name="answer" id="answer" type="text"></textarea><br>
     </div>
 
-    <button pButton type="submit">Create Index Card</button>
+    <button pButton type="submit">{{ 'indexcard.create' | translate }}</button>
   </div>
 </form>

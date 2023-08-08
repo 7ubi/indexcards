@@ -5,7 +5,7 @@
         {{ getIndexCard()?.question }}
       </h2>
       <button pButton class="show-answer-button" (click)="showAnswer = !showAnswer">
-        {{ showAnswer ? "Hide Answer": "Show Answer" }}
+        {{ showAnswer ? ('indexcard.hide_answer' | translate) : 'indexcard.show_answer' | translate }}
       </button>
       <div *ngIf="showAnswer">
         <h2>{{ getIndexCard()?.answer }}</h2>

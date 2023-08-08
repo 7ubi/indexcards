@@ -34,6 +34,13 @@
     "no_name": "Ein Projektname ist erforderlich, um ein Projekt zu erstellen!"
   },
   "indexcard": {
-
+    "create": "Erstelle eine Karteikarte",
+    "question": "Frage",
+    "answer": "Antwort",
+    "hide_answer": "Antwort verstecken",
+    "show_answer": "Antwort anzeigen",
+    "stat": "Akutelle Statistik für",
+    "to_project": "Zurück zum Projekt",
+    "spaced_repetition": "Abstandswiederholung"
   }
 }

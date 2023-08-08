@@ -34,6 +34,13 @@
     "no_name": "Enter a project name to create a project!"
   },
   "indexcard": {
-
+    "create": "Create Index Card",
+    "question": "Question",
+    "answer": "Answer",
+    "hide_answer": "Hide Answer",
+    "show_answer": "Show Answer",
+    "stat": "Current Stats for",
+    "to_project": "Back to Project",
+    "spaced_repetition": "Spaced Repetition"
   }
 }

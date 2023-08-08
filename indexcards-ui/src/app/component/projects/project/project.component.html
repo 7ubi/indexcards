@@ -4,7 +4,7 @@
       {{ userProject?.projectResponse?.name }}
     </h1>
     <div class="header-icon-container">
-      <p-button pTooltip="Repeat" (click)="onClickQuizButton()">Spaced Repetition</p-button>
+      <p-button (click)="onClickQuizButton()">{{ 'indexcard.spaced_repetition' | translate }}</p-button>
       <i class="pi pi-plus header-icon" pTooltip="Create a new index card" (click)="onClickCreateIndexcardButton()"></i>
     </div>
   </div>
