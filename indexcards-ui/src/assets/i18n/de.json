@@ -41,6 +41,9 @@
     "show_answer": "Antwort anzeigen",
     "stat": "Akutelle Statistik für",
     "to_project": "Zurück zum Projekt",
-    "spaced_repetition": "Abstandswiederholung"
+    "spaced_repetition": "Abstandswiederholung",
+    "created": "Karteikarte wurde erfolgreich erstellt!",
+    "create_tooltip": "Erstelle eine neue Karteikarte",
+    "spaced_repetition_done": "Karteikarten der Abstandswiederholung wurden alle bearbeitet!"
   }
 }

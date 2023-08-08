@@ -5,6 +5,7 @@ import {ResultResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-create-indexcard',
@@ -23,7 +24,8 @@ export class CreateIndexcardComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
     this.createIndexCardFormGroup = this.formBuilder.group({
       answer: ['', Validators.required],
@@ -49,8 +51,8 @@ export class CreateIndexcardComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'success',
-              summary: 'SUCCESS',
-              detail: 'Index card was created!',
+              summary: this.translateService.instant('common.success'),
+              detail: this.translateService.instant('indexcard.created'),
             });
             this.router.navigate(["/project", this.id]);
           }
@@ -61,7 +63,7 @@ export class CreateIndexcardComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           })

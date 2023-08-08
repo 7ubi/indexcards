@@ -34,13 +34,16 @@
     "no_name": "Enter a project name to create a project!"
   },
   "indexcard": {
-    "create": "Create Index Card",
+    "create": "Create index card",
     "question": "Question",
     "answer": "Answer",
     "hide_answer": "Hide Answer",
     "show_answer": "Show Answer",
     "stat": "Current Stats for",
     "to_project": "Back to Project",
-    "spaced_repetition": "Spaced Repetition"
+    "spaced_repetition": "Spaced Repetition",
+    "created": "Index card was successfully created!",
+    "create_tooltip": "Create a new index card",
+    "spaced_repetition_done": "You played through all index cards of the spaced repetition!"
   }
 }
