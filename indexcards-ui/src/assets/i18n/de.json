@@ -1,0 +1,49 @@
+{
+  "common": {
+    "page_not_found": "Seite wurde nicht gefunden!",
+    "projects": "Projekte",
+    "success": "Erfolg",
+    "error": "Fehler",
+    "warning": "Warnung"
+  },
+  "auth": {
+    "username": "Nutzername",
+    "password": "Passwort",
+    "no_account": "Du hast noch kein Konto? Erstelle eins",
+    "here": "hier",
+    "login": "Anmelden",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "repeat_password": "Passwort Wiederholen",
+    "signup": "Registrieren",
+    "have_account": "Du hast bereits ein Konto? Dann melde dich an: "
+  },
+  "project": {
+    "your_projects": "Deine Projekte",
+    "create_project": "Erstelle ein neues Projekt",
+    "project_name": "Projektname",
+    "create_project_button": "Erstelle Projekt",
+    "edit": "Editiere das Projekt",
+    "yes": "Ja",
+    "no": "Nein",
+    "delete_confirmation": "Bist du dir sicher, dass du das Projekt löschen willst?",
+    "created": "Das Projekt wurde erfolgreich erstellt!",
+    "edited": "Das Projekt wurde erfolgreich editiert!",
+    "deleted": "Das Projekt wurde erfolgreich gelöscht!",
+    "not_changed": "Projektname hat sich nicht geändert",
+    "no_name": "Ein Projektname ist erforderlich, um ein Projekt zu erstellen!"
+  },
+  "indexcard": {
+    "create": "Erstelle eine Karteikarte",
+    "question": "Frage",
+    "answer": "Antwort",
+    "hide_answer": "Antwort verstecken",
+    "show_answer": "Antwort anzeigen",
+    "stat": "Akutelle Statistik für",
+    "to_project": "Zurück zum Projekt",
+    "spaced_repetition": "Abstandswiederholung",
+    "created": "Karteikarte wurde erfolgreich erstellt!",
+    "create_tooltip": "Erstelle eine neue Karteikarte",
+    "spaced_repetition_done": "Karteikarten der Abstandswiederholung wurden alle bearbeitet!"
+  }
+}

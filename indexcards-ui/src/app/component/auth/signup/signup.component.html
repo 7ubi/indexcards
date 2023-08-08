@@ -1,42 +1,44 @@
 <form [formGroup]="signUpFormGroup" (submit)="createAccount()">
-  <div class="container center">
-    <div class="form-input form-group">
-      <label for="username">
-        Username
-      </label><br>
-      <input pInputText formControlName="username" name="username" id="username" type="text"><br>
-    </div>
-    <div class="form-input">
-      <label for="firstname">
-        Firstname
-      </label><br>
-      <input pInputText formControlName="firstname" name="firstname" id="firstname" type="text"><br>
-    </div>
-    <div class="form-input">
-      <label for="surname">
-        Lastname
-      </label><br>
-      <input pInputText formControlName="surname" id="surname" type="text"><br>
-    </div>
-    <div class="form-input">
-      <label for="password">
-        Password
-      </label><br>
-      <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password" [feedback]="true"
-        [toggleMask]="true" id="password"></p-password><br>
-    </div>
-    <div class="form-input">
-      <label for="repeat-password">
-        Repeat Password
-      </label><br>
-      <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="repeatPassword"
-        [feedback]="true" [toggleMask]="true" id="repeat-password"></p-password><br>
-    </div>
-    <p>
-        Already have an Account? Then login <a routerLink="/login">here</a>!
-    </p>
+  <div class="container">
     <div class="center">
-      <button pButton type="submit">Create an account</button>
+      <div class="form-input form-group">
+        <label for="username">
+          {{ 'auth.username' | translate }}
+        </label><br>
+        <input pInputText formControlName="username" name="username" id="username" type="text"><br>
+      </div>
+      <div class="form-input">
+        <label for="firstname">
+          {{ 'auth.firstname' | translate }}
+        </label><br>
+        <input pInputText formControlName="firstname" name="firstname" id="firstname" type="text"><br>
+      </div>
+      <div class="form-input">
+        <label for="surname">
+          {{ 'auth.lastname' | translate }}
+        </label><br>
+        <input pInputText formControlName="surname" id="surname" type="text"><br>
+      </div>
+      <div class="form-input">
+        <label for="password">
+          {{ 'auth.password' | translate }}
+        </label><br>
+        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password" [feedback]="true"
+          [toggleMask]="true" id="password"></p-password><br>
+      </div>
+      <div class="form-input">
+        <label for="repeat-password">
+          {{ 'auth.repeat_password' | translate }}
+        </label><br>
+        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="repeatPassword"
+          [feedback]="true" [toggleMask]="true" id="repeat-password"></p-password><br>
+      </div>
+      <p>
+        {{ 'auth.have_account' | translate }} <a routerLink="/login">{{ 'auth.here' | translate }}</a>!
+      </p>
+      <div class="center">
+        <button pButton type="submit">{{ 'auth.signup' | translate }}</button>
+      </div>
     </div>
   </div>
 </form>

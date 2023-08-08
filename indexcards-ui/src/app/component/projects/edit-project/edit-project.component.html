@@ -1,14 +1,14 @@
 <form [formGroup]="editProjectFormGroup" (ngSubmit)="editProject()">
   <div class="container">
     <h1 class="title">
-      Edit {{ userProject?.projectResponse?.name }}
+      {{ 'project.edit' | translate }} {{ userProject?.projectResponse?.name }}
     </h1>
     <div class="form-input form-group">
       <label for="name">
-        Project name
+        {{ 'project.project_name' | translate }}
       </label><br>
       <input pInputText formControlName="name" name="name" id="name" type="text"><br>
     </div>
-    <button pButton type="submit">Edit Project</button>
+    <button pButton type="submit">{{ 'project.edit' | translate }}</button>
   </div>
 </form>

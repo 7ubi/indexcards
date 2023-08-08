@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-project',
@@ -19,7 +20,8 @@ export class ProjectComponent implements OnInit{
     private http: HttpClient,
     private messageService: MessageService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {
   }
 
@@ -38,7 +40,7 @@ export class ProjectComponent implements OnInit{
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });

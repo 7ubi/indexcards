@@ -5,6 +5,7 @@ import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-indexcard-quiz',
@@ -25,7 +26,8 @@ export class IndexcardQuizComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private messageService: MessageService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -46,7 +48,7 @@ export class IndexcardQuizComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           })
@@ -72,7 +74,7 @@ export class IndexcardQuizComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           })
@@ -90,8 +92,8 @@ export class IndexcardQuizComponent implements OnInit {
       this.messageService.add({
         key: 'tr',
         severity: 'success',
-        summary: 'SUCCESS',
-        detail: 'You played through all index cards!',
+        summary: this.translateService.instant('common.success'),
+        detail: this.translateService.instant('indexcard.spaced_repetition_done'),
       });
     }
   }

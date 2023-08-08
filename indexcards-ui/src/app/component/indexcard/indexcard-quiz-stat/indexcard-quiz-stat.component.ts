@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MessageService} from "primeng/api";
 import {LoginService} from "../../auth/login/login.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-indexcard-quiz-stat',
@@ -25,7 +26,8 @@ export class IndexcardQuizStatComponent implements OnInit{
     private router: Router,
     private http: HttpClient,
     private messageService: MessageService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -45,7 +47,7 @@ export class IndexcardQuizStatComponent implements OnInit{
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
+              summary: this.translateService.instant('common.error'),
               detail: error.message,
             });
           });

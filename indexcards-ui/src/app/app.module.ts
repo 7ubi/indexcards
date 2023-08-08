@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +31,13 @@ import {SidebarModule} from "primeng/sidebar";
 import {MenubarModule} from "primeng/menubar";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import { EditProjectComponent } from './component/projects/edit-project/edit-project.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -49,27 +56,34 @@ import { EditProjectComponent } from './component/projects/edit-project/edit-pro
     IndexcardQuizStatComponent,
     EditProjectComponent
   ],
-    imports: [
-        FormsModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        FormsModule,
-        HttpClientModule,
-        PasswordModule,
-        ButtonModule,
-        InputTextModule,
-        ReactiveFormsModule,
-        ToastModule,
-        TooltipModule,
-        InputTextareaModule,
-        ChartModule,
-        SidebarModule,
-        MenubarModule,
-        ConfirmPopupModule,
-    ],
+  imports: [
+    FormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    PasswordModule,
+    ButtonModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    ToastModule,
+    TooltipModule,
+    InputTextareaModule,
+    ChartModule,
+    SidebarModule,
+    MenubarModule,
+    ConfirmPopupModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+  ],
   providers: [LoginRequired, MessageService, ConfirmationService],
   bootstrap: [AppComponent],
-  exports: [FormsModule, ReactiveFormsModule]
+  exports: [FormsModule, ReactiveFormsModule, TranslateModule]
 })
 export class AppModule { }
