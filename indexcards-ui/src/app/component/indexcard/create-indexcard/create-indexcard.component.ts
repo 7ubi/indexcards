@@ -6,6 +6,7 @@ import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-create-indexcard',
@@ -25,7 +26,8 @@ export class CreateIndexcardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ) {
     this.createIndexCardFormGroup = this.formBuilder.group({
       answer: ['', Validators.required],
@@ -43,32 +45,20 @@ export class CreateIndexcardComponent implements OnInit {
       return;
     }
 
-    this.http.post<ResultResponse>('/api/indexCard/create', this.createRequest(),
-      { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
-        response => {
-          if(response.success) {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'success',
-              summary: this.translateService.instant('common.success'),
-              detail: this.translateService.instant('indexcard.created'),
-            });
-            this.router.navigate(["/project", this.id]);
-          }
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          })
-        }
-      )
+    this.httpService.post<ResultResponse>(
+      '/api/indexCard/create',
+      this.createRequest(),
+      (response) => {
+      if(response.success) {
+        this.messageService.add({
+          key: 'tr',
+          severity: 'success',
+          summary: this.translateService.instant('common.success'),
+          detail: this.translateService.instant('indexcard.created'),
+        });
+        this.router.navigate(["/project", this.id]);
+      }
+    });
   }
 
   createRequest() {
@@ -83,8 +73,8 @@ export class CreateIndexcardComponent implements OnInit {
     this.messageService.add({
       key: 'tr',
       severity: 'error',
-      summary: 'ERROR',
-      detail: 'Answer and Question are required to create an index card!',
+      summary: this.translateService.instant('common.error'),
+      detail: this.translateService.instant('indexcard.required'),
     });
   }
 }
