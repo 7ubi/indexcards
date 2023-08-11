@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {UserProjectResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {MessageService} from "primeng/api";
-import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-project',
@@ -17,36 +16,19 @@ export class ProjectComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private httpService: HttpService,
     private messageService: MessageService,
     private loginService: LoginService,
-    private router: Router,
-    private translateService: TranslateService
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>('/api/project/project?id=' + id,
-      { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
-        response => {
-          this.userProject = response;
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          });
-          this.router.navigate(['']);
-        }
-      );
+    this.httpService.get<UserProjectResponse>('/api/project/project?id=' + id,
+      (response) => this.userProject = response,
+        () => this.router.navigate(['']));
   }
 
   onClickCreateIndexcardButton() {

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {ResultResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-create-project',
@@ -17,12 +17,12 @@ export class CreateProjectComponent {
   createProjectFormGroup: FormGroup
 
   constructor(
-    private http: HttpClient,
     private messageService: MessageService,
     private loginService: LoginService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ){
     this.createProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required]
@@ -35,32 +35,20 @@ export class CreateProjectComponent {
       return;
     }
 
-    this.http.post<ResultResponse>('/api/project/create', this.getCreateProjectRequestParameter(),
-      { headers: this.loginService.getHeaderWithBearer() })
-      .subscribe(
-        response => {
-          if(response.success) {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'success',
-              summary: this.translateService.instant('common.success'),
-              detail: this.translateService.instant('project.created'),
-            });
-            this.router.navigate(['/']);
-          }
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
+    this.httpService.post<ResultResponse>(
+      '/api/project/create',
+      this.getCreateProjectRequestParameter(),
+      response => {
+        if(response.success) {
+          this.messageService.add({
+            key: 'tr',
+            severity: 'success',
+            summary: this.translateService.instant('common.success'),
+            detail: this.translateService.instant('project.created'),
           });
+          this.router.navigate(['/']);
         }
-      );
+    });
   }
 
   getCreateProjectRequestParameter() {
