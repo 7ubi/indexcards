@@ -18,13 +18,12 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private translateService: TranslateService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.router.events.subscribe(() => this.setMenuItems());
     this.setMenuItems();
-    this.translateService.onLangChange.subscribe(() => this.setMenuItems())
+    this.translateService.onLangChange.subscribe(() => this.setMenuItems());
   }
 
   isLoggedIn() {

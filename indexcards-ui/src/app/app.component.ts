@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -6,21 +6,23 @@ import {TranslateService} from "@ngx-translate/core";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'indexcards-ui';
 
   constructor(
     public translate: TranslateService,
-  ) {
-    translate.addLangs(['en', 'de']);
-    translate.setDefaultLang('en');
+  ) {}
 
-    const browserLang = translate.getBrowserLang();
-    const lang = browserLang?.match(/en|de/) ? browserLang : 'en';
-    this.changeLang(lang);
+  async changeLang(lang: string) {
+    await this.translate.use(lang).toPromise();
   }
 
-  changeLang(lang: string) {
-    this.translate.use(lang);
+  async ngOnInit() {
+    this.translate.addLangs(['en', 'de']);
+    this.translate.setDefaultLang('en');
+
+    const browserLang = this.translate.getBrowserLang();
+    const lang = browserLang?.match(/en|de/) ? browserLang : 'en';
+    await this.changeLang(lang);
   }
 }

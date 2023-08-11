@@ -44,6 +44,7 @@
     "spaced_repetition": "Spaced Repetition",
     "created": "Index card was successfully created!",
     "create_tooltip": "Create a new index card",
-    "spaced_repetition_done": "You played through all index cards of the spaced repetition!"
+    "spaced_repetition_done": "You played through all index cards of the spaced repetition!",
+    "required": "Answer and Question are required to create an index card!"
   }
 }
