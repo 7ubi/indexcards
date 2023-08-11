@@ -5,6 +5,7 @@ import { LoginService } from "../../auth/login/login.service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-all-projects',
@@ -21,7 +22,8 @@ export class AllProjectsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -29,23 +31,11 @@ export class AllProjectsComponent implements OnInit {
   }
 
   getAllProjects() {
-    this.http.get<UserProjectsResponse>('/api/project/projects'
-      , { headers: this.loginService.getHeaderWithBearer() })
-      .subscribe(
-        response => {
-          if(response.success) {
-            this.userProjectsResponse = response;
-          }
-          response.errorMessages.forEach((error) => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          });
-        }
-      )
+    this.httpService.get<UserProjectsResponse>('/api/project/projects',response => {
+      if(response.success) {
+        this.userProjectsResponse = response;
+      }
+    });
   }
 
   goToProject(id: number) {
@@ -53,30 +43,19 @@ export class AllProjectsComponent implements OnInit {
   }
 
   deleteProject(id: number) {
-    this.http.delete<ResultResponse>(`/api/project/delete?id=${id}`
-      , { headers: this.loginService.getHeaderWithBearer() })
-      .subscribe(response => {
-        if(response.success) {
-          this.messageService.add({
-            key: 'tr',
-            severity: 'success',
-            summary: this.translateService.instant('common.success'),
-            detail: this.translateService.instant('project.deleted'),
-          });
-
-          const index
-            = this.userProjectsResponse.projectResponses.findIndex(project => project.id === id);
-          this.userProjectsResponse.projectResponses.splice(index);
-        }
-
-        response.errorMessages.forEach((error) => {
-          this.messageService.add({
-            key: 'tr',
-            severity: 'error',
-            summary: this.translateService.instant('common.error'),
-            detail: error.message,
-          });
+    this.httpService.delete<ResultResponse>(`/api/project/delete?id=${id}`, response => {
+      if(response.success) {
+        this.messageService.add({
+          key: 'tr',
+          severity: 'success',
+          summary: this.translateService.instant('common.success'),
+          detail: this.translateService.instant('project.deleted'),
         });
+
+        const index
+          = this.userProjectsResponse.projectResponses.findIndex(project => project.id === id);
+        this.userProjectsResponse.projectResponses.splice(index);
+      }
     });
   }
 

@@ -34,16 +34,35 @@ export class HttpService {
     });
   }
 
-  public post<Type>(url: string, request: any, subscribe: (response: Type) => void): void {
+  public post<Type>(url: string, request: any, subscribe: (response: Type) => void, error?: () => void)
+    : void {
     this.http.post<Type>(url, request, { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => subscribe(response)
-        , err => this.error(err.error)
+        , err => {
+          this.error(err.error);
+          if (error) {
+            error();
+          }
+        }
       );
   }
 
   public get<Type>(url: string, subscribe: (response: Type) => void, error?: () => void): void {
     this.http.get<Type>(url, { headers: this.loginService.getHeaderWithBearer()})
+      .subscribe(
+        response => subscribe(response),
+        err => {
+          this.error(err.error)
+          if (error) {
+            error();
+          }
+        }
+      );
+  }
+
+  public delete<Type>(url: string, subscribe: (response: Type) => void, error?: () => void): void {
+    this.http.delete<Type>(url, { headers: this.loginService.getHeaderWithBearer()})
       .subscribe(
         response => subscribe(response),
         err => {
