@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {IndexCardResponse } from "../../../app.response";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-indexcard-quiz',
@@ -27,59 +28,30 @@ export class IndexcardQuizComponent implements OnInit {
     private http: HttpClient,
     private messageService: MessageService,
     private loginService: LoginService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ) {
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<IndexCardResponses>('/api/indexCard/quizIndexCards?id=' + this.id,
-      { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
+    this.httpService.get<IndexCardResponses>(`/api/indexCard/quizIndexCards?id=${this.id}`,
         response => {
           if(response.success) {
             this.indexCards = response;
           }
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          })
-
-          this.router.navigate(['']);
-        }
-      );
+        }, () => this.router.navigate(['']));
   }
   assessIndexCard(assessment: string): void  {
     const request = this.createAssessmentRequest(assessment);
 
-    this.http.post<ResultResponse>('/api/indexCard/assess',
-      request, { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
-        response => {
+    this.httpService.post<ResultResponse>('/api/indexCard/assess',
+      request, response => {
           if(response.success) {
             this.nextIndexCard();
           }
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          })
-        }
-      );
+        });
   }
 
   nextIndexCard() {

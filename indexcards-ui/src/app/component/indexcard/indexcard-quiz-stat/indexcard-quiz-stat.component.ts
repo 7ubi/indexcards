@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Assessment, ResultResponse, UserProjectResponse} from "../../../app.response";
+import {Assessment, UserProjectResponse} from "../../../app.response";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MessageService} from "primeng/api";
 import {LoginService} from "../../auth/login/login.service";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-indexcard-quiz-stat',
@@ -27,33 +28,19 @@ export class IndexcardQuizStatComponent implements OnInit{
     private http: HttpClient,
     private messageService: MessageService,
     private loginService: LoginService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ) {
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>('/api/project/project?id=' + this.id,
-      { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
-        response => {
+    this.httpService.get<UserProjectResponse>(`/api/project/project?id=${this.id}`,
+      response => {
           this.userProject = response;
           this.generateChartData();
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          });
-          this.router.navigate(['']);
-        }
-      );
+        }, () => this.router.navigate(['']));
   }
 
   generateChartData(): void {
