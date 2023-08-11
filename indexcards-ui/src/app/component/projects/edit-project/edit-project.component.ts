@@ -6,6 +6,7 @@ import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ResultResponse, UserProjectResponse} from "../../../app.response";
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-edit-project',
@@ -26,7 +27,8 @@ export class EditProjectComponent implements OnInit {
     private loginService: LoginService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private httpService: HttpService
   ) {
     this.editProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required]
@@ -36,29 +38,13 @@ export class EditProjectComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get<UserProjectResponse>('/api/project/project?id=' + this.id,
-      { headers: this.loginService.getHeaderWithBearer()})
-      .subscribe(
-        response => {
+    this.httpService.get<UserProjectResponse>(`/api/project/project?id=${this.id}`, response => {
           this.userProject = response;
 
           this.editProjectFormGroup.setValue({
             name: this.userProject.projectResponse.name
           });
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          });
-          this.router.navigate(['']);
-        }
-      );
+        }, () => this.router.navigate(['']));
     }
 
   editProject() {
@@ -74,9 +60,7 @@ export class EditProjectComponent implements OnInit {
       return;
     }
 
-    this.http.put<ResultResponse>(`/api/project/edit?id=${(this.id)}`, this.getEditProjectRequestParameter(),
-      { headers: this.loginService.getHeaderWithBearer() })
-      .subscribe(
+    this.httpService.put<ResultResponse>(`/api/project/edit?id=${(this.id)}`, this.getEditProjectRequestParameter(),
         response => {
           if(response.success) {
             this.messageService.add({
@@ -87,19 +71,7 @@ export class EditProjectComponent implements OnInit {
             });
             this.router.navigate(['/']);
           }
-        }, err => {
-          const response: ResultResponse = err.error;
-
-          response.errorMessages.forEach(error => {
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: error.message,
-            });
-          });
-        }
-      );
+        });
   }
 
   getEditProjectRequestParameter() {
