@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {LocalService} from "../../../services/local.service";
 import {Router} from "@angular/router";
 import { LoginService } from "../../auth/login/login.service";
 import {MenuItem} from "primeng/api";
@@ -31,8 +30,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    LocalService.clearData();
-    this.router.navigate(['/login']);
+    this.loginService.logout();
   }
 
   onClickHome() {

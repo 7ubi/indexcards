@@ -2,6 +2,7 @@ import {LocalService} from "../../../services/local.service";
 import {Injectable} from "@angular/core";
 import {LoginResponse} from "../../../app.response";
 import {HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,10 @@ import {HttpHeaders} from "@angular/common/http";
 export class LoginService {
 
   private type = 'Bearer';
+
+  constructor(private router: Router) {
+  }
+
 
   public saveBearer(loginResponse: LoginResponse) {
     LocalService.saveEncryptedData(loginResponse.type, loginResponse.token);
@@ -27,5 +32,10 @@ export class LoginService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getBearer()}`
     })
+  }
+
+  public logout(): void {
+    LocalService.clearData();
+    this.router.navigate(['/login']);
   }
 }

@@ -42,7 +42,17 @@ export class HttpService {
     observable.subscribe(
       response => subscribe(response),
       err => {
-        this.error(err.error)
+        if(err.status === 401) {
+          this.messageService.add({
+            key: 'tr',
+            severity: 'error',
+            summary: this.translateService.instant('common.error'),
+            detail: this.translateService.instant('auth.unauthorized'),
+          });
+          this.loginService.logout();
+        }
+
+        this.error(err.error);
         if (error) {
           error();
         }

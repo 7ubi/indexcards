@@ -3,23 +3,24 @@ import {CanActivate, Router} from "@angular/router";
 import {LoginService} from "./component/auth/login/login.service";
 import {Observable} from "rxjs";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable()
 export class LoginRequired implements CanActivate {
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {}
 
-  canActivate(
-  ): Observable<boolean>|Promise<boolean>|boolean {
+  canActivate(): Observable<boolean>|Promise<boolean>|boolean {
     if (!this.loginService.isLoggedIn()) {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: 'ERROR',
-        detail: 'You need to be logged in to enter this page!',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('auth.unauthorized'),
       });
       this.router.navigate(['login']);
     }
