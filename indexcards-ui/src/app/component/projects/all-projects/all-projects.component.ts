@@ -14,7 +14,7 @@ import {HttpService} from "../../../services/http.service";
 })
 export class AllProjectsComponent implements OnInit {
 
-  userProjectsResponse!: UserProjectsResponse;
+  userProjectsResponse?: UserProjectsResponse;
 
   constructor(
     private http: HttpClient,
@@ -52,9 +52,7 @@ export class AllProjectsComponent implements OnInit {
           detail: this.translateService.instant('project.deleted'),
         });
 
-        const index
-          = this.userProjectsResponse.projectResponses.findIndex(project => project.id === id);
-        this.userProjectsResponse.projectResponses.splice(index);
+        this.getAllProjects();
       }
     });
   }
