@@ -16,7 +16,14 @@
     "lastname": "Nachname",
     "repeat_password": "Passwort Wiederholen",
     "signup": "Registrieren",
-    "have_account": "Du hast bereits ein Konto? Dann melde dich an: "
+    "have_account": "Du hast bereits ein Konto? Dann melde dich an: ",
+    "fields_required": "Alle Felder müssen ausgefüllt werden!",
+    "password_match": "Passwörter sind nicht gleich!",
+    "account_created": "Konto wurder erstellt! Bitte melde dich an!",
+    "wrong_credentials": "Falscher Nutzername oder Passwort!",
+    "username_required": "Nutzername ist ein Pflichtfeld",
+    "password_required": "Passwort ist ein Pflichtfeld",
+    "unauthorized": "Du musst angemeldet sein, um auf diese Seite zu kommen!"
   },
   "project": {
     "your_projects": "Deine Projekte",

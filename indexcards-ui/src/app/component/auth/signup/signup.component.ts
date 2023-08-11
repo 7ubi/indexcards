@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ResultResponse} from '../../../app.response';
 import {MessageService} from 'primeng/api';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,8 @@ export class SignupComponent {
     private http: HttpClient,
     private router: Router,
     private messageService: MessageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
     this.signUpFormGroup = this.formBuilder.group({
       username: ['', Validators.required],
@@ -32,8 +34,8 @@ export class SignupComponent {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: 'ERROR',
-        detail: 'All fields are required!',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('auth.fields_required'),
       });
       return;
     }
@@ -42,8 +44,8 @@ export class SignupComponent {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: 'ERROR',
-        detail: 'Passwords do not match!',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('auth.password_match'),
       });
       return;
     }
@@ -54,8 +56,8 @@ export class SignupComponent {
           this.messageService.add({
             key: 'tr',
             severity: 'success',
-            summary: 'SUCCESS',
-            detail: 'Account was created! Please login!',
+            summary: this.translateService.instant('common.success'),
+            detail: this.translateService.instant('auth.account_created'),
           });
           this.router.navigate(['/login']);
         }
@@ -67,7 +69,7 @@ export class SignupComponent {
           this.messageService.add({
             key: 'tr',
             severity: 'error',
-            summary: 'ERROR',
+            summary: this.translateService.instant('common.error'),
             detail: error.message,
           });
         });

@@ -5,6 +5,7 @@ import {LoginResponse} from "../../../app.response";
 import {LoginService} from "./login.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private messageService: MessageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
     this.loginFormGroup = this.formBuilder.group({
       username: ['', Validators.required],
@@ -52,8 +54,8 @@ export class LoginComponent implements OnInit {
             this.messageService.add({
               key: 'tr',
               severity: 'error',
-              summary: 'ERROR',
-              detail: 'Wrong Username or Password!',
+              summary: this.translateService.instant('common.error'),
+              detail: this.translateService.instant('auth.wrong_credentials')
             });
           }
         }
@@ -65,8 +67,8 @@ export class LoginComponent implements OnInit {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: 'ERROR',
-        detail: 'Username is required',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('auth.username_required'),
       });
     }
 
@@ -74,8 +76,8 @@ export class LoginComponent implements OnInit {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: 'ERROR',
-        detail: 'Password is required',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('auth.password_required'),
       });
     }
   }
