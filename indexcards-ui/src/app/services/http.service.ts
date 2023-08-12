@@ -3,7 +3,7 @@ import {LoginService} from "../component/auth/login/login.service";
 import {HttpClient} from "@angular/common/http";
 import {ResultResponse} from "../app.response";
 import {MessageService} from "primeng/api";
-import {DefaultLangChangeEvent, LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {TranslateService} from "@ngx-translate/core";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -18,21 +18,12 @@ export class HttpService {
     private translateService: TranslateService
   ) {}
 
-  private error(error: ResultResponse) {
-    let summary = this.translateService.instant('common.error');
-    this.translateService.get('common.error').subscribe((text: string) => {
-      this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
-        summary = this.translateService.instant('common.error');
-      });
-      this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
-        summary = this.translateService.instant('common.error');
-      })
-    });
+  private async error(error: ResultResponse) {
     error.errorMessages.forEach(error => {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
-        summary: summary,
+        summary: this.translateService.instant('common.error'),
         detail: error.message,
       });
     });
