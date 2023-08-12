@@ -10,19 +10,32 @@ export class AppComponent implements OnInit {
   title = 'indexcards-ui';
 
   constructor(
-    public translate: TranslateService,
-  ) {}
+    public translate: TranslateService
+  ) {
 
-  async changeLang(lang: string) {
-    await this.translate.use(lang).toPromise();
   }
 
-  async ngOnInit() {
-    this.translate.addLangs(['en', 'de']);
-    this.translate.setDefaultLang('en');
+  ngOnInit(): void {
+    if (localStorage.getItem('language')) {
+      const lang = localStorage.getItem('language');
+      if (lang) {
+        this.changeLang(lang);
+      }
+    } else {
+      this.translate.addLangs(['en', 'de']);
+      this.translate.setDefaultLang('en');
+      localStorage.setItem('language', 'en');
+    }
 
     const browserLang = this.translate.getBrowserLang();
     const lang = browserLang?.match(/en|de/) ? browserLang : 'en';
-    await this.changeLang(lang);
+    this.changeLang(lang);
+  }
+
+
+
+  changeLang(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("language", lang);
   }
 }
