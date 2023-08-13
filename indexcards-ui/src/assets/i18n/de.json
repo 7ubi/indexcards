@@ -54,5 +54,15 @@
     "spaced_repetition_done": "Karteikarten der Abstandswiederholung wurden alle bearbeitet!",
     "required": "Frage und Antwort müssen eingetragen sein, um eine Karteikarte zu erstellen!",
     "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!"
+  },
+  "backend": {
+    "username_exists": "Nutzername existiert bereits!",
+    "username_not_found": "Nutzername wurde nicht gefunden",
+    "project_name_exists": "Ein Projekt mit diesem Namen existiert bereits",
+    "project_name_too_long": "Der Projektname ist zu lang. Es sind nur 100 Zeichen sind erlaubt",
+    "project_not_found": "Projekt wurde nicht gefunden",
+    "indexcard_not_found": "Karteikarte wurde nicht gefunden",
+    "indexcard_question_too_long": "Die Frage der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
+    "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt"
   }
 }
