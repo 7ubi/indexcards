@@ -9,12 +9,8 @@
     </div>
   </div>
   <div class="indexcard-container">
-    <div *ngFor="let indexcard of userProject?.projectResponse?.indexCardResponses">
-      <div class="indexcard {{ indexcard.assessment.toString() | lowercase }}">
-        <h2>
-          {{ indexcard.question }}
-        </h2>
-      </div>
+    <div class="indexcard {{ indexcard.assessment.toString() | lowercase }}" *ngFor="let indexcard of userProject?.projectResponse?.indexCardResponses">
+      <h2>{{ indexcard.question }}</h2>
     </div>
   </div>
 </div>

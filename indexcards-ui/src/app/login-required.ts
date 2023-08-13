@@ -16,7 +16,7 @@ export class LoginRequired implements CanActivate {
 
   canActivate(): Observable<boolean>|Promise<boolean>|boolean {
     if (!this.loginService.isLoggedIn()) {
-      if(localStorage.getItem('loaded')) {
+      if(sessionStorage.getItem('loaded')) {
         this.messageService.add({
           key: 'tr',
           severity: 'error',
@@ -24,7 +24,7 @@ export class LoginRequired implements CanActivate {
           detail: this.translateService.instant('auth.unauthorized'),
         });
       } else {
-        localStorage.setItem('loaded', String(true));
+        sessionStorage.setItem('loaded', String(true));
       }
       this.router.navigate(['login']);
     }
