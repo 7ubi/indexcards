@@ -38,4 +38,9 @@ export class ProjectComponent implements OnInit{
   onClickQuizButton() {
     this.router.navigate(['quiz'], {relativeTo: this.route});
   }
+
+  canStartQuiz() {
+    return this.userProject?.projectResponse?.indexCardResponses
+    && this.userProject?.projectResponse?.indexCardResponses?.length > 0
+  }
 }

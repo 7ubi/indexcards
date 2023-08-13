@@ -40,6 +40,7 @@ export class IndexcardQuizComponent implements OnInit {
         response => {
           if(response.success) {
             this.indexCards = response;
+            this.canStartQuiz();
           }
         }, () => this.router.navigate(['']));
   }
@@ -86,5 +87,17 @@ export class IndexcardQuizComponent implements OnInit {
       indexCardId: this.getIndexCard()?.indexCardId,
       assessment: assessment
     };
+  }
+
+  canStartQuiz() {
+    if(this.indexCards?.indexCardResponses?.length == 0) {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'error',
+        summary: this.translateService.instant('common.error'),
+        detail: this.translateService.instant('indexcard.no_index_cards'),
+      });
+      this.router.navigate(["/project", this.id]);
+    }
   }
 }
