@@ -28,10 +28,13 @@
               "src/styles.css",
               "src/app/styles/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
-              "./node_modules/chart.js/dist/chart.js"
+              "./node_modules/chart.js/dist/chart.js",
+              "./node_modules/quill/dist/quill.js"
             ],
             "allowedCommonJsDependencies": [
               "lodash"

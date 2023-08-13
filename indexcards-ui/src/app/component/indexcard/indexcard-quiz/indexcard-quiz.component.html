@@ -1,14 +1,12 @@
 <div style="height: 60vh" class="container">
   <div class="indexcard-container">
     <div class="indexcard">
-      <h2>
-        {{ getIndexCard()?.question }}
-      </h2>
+      <h2><div [innerHTML]="getIndexCard()?.question" ></div></h2>
       <button pButton class="show-answer-button" (click)="showAnswer = !showAnswer">
         {{ showAnswer ? ('indexcard.hide_answer' | translate) : 'indexcard.show_answer' | translate }}
       </button>
       <div *ngIf="showAnswer">
-        <h2>{{ getIndexCard()?.answer }}</h2>
+        <h2><div [innerHTML]="getIndexCard()?.answer" ></div></h2>
       </div>
     </div>
     <div class="assessment-button-container">

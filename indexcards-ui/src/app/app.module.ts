@@ -33,6 +33,7 @@ import {ConfirmPopupModule} from "primeng/confirmpopup";
 import { EditProjectComponent } from './component/projects/edit-project/edit-project.component';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {EditorModule} from "primeng/editor";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -56,32 +57,33 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     IndexcardQuizStatComponent,
     EditProjectComponent
   ],
-  imports: [
-    FormsModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    PasswordModule,
-    ButtonModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    ToastModule,
-    TooltipModule,
-    InputTextareaModule,
-    ChartModule,
-    SidebarModule,
-    MenubarModule,
-    ConfirmPopupModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
-  ],
+    imports: [
+        FormsModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        PasswordModule,
+        ButtonModule,
+        InputTextModule,
+        ReactiveFormsModule,
+        ToastModule,
+        TooltipModule,
+        InputTextareaModule,
+        ChartModule,
+        SidebarModule,
+        MenubarModule,
+        ConfirmPopupModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        EditorModule
+    ],
   providers: [LoginRequired, MessageService, ConfirmationService],
   bootstrap: [AppComponent],
   exports: [FormsModule, ReactiveFormsModule, TranslateModule]
