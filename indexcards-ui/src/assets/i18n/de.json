@@ -52,6 +52,7 @@
     "created": "Karteikarte wurde erfolgreich erstellt!",
     "create_tooltip": "Erstelle eine neue Karteikarte",
     "spaced_repetition_done": "Karteikarten der Abstandswiederholung wurden alle bearbeitet!",
-    "required": "Frage und Antwort müssen eingetragen sein, um eine Karteikarte zu erstellen!"
+    "required": "Frage und Antwort müssen eingetragen sein, um eine Karteikarte zu erstellen!",
+    "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!"
   }
 }

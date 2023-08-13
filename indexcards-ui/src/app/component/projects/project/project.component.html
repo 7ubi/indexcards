@@ -4,7 +4,12 @@
       {{ userProject?.projectResponse?.name }}
     </h1>
     <div class="header-icon-container">
-      <p-button (click)="onClickQuizButton()">{{ 'indexcard.spaced_repetition' | translate }}</p-button>
+      <p-button
+        *ngIf="canStartQuiz()"
+        (click)="onClickQuizButton()"
+      >
+        {{ 'indexcard.spaced_repetition' | translate }}
+      </p-button>
       <i class="pi pi-plus header-icon" pTooltip="{{ 'indexcard.create_tooltip' | translate }}" (click)="onClickCreateIndexcardButton()"></i>
     </div>
   </div>
