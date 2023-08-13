@@ -70,7 +70,7 @@ export class SignupComponent {
             key: 'tr',
             severity: 'error',
             summary: this.translateService.instant('common.error'),
-            detail: error.message,
+            detail: this.translateService.instant(`backend.${error.message}`)
           });
         });
       });
