@@ -66,16 +66,6 @@ public class CreateIndexCardService {
             error.add(new MessageResponse(ErrorMessage.IndexCards.PROJECT_NOT_FOUND));
         }
 
-        if(createIndexCardRequest.getQuestion().length() > 500) {
-            logger.error(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG);
-            error.add(new MessageResponse(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG));
-        }
-
-        if(createIndexCardRequest.getAnswer().length() > 500) {
-            logger.error(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG);
-            error.add(new MessageResponse(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG));
-        }
-
         return error;
     }
 }
