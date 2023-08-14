@@ -34,6 +34,7 @@ import { EditProjectComponent } from './component/projects/edit-project/edit-pro
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {EditorModule} from "primeng/editor";
+import {ScrollPanelModule} from "primeng/scrollpanel";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -82,7 +83,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        EditorModule
+        EditorModule,
+        ScrollPanelModule
     ],
   providers: [LoginRequired, MessageService, ConfirmationService],
   bootstrap: [AppComponent],

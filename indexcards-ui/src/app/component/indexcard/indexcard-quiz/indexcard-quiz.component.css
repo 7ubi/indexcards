@@ -7,6 +7,11 @@
   margin-bottom: 20px;
 }
 
+.indexcard-text {
+  font-size: 1.5em;
+  text-align: left;
+}
+
 .indexcard {
   width: 50%;
   background-color: var(--deepPurple300);
