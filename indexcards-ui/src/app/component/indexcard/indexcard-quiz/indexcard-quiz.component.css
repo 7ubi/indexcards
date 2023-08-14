@@ -7,6 +7,11 @@
   margin-bottom: 20px;
 }
 
+.indexcard-text {
+  font-size: 1.5em;
+  text-align: left;
+}
+
 .indexcard {
   width: 50%;
   background-color: var(--deepPurple300);
@@ -15,29 +20,11 @@
   border-radius: 10px;
 }
 
-
 @media (max-width: 480px) {
   .indexcard {
     width: 100%;
   }
 }
-
-.p-button {
-  background-color: var(--deepPurpleA200);
-}
-
-.p-button:enabled {
-  background-color: var(--deepPurpleA200);
-}
-
-.p-button:hover {
-  background-color: var(--deepPurpleA400);
-}
-
-.p-button:enabled:hover {
-  background-color: var(--deepPurpleA400);
-}
-
 
 .assessment-button-container {
   height: 10%;
