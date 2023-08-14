@@ -2,6 +2,7 @@
 
 :root {
   /*https://m2.material.io/design/color/the-color-system.html#color-theme-creation*/
+  --darkergrey: #121212;
   --darkgrey: #232323;
   --lightgrey: #ababab;
   --deepPurple50: #EDE7F6;
