@@ -12,12 +12,10 @@ public class IndexCard {
     @Column(name = "indexcard_id", nullable = false, updatable = false)
     private Long indexcardId;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String question;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String answer;
 
     @Column(nullable = false)

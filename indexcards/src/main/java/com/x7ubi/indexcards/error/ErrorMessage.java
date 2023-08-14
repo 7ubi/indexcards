@@ -20,5 +20,9 @@ public class ErrorMessage {
         public static String PROJECT_NOT_FOUND = "project_not_found";
 
         public static String INDEX_CARD_NOT_FOUND = "indexcard_not_found";
+
+        public static String INDEXCARD_QUESTION_TOO_LONG = "indexcard_question_too_long";
+
+        public static String INDEXCARD_ANSWER_TOO_LONG = "indexcard_answer_too_long";
     }
 }

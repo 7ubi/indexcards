@@ -61,6 +61,8 @@
     "project_name_exists": "A project with this name already exists",
     "project_name_too_long": "The name of the project was too long, only 100 characters are allowed",
     "project_not_found": "Project not found",
-    "indexcard_not_found": "Index card not found"
+    "indexcard_not_found": "Index card not found",
+    "indexcard_question_too_long": "The question of the index card was too long, only 500 characters are allowed",
+    "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed"
   }
 }

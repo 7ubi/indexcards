@@ -66,4 +66,27 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.PROJECT_NOT_FOUND);
         assertThat(indexCard).isNull();
     }
+
+    @Test
+    public void createIndexCardWithTooLongQuestionAndAnswerTest() {
+        // given
+        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
+            projects.get(0).getId(),
+            new String(new char[501]).replace('\0', 'A'),
+            new String(new char[501]).replace('\0', 'A')
+        );
+
+        // when
+        ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
+
+        // then
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(createIndexCardRequest.getQuestion());
+        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
+        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 2);
+        assertThat(result.getErrorMessages().get(0).getMessage())
+            .isEqualTo(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG);
+        assertThat(result.getErrorMessages().get(1).getMessage())
+            .isEqualTo(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG);
+        assertThat(indexCard).isNull();
+    }
 }
