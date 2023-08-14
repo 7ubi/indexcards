@@ -1911,6 +1911,11 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   color: #ffffff;
   border-color: transparent;
 }
+.p-button:enabled:focus {
+  background: var(--deepPurpleA100);
+  color: #ffffff;
+  border-color: transparent;
+}
 .p-button.p-button-outlined {
   background-color: transparent;
   color: var(--deepPurpleA100);
@@ -6515,10 +6520,10 @@ p-autocomplete.ng-dirty.ng-invalid .p-autocomplete .p-autocomplete-multiple-cont
   min-width: auto;
 }
 .p-button:enabled:focus {
-  background: rgba(103, 58, 183, 0.76);
+  background: var(--deepPurpleA100);
 }
 .p-button:enabled:active {
-  background: rgba(103, 58, 183, 0.68);
+  background: var(--deepPurpleA100);
 }
 .p-button .p-ink {
   background-color: rgba(255, 255, 255, 0.32);
