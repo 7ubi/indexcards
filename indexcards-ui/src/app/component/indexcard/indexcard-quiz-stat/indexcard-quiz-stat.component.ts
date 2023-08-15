@@ -63,9 +63,13 @@ export class IndexcardQuizStatComponent implements OnInit{
       );
       colors.push(documentStyle.getPropertyValue(`--${Assessment[assessment].toString().toLowerCase()}`));
     }
+
+    let labels = Object.keys(Assessment).filter((item) => {return isNaN(Number(item));})
+    labels = labels.map(label =>  this.translateService.instant(label.toLowerCase()));
+
     this.data = {
       title: "Status",
-      labels: Object.keys(Assessment).filter((item) => {return isNaN(Number(item));}),
+      labels: labels,
       datasets: [
         {
           data: datasets,

@@ -20,6 +20,7 @@
   --deepPurpleA400: #651FFF;
   --deepPurpleA700: #6200EA;
   --error: #E63946;
+  --unrated: var(--lightgrey);
   --bad: #CD7575;
   --badDark: #a02727;
   --ok: #CDC475;

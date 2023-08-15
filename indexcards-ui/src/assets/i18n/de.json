@@ -64,5 +64,9 @@
     "indexcard_not_found": "Karteikarte wurde nicht gefunden",
     "indexcard_question_too_long": "Die Frage der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt"
-  }
+  },
+  "unrated": "Unbewertet",
+  "bad": "Schlecht",
+  "ok": "Okay",
+  "good": "Gut"
 }
