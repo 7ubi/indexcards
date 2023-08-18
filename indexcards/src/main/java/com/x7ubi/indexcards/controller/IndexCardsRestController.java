@@ -1,16 +1,17 @@
 package com.x7ubi.indexcards.controller;
 
-import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
+import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
+import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api/indexCard")
@@ -24,13 +25,17 @@ public class IndexCardsRestController {
 
     private final IndexCardQuizService indexCardQuizService;
 
+    private final DeleteIndexCardService deleteIndexCardService;
+
     public IndexCardsRestController(
             CreateIndexCardService createIndexCardService,
             IndexCardAssessmentService indexCardAssessmentService,
-            IndexCardQuizService indexCardQuizService) {
+            IndexCardQuizService indexCardQuizService,
+            DeleteIndexCardService deleteIndexCardService) {
         this.createIndexCardService = createIndexCardService;
         this.indexCardAssessmentService = indexCardAssessmentService;
         this.indexCardQuizService = indexCardQuizService;
+        this.deleteIndexCardService = deleteIndexCardService;
     }
 
     @PostMapping("/create")
@@ -42,6 +47,21 @@ public class IndexCardsRestController {
         ResultResponse response = this.createIndexCardService.createIndexCard(createProjectRequest);
 
         if(response.isSuccess()) {
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteIndexCard(
+            @RequestParam Long id
+    ) {
+        logger.info("Deleting index cards");
+
+        ResultResponse response = this.deleteIndexCardService.deleteIndexCard(id);
+
+        if (response.isSuccess()) {
             return ResponseEntity.ok().body(response);
         }
 
