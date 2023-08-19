@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.indexcard;
 
+import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
@@ -47,5 +48,43 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
         assertThat(project.getIndexCards().size()).isEqualTo(0);
+    }
+
+    @Test
+    public void deleteIndexCardWrongProjectTest() {
+        // given
+        DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
+                this.indexCard.getIndexcardId(),
+                this.projects.get(0).getId() + 1
+        );
+
+        // when
+        ResultResponse result = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+
+        // then
+        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
+        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), false);
+        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.PROJECT_NOT_FOUND);
+        assertThat(project.getIndexCards().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void deleteIndexCardWrongIndexCardTest() {
+        // given
+        DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
+                this.indexCard.getIndexcardId() + 1,
+                this.projects.get(0).getId()
+        );
+
+        // when
+        ResultResponse result = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+
+        // then
+        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
+        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), false);
+        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND);
+        assertThat(project.getIndexCards().size()).isEqualTo(1);
     }
 }
