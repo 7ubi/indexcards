@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
@@ -55,7 +56,7 @@ public class IndexCardsRestController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteIndexCard(
-            @RequestParam Long id
+            @RequestParam DeleteIndexCardRequest id
     ) {
         logger.info("Deleting index cards");
 

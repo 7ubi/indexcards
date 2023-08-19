@@ -4,7 +4,6 @@ import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
-import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.response.common.MessageResponse;
 import org.slf4j.Logger;
@@ -39,10 +38,10 @@ public class AbstractIndexCardService {
         return error;
     }
 
-    protected List<MessageResponse> getIndexCardNotFoundError(AssessmentRequest assessmentRequest) {
+    protected List<MessageResponse> getIndexCardNotFoundError(Long id) {
         List<MessageResponse> error = new ArrayList<>();
 
-        if (!this.indexCardRepo.existsIndexCardByIndexcardId(assessmentRequest.getIndexCardId())) {
+        if (!this.indexCardRepo.existsIndexCardByIndexcardId(id)) {
             error.add(new MessageResponse(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND));
         }
 

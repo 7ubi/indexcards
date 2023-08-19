@@ -28,7 +28,7 @@ public class IndexCardAssessmentService extends AbstractIndexCardService {
     public ResultResponse assessIndexCard(AssessmentRequest assessmentRequest) {
         ResultResponse resultResponse = new ResultResponse();
 
-        resultResponse.setErrorMessages(this.getIndexCardNotFoundError(assessmentRequest));
+        resultResponse.setErrorMessages(this.getIndexCardNotFoundError(assessmentRequest.getIndexCardId()));
 
         if (!resultResponse.getErrorMessages().isEmpty()) {
             resultResponse.setSuccess(false);

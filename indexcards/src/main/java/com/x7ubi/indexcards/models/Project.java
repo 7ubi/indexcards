@@ -14,7 +14,7 @@ public class Project {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<IndexCard> indexCards;
 
     public Project() {}

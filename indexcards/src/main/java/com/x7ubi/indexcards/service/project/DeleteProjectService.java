@@ -30,7 +30,7 @@ public class DeleteProjectService extends AbstractProjectService {
 
         response.setErrorMessages(findGetProjectByIdError(id));
 
-        if(response.getErrorMessages().size() > 0) {
+        if (!response.getErrorMessages().isEmpty()) {
             response.setSuccess(false);
             return response;
         }
