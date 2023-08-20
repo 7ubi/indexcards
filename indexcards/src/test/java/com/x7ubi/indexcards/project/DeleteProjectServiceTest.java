@@ -14,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,8 +39,8 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
 
     private void createIndexCardsForProject() {
         this.indexCard = new IndexCard();
-        this.indexCard.setQuestion("Question");
-        this.indexCard.setAnswer("Answer");
+        this.indexCard.setQuestion(StandardCharsets.UTF_8.encode("Question").array());
+        this.indexCard.setAnswer(StandardCharsets.UTF_8.encode("Answer").array());
 
         this.indexCardRepo.save(this.indexCard);
         Set<IndexCard> indexCards = new HashSet<>();

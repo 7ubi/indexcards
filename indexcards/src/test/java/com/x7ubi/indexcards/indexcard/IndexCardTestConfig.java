@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,8 +79,8 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     protected void createIndexCard() {
         this.indexCard = new IndexCard();
-        this.indexCard.setQuestion("Question");
-        this.indexCard.setAnswer("Answer");
+        this.indexCard.setQuestion(StandardCharsets.UTF_8.encode("Question").array());
+        this.indexCard.setAnswer(StandardCharsets.UTF_8.encode("Answer").array());
 
         this.indexCardRepo.save(this.indexCard);
         Set<IndexCard> indexCards = new HashSet<>();
