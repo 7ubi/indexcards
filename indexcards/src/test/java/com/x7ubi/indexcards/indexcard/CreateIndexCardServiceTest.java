@@ -13,6 +13,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
@@ -39,11 +42,13 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
 
         // then
-        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(createIndexCardRequest.getQuestion());
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
-        assertThat(indexCard.getQuestion()).isEqualTo(createIndexCardRequest.getQuestion());
-        assertThat(indexCard.getAnswer()).isEqualTo(createIndexCardRequest.getAnswer());
+        assertThat(String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))))
+                .isEqualTo(createIndexCardRequest.getQuestion());
+        assertThat(String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))))
+                .isEqualTo(createIndexCardRequest.getAnswer());
         assertThat(indexCard.getAssessment()).isEqualTo(Assessment.UNRATED);
     }
 
@@ -60,33 +65,10 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
 
         // then
-        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(createIndexCardRequest.getQuestion());
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
         assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
         assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
         assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.PROJECT_NOT_FOUND);
-        assertThat(indexCard).isNull();
-    }
-
-    @Test
-    public void createIndexCardWithTooLongQuestionAndAnswerTest() {
-        // given
-        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
-            projects.get(0).getId(),
-            new String(new char[501]).replace('\0', 'A'),
-            new String(new char[501]).replace('\0', 'A')
-        );
-
-        // when
-        ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
-
-        // then
-        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(createIndexCardRequest.getQuestion());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 2);
-        assertThat(result.getErrorMessages().get(0).getMessage())
-            .isEqualTo(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG);
-        assertThat(result.getErrorMessages().get(1).getMessage())
-            .isEqualTo(ErrorMessage.IndexCards.INDEXCARD_ANSWER_TOO_LONG);
         assertThat(indexCard).isNull();
     }
 }

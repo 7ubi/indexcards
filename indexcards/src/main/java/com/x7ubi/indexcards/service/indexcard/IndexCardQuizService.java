@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -60,7 +62,8 @@ public class IndexCardQuizService extends AbstractIndexCardService {
                 break;
             IndexCard indexCard = indexCards.get(i);
             indexCardResponses.getIndexCardResponses().add(new IndexCardResponse(
-                    indexCard.getId(), indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
+                    indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
+                    String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))), indexCard.getAssessment()));
         }
         indexCardResponses.setSuccess(true);
 

@@ -15,7 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -34,7 +37,7 @@ public class ProjectService extends AbstractProjectService {
 
         userProjectResponse.setErrorMessages(getUserExists(username));
 
-        if(userProjectResponse.getErrorMessages().size() > 0) {
+        if (!userProjectResponse.getErrorMessages().isEmpty()) {
             return userProjectResponse;
         }
 
@@ -50,7 +53,8 @@ public class ProjectService extends AbstractProjectService {
             for(IndexCard indexCard: project.getIndexCards()) {
                 indexCardResponses.add(
                     new IndexCardResponse(
-                        indexCard.getId(), indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
+                            indexCard.getId(), Arrays.toString(indexCard.getQuestion()),
+                            Arrays.toString(indexCard.getAnswer()), indexCard.getAssessment()));
             }
             userProjectResponse.getProjectResponses()
                     .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
@@ -67,7 +71,7 @@ public class ProjectService extends AbstractProjectService {
 
         userProjectResponse.setErrorMessages(this.findGetProjectByIdError(id));
 
-        if(userProjectResponse.getErrorMessages().size() > 0) {
+        if (!userProjectResponse.getErrorMessages().isEmpty()) {
             userProjectResponse.setSuccess(false);
             return userProjectResponse;
         }
@@ -84,7 +88,8 @@ public class ProjectService extends AbstractProjectService {
         for(IndexCard indexCard: project.getIndexCards()) {
             indexCardResponses
                 .add(new IndexCardResponse(
-                    indexCard.getId(), indexCard.getQuestion(), indexCard.getAnswer(), indexCard.getAssessment()));
+                        indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
+                        String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))), indexCard.getAssessment()));
         }
         projectResponse.setIndexCardResponses(indexCardResponses);
         userProjectResponse.setSuccess(true);

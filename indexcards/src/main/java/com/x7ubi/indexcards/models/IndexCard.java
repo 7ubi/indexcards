@@ -12,11 +12,13 @@ public class IndexCard {
     @Column(name = "indexcard_id", nullable = false, updatable = false)
     private Long indexcardId;
 
-    @Column(nullable = false, length = 500)
-    private String question;
+    @Column(nullable = false)
+    @Lob
+    private byte[] question;
 
     @Column(nullable = false, length = 500)
-    private String answer;
+    @Lob
+    private byte[] answer;
 
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
@@ -25,7 +27,7 @@ public class IndexCard {
     @OneToMany(cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<IndexCardAssessment> assessmentHistory = new HashSet<>();
 
-    public IndexCard(String question, String answer) {
+    public IndexCard(byte[] question, byte[] answer) {
         this.question = question;
         this.answer = answer;
     }
@@ -36,19 +38,19 @@ public class IndexCard {
         return indexcardId;
     }
 
-    public String getQuestion() {
+    public byte[] getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(byte[] question) {
         this.question = question;
     }
 
-    public String getAnswer() {
+    public byte[] getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(byte[] answer) {
         this.answer = answer;
     }
 

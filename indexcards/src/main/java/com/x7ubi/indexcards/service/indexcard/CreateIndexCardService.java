@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class CreateIndexCardService extends AbstractIndexCardService {
@@ -30,16 +31,14 @@ public class CreateIndexCardService extends AbstractIndexCardService {
         resultResponse.setErrorMessages(
                 this.getProjectNotFoundError(createIndexCardRequest.getProjectId())
         );
-        if (resultResponse.getErrorMessages().isEmpty()) {
-            resultResponse.getErrorMessages().addAll(this.getIndexCardCreationErrors(createIndexCardRequest));
-        }
 
         if (!resultResponse.getErrorMessages().isEmpty()) {
             return resultResponse;
         }
 
         IndexCard indexCard
-            = new IndexCard(createIndexCardRequest.getQuestion(), createIndexCardRequest.getAnswer());
+                = new IndexCard(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array(),
+                StandardCharsets.UTF_8.encode(createIndexCardRequest.getAnswer()).array());
 
         this.indexCardRepo.save(indexCard);
 
