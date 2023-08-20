@@ -1,12 +1,11 @@
 package com.x7ubi.indexcards.service.indexcard;
 
-import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
+import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
-import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,29 +13,24 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-public class IndexCardAssessmentService {
+public class IndexCardAssessmentService extends AbstractIndexCardService {
 
     private final Logger logger = LoggerFactory.getLogger(IndexCardAssessmentService.class);
-    private final IndexCardRepo indexCardRepo;
 
-    private final IndexCardAssessmentRepo indexCardAssessmentRepo;
-
-    public IndexCardAssessmentService(IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
-        this.indexCardRepo = indexCardRepo;
-        this.indexCardAssessmentRepo = indexCardAssessmentRepo;
+    public IndexCardAssessmentService(
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
     }
 
     @Transactional
     public ResultResponse assessIndexCard(AssessmentRequest assessmentRequest) {
         ResultResponse resultResponse = new ResultResponse();
 
-        resultResponse.setErrorMessages(this.findAssessIndexCardError(assessmentRequest));
+        resultResponse.setErrorMessages(this.getIndexCardNotFoundError(assessmentRequest.getIndexCardId()));
 
-        if(resultResponse.getErrorMessages().size() > 0) {
+        if (!resultResponse.getErrorMessages().isEmpty()) {
             resultResponse.setSuccess(false);
             return resultResponse;
         }
@@ -55,13 +49,5 @@ public class IndexCardAssessmentService {
         return resultResponse;
     }
 
-    private List<MessageResponse> findAssessIndexCardError(AssessmentRequest assessmentRequest) {
-        List<MessageResponse> error = new ArrayList<>();
 
-        if(!this.indexCardRepo.existsIndexCardByIndexcardId(assessmentRequest.getIndexCardId())) {
-            error.add(new MessageResponse(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND));
-        }
-
-        return error;
-    }
 }

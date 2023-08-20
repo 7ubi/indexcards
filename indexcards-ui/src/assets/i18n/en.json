@@ -53,7 +53,8 @@
     "create_tooltip": "Create a new index card",
     "spaced_repetition_done": "You played through all index cards of the spaced repetition!",
     "required": "Answer and Question are required to create an index card!",
-    "no_index_cards": "Create index cards to start a quiz!"
+    "no_index_cards": "Create index cards to start a quiz!",
+    "deleted": "Index card was successfully deleted!"
   },
   "backend": {
     "username_exists": "Username already exists!",

@@ -17,9 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -34,20 +32,10 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
 
-    private IndexCard indexCard;
 
     @BeforeEach
     public void setupIndexCards() {
-        this.indexCard = new IndexCard();
-        this.indexCard.setQuestion("Question");
-        this.indexCard.setAnswer("Answer");
-
-        this.indexCardRepo.save(this.indexCard);
-        Set<IndexCard> indexCards = new HashSet<>();
-        this.indexCard = this.indexCardRepo.findIndexCardByQuestion(this.indexCard.getQuestion());
-        indexCards.add(this.indexCard);
-        this.projects.get(0).setIndexCards(indexCards);
-        this.projectRepo.save(this.projects.get(0));
+        createIndexCard();
     }
 
     @Test

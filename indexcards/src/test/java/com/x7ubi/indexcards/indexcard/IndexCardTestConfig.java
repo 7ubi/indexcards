@@ -1,18 +1,22 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.TestConfig;
+import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
+import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class IndexCardTestConfig extends TestConfig {
     @Autowired
@@ -33,11 +37,16 @@ public abstract class IndexCardTestConfig extends TestConfig {
     @Autowired
     protected IndexCardAssessmentService indexCardAssessmentService;
 
+    @Autowired
+    protected DeleteIndexCardService deleteIndexCardService;
+
     protected User user;
 
     protected User user2;
 
     protected ArrayList<Project> projects;
+
+    protected IndexCard indexCard;
 
     @BeforeEach
     void indexCardTestSetup() {
@@ -65,5 +74,18 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
         User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).get();
         userToEdit.setProjects(projects);
+    }
+
+    protected void createIndexCard() {
+        this.indexCard = new IndexCard();
+        this.indexCard.setQuestion("Question");
+        this.indexCard.setAnswer("Answer");
+
+        this.indexCardRepo.save(this.indexCard);
+        Set<IndexCard> indexCards = new HashSet<>();
+        this.indexCard = this.indexCardRepo.findIndexCardByQuestion(this.indexCard.getQuestion());
+        indexCards.add(this.indexCard);
+        this.projects.get(0).setIndexCards(indexCards);
+        this.projectRepo.save(this.projects.get(0));
     }
 }

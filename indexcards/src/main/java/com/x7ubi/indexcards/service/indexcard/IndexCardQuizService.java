@@ -1,10 +1,10 @@
 package com.x7ubi.indexcards.service.indexcard;
 
-import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
+import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
-import com.x7ubi.indexcards.response.common.MessageResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
 import org.slf4j.Logger;
@@ -17,24 +17,24 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class IndexCardQuizService {
+public class IndexCardQuizService extends AbstractIndexCardService {
 
     private final Logger logger = LoggerFactory.getLogger(IndexCardQuizService.class);
 
-    private final ProjectRepo projectRepo;
 
     private final int maxIndexCardsPerQuiz = 5;
 
-    public IndexCardQuizService(ProjectRepo projectRepo) {
-        this.projectRepo = projectRepo;
+    public IndexCardQuizService(
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
     }
 
     public IndexCardResponses getIndexCardResponsesForQuiz(Long id) {
         IndexCardResponses indexCardResponses = new IndexCardResponses();
 
-        indexCardResponses.setErrorMessages(this.findGetIndexCardResponsesForQuiz(id));
+        indexCardResponses.setErrorMessages(this.getProjectNotFoundError(id));
 
-        if (indexCardResponses.getErrorMessages().size() != 0) {
+        if (!indexCardResponses.getErrorMessages().isEmpty()) {
             indexCardResponses.setSuccess(false);
             return indexCardResponses;
         }
@@ -44,7 +44,7 @@ public class IndexCardQuizService {
             List<IndexCardAssessment> indexCardAssessments1 = new ArrayList<>(o1.getAssessmentHistory());
             List<IndexCardAssessment> indexCardAssessments2 = new ArrayList<>(o2.getAssessmentHistory());
 
-            if(indexCardAssessments1.size() == 0 || indexCardAssessments2.size() == 0) {
+            if (indexCardAssessments1.isEmpty() || indexCardAssessments2.isEmpty()) {
                 return o1.getId().compareTo(o2.getId());
             }
 
@@ -65,16 +65,5 @@ public class IndexCardQuizService {
         indexCardResponses.setSuccess(true);
 
         return indexCardResponses;
-    }
-
-    private List<MessageResponse> findGetIndexCardResponsesForQuiz(long id) {
-        List<MessageResponse> error = new ArrayList<>();
-
-        if (!projectRepo.existsByProjectId(id)) {
-            logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NOT_FOUND));
-        }
-
-        return error;
     }
 }
