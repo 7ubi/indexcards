@@ -2,13 +2,13 @@
   <div class="indexcard-container">
     <div class="indexcard">
       <p-scrollPanel [style]="{width: '100%', height: '40%', padding: '10px'}">
-        <div class="indexcard-text" [innerHTML]="getIndexCard()?.question" ></div>
+        <div class="indexcard-text ql-editor" [innerHTML]="getIndexCard()?.question"></div>
       </p-scrollPanel>
       <p-button (click)="showAnswer = !showAnswer">
         {{ showAnswer ? ('indexcard.hide_answer' | translate) : 'indexcard.show_answer' | translate }}
       </p-button>
       <p-scrollPanel *ngIf="showAnswer" [style]="{width: '100%', height: '40%', padding: '10px'}">
-        <div class="indexcard-text" [innerHTML]="getIndexCard()?.answer" ></div>
+        <div class="indexcard-text ql-editor" [innerHTML]="getIndexCard()?.answer"></div>
       </p-scrollPanel>
     </div>
     <div class="assessment-button-container">
