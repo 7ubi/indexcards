@@ -63,7 +63,7 @@ public class IndexCardQuizService extends AbstractIndexCardService {
             IndexCard indexCard = indexCards.get(i);
             indexCardResponses.getIndexCardResponses().add(new IndexCardResponse(
                     indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
-                    String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))), indexCard.getAssessment()));
+                    String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))), indexCard.getAssessment()));
         }
         indexCardResponses.setSuccess(true);
 
