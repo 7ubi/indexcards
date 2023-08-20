@@ -60,6 +60,7 @@
 }
 
 .icon {
+  color: var(--bad);
   margin-right: 10px;
   font-size: 1.5em;
   transition: filter 0.25s;

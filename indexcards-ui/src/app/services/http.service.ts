@@ -64,9 +64,9 @@ export class HttpService {
     this.subscribe(observable, subscribe, error);
   }
 
-  public delete<Type>(url: string, subscribe: (response: Type) => void, error?: () => void): void {
+  public delete<Type>(url: string, subscribe: (response: Type) => void, error?: () => void, request?: any): void {
     const observable
-      = this.http.delete<Type>(url, { headers: this.loginService.getHeaderWithBearer()});
+      = this.http.delete<Type>(url, {headers: this.loginService.getHeaderWithBearer(), body: request});
     this.subscribe(observable, subscribe, error);
   }
 

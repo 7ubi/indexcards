@@ -56,11 +56,11 @@ public class IndexCardsRestController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteIndexCard(
-            @RequestParam DeleteIndexCardRequest id
+            @RequestBody DeleteIndexCardRequest deleteIndexCardRequest
     ) {
         logger.info("Deleting index cards");
 
-        ResultResponse response = this.deleteIndexCardService.deleteIndexCard(id);
+        ResultResponse response = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
 
         if (response.isSuccess()) {
             return ResponseEntity.ok().body(response);

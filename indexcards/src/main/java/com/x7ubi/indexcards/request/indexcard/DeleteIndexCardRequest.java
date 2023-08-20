@@ -9,6 +9,9 @@ public class DeleteIndexCardRequest {
         this.projectId = projectId;
     }
 
+    public DeleteIndexCardRequest() {
+    }
+
     public void setIndexcardId(Long indexcardId) {
         this.indexcardId = indexcardId;
     }
