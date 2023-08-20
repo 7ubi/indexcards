@@ -17,7 +17,7 @@
     <div class="indexcard {{ indexcard.assessment.toString() | lowercase }}" *ngFor="let indexcard of userProject?.projectResponse?.indexCardResponses">
       <i class="pi pi-trash trash icon" (click)="deleteIndexCard(indexcard.indexCardId)"></i>
       <p-scrollPanel [style]="{width: '100%', height: '20vh'}">
-        <div class="text" [innerHTML]="indexcard.question"></div>
+        <div class="text ql-editor" [innerHTML]="indexcard.question"></div>
       </p-scrollPanel>
     </div>
   </div>
