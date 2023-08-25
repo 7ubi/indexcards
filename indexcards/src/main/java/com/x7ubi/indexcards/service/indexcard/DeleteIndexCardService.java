@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.controller.IndexCardsRestController;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
@@ -7,12 +8,17 @@ import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
 public class DeleteIndexCardService extends AbstractIndexCardService {
+
+    private final Logger logger = LoggerFactory.getLogger(IndexCardsRestController.class);
+
     public DeleteIndexCardService(
             ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
         super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
@@ -40,6 +46,7 @@ public class DeleteIndexCardService extends AbstractIndexCardService {
         indexCardRepo.deleteIndexCardByIndexcardId(deleteIndexCardRequest.getIndexcardId());
 
         response.setSuccess(true);
+        logger.info("Deleted Index Card");
 
         return response;
     }

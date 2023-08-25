@@ -3,12 +3,10 @@ package com.x7ubi.indexcards.controller;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.EditIndexCardRequest;
 import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
-import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
-import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
-import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
-import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
+import com.x7ubi.indexcards.service.indexcard.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,8 @@ public class IndexCardsRestController {
 
     private final CreateIndexCardService createIndexCardService;
 
+    private final EditIndexCardService editIndexCardService;
+
     private final IndexCardAssessmentService indexCardAssessmentService;
 
     private final IndexCardQuizService indexCardQuizService;
@@ -30,10 +30,13 @@ public class IndexCardsRestController {
 
     public IndexCardsRestController(
             CreateIndexCardService createIndexCardService,
+            EditIndexCardService editIndexCardService,
             IndexCardAssessmentService indexCardAssessmentService,
             IndexCardQuizService indexCardQuizService,
-            DeleteIndexCardService deleteIndexCardService) {
+            DeleteIndexCardService deleteIndexCardService
+    ) {
         this.createIndexCardService = createIndexCardService;
+        this.editIndexCardService = editIndexCardService;
         this.indexCardAssessmentService = indexCardAssessmentService;
         this.indexCardQuizService = indexCardQuizService;
         this.deleteIndexCardService = deleteIndexCardService;
@@ -41,13 +44,28 @@ public class IndexCardsRestController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createIndexCard(
-        @RequestBody CreateIndexCardRequest createProjectRequest
+            @RequestBody CreateIndexCardRequest createIndexCardRequest
     ) {
         logger.info("Creating Index Card");
 
-        ResultResponse response = this.createIndexCardService.createIndexCard(createProjectRequest);
+        ResultResponse response = this.createIndexCardService.createIndexCard(createIndexCardRequest);
 
         if(response.isSuccess()) {
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editIndexCard(
+            @RequestBody EditIndexCardRequest editIndexCardRequest
+    ) {
+        logger.info("Editing Index Card");
+
+        ResultResponse response = this.editIndexCardService.editIndexCard(editIndexCardRequest);
+
+        if (response.isSuccess()) {
             return ResponseEntity.ok().body(response);
         }
 
