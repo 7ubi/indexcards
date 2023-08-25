@@ -48,6 +48,4 @@ public class IndexCardAssessmentService extends AbstractIndexCardService {
         resultResponse.setSuccess(true);
         return resultResponse;
     }
-
-
 }
