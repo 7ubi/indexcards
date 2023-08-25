@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
 import {ResultResponse, UserProjectsResponse} from "../../../app.response";
-import { LoginService } from "../../auth/login/login.service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
@@ -17,8 +15,6 @@ export class AllProjectsComponent implements OnInit {
   userProjectsResponse?: UserProjectsResponse;
 
   constructor(
-    private http: HttpClient,
-    private loginService: LoginService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,

@@ -54,7 +54,8 @@
     "spaced_repetition_done": "Karteikarten der Abstandswiederholung wurden alle bearbeitet!",
     "required": "Frage und Antwort müssen eingetragen sein, um eine Karteikarte zu erstellen!",
     "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!",
-    "deleted": "Karteikarte wurde erfolgreich gelöscht!"
+    "deleted": "Karteikarte wurde erfolgreich gelöscht!",
+    "delete_confirmation": "Bist du dir sicher, dass du die Karteikarte löschen willst?"
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
