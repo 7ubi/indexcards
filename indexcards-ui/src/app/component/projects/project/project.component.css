@@ -60,7 +60,6 @@
 }
 
 .icon {
-  color: var(--bad);
   margin-right: 10px;
   font-size: 1.5em;
   transition: filter 0.25s;
@@ -70,6 +69,14 @@
 
 .icon:hover {
   filter: brightness(80%);
+}
+
+.trash {
+  color: var(--bad);
+}
+
+.edit {
+  color: var(--deepPurple100);
 }
 
 .text {
