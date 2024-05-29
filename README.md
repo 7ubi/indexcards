@@ -7,4 +7,3 @@
 Indexcards is a web Application for index cards for studying made using Angular and Java.
 
 For further documentation go [here](https://documentation.indexcards.7ubi.de/).
-
