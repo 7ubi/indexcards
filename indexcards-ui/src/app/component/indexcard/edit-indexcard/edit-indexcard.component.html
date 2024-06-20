@@ -1,7 +1,7 @@
-<form [formGroup]="createIndexCardFormGroup" (ngSubmit)="createIndexcard()">
+<form [formGroup]="editIndexCardFormGroup" (ngSubmit)="editIndexCard()">
   <div class="container">
     <h1 class="title">
-      {{ 'indexcard.create' | translate }}
+      {{ 'indexcard.edit' | translate }}
     </h1>
 
     <div class="form-input form-group">
@@ -40,6 +40,6 @@
       </p-editor>
     </div>
 
-    <button pButton type="submit">{{ 'indexcard.create' | translate }}</button>
+    <button pButton type="submit">{{ 'indexcard.edit' | translate }}</button>
   </div>
 </form>
