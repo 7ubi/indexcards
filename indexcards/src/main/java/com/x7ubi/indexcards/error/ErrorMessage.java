@@ -1,6 +1,9 @@
 package com.x7ubi.indexcards.error;
 
 public class ErrorMessage {
+
+    public static String INTERNAL_SERVER_ERROR = "Internal server error";
+
     public static class Authentication {
         public static String USERNAME_EXITS = "username_exists";
     }

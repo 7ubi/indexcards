@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.project;
 
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -8,8 +9,6 @@ import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
-import com.x7ubi.indexcards.response.project.UserProjectResponse;
-import com.x7ubi.indexcards.response.project.UserProjectsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,50 +30,33 @@ public class ProjectService extends AbstractProjectService {
     }
 
     @Transactional
-    public UserProjectsResponse getUserProjects(String username) {
+    public List<ProjectResponse> getUserProjects(String username) throws EntityNotFoundException {
 
-        UserProjectsResponse userProjectResponse = new UserProjectsResponse();
-
-        userProjectResponse.setErrorMessages(getUserExists(username));
-
-        if (!userProjectResponse.getErrorMessages().isEmpty()) {
-            return userProjectResponse;
-        }
-
-        User user = this.userRepo.findByUsername(username).get();
+        User user = getUser(username);
 
         List<Project> projects = user.getProjects();
+        List<ProjectResponse> projectResponses = new ArrayList<>();
 
-        userProjectResponse.setProjectResponses(new ArrayList<>());
-        userProjectResponse.setSuccess(true);
-
-        for(Project project: projects) {
+        for (Project project : projects) {
             List<IndexCardResponse> indexCardResponses = new ArrayList<>();
-            for(IndexCard indexCard: project.getIndexCards()) {
+            for (IndexCard indexCard : project.getIndexCards()) {
                 indexCardResponses.add(
-                    new IndexCardResponse(
-                            indexCard.getId(), Arrays.toString(indexCard.getQuestion()),
-                            Arrays.toString(indexCard.getAnswer()), indexCard.getAssessment()));
+                        new IndexCardResponse(
+                                indexCard.getId(), Arrays.toString(indexCard.getQuestion()),
+                                Arrays.toString(indexCard.getAnswer()), indexCard.getAssessment()));
             }
-            userProjectResponse.getProjectResponses()
-                    .add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
+            projectResponses.add(new ProjectResponse(project.getId(), project.getName(), indexCardResponses));
         }
 
         logger.info("Found all projects from {}", user.getUsername());
 
-        return userProjectResponse;
+        return projectResponses;
     }
 
     @Transactional
-    public UserProjectResponse getProject(long id) {
-    UserProjectResponse userProjectResponse = new UserProjectResponse();
+    public ProjectResponse getProject(long id) throws EntityNotFoundException {
+        this.findGetProjectByIdError(id);
 
-        userProjectResponse.setErrorMessages(this.findGetProjectByIdError(id));
-
-        if (!userProjectResponse.getErrorMessages().isEmpty()) {
-            userProjectResponse.setSuccess(false);
-            return userProjectResponse;
-        }
 
         Project project = this.projectRepo.findProjectByProjectId(id);
 
@@ -85,16 +67,13 @@ public class ProjectService extends AbstractProjectService {
         projectResponse.setName(project.getName());
 
         List<IndexCardResponse> indexCardResponses = new ArrayList<>();
-        for(IndexCard indexCard: project.getIndexCards()) {
+        for (IndexCard indexCard : project.getIndexCards()) {
             indexCardResponses
-                .add(new IndexCardResponse(
-                        indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
-                        String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))), indexCard.getAssessment()));
+                    .add(new IndexCardResponse(
+                            indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
+                            String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))), indexCard.getAssessment()));
         }
         projectResponse.setIndexCardResponses(indexCardResponses);
-        userProjectResponse.setSuccess(true);
-        userProjectResponse.setProjectResponse(projectResponse);
-
-        return userProjectResponse;
+        return projectResponse;
     }
 }

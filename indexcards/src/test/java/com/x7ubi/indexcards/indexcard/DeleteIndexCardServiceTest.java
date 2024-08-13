@@ -1,9 +1,11 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -12,9 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
@@ -33,7 +32,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void deleteIndexCardTest() {
+    public void deleteIndexCardTest() throws EntityNotFoundException {
         // given
         DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
                 this.indexCard.getIndexcardId(),
@@ -41,13 +40,11 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        ResultResponse result = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
 
         // then
         Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
-        assertThat(project.getIndexCards().size()).isEqualTo(0);
+        Assertions.assertEquals(0, project.getIndexCards().size());
     }
 
     @Test
@@ -59,14 +56,13 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        ResultResponse result = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest));
 
         // then
         Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
-        assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), false);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.PROJECT_NOT_FOUND);
-        assertThat(project.getIndexCards().size()).isEqualTo(1);
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertEquals(1, project.getIndexCards().size());
     }
 
     @Test
@@ -78,13 +74,12 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        ResultResponse result = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest));
 
         // then
         Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
-        assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), false);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND);
-        assertThat(project.getIndexCards().size()).isEqualTo(1);
+        Assertions.assertEquals(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertEquals(1, project.getIndexCards().size());
     }
 }

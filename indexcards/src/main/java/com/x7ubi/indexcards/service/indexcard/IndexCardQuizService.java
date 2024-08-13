@@ -1,12 +1,12 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
-import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,15 +31,8 @@ public class IndexCardQuizService extends AbstractIndexCardService {
         super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
     }
 
-    public IndexCardResponses getIndexCardResponsesForQuiz(Long id) {
-        IndexCardResponses indexCardResponses = new IndexCardResponses();
-
-        indexCardResponses.setErrorMessages(this.getProjectNotFoundError(id));
-
-        if (!indexCardResponses.getErrorMessages().isEmpty()) {
-            indexCardResponses.setSuccess(false);
-            return indexCardResponses;
-        }
+    public List<IndexCardResponse> getIndexCardResponsesForQuiz(Long id) throws EntityNotFoundException {
+        this.getProjectNotFoundError(id);
 
         List<IndexCard> indexCards = new ArrayList<>(this.projectRepo.findProjectByProjectId(id).getIndexCards());
         indexCards.sort(Comparator.comparing(IndexCard::getAssessment).thenComparing((o1, o2) -> {
@@ -55,17 +48,17 @@ public class IndexCardQuizService extends AbstractIndexCardService {
 
             return date1.compareTo(date2);
         }));
-        indexCardResponses.setIndexCardResponses(new ArrayList<>());
+
+        List<IndexCardResponse> indexCardResponses = new ArrayList<>();
 
         for (int i = 0; i < maxIndexCardsPerQuiz; i++) {
-            if(i == indexCards.size())
+            if (i == indexCards.size())
                 break;
             IndexCard indexCard = indexCards.get(i);
-            indexCardResponses.getIndexCardResponses().add(new IndexCardResponse(
+            indexCardResponses.add(new IndexCardResponse(
                     indexCard.getId(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))),
                     String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))), indexCard.getAssessment()));
         }
-        indexCardResponses.setSuccess(true);
 
         return indexCardResponses;
     }

@@ -12,7 +12,6 @@ import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -28,9 +27,6 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     @Autowired
     protected IndexCardRepo indexCardRepo;
-
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
 
     @Autowired
     protected CreateIndexCardService createIndexCardService;
@@ -56,7 +52,7 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.user.setFirstname("Max");
         this.user.setSurname("Muster");
         this.user.setProjects(new ArrayList<>());
-        this.user.setPassword(this.passwordEncoder.encode("1234"));
+        this.user.setPassword("1234");
 
         this.userRepo.save(this.user);
 
@@ -65,7 +61,7 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.user2.setFirstname("Max");
         this.user2.setSurname("Muster");
         this.user2.setProjects(new ArrayList<>());
-        this.user2.setPassword(this.passwordEncoder.encode("1234"));
+        this.user2.setPassword("1234");
 
         this.userRepo.save(this.user2);
 

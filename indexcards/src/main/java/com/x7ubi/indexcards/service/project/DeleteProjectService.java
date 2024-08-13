@@ -1,12 +1,12 @@
 package com.x7ubi.indexcards.service.project;
 
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,17 +25,10 @@ public class DeleteProjectService extends AbstractProjectService {
     }
 
     @Transactional
-    public ResultResponse deleteProject(String username, Long id) {
-        ResultResponse response = new ResultResponse();
+    public void deleteProject(String username, Long id) throws EntityNotFoundException {
+        findGetProjectByIdError(id);
 
-        response.setErrorMessages(findGetProjectByIdError(id));
-
-        if (!response.getErrorMessages().isEmpty()) {
-            response.setSuccess(false);
-            return response;
-        }
-
-        User user = userRepo.findByUsername(username).get();
+        User user = getUser(username);
         Project project = projectRepo.findProjectByProjectId(id);
         user.getProjects().remove(project);
         userRepo.save(user);
@@ -44,13 +37,10 @@ public class DeleteProjectService extends AbstractProjectService {
 
         projectRepo.deleteProjectByProjectId(id);
 
-        for(IndexCard indexCard: indexCardsOfProject) {
+        for (IndexCard indexCard : indexCardsOfProject) {
             indexCardRepo.deleteIndexCardByIndexcardId(indexCard.getIndexcardId());
         }
 
-        response.setSuccess(true);
         logger.info("Project was deleted");
-
-        return response;
     }
 }

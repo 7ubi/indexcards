@@ -1,12 +1,12 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,16 +25,8 @@ public class CreateIndexCardService extends AbstractIndexCardService {
     }
 
     @Transactional
-    public ResultResponse createIndexCard(CreateIndexCardRequest createIndexCardRequest) {
-        ResultResponse resultResponse = new ResultResponse();
-
-        resultResponse.setErrorMessages(
-                this.getProjectNotFoundError(createIndexCardRequest.getProjectId())
-        );
-
-        if (!resultResponse.getErrorMessages().isEmpty()) {
-            return resultResponse;
-        }
+    public void createIndexCard(CreateIndexCardRequest createIndexCardRequest) throws EntityNotFoundException {
+        this.getProjectNotFoundError(createIndexCardRequest.getProjectId());
 
         IndexCard indexCard
                 = new IndexCard(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array(),
@@ -47,10 +39,6 @@ public class CreateIndexCardService extends AbstractIndexCardService {
         this.projectRepo.save(project);
 
         logger.info("Index Card was created successfully!");
-
-        resultResponse.setSuccess(true);
-
-        return resultResponse;
     }
 
 
