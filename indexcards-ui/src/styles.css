@@ -30,26 +30,36 @@
 }
 
 html {
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    width: 100%;
-    background: var(--darkgrey);
-}
-app-root {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  width: 100%;
 }
 
-.center{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+body.light-mode {
+  background-color: white;
+  color: black;
+}
+
+body.dark-mode {
+  background: var(--darkgrey);
+  color: white;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 textarea {
@@ -57,20 +67,20 @@ textarea {
 }
 
 label {
-    font-size: larger;
-    float: left;
-    padding-bottom: 10px;
+  font-size: larger;
+  float: left;
+  padding-bottom: 10px;
 }
 
 .container {
-    border: 0 none;
-    border-radius: 10px;
-    padding: 20px 30px;
-    box-sizing: border-box;
-    width: 80%;
-    margin: 30px 10% 0 10%;
-    text-align: center;
-    min-height: 85vh;
+  border: 0 none;
+  border-radius: 10px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 80%;
+  margin: 30px 10% 0 10%;
+  text-align: center;
+  min-height: 85vh;
 }
 
 @media (max-width: 480px) {
@@ -81,9 +91,9 @@ label {
 }
 
 .error {
-    font-size: large;
-    color: var(--error);
-    text-align: left;
+  font-size: large;
+  color: var(--error);
+  text-align: left;
 }
 
 /* unvisited link */

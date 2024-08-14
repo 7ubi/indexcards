@@ -14,6 +14,7 @@
 :host ::ng-deep .p-menubar-root-list {
   background-color: var(--deepPurple700);
 }
+
 :host ::ng-deep .p-menuitem {
   margin: 0 10px 0 10px;
   background-color: var(--deepPurple700);
@@ -30,7 +31,12 @@
 }
 
 .header-icon {
+  cursor: pointer;
   font-size: 1.75em;
+}
+
+.mr5 {
+  margin-right: 15px;
 }
 
 h1 {

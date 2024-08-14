@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Renderer2} from '@angular/core';
 import {Router} from "@angular/router";
-import { LoginService } from "../../auth/login/login.service";
+import {LoginService} from "../../auth/login/login.service";
 import {MenuItem} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -12,17 +12,43 @@ import {TranslateService} from "@ngx-translate/core";
 export class HeaderComponent implements OnInit {
 
   items: MenuItem[] = [];
+  isDarkTheme: boolean = true;
 
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private renderer: Renderer2
+  ) {
+    const theme: string | null = localStorage.getItem('theme');
+    if (theme === null) {
+      localStorage.setItem('theme', 'dark');
+    }
+    this.isDarkTheme = theme === 'dark';
+    this.setThemeClasses();
+  }
 
   ngOnInit(): void {
     this.router.events.subscribe(() => this.setMenuItems());
     this.setMenuItems();
     this.translateService.onLangChange.subscribe(() => this.setMenuItems());
+  }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.setThemeClasses();
+  }
+
+  private setThemeClasses() {
+    if (this.isDarkTheme) {
+      localStorage.setItem('theme', 'dark');
+      this.renderer.addClass(document.body, 'dark-mode');
+      this.renderer.removeClass(document.body, 'light-mode');
+    } else {
+      localStorage.setItem('theme', 'light');
+      this.renderer.addClass(document.body, 'light-mode');
+      this.renderer.removeClass(document.body, 'dark-mode');
+    }
   }
 
   isLoggedIn() {
@@ -39,7 +65,7 @@ export class HeaderComponent implements OnInit {
 
   setMenuItems() {
     this.items = [];
-    if(this.isLoggedIn()) {
+    if (this.isLoggedIn()) {
       this.items.push(
         {
           label: this.translateService.instant('common.projects'),
