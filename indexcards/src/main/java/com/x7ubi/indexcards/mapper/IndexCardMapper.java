@@ -17,6 +17,7 @@ public interface IndexCardMapper {
 
     List<IndexCardResponse> mapToResponses(List<IndexCard> indexCards);
 
+    @Mapping(source = "indexcardId", target = "indexCardId")
     @Mapping(target = "question", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getQuestion()))))")
     @Mapping(target = "answer", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getAnswer()))))")
     IndexCardResponse mapToResponse(IndexCard indexCard);

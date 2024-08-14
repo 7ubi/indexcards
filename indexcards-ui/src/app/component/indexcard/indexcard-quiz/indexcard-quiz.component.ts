@@ -75,7 +75,10 @@ export class IndexcardQuizComponent implements OnInit {
   }
 
   getIndexCard(): IndexCardResponse | undefined {
-    return this.indexCards![this.index];
+    if (!this.indexCards) {
+      return undefined;
+    }
+    return this.indexCards[this.index];
   }
 
   createAssessmentRequest(assessment: string) {
