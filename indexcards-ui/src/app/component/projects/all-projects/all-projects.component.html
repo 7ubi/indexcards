@@ -6,7 +6,7 @@
     <i class="pi pi-plus header-icon" routerLink="createProject"></i>
   </div>
   <div *ngIf="userProjectsResponse!">
-    <div *ngFor="let project of userProjectsResponse?.projectResponses">
+    <div *ngFor="let project of userProjectsResponse">
       <div class="project">
         <div (click)="goToProject(project.id)" class="projectName">
           {{ project.name }}

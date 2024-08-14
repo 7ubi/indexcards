@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {LoginService} from "../component/auth/login/login.service";
 import {HttpClient} from "@angular/common/http";
-import {ResultResponse} from "../app.response";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 import {Observable} from "rxjs";
@@ -16,24 +15,14 @@ export class HttpService {
     private messageService: MessageService,
     private loginService: LoginService,
     private translateService: TranslateService
-  ) {}
-
-  private async error(error: ResultResponse) {
-    error.errorMessages.forEach(error => {
-      this.messageService.add({
-        key: 'tr',
-        severity: 'error',
-        summary: this.translateService.instant('common.error'),
-        detail: this.translateService.instant(`backend.${error.message}`)
-      });
-    });
+  ) {
   }
 
   private subscribe<Type>(observable: Observable<Type>, subscribe: (response: Type) => void, error?: () => void) {
     observable.subscribe(
       response => subscribe(response),
       err => {
-        if(err.status === 401) {
+        if (err.status === 401) {
           this.messageService.add({
             key: 'tr',
             severity: 'error',
@@ -43,7 +32,12 @@ export class HttpService {
           this.loginService.logout();
         }
 
-        this.error(err.error);
+        this.messageService.add({
+          key: 'tr',
+          severity: 'error',
+          summary: this.translateService.instant('common.error'),
+          detail: this.translateService.instant(`backend.${err.error}`)
+        });
         if (error) {
           error();
         }
@@ -54,13 +48,13 @@ export class HttpService {
   public post<Type>(url: string, request: any, subscribe: (response: Type) => void, error?: () => void)
     : void {
     const observable
-      = this.http.post<Type>(url, request, { headers: this.loginService.getHeaderWithBearer()})
+      = this.http.post<Type>(url, request, {headers: this.loginService.getHeaderWithBearer()})
     this.subscribe(observable, subscribe, error);
   }
 
   public get<Type>(url: string, subscribe: (response: Type) => void, error?: () => void): void {
     const observable
-      = this.http.get<Type>(url, { headers: this.loginService.getHeaderWithBearer()});
+      = this.http.get<Type>(url, {headers: this.loginService.getHeaderWithBearer()});
     this.subscribe(observable, subscribe, error);
   }
 
@@ -72,7 +66,7 @@ export class HttpService {
 
   public put<Type>(url: string, request: any, subscribe: (response: Type) => void, error?: () => void): void {
     const observable
-      = this.http.put<Type>(url, request, { headers: this.loginService.getHeaderWithBearer()});
+      = this.http.put<Type>(url, request, {headers: this.loginService.getHeaderWithBearer()});
     this.subscribe(observable, subscribe, error);
   }
 }

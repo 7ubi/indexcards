@@ -1,6 +1,5 @@
-
 <div class="container">
-  <h1>{{ 'indexcard.stat' | translate }} {{ userProject?.projectResponse?.name }}</h1>
+  <h1>{{ 'indexcard.stat' | translate }} {{ userProject?.name }}</h1>
   <div class="chart-container">
     <p-chart type="pie" [data]="data" [options]="chartOptions"></p-chart>
   </div>

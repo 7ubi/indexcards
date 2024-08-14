@@ -1,18 +1,21 @@
 package com.x7ubi.indexcards.controller;
 
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
-import com.x7ubi.indexcards.response.indexcard.IndexCardResponses;
+import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/indexCard")
@@ -40,61 +43,44 @@ public class IndexCardsRestController {
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createIndexCard(
-        @RequestBody CreateIndexCardRequest createProjectRequest
-    ) {
+            @RequestBody CreateIndexCardRequest createProjectRequest
+    ) throws EntityNotFoundException {
         logger.info("Creating Index Card");
 
-        ResultResponse response = this.createIndexCardService.createIndexCard(createProjectRequest);
+        this.createIndexCardService.createIndexCard(createProjectRequest);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteIndexCard(
-            @RequestBody DeleteIndexCardRequest deleteIndexCardRequest
-    ) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deleteIndexCard(@RequestBody DeleteIndexCardRequest deleteIndexCardRequest) throws EntityNotFoundException {
         logger.info("Deleting index cards");
 
-        ResultResponse response = this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
 
-        if (response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/quizIndexCards")
-    public ResponseEntity<?> getIndexCardsForQuiz(
-            @RequestParam Long id
-    ) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<IndexCardResponse>> getIndexCardsForQuiz(@RequestParam Long id) throws EntityNotFoundException {
         logger.info("Getting index cards for quiz");
 
-        IndexCardResponses response = this.indexCardQuizService.getIndexCardResponsesForQuiz(id);
+        List<IndexCardResponse> response = this.indexCardQuizService.getIndexCardResponsesForQuiz(id);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/assess")
     public ResponseEntity<?> assessIndexCard(
-        @RequestBody AssessmentRequest assessmentRequest
-    ) {
+            @RequestBody AssessmentRequest assessmentRequest
+    ) throws EntityNotFoundException {
         logger.info("Assessing Index Card");
-        ResultResponse response = this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+        this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

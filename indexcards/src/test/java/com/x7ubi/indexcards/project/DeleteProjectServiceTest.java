@@ -1,10 +1,12 @@
 package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
-import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,9 +19,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
@@ -51,23 +50,21 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
     }
 
     @Test
-    public void deleteProjectTest() {
+    public void deleteProjectTest() throws EntityNotFoundException {
         // given
         createIndexCardsForProject();
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
 
         //when
-        ResultResponse resultResponse = this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId());
+        this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId());
 
         //then
         project = this.projectRepo.findProjectByProjectId(project.getId());
-        user = this.userRepo.findByUsername(this.user.getUsername()).get();
+        user = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
         indexCard = this.indexCardRepo.findIndexCardByIndexcardId(indexCard.getId());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, resultResponse.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, resultResponse.getErrorMessages().isEmpty(), true);
-        assertThat(user.getProjects().isEmpty()).isTrue();
-        assertThat(project).isEqualTo(null);
-        assertThat(indexCard).isEqualTo(null);
+        Assertions.assertTrue(user.getProjects().isEmpty());
+        Assertions.assertNull(project);
+        Assertions.assertNull(indexCard);
     }
 
     @Test
@@ -77,20 +74,14 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
 
         //when
-        ResultResponse resultResponse
-                = this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId() + 1);
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId() + 1));
 
         //then
-        project = this.projectRepo.findProjectByProjectId(project.getId());
-        user = this.userRepo.findByUsername(this.user.getUsername()).get();
-        indexCard = this.indexCardRepo.findIndexCardByIndexcardId(indexCard.getId());
-        assertEquals(WRONGFULLY_SUCCESSFUL, resultResponse.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, resultResponse.getErrorMessages().isEmpty(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, resultResponse.getErrorMessages().size(), 1);
-        assertThat(resultResponse.getErrorMessages().get(0).getMessage())
-                .isEqualTo(ErrorMessage.Project.PROJECT_NOT_FOUND);
-        assertThat(user.getProjects().size()).isEqualTo(1);
-        assertThat(project).isNotEqualTo(null);
-        assertThat(indexCard).isNotEqualTo(null);
+        user = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
+        Assertions.assertEquals(entityNotFoundException.getMessage(), ErrorMessage.Project.PROJECT_NOT_FOUND);
+        Assertions.assertEquals(user.getProjects().size(), 1);
+        Assertions.assertTrue(this.projectRepo.existsByProjectId(project.getId()));
+        Assertions.assertTrue(this.indexCardRepo.existsIndexCardByIndexcardId(indexCard.getId()));
     }
 }

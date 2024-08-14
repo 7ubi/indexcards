@@ -48,6 +48,7 @@ jobs:
   deploy:
     name: Deployment
     runs-on: self-hosted
+    if: github.event_name != 'pull_request'
     needs:
       - build
     steps:
@@ -59,19 +60,17 @@ jobs:
           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           docker-compose down
           docker-compose up --build -d
-        if: github.event_name != 'pull_request'
   documentation:
     name: Deploy documentation
+    if: github.event_name != 'pull_request'
     runs-on: self-hosted
     needs:
       - deploy
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        if: github.event_name != 'pull_request'
       - name: Start docker-compose
         run: |
           cd indexcards-docu
           docker-compose down
           docker-compose up --build -d
-        if: github.event_name != 'pull_request'

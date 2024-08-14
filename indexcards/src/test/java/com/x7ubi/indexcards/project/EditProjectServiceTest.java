@@ -1,9 +1,12 @@
 package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,11 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
@@ -28,20 +26,17 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 public class EditProjectServiceTest extends ProjectTestConfig {
 
     @Test
-    public void editProjectTest() {
+    public void editProjectTest() throws EntityNotFoundException, EntityCreationException {
         // given
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         CreateProjectRequest createProjectRequest = new CreateProjectRequest("edited project");
 
         // when
-        ResultResponse result = this.editProjectService
-                .editProject(createProjectRequest, project.getId(), user.getUsername());
+        this.editProjectService.editProject(createProjectRequest, project.getId(), user.getUsername());
 
         // then
         project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
+        Assertions.assertEquals(project.getName(), createProjectRequest.getName());
     }
 
     @Test
@@ -52,56 +47,47 @@ public class EditProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName("TestProject1");
 
         // when
-        ResultResponse result
-                = this.editProjectService.editProject(createProjectRequest, project.getId(), "nonexistent");
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.editProjectService.editProject(createProjectRequest, project.getId(), "nonexistent"));
 
         // then
-        assertEquals(WRONGFULLY_SUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.USERNAME_NOT_FOUND);
-        assertThat(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty()).isTrue();
-        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
+        Assertions.assertEquals(entityNotFoundException.getMessage(), ErrorMessage.Project.USERNAME_NOT_FOUND);
+        Assertions.assertTrue(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty());
+        Assertions.assertFalse(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty());
     }
 
     @Test
-    public void editProjectNameExistsTest() {
+    public void editProjectNameExistsTest() throws EntityNotFoundException, EntityCreationException {
         // given
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName("TestProject1");
 
         // when
-        ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
-        ResultResponse resultDouble = this.editProjectService.editProject(createProjectRequest, project.getId(), "test");
+        this.createProjectService.createProject("test", createProjectRequest);
+        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+                this.editProjectService.editProject(createProjectRequest, project.getId(), "test"));
 
         // then
-        project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 0);
-        assertThat(project.getName()).isEqualTo(createProjectRequest.getName());
-        assertEquals(WRONGFULLY_SUCCESSFUL, resultDouble.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, resultDouble.getErrorMessages().size(), 1);
-        assertThat(resultDouble.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.PROJECT_NAME_EXISTS);
-        assertThat(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty()).isFalse();
-        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
+        Assertions.assertEquals(entityCreationException.getMessage(), ErrorMessage.Project.PROJECT_NAME_EXISTS);
+        Assertions.assertFalse(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty());
+        Assertions.assertFalse(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty());
     }
 
     @Test
     public void editProjectWithTooLongName() {
         // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         String projectName = new String(new char[101]).replace('\0', 'A');
         CreateProjectRequest createProjectRequest = new CreateProjectRequest();
         createProjectRequest.setName(projectName);
 
         // when
-        ResultResponse result = this.createProjectService.createProject("test", createProjectRequest);
-
+        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+                this.editProjectService.editProject(createProjectRequest, project.getId(), "test"));
         // then
-        List<Project> project = this.projectRepo.findProjectByName(projectName);
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
-        assertThat(project.size()).isEqualTo(0);
-        assertThat(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty()).isFalse();
+        Assertions.assertEquals(entityCreationException.getMessage(), ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
+        Assertions.assertFalse(this.projectRepo.findProjectByName(project.getName()).isEmpty());
+        Assertions.assertFalse(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty());
     }
 }

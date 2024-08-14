@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {ResultResponse} from "../../../app.response";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
@@ -36,20 +35,17 @@ export class CreateIndexcardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.id = this.route.snapshot.paramMap.get('id');
-    }
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
 
   createIndexcard() {
-    if(!this.createIndexCardFormGroup.valid) {
+    if (!this.createIndexCardFormGroup.valid) {
       this.throwInvalidForm();
       return;
     }
 
-    this.httpService.post<ResultResponse>(
-      '/api/indexCard/create',
-      this.createRequest(),
-      (response) => {
-      if(response.success) {
+    this.httpService.post<undefined>('/api/indexCard/create', this.createRequest(),
+      (_) => {
         this.messageService.add({
           key: 'tr',
           severity: 'success',
@@ -57,8 +53,7 @@ export class CreateIndexcardComponent implements OnInit {
           detail: this.translateService.instant('indexcard.created'),
         });
         this.router.navigate(["/project", this.id]);
-      }
-    });
+      });
   }
 
   createRequest() {

@@ -1,18 +1,21 @@
 package com.x7ubi.indexcards.controller;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
-import com.x7ubi.indexcards.response.project.UserProjectResponse;
-import com.x7ubi.indexcards.response.project.UserProjectsResponse;
+import com.x7ubi.indexcards.response.project.ProjectResponse;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.DeleteProjectService;
 import com.x7ubi.indexcards.service.project.EditProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/project")
@@ -42,68 +45,51 @@ public class ProjectRestController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<?> getProjects(
-        @RequestHeader("Authorization") String authorization
-    ){
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ProjectResponse>> getProjects(
+            @RequestHeader("Authorization") String authorization
+    ) throws EntityNotFoundException {
         logger.info("Getting projects from User");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        UserProjectsResponse response = projectService.getUserProjects(username);
+        List<ProjectResponse> response = projectService.getUserProjects(username);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("project")
-    public ResponseEntity<?> getProject(
-            @RequestParam Long id
-    ) {
+    @GetMapping("/project")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ProjectResponse> getProject(@RequestParam Long id) throws EntityNotFoundException {
         logger.info("Getting project");
 
-        UserProjectResponse response = projectService.getProject(id);
+        ProjectResponse response = projectService.getProject(id);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createProject(
             @RequestHeader("Authorization") String authorization,
             @RequestBody CreateProjectRequest createProjectRequest
-    ){
+    ) throws EntityNotFoundException, EntityCreationException {
         logger.info("Creating Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        ResultResponse result = createProjectService.createProject(username, createProjectRequest);
+        createProjectService.createProject(username, createProjectRequest);
 
-        if(result.isSuccess()) {
-            return ResponseEntity.ok().body(result);
-        }
-
-        return ResponseEntity.badRequest().body(result);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteProject(
-            @RequestHeader("Authorization") String authorization,
-            @RequestParam Long id
-    ) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deleteProject(@RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException {
         logger.info("Deleting Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        ResultResponse result = deleteProjectService.deleteProject(username, id);
+        deleteProjectService.deleteProject(username, id);
 
-        if(result.isSuccess()) {
-            return ResponseEntity.ok().body(result);
-        }
-
-        return ResponseEntity.badRequest().body(result);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/edit")
@@ -111,16 +97,12 @@ public class ProjectRestController {
             @RequestHeader("Authorization") String authorization,
             @RequestParam Long id,
             @RequestBody CreateProjectRequest createProjectRequest
-    ) {
+    ) throws EntityNotFoundException, EntityCreationException {
         logger.info("Editing Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        ResultResponse result = editProjectService.editProject(createProjectRequest, id, username);
+        editProjectService.editProject(createProjectRequest, id, username);
 
-        if(result.isSuccess()) {
-            return ResponseEntity.ok().body(result);
-        }
-
-        return ResponseEntity.badRequest().body(result);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

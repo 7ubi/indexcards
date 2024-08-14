@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
-import {LoginResponse} from "../../../app.response";
 import {LoginService} from "./login.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {LoginResponse} from "../../../app.response";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   public loginFormGroup: FormGroup;
 
   constructor(
-    private http: HttpClient,
+    private httpService: HttpService,
     private router: Router,
     private loginService: LoginService,
     private messageService: MessageService,
@@ -31,35 +31,22 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.loginService.isLoggedIn()) {
+    if (this.loginService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
   }
 
   makeLogin() {
 
-    if(!this.loginFormGroup.valid) {
+    if (!this.loginFormGroup.valid) {
       this.throwInvalidForm();
       return;
     }
 
-    this.http.post<LoginResponse>('/api/auth/login', this.getLoginRequestParameter())
-      .subscribe(
-        response => {
-          this.loginService.saveBearer(response);
-
-          this.router.navigate(['/']);
-        }, error => {
-          if(error.status === 401){
-            this.messageService.add({
-              key: 'tr',
-              severity: 'error',
-              summary: this.translateService.instant('common.error'),
-              detail: this.translateService.instant('auth.wrong_credentials')
-            });
-          }
-        }
-      );
+    this.httpService.post<LoginResponse>('/api/auth/login', this.getLoginRequestParameter(), response => {
+      this.loginService.saveBearer(response);
+      this.router.navigate(['/']).then();
+    });
   }
 
   private throwInvalidForm() {

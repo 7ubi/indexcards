@@ -10,11 +10,25 @@ import com.x7ubi.indexcards.service.project.DeleteProjectService;
 import com.x7ubi.indexcards.service.project.EditProjectService;
 import com.x7ubi.indexcards.service.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest()
+@TestPropertySource(properties = {
+        "spring.datasource.driver-class-name=org.h2.Driver",
+        "spring.datasource.url=jdbc:h2:mem:testdb"
+})
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class ProjectTestConfig extends TestConfig {
     @Autowired
     protected UserRepo userRepo;

@@ -1,14 +1,15 @@
 package com.x7ubi.indexcards.controller;
 
+import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.auth.LoginRequest;
 import com.x7ubi.indexcards.request.auth.SignupRequest;
 import com.x7ubi.indexcards.response.common.JwtResponse;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import com.x7ubi.indexcards.service.authentication.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,23 +37,21 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> signup(
-        @RequestBody SignupRequest signupRequest
-    ) {
+            @RequestBody SignupRequest signupRequest
+    ) throws UsernameExistsException {
         logger.info("Signing up new account");
 
-        ResultResponse response = authService.registerNewUserAccount(signupRequest);
+        authService.registerNewUserAccount(signupRequest);
 
-        if(response.isSuccess()) {
-            return ResponseEntity.ok().body(response);
-        }
-
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> login(
-        @RequestBody LoginRequest loginRequest
+            @RequestBody LoginRequest loginRequest
     ) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -62,8 +61,6 @@ public class AuthRestController {
 
         SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getUser().getId(),
-                userDetails.getUsername()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUser().getId(), userDetails.getUsername()));
     }
 }

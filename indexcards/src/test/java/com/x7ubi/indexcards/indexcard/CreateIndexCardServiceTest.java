@@ -1,10 +1,12 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
@@ -30,26 +29,22 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
     @Test
-    public void createIndexCardTest() {
+    public void createIndexCardTest() throws EntityNotFoundException {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
-            projects.get(0).getId(),
-            "Question",
-            "Answer"
+                projects.get(0).getId(),
+                "Question",
+                "Answer"
         );
 
         // when
-        ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
+        this.createIndexCardService.createIndexCard(createIndexCardRequest);
 
         // then
         IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
-        assertThat(String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))))
-                .isEqualTo(createIndexCardRequest.getQuestion());
-        assertThat(String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))))
-                .isEqualTo(createIndexCardRequest.getAnswer());
-        assertThat(indexCard.getAssessment()).isEqualTo(Assessment.UNRATED);
+        Assertions.assertEquals(createIndexCardRequest.getQuestion(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))));
+        Assertions.assertEquals(createIndexCardRequest.getAnswer(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))));
+        Assertions.assertEquals(Assessment.UNRATED, indexCard.getAssessment());
     }
 
     @Test
@@ -62,13 +57,12 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        ResultResponse result = this.createIndexCardService.createIndexCard(createIndexCardRequest);
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.createIndexCardService.createIndexCard(createIndexCardRequest));
 
         // then
         IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.PROJECT_NOT_FOUND);
-        assertThat(indexCard).isNull();
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertNull(indexCard);
     }
 }

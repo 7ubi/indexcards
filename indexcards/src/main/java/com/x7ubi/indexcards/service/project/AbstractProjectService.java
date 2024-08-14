@@ -1,17 +1,18 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.MessageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class AbstractProjectService {
     private final Logger logger = LoggerFactory.getLogger(AbstractProjectService.class);
@@ -21,53 +22,46 @@ public class AbstractProjectService {
     protected final UserRepo userRepo;
     protected final IndexCardRepo indexCardRepo;
 
-    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
+    protected final ProjectMapper projectMapper;
+
+    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo, ProjectMapper projectMapper) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
         this.indexCardRepo = indexCardRepo;
+        this.projectMapper = projectMapper;
     }
 
-    protected List<MessageResponse> getUserExists(String username) {
-        List<MessageResponse> error = new ArrayList<>();
+    protected User getUser(String username) throws EntityNotFoundException {
+        Optional<User> userOptional = userRepo.findByUsername(username);
 
-        if(!userRepo.existsByUsername(username)) {
+        if (userOptional.isEmpty()) {
             logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
-            error.add(new MessageResponse(ErrorMessage.Project.USERNAME_NOT_FOUND));
+            throw new EntityNotFoundException(ErrorMessage.Project.USERNAME_NOT_FOUND);
         }
 
-        return error;
+        return userOptional.get();
     }
 
-    protected List<MessageResponse> getProjectError(CreateProjectRequest createProjectRequest, String username) {
-        List<MessageResponse> error = new ArrayList<>();
-
-        if(createProjectRequest.getName().length() > 100) {
+    protected void getProjectError(CreateProjectRequest createProjectRequest, User user) throws EntityCreationException {
+        if (createProjectRequest.getName().length() > 100) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_TOO_LONG));
+            throw new EntityCreationException(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
         }
 
-        User user = this.userRepo.findByUsername(username).stream().findFirst().orElse(null);
-        assert user != null;
         boolean projectNameExists = user.getProjects().stream().anyMatch(project ->
                 project.getName().equals(createProjectRequest.getName())
         );
 
-        if(projectNameExists) {
+        if (projectNameExists) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NAME_EXISTS));
+            throw new EntityCreationException(ErrorMessage.Project.PROJECT_NAME_EXISTS);
         }
-
-        return error;
     }
 
-    protected List<MessageResponse> findGetProjectByIdError(long id) {
-        List<MessageResponse> error = new ArrayList<>();
-
-        if(!projectRepo.existsByProjectId(id)) {
+    protected void findGetProjectByIdError(long id) throws EntityNotFoundException {
+        if (!projectRepo.existsByProjectId(id)) {
             logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
-            error.add(new MessageResponse(ErrorMessage.Project.PROJECT_NOT_FOUND));
+            throw new EntityNotFoundException(ErrorMessage.Project.PROJECT_NOT_FOUND);
         }
-
-        return error;
     }
 }

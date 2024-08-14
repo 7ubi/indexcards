@@ -1,11 +1,13 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,9 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
@@ -39,26 +38,24 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void assessIndexCardTest() {
+    public void assessIndexCardTest() throws EntityNotFoundException {
         // given
         AssessmentRequest assessmentRequest = new AssessmentRequest();
         assessmentRequest.setAssessment(Assessment.GOOD);
         assessmentRequest.setIndexCardId(this.indexCard.getId());
 
         // when
-        ResultResponse result = this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+        this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
         List<IndexCardAssessment> history = new ArrayList<>(newIndexCard.getAssessmentHistory());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), true);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().isEmpty(), true);
-        assertThat(newIndexCard.getQuestion()).isEqualTo(newIndexCard.getQuestion());
-        assertThat(newIndexCard.getAnswer()).isEqualTo(newIndexCard.getAnswer());
-        assertThat(newIndexCard.getAssessment()).isEqualTo(Assessment.GOOD);
-        assertThat(history.size()).isEqualTo(1);
-        assertThat(history.get(0).getAssessment()).isEqualTo(Assessment.GOOD);
-        assertThat(history.get(0).getDate().getDayOfYear()).isEqualTo(LocalDateTime.now().getDayOfYear());
+        Assertions.assertEquals(newIndexCard.getQuestion(), newIndexCard.getQuestion());
+        Assertions.assertEquals(newIndexCard.getAnswer(), newIndexCard.getAnswer());
+        Assertions.assertEquals(newIndexCard.getAssessment(), Assessment.GOOD);
+        Assertions.assertEquals(history.size(), 1);
+        Assertions.assertEquals(history.get(0).getAssessment(), Assessment.GOOD);
+        Assertions.assertEquals(history.get(0).getDate().getDayOfYear(), LocalDateTime.now().getDayOfYear());
     }
 
     @Test
@@ -69,17 +66,16 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
         assessmentRequest.setIndexCardId(this.indexCard.getId() + 1);
 
         // when
-        ResultResponse result = this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.indexCardAssessmentService.assessIndexCard(assessmentRequest));
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
         List<IndexCardAssessment> history = new ArrayList<>(newIndexCard.getAssessmentHistory());
-        assertEquals(WRONGFULLY_UNSUCCESSFUL, result.isSuccess(), false);
-        assertEquals(WRONG_NUMBER_OF_ERRORS, result.getErrorMessages().size(), 1);
-        assertThat(result.getErrorMessages().get(0).getMessage()).isEqualTo(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND);
-        assertThat(newIndexCard.getQuestion()).isEqualTo(newIndexCard.getQuestion());
-        assertThat(newIndexCard.getAnswer()).isEqualTo(newIndexCard.getAnswer());
-        assertThat(newIndexCard.getAssessment()).isEqualTo(Assessment.UNRATED);
-        assertThat(history.size()).isEqualTo(0);
+        Assertions.assertEquals(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertEquals(newIndexCard.getQuestion(), newIndexCard.getQuestion());
+        Assertions.assertEquals(newIndexCard.getAnswer(), newIndexCard.getAnswer());
+        Assertions.assertEquals(newIndexCard.getAssessment(), Assessment.UNRATED);
+        Assertions.assertTrue(history.isEmpty());
     }
 }

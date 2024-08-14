@@ -1,12 +1,14 @@
 package com.x7ubi.indexcards.service.project;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
+import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import com.x7ubi.indexcards.response.common.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,31 +21,17 @@ public class CreateProjectService extends AbstractProjectService {
 
     private final Logger logger = LoggerFactory.getLogger(CreateProjectService.class);
 
-    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
-        super(projectRepo, userRepo, indexCardRepo);
+    public CreateProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo, ProjectMapper projectMapper) {
+        super(projectRepo, userRepo, indexCardRepo, projectMapper);
     }
 
     @Transactional
-    public ResultResponse createProject(String username, CreateProjectRequest createProjectRequest) {
+    public void createProject(String username, CreateProjectRequest createProjectRequest) throws EntityNotFoundException, EntityCreationException {
 
-        ResultResponse resultResponse = new ResultResponse();
+        User user = getUser(username);
+        getProjectError(createProjectRequest, user);
 
-        resultResponse.setErrorMessages(getUserExists(username));
-
-        if(resultResponse.getErrorMessages().size() == 0) {
-            resultResponse.getErrorMessages().addAll(getProjectError(createProjectRequest, username));
-        }
-
-        if(resultResponse.getErrorMessages().size() > 0) {
-            resultResponse.setSuccess(false);
-            return resultResponse;
-        }
-
-        User user = this.userRepo.findByUsername(username).get();
-
-        Project project = new Project();
-
-        project.setName(createProjectRequest.getName());
+        Project project = this.projectMapper.mapRequestToProject(createProjectRequest);
 
         this.projectRepo.save(project);
 
@@ -51,9 +39,6 @@ public class CreateProjectService extends AbstractProjectService {
         userProjects.add(project);
 
         user.setProjects(userProjects);
-        resultResponse.setSuccess(true);
         logger.info("Project was created successfully!");
-
-        return resultResponse;
     }
 }

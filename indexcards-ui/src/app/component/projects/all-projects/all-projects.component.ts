@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import {ResultResponse, UserProjectsResponse} from "../../../app.response";
-import { LoginService } from "../../auth/login/login.service";
+import {Component, OnInit} from '@angular/core';
+import {ProjectResponse} from "../../../app.response";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
@@ -14,46 +12,41 @@ import {HttpService} from "../../../services/http.service";
 })
 export class AllProjectsComponent implements OnInit {
 
-  userProjectsResponse?: UserProjectsResponse;
+  userProjectsResponse?: ProjectResponse[];
 
   constructor(
-    private http: HttpClient,
-    private loginService: LoginService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
     private translateService: TranslateService,
     private httpService: HttpService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAllProjects();
   }
 
   getAllProjects() {
-    this.httpService.get<UserProjectsResponse>('/api/project/projects',response => {
-      if(response.success) {
-        this.userProjectsResponse = response;
-      }
+    this.httpService.get<ProjectResponse[]>('/api/project/projects', response => {
+      this.userProjectsResponse = response;
     });
   }
 
   goToProject(id: number) {
-    this.router.navigate(['/project', id]);
+    this.router.navigate(['/project', id]).then();
   }
 
   deleteProject(id: number) {
-    this.httpService.delete<ResultResponse>(`/api/project/delete?id=${id}`, response => {
-      if(response.success) {
-        this.messageService.add({
-          key: 'tr',
-          severity: 'success',
-          summary: this.translateService.instant('common.success'),
-          detail: this.translateService.instant('project.deleted'),
-        });
+    this.httpService.delete<undefined>(`/api/project/delete?id=${id}`, _ => {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'success',
+        summary: this.translateService.instant('common.success'),
+        detail: this.translateService.instant('project.deleted'),
+      });
 
-        this.getAllProjects();
-      }
+      this.getAllProjects();
     });
   }
 
@@ -71,6 +64,6 @@ export class AllProjectsComponent implements OnInit {
   }
 
   editProject(id: number) {
-    this.router.navigate(['/project', id, 'edit']);
+    this.router.navigate(['/project', id, 'edit']).then();
   }
 }

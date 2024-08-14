@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {ResultResponse, UserProjectResponse} from "../../../app.response";
+import {ProjectResponse} from "../../../app.response";
 import {MessageService} from "primeng/api";
 import {HttpService} from "../../../services/http.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -10,9 +10,9 @@ import {TranslateService} from "@ngx-translate/core";
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit{
+export class ProjectComponent implements OnInit {
 
-  userProject?: UserProjectResponse;
+  userProject?: ProjectResponse;
   id: string | null = '';
 
   constructor(
@@ -30,7 +30,7 @@ export class ProjectComponent implements OnInit{
   }
 
   private getIndexCards(id: string | null) {
-    this.httpService.get<UserProjectResponse>('/api/project/project?id=' + id,
+    this.httpService.get<ProjectResponse>('/api/project/project?id=' + id,
       (response) => this.userProject = response,
       () => this.router.navigate(['']));
   }
@@ -44,27 +44,26 @@ export class ProjectComponent implements OnInit{
   }
 
   canStartQuiz() {
-    return this.userProject?.projectResponse?.indexCardResponses
-    && this.userProject?.projectResponse?.indexCardResponses?.length > 0
+    return this.userProject?.indexCardResponses
+      && this.userProject?.indexCardResponses?.length > 0
   }
 
   deleteIndexCard(indexCardId: number) {
-    this.httpService.delete<ResultResponse>('/api/indexCard/delete', (response) => {
-      if (response.success) {
-        this.messageService.add({
-          key: 'tr',
-          severity: 'success',
-          summary: this.translateService.instant('common.success'),
-          detail: this.translateService.instant('indexcard.deleted')
-        });
-        this.getIndexCards(this.id);
-      }
+    this.httpService.delete<undefined>('/api/indexCard/delete', (_) => {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'success',
+        summary: this.translateService.instant('common.success'),
+        detail: this.translateService.instant('indexcard.deleted')
+      });
+      this.getIndexCards(this.id);
+
     }, () => this.router.navigate(['']), this.getDeleteRequest(indexCardId));
   }
 
   getDeleteRequest(indexCardId: number) {
     return {
-      projectId: this.userProject?.projectResponse.id,
+      projectId: this.userProject?.id,
       indexcardId: indexCardId
     };
   }
