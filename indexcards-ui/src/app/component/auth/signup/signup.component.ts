@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {ResultResponse} from '../../../app.response';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from "@ngx-translate/core";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'app-signup',
@@ -16,6 +16,7 @@ export class SignupComponent {
 
   constructor(
     private http: HttpClient,
+    private httpService: HttpService,
     private router: Router,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
@@ -29,8 +30,9 @@ export class SignupComponent {
       repeatPassword: ['', Validators.required]
     });
   }
+
   createAccount() {
-    if(!this.signUpFormGroup.valid) {
+    if (!this.signUpFormGroup.valid) {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
@@ -40,7 +42,7 @@ export class SignupComponent {
       return;
     }
 
-    if(this.signUpFormGroup.get('password')?.value !== this.signUpFormGroup.get('repeatPassword')?.value) {
+    if (this.signUpFormGroup.get('password')?.value !== this.signUpFormGroup.get('repeatPassword')?.value) {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
@@ -50,30 +52,15 @@ export class SignupComponent {
       return;
     }
 
-    this.http.post<ResultResponse>('/api/auth/signup', this.getCreateAccountParameter())
-      .subscribe((response) => {
-        if(response.success) {
-          this.messageService.add({
-            key: 'tr',
-            severity: 'success',
-            summary: this.translateService.instant('common.success'),
-            detail: this.translateService.instant('auth.account_created'),
-          });
-          this.router.navigate(['/login']);
-        }
-
-      }, err => {
-        const response: ResultResponse = err.error;
-
-        response.errorMessages.forEach((error) => {
-          this.messageService.add({
-            key: 'tr',
-            severity: 'error',
-            summary: this.translateService.instant('common.error'),
-            detail: this.translateService.instant(`backend.${error.message}`)
-          });
-        });
+    this.httpService.post<undefined>('/api/auth/signup', this.getCreateAccountParameter(), (_) => {
+      this.messageService.add({
+        key: 'tr',
+        severity: 'success',
+        summary: this.translateService.instant('common.success'),
+        detail: this.translateService.instant('auth.account_created'),
       });
+      this.router.navigate(['/login']).then();
+    });
   }
 
   getCreateAccountParameter() {

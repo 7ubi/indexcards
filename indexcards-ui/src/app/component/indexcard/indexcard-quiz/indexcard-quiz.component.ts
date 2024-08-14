@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {IndexCardResponses, ResultResponse} from "../../../app.response";
+import {IndexCardResponse} from "../../../app.response";
 import {HttpClient} from "@angular/common/http";
 import {LoginService} from "../../auth/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {IndexCardResponse } from "../../../app.response";
 import {MessageService} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 import {HttpService} from "../../../services/http.service";
@@ -14,7 +13,7 @@ import {HttpService} from "../../../services/http.service";
   styleUrls: ['./indexcard-quiz.component.css']
 })
 export class IndexcardQuizComponent implements OnInit {
-  indexCards?: IndexCardResponses;
+  indexCards?: IndexCardResponse[];
 
   index = 0;
 
@@ -36,32 +35,29 @@ export class IndexcardQuizComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<IndexCardResponses>(`/api/indexCard/quizIndexCards?id=${this.id}`,
-        response => {
-          if(response.success) {
-            this.indexCards = response;
-            this.canStartQuiz();
-          }
-        }, () => this.router.navigate(['']));
+    this.httpService.get<IndexCardResponse[]>(`/api/indexCard/quizIndexCards?id=${this.id}`,
+      response => {
+        this.indexCards = response;
+        this.canStartQuiz();
+      }, () => this.router.navigate(['']));
   }
-  assessIndexCard(assessment: string): void  {
+
+  assessIndexCard(assessment: string): void {
     const request = this.createAssessmentRequest(assessment);
 
-    this.httpService.post<ResultResponse>('/api/indexCard/assess',
-      request, response => {
-          if(response.success) {
-            this.nextIndexCard();
-          }
-        });
+    this.httpService.post<undefined>('/api/indexCard/assess',
+      request, _ => {
+        this.nextIndexCard();
+      });
   }
 
   nextIndexCard() {
     this.index++;
     this.showAnswer = false;
 
-    if(this.index >= this.getIndexCardLength()) {
+    if (this.index >= this.getIndexCardLength()) {
 
-      this.router.navigate(["/project", this.id, "quiz", "stat"]);
+      this.router.navigate(["/project", this.id, "quiz", "stat"]).then();
       this.messageService.add({
         key: 'tr',
         severity: 'success',
@@ -72,14 +68,14 @@ export class IndexcardQuizComponent implements OnInit {
   }
 
   getIndexCardLength(): number {
-    if(this.indexCards?.indexCardResponses) {
-      return this.indexCards?.indexCardResponses.length;
+    if (this.indexCards) {
+      return this.indexCards.length;
     }
     return 0;
   }
 
   getIndexCard(): IndexCardResponse | undefined {
-    return this.indexCards?.indexCardResponses[this.index];
+    return this.indexCards![this.index];
   }
 
   createAssessmentRequest(assessment: string) {
@@ -90,14 +86,14 @@ export class IndexcardQuizComponent implements OnInit {
   }
 
   canStartQuiz() {
-    if(this.indexCards?.indexCardResponses?.length == 0) {
+    if (this.indexCards!.length == 0) {
       this.messageService.add({
         key: 'tr',
         severity: 'error',
         summary: this.translateService.instant('common.error'),
         detail: this.translateService.instant('indexcard.no_index_cards'),
       });
-      this.router.navigate(["/project", this.id]);
+      this.router.navigate(["/project", this.id]).then();
     }
   }
 }

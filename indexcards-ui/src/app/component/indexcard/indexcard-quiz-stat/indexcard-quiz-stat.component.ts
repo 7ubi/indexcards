@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Assessment, UserProjectResponse} from "../../../app.response";
+import {Assessment, ProjectResponse} from "../../../app.response";
 import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {MessageService} from "primeng/api";
-import {LoginService} from "../../auth/login/login.service";
 import {TranslateService} from "@ngx-translate/core";
 import {HttpService} from "../../../services/http.service";
 
@@ -12,9 +9,9 @@ import {HttpService} from "../../../services/http.service";
   templateUrl: './indexcard-quiz-stat.component.html',
   styleUrls: ['./indexcard-quiz-stat.component.css']
 })
-export class IndexcardQuizStatComponent implements OnInit{
+export class IndexcardQuizStatComponent implements OnInit {
 
-  userProject?: UserProjectResponse;
+  userProject?: ProjectResponse;
 
   private id: string | null = '';
 
@@ -25,9 +22,6 @@ export class IndexcardQuizStatComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
-    private messageService: MessageService,
-    private loginService: LoginService,
     private translateService: TranslateService,
     private httpService: HttpService
   ) {
@@ -36,11 +30,11 @@ export class IndexcardQuizStatComponent implements OnInit{
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<UserProjectResponse>(`/api/project/project?id=${this.id}`,
+    this.httpService.get<ProjectResponse>(`/api/project/project?id=${this.id}`,
       response => {
-          this.userProject = response;
-          this.generateChartData();
-        }, () => this.router.navigate(['']));
+        this.userProject = response;
+        this.generateChartData();
+      }, () => this.router.navigate(['']));
   }
 
   generateChartData(): void {
@@ -57,15 +51,19 @@ export class IndexcardQuizStatComponent implements OnInit{
     const datasets = [];
     const colors = [];
     const documentStyle = getComputedStyle(document.documentElement);
-    for(const assessment in Object.keys(Assessment).filter((item) => {return isNaN(Number(item));})) {
-      datasets.push( this.userProject?.projectResponse.indexCardResponses
-          .filter(v => Assessment[v.assessment].toString() === assessment).length
+    for (const assessment in Object.keys(Assessment).filter((item) => {
+      return isNaN(Number(item));
+    })) {
+      datasets.push(this.userProject!.indexCardResponses
+        .filter(v => Assessment[v.assessment].toString() === assessment).length
       );
       colors.push(documentStyle.getPropertyValue(`--${Assessment[assessment].toString().toLowerCase()}`));
     }
 
-    let labels = Object.keys(Assessment).filter((item) => {return isNaN(Number(item));})
-    labels = labels.map(label =>  this.translateService.instant(label.toLowerCase()));
+    let labels = Object.keys(Assessment).filter((item) => {
+      return isNaN(Number(item));
+    })
+    labels = labels.map(label => this.translateService.instant(label.toLowerCase()));
 
     this.data = {
       title: "Status",
@@ -80,10 +78,10 @@ export class IndexcardQuizStatComponent implements OnInit{
   }
 
   onClickQuizButton() {
-    this.router.navigate(['project', this.id, 'quiz']);
+    this.router.navigate(['project', this.id, 'quiz']).then();
   }
 
   onClickToProject() {
-    this.router.navigate(['project', this.id]);
+    this.router.navigate(['project', this.id]).then();
   }
 }
