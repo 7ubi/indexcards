@@ -12,7 +12,7 @@ import {TranslateService} from "@ngx-translate/core";
 export class HeaderComponent implements OnInit {
 
   items: MenuItem[] = [];
-  isDarkTheme: boolean = true;
+  isDarkTheme = true;
 
   constructor(
     private router: Router,
