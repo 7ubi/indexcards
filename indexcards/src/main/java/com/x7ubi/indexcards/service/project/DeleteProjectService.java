@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -20,8 +21,8 @@ public class DeleteProjectService extends AbstractProjectService {
 
     private final Logger logger = LoggerFactory.getLogger(DeleteProjectService.class);
 
-    public DeleteProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
-        super(projectRepo, userRepo, indexCardRepo);
+    public DeleteProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo, ProjectMapper projectMapper) {
+        super(projectRepo, userRepo, indexCardRepo, projectMapper);
     }
 
     @Transactional

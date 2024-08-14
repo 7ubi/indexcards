@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.service.indexcard;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.nio.charset.StandardCharsets;
 
 @Service
 public class CreateIndexCardService extends AbstractIndexCardService {
@@ -20,17 +20,15 @@ public class CreateIndexCardService extends AbstractIndexCardService {
     private final Logger logger = LoggerFactory.getLogger(CreateIndexCardService.class);
 
     CreateIndexCardService(
-            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
-        super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper);
     }
 
     @Transactional
     public void createIndexCard(CreateIndexCardRequest createIndexCardRequest) throws EntityNotFoundException {
         this.getProjectNotFoundError(createIndexCardRequest.getProjectId());
 
-        IndexCard indexCard
-                = new IndexCard(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array(),
-                StandardCharsets.UTF_8.encode(createIndexCardRequest.getAnswer()).array());
+        IndexCard indexCard = this.indexCardMapper.mapRequestToIndexCard(createIndexCardRequest);
 
         this.indexCardRepo.save(indexCard);
 

@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
@@ -18,8 +19,8 @@ import javax.transaction.Transactional;
 public class EditProjectService extends AbstractProjectService {
     Logger logger = LoggerFactory.getLogger(EditProjectService.class);
 
-    public EditProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
-        super(projectRepo, userRepo, indexCardRepo);
+    public EditProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo, ProjectMapper projectMapper) {
+        super(projectRepo, userRepo, indexCardRepo, projectMapper);
     }
 
     @Transactional

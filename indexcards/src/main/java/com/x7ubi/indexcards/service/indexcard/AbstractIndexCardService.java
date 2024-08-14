@@ -3,6 +3,7 @@ package com.x7ubi.indexcards.service.indexcard;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
@@ -18,11 +19,14 @@ public class AbstractIndexCardService {
 
     protected final IndexCardAssessmentRepo indexCardAssessmentRepo;
 
+    protected final IndexCardMapper indexCardMapper;
+
     public AbstractIndexCardService(
-            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper) {
         this.projectRepo = projectRepo;
         this.indexCardRepo = indexCardRepo;
         this.indexCardAssessmentRepo = indexCardAssessmentRepo;
+        this.indexCardMapper = indexCardMapper;
     }
 
     protected void getProjectNotFoundError(long id) throws EntityNotFoundException {
@@ -40,6 +44,7 @@ public class AbstractIndexCardService {
         }
     }
 
+    @Deprecated
     protected void getIndexCardCreationErrors(CreateIndexCardRequest createIndexCardRequest) throws EntityCreationException {
         if (createIndexCardRequest.getQuestion().length() > 500) {
             logger.error(ErrorMessage.IndexCards.INDEXCARD_QUESTION_TOO_LONG);

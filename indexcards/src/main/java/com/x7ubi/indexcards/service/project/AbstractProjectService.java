@@ -3,6 +3,7 @@ package com.x7ubi.indexcards.service.project;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
@@ -21,10 +22,13 @@ public class AbstractProjectService {
     protected final UserRepo userRepo;
     protected final IndexCardRepo indexCardRepo;
 
-    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo) {
+    protected final ProjectMapper projectMapper;
+
+    public AbstractProjectService(ProjectRepo projectRepo, UserRepo userRepo, IndexCardRepo indexCardRepo, ProjectMapper projectMapper) {
         this.projectRepo = projectRepo;
         this.userRepo = userRepo;
         this.indexCardRepo = indexCardRepo;
+        this.projectMapper = projectMapper;
     }
 
     protected User getUser(String username) throws EntityNotFoundException {

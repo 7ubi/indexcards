@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.service.indexcard;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
@@ -14,8 +15,8 @@ import javax.transaction.Transactional;
 @Service
 public class DeleteIndexCardService extends AbstractIndexCardService {
     public DeleteIndexCardService(
-            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo) {
-        super(projectRepo, indexCardRepo, indexCardAssessmentRepo);
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper);
     }
 
     @Transactional
