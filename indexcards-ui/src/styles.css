@@ -4,7 +4,7 @@
   /*https://m2.material.io/design/color/the-color-system.html#color-theme-creation*/
   --darkergrey: #121212;
   --darkgrey: #232323;
-  --lightgrey: #ababab;
+  --lightgrey: #efefef;
   --deepPurple50: #EDE7F6;
   --deepPurple100: #D1C4E9;
   --deepPurple200: #B39DDB;
@@ -29,20 +29,25 @@
   --goodDark: #40a027;
 }
 
+:root.light-mode {
+  --background-color: white;
+  --text-color: black;
+  --secondary-background-color: var(--lightgrey);
+  --pimary-color: var(--deepPurple700);
+}
+
+:root.dark-mode {
+  --background-color: var(--darkergrey);
+  --text-color: white;
+  --secondary-background-color: var(--darkgrey);
+  --pimary-color: var(--deepPurple300);
+}
+
 html {
   font-family: 'Montserrat', sans-serif;
-  color: white;
+  color: var(--text-color);
+  background-color: var(--background-color);
   width: 100%;
-}
-
-body.light-mode {
-  background-color: white;
-  color: black;
-}
-
-body.dark-mode {
-  background: var(--darkgrey);
-  color: white;
 }
 
 app-root {
@@ -126,4 +131,16 @@ a:active {
 
 .p-inputtext:focus:valid {
   border-color: var(--deepPurple700);
+}
+
+.icon-primary {
+  color: var(--pimary-color);
+}
+
+.icon-primary:hover {
+  filter: brightness(90%);
+}
+
+.mr15 {
+  margin-right: 15px;
 }

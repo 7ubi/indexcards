@@ -3,7 +3,8 @@
     <h1 class="title">
       {{ 'project.your_projects' | translate }}
     </h1>
-    <i class="pi pi-plus header-icon" routerLink="createProject"></i>
+    <p-button [styleClass]="'p-button p-button-icon-only p-button-rounded'" icon="pi pi-plus"
+              routerLink="createProject"></p-button>
   </div>
   <div *ngIf="userProjectsResponse!">
     <div *ngFor="let project of userProjectsResponse">
@@ -12,10 +13,12 @@
           {{ project.name }}
         </div>
         <div>
-          <i class="pi pi-pencil icon edit" (click)="editProject(project.id)"></i>
+          <p-button class="mr15" [styleClass]="'p-button p-button-icon-only p-button-rounded'" icon="pi pi-pencil"
+                    (click)="editProject(project.id)"></p-button>
           <p-toast></p-toast>
           <p-confirmPopup></p-confirmPopup>
-          <i class="pi pi-trash trash icon" (click)="confirm($event, project.id)"></i>
+          <p-button [styleClass]="'p-button p-button-icon-only p-button-rounded'" icon="pi pi-trash"
+                    (click)="confirm($event, project.id)"></p-button>
         </div>
       </div>
     </div>

@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
 :host ::ng-deep .p-menubar {
-  background-color: var(--deepPurple700);
+  background-color: var(--primary-color);
   font-family: 'Montserrat', sans-serif;
-  color: var(--deepPurple50);
+  color: var(--primary-color-text);
   border: none;
 }
 
 :host ::ng-deep .p-menubar-button {
-  color: var(--deepPurple50);
+  color: var(--primary-color-text);
 }
 
 :host ::ng-deep .p-menubar-root-list {
-  background-color: var(--deepPurple700);
+  background-color: var(--primary-color);
 }
 
 :host ::ng-deep .p-menuitem {
   margin: 0 10px 0 10px;
-  background-color: var(--deepPurple700);
+  background-color: var(--primary-color);
 }
 
 @media only screen and (max-width: 768px) {
@@ -27,7 +27,7 @@
 }
 
 :host ::ng-deep .p-menuitem > a > span {
-  color: var(--deepPurple50) !important;
+  color: var(--primary-color-text) !important;
 }
 
 .header-icon {
@@ -35,16 +35,12 @@
   font-size: 1.75em;
 }
 
-.mr5 {
-  margin-right: 15px;
-}
-
 h1 {
   cursor: pointer;
   margin: 0;
-  color: var(--deepPurple50);
+  color: var(--primary-color-text);
 }
 
 i {
-  color: var(--deepPurple50);
+  color: var(--primary-color-text);
 }

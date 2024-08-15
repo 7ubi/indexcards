@@ -42,12 +42,12 @@ export class HeaderComponent implements OnInit {
   private setThemeClasses() {
     if (this.isDarkTheme) {
       localStorage.setItem('theme', 'dark');
-      this.renderer.addClass(document.body, 'dark-mode');
-      this.renderer.removeClass(document.body, 'light-mode');
+      this.renderer.addClass(document.documentElement, 'dark-mode');
+      this.renderer.removeClass(document.documentElement, 'light-mode');
     } else {
       localStorage.setItem('theme', 'light');
-      this.renderer.addClass(document.body, 'light-mode');
-      this.renderer.removeClass(document.body, 'dark-mode');
+      this.renderer.addClass(document.documentElement, 'light-mode');
+      this.renderer.removeClass(document.documentElement, 'dark-mode');
     }
   }
 
