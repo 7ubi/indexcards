@@ -4,7 +4,10 @@
       Indexcards
     </h1>
   </ng-template>
-  <ng-template pTemplate="end" >
+  <ng-template pTemplate="end">
+    <i class="pi {{ isDarkTheme ? 'pi-moon': ' pi-sun'}} header-icon mr15" tooltipPosition="left"
+       pTooltip="Change Design"
+       (click)="toggleTheme()"></i>
     <i *ngIf="isLoggedIn()" class="pi pi-sign-out header-icon" tooltipPosition="left" pTooltip="Logout"
        (click)="logout()"></i>
   </ng-template>

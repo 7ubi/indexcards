@@ -4,7 +4,7 @@
   /*https://m2.material.io/design/color/the-color-system.html#color-theme-creation*/
   --darkergrey: #121212;
   --darkgrey: #232323;
-  --lightgrey: #ababab;
+  --lightgrey: #efefef;
   --deepPurple50: #EDE7F6;
   --deepPurple100: #D1C4E9;
   --deepPurple200: #B39DDB;
@@ -29,27 +29,42 @@
   --goodDark: #40a027;
 }
 
-html {
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    width: 100%;
-    background: var(--darkgrey);
-}
-app-root {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+:root.light-mode {
+  --background-color: white;
+  --text-color: black;
+  --secondary-background-color: var(--lightgrey);
+  --pimary-color: var(--deepPurple700);
 }
 
-.center{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+:root.dark-mode {
+  --background-color: var(--darkergrey);
+  --text-color: white;
+  --secondary-background-color: var(--darkgrey);
+  --pimary-color: var(--deepPurple300);
+}
+
+html {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  width: 100%;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 textarea {
@@ -57,20 +72,20 @@ textarea {
 }
 
 label {
-    font-size: larger;
-    float: left;
-    padding-bottom: 10px;
+  font-size: larger;
+  float: left;
+  padding-bottom: 10px;
 }
 
 .container {
-    border: 0 none;
-    border-radius: 10px;
-    padding: 20px 30px;
-    box-sizing: border-box;
-    width: 80%;
-    margin: 30px 10% 0 10%;
-    text-align: center;
-    min-height: 85vh;
+  border: 0 none;
+  border-radius: 10px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 80%;
+  margin: 30px 10% 0 10%;
+  text-align: center;
+  min-height: 85vh;
 }
 
 @media (max-width: 480px) {
@@ -81,29 +96,29 @@ label {
 }
 
 .error {
-    font-size: large;
-    color: var(--error);
-    text-align: left;
+  font-size: large;
+  color: var(--error);
+  text-align: left;
 }
 
 /* unvisited link */
 a:link {
-  color: var(--deepPurple200);
+  color: var(--primary-color);
 }
 
 /* visited link */
 a:visited {
-  color: var(--deepPurple300);
+  color: var(--primary-color);
 }
 
 /* mouse over link */
 a:hover {
-  color: var(--deepPurple50);
+  color: var(--deepPurple300);
 }
 
 /* selected link */
 a:active {
-  color: var(--deepPurple50);
+  color: var(--deepPurple300);
 }
 
 .title {
@@ -116,4 +131,16 @@ a:active {
 
 .p-inputtext:focus:valid {
   border-color: var(--deepPurple700);
+}
+
+.icon-primary {
+  color: var(--pimary-color);
+}
+
+.icon-primary:hover {
+  filter: brightness(90%);
+}
+
+.mr15 {
+  margin-right: 15px;
 }

@@ -14,7 +14,7 @@
 
 .indexcard {
   width: 50%;
-  background-color: var(--deepPurple300);
+  background-color: var(--secondary-background-color);
   height: 80%;
   margin-bottom: 20px;
   border-radius: 10px;

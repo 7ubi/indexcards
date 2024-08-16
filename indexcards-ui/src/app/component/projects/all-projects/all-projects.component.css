@@ -1,7 +1,7 @@
 .project {
   cursor: pointer;
-  background-color: var(--deepPurple300);
-  color: white;
+  background-color: var(--secondary-background-color);
+  color: var(--text-color);
   margin: 10px 0 10px 0;
   font-size: 1.875em;
   border-radius: 10px;
@@ -9,6 +9,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.project:hover {
+  filter: brightness(90%);
 }
 
 .projectName {
@@ -24,14 +28,9 @@
 
 .header-icon {
   cursor: pointer;
-  color: var(--deepPurple100);
   font-size: 2.5em;
   display: flex;
   align-items: center;
-}
-
-.edit {
-  color: var(--deepPurple100);
 }
 
 .trash {
