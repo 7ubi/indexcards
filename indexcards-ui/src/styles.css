@@ -103,22 +103,22 @@ label {
 
 /* unvisited link */
 a:link {
-  color: var(--deepPurple200);
+  color: var(--primary-color);
 }
 
 /* visited link */
 a:visited {
-  color: var(--deepPurple300);
+  color: var(--primary-color);
 }
 
 /* mouse over link */
 a:hover {
-  color: var(--deepPurple50);
+  color: var(--deepPurple300);
 }
 
 /* selected link */
 a:active {
-  color: var(--deepPurple50);
+  color: var(--deepPurple300);
 }
 
 .title {

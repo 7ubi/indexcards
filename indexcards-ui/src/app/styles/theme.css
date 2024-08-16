@@ -1039,7 +1039,7 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
 }
 
 .p-editor-container .p-editor-toolbar {
-  background: var(--darkgrey);
+  background: var(--secondary-background-color);
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   margin-top: 10px;
@@ -1050,40 +1050,40 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-stroke {
-  stroke: rgba(255, 255, 255);
+  stroke: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-fill {
-  fill: rgba(255, 255, 255);
+  fill: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker .ql-picker-label {
   border: 0 none;
-  color: rgba(255, 255, 255);
+  color: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker .ql-picker-label:hover {
-  color: rgba(255, 255, 255);
+  color: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker .ql-picker-label:hover .ql-stroke {
-  stroke: rgba(255, 255, 255);
+  stroke: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker .ql-picker-label:hover .ql-fill {
-  fill: rgba(255, 255, 255);
+  fill: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
-  color: rgba(255, 255, 255);
+  color: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
-  stroke: rgba(255, 255, 255);
+  stroke: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
-  fill: rgba(255, 255, 255);
+  fill: var(--text-color);
 }
 
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
@@ -1119,8 +1119,8 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
 }
 
 .p-editor-container .p-editor-content .ql-editor {
-  background: var(--darkgrey);
-  color: rgba(255, 255, 255, 0.87);
+  background: var(--secondary-background-color);
+  color: var(--text-color);
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
@@ -1334,8 +1334,8 @@ p-inputswitch.ng-dirty.ng-invalid > .p-inputswitch {
 .p-inputtext {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   font-size: 1rem;
-  color: rgba(0, 0, 0, 0.87);
-  background: #ffffff;
+  color: var(--text-color);
+  background: var(--secondary-background-color);
   padding: 1rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.38);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
@@ -2182,14 +2182,13 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-button:enabled:active {
-  background: var(--deepPurpleA100);
-  filter: brightness(80%);
+  background: var(--primary-color);
   color: #ffffff;
   border-color: transparent;
 }
 
 .p-button:enabled:focus {
-  background: var(--deepPurpleA100);
+  background: var(--primary-color);
   color: #ffffff;
   border-color: transparent;
 }
@@ -5196,8 +5195,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-confirm-popup {
-  background: var(--darkgrey);
-  color: rgba(255, 255, 255, 0.87);
+  background: var(--secondary-background-color);
+  color: var(--text-color);
   border: 0 none;
   border-radius: 4px;
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
@@ -5213,27 +5212,27 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-confirm-popup .p-confirm-popup-footer button {
-  color: var(--deepPurpleA100);
+  color: var(--primary-color);
   margin: 0 0.5rem 0 0;
   width: auto;
 }
 
 .p-confirm-popup .p-confirm-popup-footer button:last-child {
   color: white;
-  background: var(--deepPurpleA100);
+  background: var(--primary-color);
   margin: 0;
 }
 
 .p-confirm-popup:after {
   border: solid transparent;
   border-color: rgba(255, 255, 255, 0);
-  border-bottom-color: var(--darkgrey);
+  border-bottom-color: var(--secondary-background-color);
 }
 
 .p-confirm-popup:before {
   border: solid transparent;
   border-color: rgba(255, 255, 255, 0);
-  border-bottom-color: var(--darkgrey);
+  border-bottom-color: var(--secondary-background-color);
 }
 
 .p-confirm-popup.p-confirm-popup-flipped:after {
@@ -7702,11 +7701,11 @@ p-autocomplete.ng-dirty.ng-invalid .p-autocomplete .p-autocomplete-multiple-cont
 }
 
 .p-button:enabled:focus {
-  background: var(--deepPurpleA100);
+  background: var(--primary-color);
 }
 
 .p-button:enabled:active {
-  background: var(--deepPurpleA100);
+  background: var(--primary-color);
 }
 
 .p-button .p-ink {

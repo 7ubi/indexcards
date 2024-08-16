@@ -42,7 +42,7 @@ export class IndexcardQuizStatComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            color: '#FFFFFF'
+            fontColor: "var(--text-color)"
           }
         }
       }
@@ -71,7 +71,8 @@ export class IndexcardQuizStatComponent implements OnInit {
       datasets: [
         {
           data: datasets,
-          backgroundColor: colors
+          backgroundColor: colors,
+          borderColor: '',
         }
       ]
     }
