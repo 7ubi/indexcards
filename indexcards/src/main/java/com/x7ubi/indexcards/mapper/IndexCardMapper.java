@@ -5,6 +5,7 @@ import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -25,4 +26,9 @@ public interface IndexCardMapper {
     @Mapping(target = "question", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array())")
     @Mapping(target = "answer", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getAnswer()).array())")
     IndexCard mapRequestToIndexCard(CreateIndexCardRequest createIndexCardRequest);
+
+    @Mapping(target = "question", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array())")
+    @Mapping(target = "answer", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getAnswer()).array())")
+    void mapRequestToIndexCard(CreateIndexCardRequest createIndexCardRequest, @MappingTarget IndexCard indexCard);
+
 }
