@@ -67,4 +67,8 @@ export class ProjectComponent implements OnInit {
       indexcardId: indexCardId
     };
   }
+
+  editIndexCard(indexCardId: number) {
+    this.router.navigate(['editIndexCard', indexCardId], {relativeTo: this.route}).then();
+  }
 }

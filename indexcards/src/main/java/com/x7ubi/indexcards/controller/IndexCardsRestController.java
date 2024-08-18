@@ -20,6 +20,8 @@ public class IndexCardsRestController {
 
     private final Logger logger = LoggerFactory.getLogger(IndexCardsRestController.class);
 
+    private final IndexCardService indexCardService;
+
     private final CreateIndexCardService createIndexCardService;
 
     private final IndexCardAssessmentService indexCardAssessmentService;
@@ -31,15 +33,25 @@ public class IndexCardsRestController {
     private final DeleteIndexCardService deleteIndexCardService;
 
     public IndexCardsRestController(
-            CreateIndexCardService createIndexCardService,
+            IndexCardService indexCardService, CreateIndexCardService createIndexCardService,
             IndexCardAssessmentService indexCardAssessmentService, EditIndexCardService editIndexCardService,
             IndexCardQuizService indexCardQuizService,
             DeleteIndexCardService deleteIndexCardService) {
+        this.indexCardService = indexCardService;
         this.createIndexCardService = createIndexCardService;
         this.indexCardAssessmentService = indexCardAssessmentService;
         this.editIndexCardService = editIndexCardService;
         this.indexCardQuizService = indexCardQuizService;
         this.deleteIndexCardService = deleteIndexCardService;
+    }
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<IndexCardResponse> getIndexCard(@RequestParam Long id) throws EntityNotFoundException {
+        logger.info("getIndexCard id: {}", id);
+
+        IndexCardResponse indexCardResponse = this.indexCardService.getIndexCard(id);
+        return ResponseEntity.status(HttpStatus.OK).body(indexCardResponse);
     }
 
     @PostMapping("/create")
