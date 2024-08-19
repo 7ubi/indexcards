@@ -5,10 +5,7 @@ import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
-import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
-import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
-import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
-import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
+import com.x7ubi.indexcards.service.indexcard.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,23 +20,38 @@ public class IndexCardsRestController {
 
     private final Logger logger = LoggerFactory.getLogger(IndexCardsRestController.class);
 
+    private final IndexCardService indexCardService;
+
     private final CreateIndexCardService createIndexCardService;
 
     private final IndexCardAssessmentService indexCardAssessmentService;
+
+    private final EditIndexCardService editIndexCardService;
 
     private final IndexCardQuizService indexCardQuizService;
 
     private final DeleteIndexCardService deleteIndexCardService;
 
     public IndexCardsRestController(
-            CreateIndexCardService createIndexCardService,
-            IndexCardAssessmentService indexCardAssessmentService,
+            IndexCardService indexCardService, CreateIndexCardService createIndexCardService,
+            IndexCardAssessmentService indexCardAssessmentService, EditIndexCardService editIndexCardService,
             IndexCardQuizService indexCardQuizService,
             DeleteIndexCardService deleteIndexCardService) {
+        this.indexCardService = indexCardService;
         this.createIndexCardService = createIndexCardService;
         this.indexCardAssessmentService = indexCardAssessmentService;
+        this.editIndexCardService = editIndexCardService;
         this.indexCardQuizService = indexCardQuizService;
         this.deleteIndexCardService = deleteIndexCardService;
+    }
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<IndexCardResponse> getIndexCard(@RequestParam Long id) throws EntityNotFoundException {
+        logger.info("getIndexCard id: {}", id);
+
+        IndexCardResponse indexCardResponse = this.indexCardService.getIndexCard(id);
+        return ResponseEntity.status(HttpStatus.OK).body(indexCardResponse);
     }
 
     @PostMapping("/create")
@@ -52,6 +64,16 @@ public class IndexCardsRestController {
         this.createIndexCardService.createIndexCard(createProjectRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/edit")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> editIndexCard(@RequestParam Long id, @RequestBody CreateIndexCardRequest createProjectRequest) throws EntityNotFoundException {
+        logger.info("Editing Index Card");
+
+        this.editIndexCardService.editIndexCard(id, createProjectRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/delete")

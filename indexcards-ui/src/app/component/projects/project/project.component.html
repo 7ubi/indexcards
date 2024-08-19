@@ -21,13 +21,15 @@
     <div class="indexcard {{ indexcard.assessment.toString() | lowercase }}"
          *ngFor="let indexcard of userProject?.indexCardResponses">
 
-      <div style="width: calc(100% - 75px)">
+      <div>
         <p-scrollPanel [style]="{width: '100%', height: '20vh'}">
           <div class="text" [innerHTML]="indexcard.question"></div>
         </p-scrollPanel>
       </div>
 
-      <div style="width: 48px">
+      <div class="edit-buttons">
+        <p-button class="mr15" [styleClass]="'p-button p-button-icon-only p-button-rounded'" icon="pi pi-pencil"
+                  (click)="editIndexCard(indexcard.indexCardId)"></p-button>
         <p-button class="icon" [styleClass]="'p-button p-button-icon-only p-button-rounded icon'" icon="pi pi-trash"
                   (click)="deleteIndexCard(indexcard.indexCardId)"></p-button>
       </div>

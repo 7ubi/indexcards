@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './component/auth/login/login.component';
-import { SignupComponent } from './component/auth/signup/signup.component';
-import { LoginRequired } from './login-required';
-import { AllProjectsComponent } from './component/projects/all-projects/all-projects.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from './component/auth/login/login.component';
+import {SignupComponent} from './component/auth/signup/signup.component';
+import {LoginRequired} from './login-required';
+import {AllProjectsComponent} from './component/projects/all-projects/all-projects.component';
 import {PageNotFoundComponent} from "./component/common/page-not-found/page-not-found.component";
 import {CreateProjectComponent} from "./component/projects/create-project/create-project.component";
 import {ProjectComponent} from "./component/projects/project/project.component";
@@ -11,6 +11,7 @@ import {CreateIndexcardComponent} from "./component/indexcard/create-indexcard/c
 import {IndexcardQuizComponent} from "./component/indexcard/indexcard-quiz/indexcard-quiz.component";
 import {IndexcardQuizStatComponent} from "./component/indexcard/indexcard-quiz-stat/indexcard-quiz-stat.component";
 import {EditProjectComponent} from "./component/projects/edit-project/edit-project.component";
+import {EditIndexcardComponent} from "./component/indexcard/edit-indexcard/edit-indexcard.component";
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
   {
     path: '',
     component: AllProjectsComponent,
-    canActivate:[LoginRequired]
+    canActivate: [LoginRequired]
   },
   {
     path: 'createProject',
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'project/:id/createIndexCard',
     component: CreateIndexcardComponent,
+    canActivate: [LoginRequired]
+  },
+  {
+    path: 'project/:id/editIndexCard/:indexCardId',
+    component: EditIndexcardComponent,
     canActivate: [LoginRequired]
   },
   {
@@ -67,4 +73,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
