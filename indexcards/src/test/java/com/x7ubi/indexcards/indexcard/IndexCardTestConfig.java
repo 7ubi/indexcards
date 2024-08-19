@@ -9,6 +9,7 @@ import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
+import com.x7ubi.indexcards.service.indexcard.EditIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     @Autowired
     protected DeleteIndexCardService deleteIndexCardService;
+
+    @Autowired
+    protected EditIndexCardService editIndexCardService;
 
     protected User user;
 
@@ -69,7 +73,8 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.projects.add(new Project("TestProject", null));
         this.projectRepo.save(this.projects.get(0));
 
-        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).get();
+        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
+        assert userToEdit != null;
         userToEdit.setProjects(projects);
     }
 
