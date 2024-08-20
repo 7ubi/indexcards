@@ -32,6 +32,7 @@ public class CreateProjectService extends AbstractProjectService {
         getProjectError(createProjectRequest, user);
 
         Project project = this.projectMapper.mapRequestToProject(createProjectRequest);
+        project.setUser(user);
 
         this.projectRepo.save(project);
 
