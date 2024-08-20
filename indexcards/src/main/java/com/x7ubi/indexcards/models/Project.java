@@ -17,7 +17,12 @@ public class Project {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<IndexCard> indexCards;
 
-    public Project() {}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Project() {
+    }
 
     public Project(String name, Set<IndexCard> indexCards) {
         this.name = name;
@@ -42,5 +47,13 @@ public class Project {
 
     public void setIndexCards(Set<IndexCard> indexCards) {
         this.indexCards = indexCards;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

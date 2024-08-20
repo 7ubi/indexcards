@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
@@ -59,10 +60,12 @@ public class ProjectRestController {
 
     @GetMapping("/project")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ProjectResponse> getProject(@RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<ProjectResponse> getProject(
+            @RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Getting project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
-        ProjectResponse response = projectService.getProject(id);
+        ProjectResponse response = projectService.getProject(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

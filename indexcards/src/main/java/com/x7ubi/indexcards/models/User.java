@@ -24,10 +24,11 @@ public class User implements Serializable {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String firstname, String surname, String password, List<Project> projects) {
         this.username = username;

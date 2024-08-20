@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -37,10 +38,13 @@ public class ProjectService extends AbstractProjectService {
     }
 
     @Transactional
-    public ProjectResponse getProject(long id) throws EntityNotFoundException {
+    public ProjectResponse getProject(String username, long id) throws EntityNotFoundException, UnauthorizedException {
         this.findGetProjectByIdError(id);
-        
+
+        User user = getUser(username);
         Project project = this.projectRepo.findProjectByProjectId(id);
+
+        getUserProjectOwnerError(user, project);
 
         logger.info("Found project {}", project.getName());
 

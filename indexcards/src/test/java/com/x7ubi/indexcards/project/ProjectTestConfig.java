@@ -75,15 +75,14 @@ public abstract class ProjectTestConfig extends TestConfig {
         this.user2.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(this.user2);
-    }
 
-    @BeforeEach
-    public void createProjects() {
         this.projects = new ArrayList<>();
         this.projects.add(new Project("TestProject", null));
+        projects.get(0).setUser(this.user);
         this.projectRepo.save(this.projects.get(0));
 
-        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).get();
+        User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
+        assert userToEdit != null;
         userToEdit.setProjects(projects);
         this.userRepo.save(userToEdit);
     }
