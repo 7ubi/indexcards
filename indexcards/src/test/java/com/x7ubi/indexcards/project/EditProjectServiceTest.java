@@ -3,6 +3,7 @@ package com.x7ubi.indexcards.project;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import org.junit.Assert;
@@ -26,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class EditProjectServiceTest extends ProjectTestConfig {
 
     @Test
-    public void editProjectTest() throws EntityNotFoundException, EntityCreationException {
+    public void editProjectTest() throws EntityNotFoundException, EntityCreationException, UnauthorizedException {
         // given
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
         CreateProjectRequest createProjectRequest = new CreateProjectRequest("edited project");
@@ -88,6 +89,23 @@ public class EditProjectServiceTest extends ProjectTestConfig {
         // then
         Assertions.assertEquals(entityCreationException.getMessage(), ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
         Assertions.assertFalse(this.projectRepo.findProjectByName(project.getName()).isEmpty());
+        Assertions.assertFalse(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty());
+    }
+
+    @Test
+    public void editProjectWrongUsername() {
+        // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest();
+        createProjectRequest.setName("Edit Project");
+
+        // when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.editProjectService.editProject(createProjectRequest, project.getId(), "test2"));
+
+        // then
+        Assertions.assertEquals(unauthorizedException.getMessage(), ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
+        Assertions.assertTrue(this.projectRepo.findProjectByName(createProjectRequest.getName()).isEmpty());
         Assertions.assertFalse(this.projectRepo.findProjectByName(this.projects.get(0).getName()).isEmpty());
     }
 }

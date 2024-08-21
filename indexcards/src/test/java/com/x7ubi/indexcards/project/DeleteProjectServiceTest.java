@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
@@ -50,7 +51,7 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
     }
 
     @Test
-    public void deleteProjectTest() throws EntityNotFoundException {
+    public void deleteProjectTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         createIndexCardsForProject();
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
@@ -83,5 +84,21 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
         Assertions.assertEquals(user.getProjects().size(), 1);
         Assertions.assertTrue(this.projectRepo.existsByProjectId(project.getId()));
         Assertions.assertTrue(this.indexCardRepo.existsIndexCardByIndexcardId(indexCard.getId()));
+    }
+
+    @Test
+    public void deleteProjectWithWrongUsernameTest() {
+        // given
+        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
+
+        //when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.deleteProjectService.deleteProject("test2", project.getId()));
+
+        //then
+        user = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
+        Assertions.assertEquals(unauthorizedException.getMessage(), ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
+        Assertions.assertEquals(user.getProjects().size(), 1);
+        Assertions.assertTrue(this.projectRepo.existsByProjectId(project.getId()));
     }
 }

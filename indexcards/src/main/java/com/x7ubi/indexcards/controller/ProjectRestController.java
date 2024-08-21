@@ -86,7 +86,7 @@ public class ProjectRestController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteProject(@RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteProject(@RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Deleting Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
@@ -100,7 +100,7 @@ public class ProjectRestController {
             @RequestHeader("Authorization") String authorization,
             @RequestParam Long id,
             @RequestBody CreateProjectRequest createProjectRequest
-    ) throws EntityNotFoundException, EntityCreationException {
+    ) throws EntityNotFoundException, EntityCreationException, UnauthorizedException {
         logger.info("Editing Project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 

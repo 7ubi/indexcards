@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class CreateProjectService extends AbstractProjectService {
@@ -33,13 +32,8 @@ public class CreateProjectService extends AbstractProjectService {
 
         Project project = this.projectMapper.mapRequestToProject(createProjectRequest);
         project.setUser(user);
-
         this.projectRepo.save(project);
 
-        List<Project> userProjects = user.getProjects();
-        userProjects.add(project);
-
-        user.setProjects(userProjects);
         logger.info("Project was created successfully!");
     }
 }
