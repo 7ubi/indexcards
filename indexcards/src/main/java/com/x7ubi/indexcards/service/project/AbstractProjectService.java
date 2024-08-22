@@ -3,7 +3,9 @@ package com.x7ubi.indexcards.service.project;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.ProjectMapper;
+import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
@@ -12,6 +14,7 @@ import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class AbstractProjectService {
@@ -62,6 +65,13 @@ public class AbstractProjectService {
         if (!projectRepo.existsByProjectId(id)) {
             logger.error(ErrorMessage.Project.PROJECT_NOT_FOUND);
             throw new EntityNotFoundException(ErrorMessage.Project.PROJECT_NOT_FOUND);
+        }
+    }
+
+    protected void getUserProjectOwnerError(User user, Project project) throws UnauthorizedException {
+        if (!Objects.equals(project.getUser().getId(), user.getId())) {
+            logger.error(ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
+            throw new UnauthorizedException(ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
         }
     }
 }

@@ -20,7 +20,6 @@
     "fields_required": "All fields are required!",
     "password_match": "Passwords do not match!",
     "account_created": "Account was created! Please login!",
-    "wrong_credentials": "Wrong Username or Password!",
     "username_required": "Username is required",
     "password_required": "Password is required",
     "unauthorized": "You need to be logged in to enter this page!"
@@ -65,7 +64,9 @@
     "project_not_found": "Project not found",
     "indexcard_not_found": "Index card not found",
     "indexcard_question_too_long": "The question of the index card was too long, only 500 characters are allowed",
-    "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed"
+    "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed",
+    "user_not_project_owner": "You are not the owner of this project",
+    "bad_credentials": "Wrong Username or Password!"
   },
   "unrated": "Unrated",
   "bad": "Bad",

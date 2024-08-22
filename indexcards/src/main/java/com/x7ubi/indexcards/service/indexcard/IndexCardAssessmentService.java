@@ -1,12 +1,15 @@
 package com.x7ubi.indexcards.service.indexcard;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
+import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
+import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +24,20 @@ public class IndexCardAssessmentService extends AbstractIndexCardService {
     private final Logger logger = LoggerFactory.getLogger(IndexCardAssessmentService.class);
 
     public IndexCardAssessmentService(
-            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper) {
-        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper);
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper, UserRepo userRepo) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper, userRepo);
     }
 
     @Transactional
-    public void assessIndexCard(AssessmentRequest assessmentRequest) throws EntityNotFoundException {
+    public void assessIndexCard(String username, AssessmentRequest assessmentRequest) throws EntityNotFoundException, UnauthorizedException {
         this.getIndexCardNotFoundError(assessmentRequest.getIndexCardId());
 
+        User user = this.getUser(username);
+
         IndexCard indexCard = this.indexCardRepo.findIndexCardByIndexcardId(assessmentRequest.getIndexCardId());
+
+        this.getProjectOwnerError(user, indexCard.getProject());
+
         IndexCardAssessment indexCardAssessment
                 = new IndexCardAssessment(assessmentRequest.getAssessment(), LocalDateTime.now());
         this.indexCardAssessmentRepo.save(indexCardAssessment);

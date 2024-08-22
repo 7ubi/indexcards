@@ -5,10 +5,13 @@ public class ErrorMessage {
     public static String INTERNAL_SERVER_ERROR = "Internal server error";
 
     public static class Authentication {
+        public static final String BAD_CREDENTIALS = "bad_credentials";
         public static String USERNAME_EXITS = "username_exists";
     }
 
     public static class Project {
+        public static final String USER_NOT_PROJECT_OWNER = "user_not_project_owner";
+
         public static String USERNAME_NOT_FOUND = "username_not_found";
 
         public static String PROJECT_NAME_EXISTS = "project_name_exists";

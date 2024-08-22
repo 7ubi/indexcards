@@ -63,7 +63,6 @@ export class ProjectComponent implements OnInit {
 
   getDeleteRequest(indexCardId: number) {
     return {
-      projectId: this.userProject?.id,
       indexcardId: indexCardId
     };
   }

@@ -1,12 +1,16 @@
 package com.x7ubi.indexcards.service.indexcard;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
+import com.x7ubi.indexcards.models.Project;
+import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
+import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +30,19 @@ public class IndexCardQuizService extends AbstractIndexCardService {
     private final int maxIndexCardsPerQuiz = 5;
 
     public IndexCardQuizService(
-            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper) {
-        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper);
+            ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper, UserRepo userRepo) {
+        super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper, userRepo);
     }
 
-    public List<IndexCardResponse> getIndexCardResponsesForQuiz(Long id) throws EntityNotFoundException {
+    public List<IndexCardResponse> getIndexCardResponsesForQuiz(String username, Long id) throws EntityNotFoundException, UnauthorizedException {
         this.getProjectNotFoundError(id);
 
-        List<IndexCard> indexCards = new ArrayList<>(this.projectRepo.findProjectByProjectId(id).getIndexCards());
+        User user = this.getUser(username);
+        Project project = this.projectRepo.findProjectByProjectId(id);
+
+        getProjectOwnerError(user, project);
+
+        List<IndexCard> indexCards = new ArrayList<>();
         indexCards.sort(Comparator.comparing(IndexCard::getAssessment).thenComparing((o1, o2) -> {
             List<IndexCardAssessment> indexCardAssessments1 = new ArrayList<>(o1.getAssessmentHistory());
             List<IndexCardAssessment> indexCardAssessments2 = new ArrayList<>(o2.getAssessmentHistory());

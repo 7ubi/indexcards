@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
@@ -24,12 +25,15 @@ public class EditProjectService extends AbstractProjectService {
     }
 
     @Transactional
-    public void editProject(CreateProjectRequest createProjectRequest, Long id, String username) throws EntityNotFoundException, EntityCreationException {
+    public void editProject(CreateProjectRequest createProjectRequest, Long id, String username) throws EntityNotFoundException, EntityCreationException, UnauthorizedException {
         findGetProjectByIdError(id);
         User user = getUser(username);
         getProjectError(createProjectRequest, user);
 
         Project project = projectRepo.findProjectByProjectId(id);
+
+        getUserProjectOwnerError(user, project);
+
         project.setName(createProjectRequest.getName());
         projectRepo.save(project);
 

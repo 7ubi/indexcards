@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public abstract class IndexCardTestConfig extends TestConfig {
     @Autowired
@@ -58,7 +57,7 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.user.setProjects(new ArrayList<>());
         this.user.setPassword("1234");
 
-        this.userRepo.save(this.user);
+        this.user = this.userRepo.save(this.user);
 
         this.user2 = new User();
         this.user2.setUsername("test2");
@@ -70,8 +69,11 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.userRepo.save(this.user2);
 
         this.projects = new ArrayList<>();
-        this.projects.add(new Project("TestProject", null));
-        this.projectRepo.save(this.projects.get(0));
+        Project project = new Project("TestProject", null);
+        project.setUser(this.user);
+        project.setIndexCards(new HashSet<>());
+        project = this.projectRepo.save(project);
+        this.projects.add(project);
 
         User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
         assert userToEdit != null;
@@ -83,11 +85,8 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.indexCard.setQuestion(StandardCharsets.UTF_8.encode("Question").array());
         this.indexCard.setAnswer(StandardCharsets.UTF_8.encode("Answer").array());
 
-        this.indexCardRepo.save(this.indexCard);
-        Set<IndexCard> indexCards = new HashSet<>();
-        this.indexCard = this.indexCardRepo.findIndexCardByQuestion(this.indexCard.getQuestion());
-        indexCards.add(this.indexCard);
-        this.projects.get(0).setIndexCards(indexCards);
-        this.projectRepo.save(this.projects.get(0));
+        this.indexCard.setProject(this.projects.get(0));
+
+        this.indexCard = this.indexCardRepo.save(this.indexCard);
     }
 }

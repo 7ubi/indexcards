@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.project;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
 import org.junit.Assert;
@@ -48,12 +49,12 @@ public class ProjectServiceTest extends ProjectTestConfig {
     }
 
     @Test
-    public void getUserProjectTest() throws EntityNotFoundException {
+    public void getUserProjectTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
 
         // when
-        ProjectResponse projectResponse = this.projectService.getProject(project.getId());
+        ProjectResponse projectResponse = this.projectService.getProject(user.getUsername(), project.getId());
 
         // then
         Assertions.assertEquals(this.projects.get(0).getName(), projectResponse.getName());
@@ -66,7 +67,7 @@ public class ProjectServiceTest extends ProjectTestConfig {
 
         // when
         EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
-                this.projectService.getProject(wrongProjectId));
+                this.projectService.getProject(user.getUsername(), wrongProjectId));
 
         // then
         Assertions.assertEquals(ErrorMessage.Project.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());

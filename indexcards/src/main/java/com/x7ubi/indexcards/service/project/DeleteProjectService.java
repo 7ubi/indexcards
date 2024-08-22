@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.service.project;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.ProjectMapper;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
@@ -26,11 +27,12 @@ public class DeleteProjectService extends AbstractProjectService {
     }
 
     @Transactional
-    public void deleteProject(String username, Long id) throws EntityNotFoundException {
+    public void deleteProject(String username, Long id) throws EntityNotFoundException, UnauthorizedException {
         findGetProjectByIdError(id);
 
         User user = getUser(username);
         Project project = projectRepo.findProjectByProjectId(id);
+        getUserProjectOwnerError(user, project);
         user.getProjects().remove(project);
         userRepo.save(user);
 

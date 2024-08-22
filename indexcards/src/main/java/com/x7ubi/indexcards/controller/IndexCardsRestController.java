@@ -1,6 +1,8 @@
 package com.x7ubi.indexcards.controller;
 
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
+import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
@@ -20,6 +22,8 @@ public class IndexCardsRestController {
 
     private final Logger logger = LoggerFactory.getLogger(IndexCardsRestController.class);
 
+    private final JwtUtils jwtUtils;
+
     private final IndexCardService indexCardService;
 
     private final CreateIndexCardService createIndexCardService;
@@ -33,10 +37,11 @@ public class IndexCardsRestController {
     private final DeleteIndexCardService deleteIndexCardService;
 
     public IndexCardsRestController(
-            IndexCardService indexCardService, CreateIndexCardService createIndexCardService,
+            JwtUtils jwtUtils, IndexCardService indexCardService, CreateIndexCardService createIndexCardService,
             IndexCardAssessmentService indexCardAssessmentService, EditIndexCardService editIndexCardService,
             IndexCardQuizService indexCardQuizService,
             DeleteIndexCardService deleteIndexCardService) {
+        this.jwtUtils = jwtUtils;
         this.indexCardService = indexCardService;
         this.createIndexCardService = createIndexCardService;
         this.indexCardAssessmentService = indexCardAssessmentService;
@@ -47,61 +52,89 @@ public class IndexCardsRestController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<IndexCardResponse> getIndexCard(@RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<IndexCardResponse> getIndexCard(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("getIndexCard id: {}", id);
 
-        IndexCardResponse indexCardResponse = this.indexCardService.getIndexCard(id);
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        IndexCardResponse indexCardResponse = this.indexCardService.getIndexCard(username, id);
         return ResponseEntity.status(HttpStatus.OK).body(indexCardResponse);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createIndexCard(
+            @RequestHeader("Authorization") String authorization,
             @RequestBody CreateIndexCardRequest createProjectRequest
-    ) throws EntityNotFoundException {
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Creating Index Card");
 
-        this.createIndexCardService.createIndexCard(createProjectRequest);
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.createIndexCardService.createIndexCard(username, createProjectRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> editIndexCard(@RequestParam Long id, @RequestBody CreateIndexCardRequest createProjectRequest) throws EntityNotFoundException {
+    public ResponseEntity<?> editIndexCard(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id,
+            @RequestBody CreateIndexCardRequest createProjectRequest
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Editing Index Card");
 
-        this.editIndexCardService.editIndexCard(id, createProjectRequest);
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.editIndexCardService.editIndexCard(username, id, createProjectRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteIndexCard(@RequestBody DeleteIndexCardRequest deleteIndexCardRequest) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteIndexCard(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody DeleteIndexCardRequest deleteIndexCardRequest)
+            throws EntityNotFoundException, UnauthorizedException {
         logger.info("Deleting index cards");
 
-        this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.deleteIndexCardService.deleteIndexCard(username, deleteIndexCardRequest);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/quizIndexCards")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<IndexCardResponse>> getIndexCardsForQuiz(@RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<List<IndexCardResponse>> getIndexCardsForQuiz(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam Long id
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Getting index cards for quiz");
 
-        List<IndexCardResponse> response = this.indexCardQuizService.getIndexCardResponsesForQuiz(id);
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        List<IndexCardResponse> response = this.indexCardQuizService.getIndexCardResponsesForQuiz(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/assess")
     public ResponseEntity<?> assessIndexCard(
+            @RequestHeader("Authorization") String authorization,
             @RequestBody AssessmentRequest assessmentRequest
-    ) throws EntityNotFoundException {
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Assessing Index Card");
-        this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.indexCardAssessmentService.assessIndexCard(username, assessmentRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

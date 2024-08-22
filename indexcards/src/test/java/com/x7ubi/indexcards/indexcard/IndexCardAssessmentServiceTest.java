@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
@@ -38,14 +39,14 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void assessIndexCardTest() throws EntityNotFoundException {
+    public void assessIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         AssessmentRequest assessmentRequest = new AssessmentRequest();
         assessmentRequest.setAssessment(Assessment.GOOD);
         assessmentRequest.setIndexCardId(this.indexCard.getId());
 
         // when
-        this.indexCardAssessmentService.assessIndexCard(assessmentRequest);
+        this.indexCardAssessmentService.assessIndexCard(user.getUsername(), assessmentRequest);
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
@@ -67,7 +68,7 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
 
         // when
         EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
-                this.indexCardAssessmentService.assessIndexCard(assessmentRequest));
+                this.indexCardAssessmentService.assessIndexCard(user.getUsername(), assessmentRequest));
 
         // then
         IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());

@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +34,7 @@ public class EditIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void editIndexCardTest() throws EntityNotFoundException {
+    public void editIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
                 null,
@@ -42,7 +43,7 @@ public class EditIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        this.editIndexCardService.editIndexCard(this.indexCard.getId(), createIndexCardRequest);
+        this.editIndexCardService.editIndexCard(user.getUsername(), this.indexCard.getId(), createIndexCardRequest);
 
         // then
         IndexCard indexCardEdit = this.indexCardRepo.findById(this.indexCard.getId()).orElse(null);
@@ -63,9 +64,26 @@ public class EditIndexCardServiceTest extends IndexCardTestConfig {
 
         // when
         EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
-                this.editIndexCardService.editIndexCard(this.indexCard.getId() + 1, createIndexCardRequest));
+                this.editIndexCardService.editIndexCard(user.getUsername(), this.indexCard.getId() + 1, createIndexCardRequest));
 
         // then
         Assertions.assertEquals(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND, entityNotFoundException.getMessage());
+    }
+
+    @Test
+    public void editIndexCardWithUnauthorizedUserTest() {
+        // given
+        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
+                null,
+                "Question edit",
+                "Answer edit"
+        );
+
+        // when
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
+                this.editIndexCardService.editIndexCard(user2.getUsername(), this.indexCard.getId(), createIndexCardRequest));
+
+        // then
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
     }
 }

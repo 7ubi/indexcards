@@ -22,22 +22,17 @@ export class HttpService {
     observable.subscribe(
       response => subscribe(response),
       err => {
-        if (err.status === 401) {
-          this.messageService.add({
-            key: 'tr',
-            severity: 'error',
-            summary: this.translateService.instant('common.error'),
-            detail: this.translateService.instant('auth.unauthorized'),
-          });
+        if (err.status === 401 && err.error !== 'user_not_project_owner') {
           this.loginService.logout();
         }
-
+        
         this.messageService.add({
           key: 'tr',
           severity: 'error',
           summary: this.translateService.instant('common.error'),
           detail: this.translateService.instant(`backend.${err.error}`)
         });
+
         if (error) {
           error();
         }
