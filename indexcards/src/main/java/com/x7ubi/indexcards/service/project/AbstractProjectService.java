@@ -14,6 +14,7 @@ import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class AbstractProjectService {
@@ -68,7 +69,7 @@ public class AbstractProjectService {
     }
 
     protected void getUserProjectOwnerError(User user, Project project) throws UnauthorizedException {
-        if (!project.getUser().equals(user)) {
+        if (!Objects.equals(project.getUser().getId(), user.getId())) {
             logger.error(ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
             throw new UnauthorizedException(ErrorMessage.Project.USER_NOT_PROJECT_OWNER);
         }

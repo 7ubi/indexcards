@@ -24,15 +24,20 @@ public class IndexCard {
     @Enumerated(EnumType.ORDINAL)
     private Assessment assessment = Assessment.UNRATED;
 
-    @OneToMany(cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<IndexCardAssessment> assessmentHistory = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public IndexCard(byte[] question, byte[] answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public IndexCard() {}
+    public IndexCard() {
+    }
 
     public Long getId() {
         return indexcardId;
@@ -76,5 +81,13 @@ public class IndexCard {
 
     public void setAssessmentHistory(Set<IndexCardAssessment> assessmentHistory) {
         this.assessmentHistory = assessmentHistory;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

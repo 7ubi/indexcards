@@ -20,7 +20,6 @@
     "fields_required": "Alle Felder müssen ausgefüllt werden!",
     "password_match": "Passwörter sind nicht gleich!",
     "account_created": "Konto wurder erstellt! Bitte melde dich an!",
-    "wrong_credentials": "Falscher Nutzername oder Passwort!",
     "username_required": "Nutzername ist ein Pflichtfeld",
     "password_required": "Passwort ist ein Pflichtfeld",
     "unauthorized": "Du musst angemeldet sein, um auf diese Seite zu kommen!"
@@ -65,7 +64,9 @@
     "project_not_found": "Projekt wurde nicht gefunden",
     "indexcard_not_found": "Karteikarte wurde nicht gefunden",
     "indexcard_question_too_long": "Die Frage der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
-    "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt"
+    "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
+    "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
+    "bad_credentials": "Falscher Nutzername oder Passwort!"
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",

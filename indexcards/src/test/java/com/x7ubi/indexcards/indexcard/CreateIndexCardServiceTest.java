@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
@@ -29,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
     @Test
-    public void createIndexCardTest() throws EntityNotFoundException {
+    public void createIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
                 projects.get(0).getId(),
@@ -38,7 +39,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        this.createIndexCardService.createIndexCard(createIndexCardRequest);
+        this.createIndexCardService.createIndexCard(user.getUsername(), createIndexCardRequest);
 
         // then
         IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
@@ -58,11 +59,30 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
         // when
         EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
-                this.createIndexCardService.createIndexCard(createIndexCardRequest));
+                this.createIndexCardService.createIndexCard(user.getUsername(), createIndexCardRequest));
 
         // then
         IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
         Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertNull(indexCard);
+    }
+
+    @Test
+    public void createIndexCardWithUnauthorizedUserTest() {
+        // given
+        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
+                projects.get(0).getId(),
+                "Question",
+                "Answer"
+        );
+
+        // when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.createIndexCardService.createIndexCard(user2.getUsername(), createIndexCardRequest));
+
+        // then
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
         Assertions.assertNull(indexCard);
     }
 }

@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
+import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import org.junit.Assert;
@@ -32,15 +33,14 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void deleteIndexCardTest() throws EntityNotFoundException {
+    public void deleteIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
-                this.indexCard.getIndexcardId(),
-                this.projects.get(0).getId()
+                this.indexCard.getIndexcardId()
         );
 
         // when
-        this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest);
+        this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest);
 
         // then
         Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
@@ -48,38 +48,36 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void deleteIndexCardWrongProjectTest() {
-        // given
-        DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
-                this.indexCard.getIndexcardId(),
-                this.projects.get(0).getId() + 1
-        );
-
-        // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
-                this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest));
-
-        // then
-        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
-        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
-        Assertions.assertEquals(1, project.getIndexCards().size());
-    }
-
-    @Test
     public void deleteIndexCardWrongIndexCardTest() {
         // given
         DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
-                this.indexCard.getIndexcardId() + 1,
-                this.projects.get(0).getId()
+                this.indexCard.getIndexcardId() + 1
         );
 
         // when
         EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
-                this.deleteIndexCardService.deleteIndexCard(deleteIndexCardRequest));
+                this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest));
 
         // then
         Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
         Assertions.assertEquals(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND, entityNotFoundException.getMessage());
+        Assertions.assertEquals(1, project.getIndexCards().size());
+    }
+
+    @Test
+    public void deleteIndexCardWrongUserTest() {
+        // given
+        DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
+                this.indexCard.getIndexcardId()
+        );
+
+        // when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.deleteIndexCardService.deleteIndexCard(user2.getUsername(), deleteIndexCardRequest));
+
+        // then
+        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
         Assertions.assertEquals(1, project.getIndexCards().size());
     }
 }

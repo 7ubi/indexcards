@@ -14,7 +14,7 @@ public class Project {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "project")
     private Set<IndexCard> indexCards;
 
     @ManyToOne(fetch = FetchType.EAGER)
