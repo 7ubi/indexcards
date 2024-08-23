@@ -42,7 +42,7 @@ public class IndexCardQuizService extends AbstractIndexCardService {
 
         getProjectOwnerError(user, project);
 
-        List<IndexCard> indexCards = new ArrayList<>();
+        List<IndexCard> indexCards = new ArrayList<>(project.getIndexCards());
         indexCards.sort(Comparator.comparing(IndexCard::getAssessment).thenComparing((o1, o2) -> {
             List<IndexCardAssessment> indexCardAssessments1 = new ArrayList<>(o1.getAssessmentHistory());
             List<IndexCardAssessment> indexCardAssessments2 = new ArrayList<>(o2.getAssessmentHistory());
