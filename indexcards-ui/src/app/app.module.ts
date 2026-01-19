@@ -36,6 +36,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {EditorModule} from "primeng/editor";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {EditIndexcardComponent} from './component/indexcard/edit-indexcard/edit-indexcard.component';
+import { MathjaxDirective } from './directives/mathjax.directive';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -58,7 +59,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AssessmentButtonComponent,
     IndexcardQuizStatComponent,
     EditProjectComponent,
-    EditIndexcardComponent
+    EditIndexcardComponent,
+    MathjaxDirective
   ],
   imports: [
     FormsModule,
@@ -90,7 +92,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   providers: [LoginRequired, MessageService, ConfirmationService],
   bootstrap: [AppComponent],
-  exports: [FormsModule, ReactiveFormsModule, TranslateModule]
+  exports: [FormsModule, ReactiveFormsModule, TranslateModule, MathjaxDirective]
 })
 export class AppModule {
 }

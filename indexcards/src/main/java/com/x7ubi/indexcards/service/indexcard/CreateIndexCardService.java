@@ -11,6 +11,7 @@ import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,4 +44,32 @@ public class CreateIndexCardService extends AbstractIndexCardService {
     }
 
 
+    public void importIndexCardsFromCsv(String username, IndexCardCsvImportRequest indexCardCsvImportRequest) throws EntityNotFoundException, UnauthorizedException {
+        User user = getUser(username);
+
+        Project project = this.projectRepo.findProjectByProjectId(indexCardCsvImportRequest.getProjectId());
+        getProjectOwnerError(user, project);
+        String[] lines = indexCardCsvImportRequest.getCsv().split("\\r?\\n");
+        for (String line : lines) {
+            String[] values = line.split(",");
+
+            if(values.length < 2) {
+                logger.warn("Invalid CSV line format: {}. Skipping line.", line);
+                continue;
+            }
+
+            String question = values[0].trim();
+            String answer = values[1].trim();
+
+
+            IndexCard indexCard = new IndexCard();
+            indexCard.setProject(project);
+            indexCard.setQuestion(java.nio.charset.StandardCharsets.UTF_8.encode(question).array());
+            indexCard.setAnswer(java.nio.charset.StandardCharsets.UTF_8.encode(answer).array());
+
+            this.indexCardRepo.save(indexCard);
+        }
+
+        logger.info("CSV import completed successfully!");
+    }
 }

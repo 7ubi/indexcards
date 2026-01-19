@@ -54,7 +54,9 @@
     "required": "Answer and Question are required to create an index card!",
     "no_index_cards": "Create index cards to start a quiz!",
     "deleted": "Index card was successfully deleted!",
-    "edit": "Edit index card"
+    "edit": "Edit index card",
+    "imported": "Index cards imported",
+    "import_tooltip": "Import index cards from a CSV file"
   },
   "backend": {
     "username_exists": "Username already exists!",

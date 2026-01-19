@@ -70,4 +70,24 @@ export class ProjectComponent implements OnInit {
   editIndexCard(indexCardId: number) {
     this.router.navigate(['editIndexCard', indexCardId], {relativeTo: this.route}).then();
   }
+
+  async onClickImportCsv(event: Event) {
+
+    const file: File = (event.target as HTMLInputElement)!.files![0];
+    if (file) {
+      const text = await file.text();
+
+      this.httpService.post<undefined>('/api/indexCard/import', {csv:text, projectId: this.id}, () => {
+        this.messageService.add({
+          key: 'tr',
+          severity: 'success',
+          summary: this.translateService.instant('common.success'),
+          detail: this.translateService.instant('indexcard.imported')
+        });
+        this.getIndexCards(this.id);
+      }
+      , () => this.router.navigate(['']));
+    }
+  }
 }
+

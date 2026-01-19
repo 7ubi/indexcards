@@ -98,3 +98,6 @@ ol {
   height: 48px;
   margin-top: 10px;
 }
+.file-input {
+  display: none;
+}

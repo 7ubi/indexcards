@@ -54,7 +54,9 @@
     "required": "Frage und Antwort müssen eingetragen sein, um eine Karteikarte zu erstellen!",
     "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!",
     "deleted": "Karteikarte wurde erfolgreich gelöscht!",
-    "edit": "Editiere die Karteikarte"
+    "edit": "Editiere die Karteikarte",
+    "imported": "Karteikarten importriert",
+    "import_tooltip": "Importiere Karteikarten aus einer CSV Datei"
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",

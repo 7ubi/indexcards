@@ -5,6 +5,7 @@ import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.service.indexcard.*;
@@ -137,5 +138,19 @@ public class IndexCardsRestController {
         this.indexCardAssessmentService.assessIndexCard(username, assessmentRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<?> importIndexCards(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody IndexCardCsvImportRequest indexCardCsvImportRequest
+            ) throws EntityNotFoundException, UnauthorizedException {
+        logger.info("Importing Index Cards from CSV");
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.createIndexCardService.importIndexCardsFromCsv(username, indexCardCsvImportRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
