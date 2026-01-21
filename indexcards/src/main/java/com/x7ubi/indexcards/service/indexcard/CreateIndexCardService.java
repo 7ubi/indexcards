@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CreateIndexCardService extends AbstractIndexCardService {
@@ -51,7 +53,7 @@ public class CreateIndexCardService extends AbstractIndexCardService {
         getProjectOwnerError(user, project);
         String[] lines = indexCardCsvImportRequest.getCsv().split("\\r?\\n");
         for (String line : lines) {
-            String[] values = line.split(",");
+            String[] values = parseCsvLine(line);
 
             if(values.length < 2) {
                 logger.warn("Invalid CSV line format: {}. Skipping line.", line);
@@ -71,5 +73,21 @@ public class CreateIndexCardService extends AbstractIndexCardService {
         }
 
         logger.info("CSV import completed successfully!");
+    }
+
+    private static String[] parseCsvLine(String line) {
+        if(line == null || line.isEmpty()) {
+            return new String[0];
+        }
+
+        if (line.charAt(0) == '"' && line.charAt(line.length() - 1) != '"') {
+            line = line.substring(1, line.length() - 1);
+            return line.split("\",", -1);
+        } else if (line.charAt(0) == '"' && line.charAt(line.length() - 1) == '"') {
+            line = line.substring(1, line.length() - 1);
+            return line.split("\",\"", -1);
+        } else {
+            return line.split(",", -1);
+        }
     }
 }

@@ -1,6 +1,6 @@
 import {AfterViewInit, Directive, ElementRef, OnDestroy} from '@angular/core';
 
-declare var MathJax: any;
+declare let MathJax: any;
 
 @Directive({
   selector: '[appMathjax]'

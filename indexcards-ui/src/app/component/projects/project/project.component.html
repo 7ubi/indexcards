@@ -7,7 +7,7 @@
       <input type="file" class="file-input"
              (change)="onClickImportCsv($event)" #fileUpload/>
       <p-button [styleClass]="'p-button p-button-icon-only p-button-rounded'" icon="pi pi-upload"
-                pTooltip="{{ 'indexcard.create_tooltip' | translate }}"
+                pTooltip="{{ 'indexcard.import_tooltip' | translate }}"
                 class="mr15"
                 (click)="fileUpload.click()"/>
       <p-button
