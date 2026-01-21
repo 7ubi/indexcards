@@ -1,0 +1,25 @@
+<form [formGroup]="loginFormGroup" (ngSubmit)="makeLogin()">
+  <div class="container">
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'auth.username' | translate }}</mat-label>
+      <input matInput id="username" formControlName="username">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'auth.password' | translate }}</mat-label>
+      <input matInput id="password" formControlName="password" [type]="hide() ? 'password' : 'text'"/>
+      <button
+        matIconButton
+        matSuffix
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <p>
+      {{ 'auth.no_account' | translate }} <a routerLink="/signup">{{ 'auth.here' | translate }}</a>!
+    </p>
+    <button matButton="filled" type="submit">{{ 'auth.login' | translate }}</button>
+  </div>
+</form>
