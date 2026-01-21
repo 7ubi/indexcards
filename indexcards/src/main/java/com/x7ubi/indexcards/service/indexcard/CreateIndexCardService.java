@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CreateIndexCardService extends AbstractIndexCardService {
@@ -86,7 +84,10 @@ public class CreateIndexCardService extends AbstractIndexCardService {
         } else if (line.charAt(0) == '"' && line.charAt(line.length() - 1) == '"') {
             line = line.substring(1, line.length() - 1);
             return line.split("\",\"", -1);
-        } else {
+        } else if (line.charAt(0) != '"' && line.charAt(line.length() - 1) == '"') {
+            line = line.substring(0, line.length() - 1);
+            return line.split(",\"", -1);
+        }else {
             return line.split(",", -1);
         }
     }
