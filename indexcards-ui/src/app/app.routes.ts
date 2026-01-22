@@ -1,7 +1,8 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {Login} from './pages/auth/login/login';
 import {Signup} from './pages/auth/signup/signup';
 import {AllProjects} from './pages/project/all-projects/all-projects';
+import {LoginRequired} from './service/login/login-required';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: AllProjects
+    component: AllProjects,
+    canActivate: [LoginRequired]
   }
 ];

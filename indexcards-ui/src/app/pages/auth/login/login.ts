@@ -1,4 +1,4 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, signal, WritableSignal} from '@angular/core';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -35,14 +35,13 @@ export class Login {
 
   public loginFormGroup: FormGroup;
 
-  private _snackBar = inject(MatSnackBar);
-
   constructor(
     private httpService: HttpService,
     private router: Router,
     private loginService: LoginService,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private snackbar: MatSnackBar
   ) {
     this.loginFormGroup = this.formBuilder.group({
       username: ['', Validators.required],
@@ -71,13 +70,13 @@ export class Login {
 
   private throwInvalidForm() {
     if (!this.loginFormGroup.get('username')?.valid) {
-      this._snackBar.open(`${this.translateService.instant(`common.error`)}: ${this.translateService.instant(`auth.username_required`)}`, 'Ok', {
+      this.snackbar.open(`${this.translateService.instant(`common.error`)}: ${this.translateService.instant(`auth.username_required`)}`, 'Ok', {
         duration: 3000
       });
     }
 
     if (!this.loginFormGroup.get('password')?.valid) {
-      this._snackBar.open(`${this.translateService.instant(`common.error`)}: ${this.translateService.instant(`auth.password_required`)}`, 'Ok', {
+      this.snackbar.open(`${this.translateService.instant(`common.error`)}: ${this.translateService.instant(`auth.password_required`)}`, 'Ok', {
         duration: 3000
       });
     }
