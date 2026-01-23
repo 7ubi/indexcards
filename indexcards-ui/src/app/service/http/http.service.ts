@@ -1,40 +1,36 @@
-import {inject, Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {TranslateService} from "@ngx-translate/core";
+import {Injectable} from "@angular/core";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {LoginService} from '../login/login.service';
+import {SnackbarService} from '../snackbar/snackbar.service';
 
 @Injectable({
   providedIn: 'root'
 })
 class HttpService {
 
-  private _snackBar = inject(MatSnackBar);
-
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
-    private translateService: TranslateService
+    private snackbarService: SnackbarService
   ) {
   }
 
   private subscribe<Type>(observable: Observable<Type>, subscribe: (response: Type) => void, error?: () => void) {
-    observable.subscribe(
-      response => subscribe(response),
-      err => {
+    observable.subscribe({
+      next: (response: Type) => subscribe(response),
+      error: (err: HttpErrorResponse) => {
         if (err.status === 401 && err.error !== 'user_not_project_owner') {
           this.loginService.logout();
         }
-        this._snackBar.open(`${this.translateService.instant(`common.error`)}: ${this.translateService.instant(`backend.${err.error}`)}`, 'Ok', {
-          duration: 3000
-        });
+
+        this.snackbarService.showHttpError(err);
 
         if (error) {
           error();
         }
       }
-    );
+    });
   }
 
   public post<Type>(url: string, request: any, subscribe: (response: Type) => void, error?: () => void)

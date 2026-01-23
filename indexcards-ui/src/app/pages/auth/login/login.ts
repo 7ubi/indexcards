@@ -1,4 +1,4 @@
-import {Component, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -11,6 +11,7 @@ import HttpService from '../../../service/http/http.service';
 import {LoginResponse} from '../../../app.responses';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CommonModule} from '@angular/common';
+import {PasswordInput} from '../../../component/password-input/password-input';
 
 @Component({
   selector: 'app-login',
@@ -25,13 +26,12 @@ import {CommonModule} from '@angular/common';
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
+    PasswordInput,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
-
-  hide: WritableSignal<boolean> = signal(true);
+export class Login implements OnInit {
 
   public loginFormGroup: FormGroup;
 
@@ -87,10 +87,5 @@ export class Login {
       username: this.loginFormGroup.get('username')?.value,
       password: this.loginFormGroup.get('password')?.value,
     };
-  }
-
-  clickEvent(event: MouseEvent) {
-    this.hide.set(!this.hide());
-    event.stopPropagation();
   }
 }

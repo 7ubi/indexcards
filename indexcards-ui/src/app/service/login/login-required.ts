@@ -19,7 +19,7 @@ export class LoginRequired {
     if (!this.loginService.isLoggedIn()) {
       if (sessionStorage.getItem('loaded')) {
         this.router.navigate(['login']);
-        this.sleep(50).then(() => this.snackbar.open(`${this.translateService.instant('common.error')}: ${this.translateService.instant('auth.unauthorized')}`, 'Ok', {
+        this.sleep(150).then(() => this.snackbar.open(`${this.translateService.instant('common.error')}: ${this.translateService.instant('auth.unauthorized')}`, 'Ok', {
           duration: 3000
         }));
 

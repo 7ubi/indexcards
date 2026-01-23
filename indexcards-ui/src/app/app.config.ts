@@ -10,6 +10,7 @@ import HttpService from './service/http/http.service';
 import LocalService from './service/local/local.service';
 import {LoginService} from './service/login/login.service';
 import {LoginRequired} from './service/login/login-required';
+import {SnackbarService} from './service/snackbar/snackbar.service';
 
 
 export function appInitFactory() {
@@ -53,6 +54,7 @@ export const appConfig: ApplicationConfig = {
     HttpService,
     LocalService,
     LoginService,
+    SnackbarService,
     LoginRequired,
     provideAppInitializer(appInitFactory())
   ]

@@ -1,1 +1,28 @@
-<p>signup works!</p>
+<form [formGroup]="signUpFormGroup" (submit)="createAccount()">
+  <div class="center">
+    <div class="form-container">
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'auth.username' | translate }}</mat-label>
+        <input matInput id="username" formControlName="username">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'auth.firstname' | translate }}</mat-label>
+        <input matInput id="firstname" formControlName="firstname">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'auth.lastname' | translate }}</mat-label>
+        <input matInput id="surname" formControlName="surname">
+      </mat-form-field>
+      <app-password-input class="full-width" formControlName="password" id="password"
+                          label="{{ 'auth.password' | translate }}"></app-password-input>
+      <app-password-input class="full-width" formControlName="repeatPassword" id="repeatPassword"
+                          label="{{ 'auth.repeat_password' | translate }}"></app-password-input>
+      <p>
+        {{ 'auth.have_account' | translate }} <a routerLink="/login">{{ 'auth.here' | translate }}</a>!
+      </p>
+      <div class="center">
+        <button matButton="filled" type="submit">{{ 'auth.signup' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</form>
