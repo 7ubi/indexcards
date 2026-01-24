@@ -32,7 +32,7 @@
     "edit": "Edit project",
     "yes": "Yes",
     "no": "No",
-    "delete_confirmation": "Are you sure that you want to delete this Project?",
+    "delete_confirmation": "Are you sure that you want to delete project",
     "created": "Project was successfully created!",
     "edited": "Project successfully edited!",
     "deleted": "Project was deleted successfully!",

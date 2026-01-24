@@ -32,7 +32,7 @@
     "edit": "Editiere das Projekt",
     "yes": "Ja",
     "no": "Nein",
-    "delete_confirmation": "Bist du dir sicher, dass du das Projekt löschen willst?",
+    "delete_confirmation": "Bist du dir sicher, dass du das folgende Projekt löschen willst: ",
     "created": "Das Projekt wurde erfolgreich erstellt!",
     "edited": "Das Projekt wurde erfolgreich editiert!",
     "deleted": "Das Projekt wurde erfolgreich gelöscht!",

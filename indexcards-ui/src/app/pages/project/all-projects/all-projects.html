@@ -1,1 +1,42 @@
-<p>all-projects works!</p>
+<div class="center full-width">
+  <div class="container">
+    <div class="header-container">
+      <h1 class="title">
+        {{ 'project.your_projects' | translate }}
+      </h1>
+      <button matFab extended routerLink="/createProject">
+        <mat-icon>add</mat-icon>
+        {{ 'project.create_project_button' | translate }}
+      </button>
+    </div>
+    @for (project of userProjectsResponse(); track project.id) {
+      <div class="project full-width">
+        <div class="project-content" (click)="goToProject(project.id)">
+          <div class="projectName">
+            {{ project.name }}
+          </div>
+        </div>
+
+        <div class="project-actions">
+          <button
+            type="button"
+            matIconButton
+            class="project-delete"
+            (click)="$event.stopPropagation(); editProject(project.id)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            type="button"
+            matIconButton
+            class="project-delete"
+            (click)="$event.stopPropagation(); openDialog(project)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

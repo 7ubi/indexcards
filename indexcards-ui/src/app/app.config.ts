@@ -32,7 +32,6 @@ export function appInitFactory() {
     const lang = browserLang?.match(/en|de/) ? browserLang : 'en';
     translate.use(lang);
     localStorage.setItem("language", lang);
-    console.log(lang);
   };
 }
 

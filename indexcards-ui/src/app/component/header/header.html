@@ -1,3 +1,9 @@
 <mat-toolbar>
-  <span>Indexcards</span>
+  <span class="pointer" (click)="toHome()">Indexcards</span>
+  @if (isLoggedIn()) {
+    <span class="spacer"></span>
+    <button matIconButton (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
 </mat-toolbar>

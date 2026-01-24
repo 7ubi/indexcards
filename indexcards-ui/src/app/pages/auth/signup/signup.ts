@@ -7,6 +7,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {PasswordInput} from '../../../component/password-input/password-input';
+import {LoginService} from '../../../service/login/login.service';
 
 @Component({
   selector: 'app-signup',
@@ -31,8 +32,13 @@ export class Signup {
     private httpService: HttpService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private loginService: LoginService
   ) {
+    if (this.loginService.isLoggedIn()) {
+      this.router.navigate(['/']).then();
+    }
+    
     this.signUpFormGroup = this.formBuilder.group({
       username: ['', Validators.required],
       surname: ['', Validators.required],
