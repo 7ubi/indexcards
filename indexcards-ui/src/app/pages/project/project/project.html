@@ -1,0 +1,26 @@
+<div class="center full-width">
+  <div class="container">
+    <div class="header-container">
+      <h1 class="title">
+        {{ userProject?.name }}
+      </h1>
+
+
+      <div>
+        <button mat-raised-button color="primary" (click)="onClickCreateIndexcardButton()" type="button">
+          {{ 'indexcard.create' | translate }}
+        </button>
+        <button mat-stroked-button (click)="onClickQuizButton()" [disabled]="!canStartQuiz()" type="button">
+          {{ 'indexcard.spaced_repetition' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="cards-grid full-width">
+      @for (indexcard of userProject?.indexCardResponses; track indexcard.indexCardId) {
+        <app-card-overview [indexCard]="indexcard" (reloadIndexCards)="getIndexCards()"/>
+      }
+    </div>
+
+  </div>
+</div>

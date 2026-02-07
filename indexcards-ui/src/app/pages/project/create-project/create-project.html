@@ -1,0 +1,16 @@
+<form [formGroup]="createProjectFormGroup" (ngSubmit)="createProject()">
+  <div class="center">
+    <div class="form-container">
+      <div class="header-container">
+        <h1 class="title">
+          {{ 'project.create_project' | translate }}
+        </h1>
+      </div>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'project.project_name' | translate }}</mat-label>
+        <input matInput formControlName="name" name="name" id="name" type="text">
+      </mat-form-field>
+      <button matButton="filled" type="submit">{{ 'project.create_project_button' | translate }}</button>
+    </div>
+  </div>
+</form>
