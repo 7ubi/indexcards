@@ -7,7 +7,7 @@
 
 
       <div>
-        <button mat-raised-button color="primary" (click)="onClickCreateIndexcardButton()" type="button">
+        <button mat-raised-button color="primary" class="mr-5" (click)="onClickCreateIndexcardButton()" type="button">
           {{ 'indexcard.create' | translate }}
         </button>
         <button mat-stroked-button (click)="onClickQuizButton()" [disabled]="!canStartQuiz()" type="button">
@@ -24,3 +24,4 @@
 
   </div>
 </div>
+

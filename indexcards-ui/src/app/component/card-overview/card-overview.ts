@@ -32,7 +32,7 @@ export class CardOverview {
       return;
     }
 
-    this.httpService.delete<undefined>('/api/indexCard/delete', (_) => {
+    this.httpService.delete<undefined>('/api/indexCard', (_) => {
       this.snackbarService.showSuccessMessage('indexcard.deleted');
       this.reloadIndexCards.emit();
 

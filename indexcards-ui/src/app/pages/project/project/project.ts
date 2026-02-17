@@ -1,11 +1,12 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {ProjectResponse} from '../../../app.responses';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import HttpService from '../../../service/http/http.service';
 import {SnackbarService} from '../../../service/snackbar/snackbar.service';
 import {MatButtonModule} from '@angular/material/button';
 import {CardOverview} from '../../../component/card-overview/card-overview';
 import {TranslatePipe} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project',
@@ -13,9 +14,12 @@ import {TranslatePipe} from '@ngx-translate/core';
   templateUrl: './project.html',
   styleUrl: './project.css',
 })
-export class Project implements OnInit {
+export class Project implements OnInit, OnDestroy {
   userProject?: ProjectResponse;
   id: string | null = '';
+  showChild = false;
+
+  private routerEventsSub?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,10 +33,23 @@ export class Project implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getIndexCards();
+
+    // Show child when a child route like 'quiz' is active
+    this.routerEventsSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const child = this.route.firstChild;
+        this.showChild = !!child && !!child.snapshot;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routerEventsSub?.unsubscribe();
   }
 
   getIndexCards() {
-    this.httpService.get<ProjectResponse>('/api/project/project?id=' + this.id,
+    this.httpService.get<ProjectResponse>('/api/project/' + this.id,
       (response) => {
         this.userProject = response;
         this.cdr.detectChanges();

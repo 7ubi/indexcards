@@ -41,7 +41,7 @@ export class AllProjects implements OnInit {
   }
 
   getAllProjects() {
-    this.httpService.get<ProjectResponse[]>('/api/project/projects', (response: ProjectResponse[]) => {
+    this.httpService.get<ProjectResponse[]>('/api/project', (response: ProjectResponse[]) => {
       this.userProjectsResponse.set(response);
     });
   }
@@ -51,7 +51,7 @@ export class AllProjects implements OnInit {
   }
 
   deleteProject(id: number) {
-    this.httpService.delete<undefined>(`/api/project/delete?id=${id}`, () => {
+    this.httpService.delete<undefined>(`/api/project?id=${id}`, () => {
       this.snackbarService.showSuccessMessage('project.deleted');
 
       this.getAllProjects();

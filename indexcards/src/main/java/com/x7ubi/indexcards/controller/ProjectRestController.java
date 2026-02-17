@@ -45,7 +45,7 @@ public class ProjectRestController {
         this.editProjectService = editProjectService;
     }
 
-    @GetMapping("/projects")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProjectResponse>> getProjects(
             @RequestHeader("Authorization") String authorization
@@ -58,10 +58,10 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/project")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProjectResponse> getProject(
-            @RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
+            @RequestHeader("Authorization") String authorization, @PathVariable Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Getting project");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
@@ -70,7 +70,7 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createProject(
             @RequestHeader("Authorization") String authorization,
@@ -84,7 +84,7 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteProject(@RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Deleting Project");
@@ -95,7 +95,7 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("/edit")
+    @PutMapping("")
     public ResponseEntity<?> editProject(
             @RequestHeader("Authorization") String authorization,
             @RequestParam Long id,

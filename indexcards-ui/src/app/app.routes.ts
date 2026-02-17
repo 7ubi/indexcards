@@ -5,6 +5,7 @@ import {AllProjects} from './pages/project/all-projects/all-projects';
 import {LoginRequired} from './service/login/login-required';
 import {CreateProject} from './pages/project/create-project/create-project';
 import {Project} from './pages/project/project/project';
+import {Quiz} from './pages/indexcard/quiz/quiz';
 
 export const routes: Routes = [
   {
@@ -30,7 +31,11 @@ export const routes: Routes = [
       },
       {
         path: ':id',
-        component: Project
+        component: Project,
+      },
+      {
+        path: ':id/quiz',
+        component: Quiz
       }
     ]
   }

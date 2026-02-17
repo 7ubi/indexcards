@@ -44,7 +44,7 @@ export class CreateProject {
     }
 
     this.httpService.post<undefined>(
-      '/api/project/create',
+      '/api/project',
       this.getCreateProjectRequestParameter(),
       _ => {
         this.snackbarService.showSuccessMessage('project.created');
