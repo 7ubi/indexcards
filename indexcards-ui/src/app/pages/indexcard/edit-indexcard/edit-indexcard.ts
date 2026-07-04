@@ -1,0 +1,83 @@
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import HttpService from '../../../service/http/http.service';
+import {SnackbarService} from '../../../service/snackbar/snackbar.service';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatButton} from '@angular/material/button';
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {IndexCardResponse} from '../../../app.responses';
+import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+
+@Component({
+  selector: 'app-edit-indexcard',
+  imports: [
+    TranslatePipe,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatButton,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    LoadingSpinner
+  ],
+  templateUrl: './edit-indexcard.html',
+  styleUrl: './edit-indexcard.css',
+})
+export class EditIndexcard implements OnInit {
+
+  indexCardResponse?: IndexCardResponse;
+
+  editIndexCardFormGroup: FormGroup;
+
+  id: string | null = '';
+  indexCardId: string | null = '';
+  loading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private httpService: HttpService,
+    private snackbarService: SnackbarService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.editIndexCardFormGroup = this.formBuilder.group({
+      question: ['', Validators.required],
+      answer: ['', Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.indexCardId = this.route.snapshot.paramMap.get('indexCardId');
+
+    this.httpService.get<IndexCardResponse>(`/api/indexCard?id=${this.indexCardId}`, response => {
+      this.indexCardResponse = response;
+      this.editIndexCardFormGroup.setValue({question: response.question, answer: response.answer});
+      this.loading = false;
+      this.cdr.detectChanges();
+    }, () => this.router.navigate(['/project', this.id]));
+  }
+
+  editIndexCard(): void {
+    if (!this.editIndexCardFormGroup.valid) {
+      this.snackbarService.showErrorMessage('indexcard.required');
+      return;
+    }
+
+    this.httpService.put<undefined>(`/api/indexCard?id=${this.indexCardId}`, this.getRequest(),
+      () => {
+        this.snackbarService.showSuccessMessage('indexcard.edited');
+        this.router.navigate(['/project', this.id]).then();
+      });
+  }
+
+  private getRequest() {
+    return {
+      question: this.editIndexCardFormGroup.get('question')?.value,
+      answer: this.editIndexCardFormGroup.get('answer')?.value,
+    };
+  }
+}

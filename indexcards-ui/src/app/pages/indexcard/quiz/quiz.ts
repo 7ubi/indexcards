@@ -1,13 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginService} from '../../../service/login/login.service';
 import HttpService from '../../../service/http/http.service';
 import {SnackbarService} from '../../../service/snackbar/snackbar.service';
 import {IndexCardResponse} from '../../../app.responses';
+import {MatButtonModule} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MathjaxDirective} from '../../../directives/mathjax.directive';
+import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-quiz',
-  imports: [],
+  imports: [MatButtonModule, TranslatePipe, MathjaxDirective, LoadingSpinner],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css',
 })
@@ -20,12 +24,15 @@ export class Quiz implements OnInit {
 
   id: string | null = "";
 
+  loading = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private loginService: LoginService,
     private httpService: HttpService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -36,6 +43,8 @@ export class Quiz implements OnInit {
       response => {
         this.indexCards = response;
         this.canStartQuiz();
+        this.loading = false;
+        this.cdr.detectChanges();
       }, () => this.router.navigate(['']));
   }
 

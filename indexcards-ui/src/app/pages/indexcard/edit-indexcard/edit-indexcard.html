@@ -1,0 +1,24 @@
+@if (loading) {
+  <app-loading-spinner/>
+} @else {
+  <form [formGroup]="editIndexCardFormGroup" (ngSubmit)="editIndexCard()">
+    <div class="center">
+      <div class="form-container">
+        <div class="header-container">
+          <h1 class="title">
+            {{ 'indexcard.edit' | translate }}
+          </h1>
+        </div>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'indexcard.question' | translate }}</mat-label>
+          <textarea matInput formControlName="question" name="question" id="question" rows="6"></textarea>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'indexcard.answer' | translate }}</mat-label>
+          <textarea matInput formControlName="answer" name="answer" id="answer" rows="6"></textarea>
+        </mat-form-field>
+        <button matButton="filled" type="submit">{{ 'indexcard.edit' | translate }}</button>
+      </div>
+    </div>
+  </form>
+}

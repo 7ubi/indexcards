@@ -11,6 +11,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ConfirmDialog} from '../../../component/confirm-dialog/confirm-dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
+import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
 
 export interface DialogData {
   project: ProjectResponse;
@@ -20,13 +21,14 @@ export interface DialogData {
   selector: 'app-all-projects',
   templateUrl: './all-projects.html',
   styleUrl: './all-projects.css',
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, TranslatePipe, MatIcon, RouterLink],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, TranslatePipe, MatIcon, RouterLink, LoadingSpinner],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllProjects implements OnInit {
 
   readonly project: ModelSignal<ProjectResponse> = model({} as ProjectResponse);
   userProjectsResponse: WritableSignal<ProjectResponse[]> = signal([]);
+  loading: WritableSignal<boolean> = signal(true);
 
   constructor(
     private snackbarService: SnackbarService,
@@ -43,6 +45,7 @@ export class AllProjects implements OnInit {
   getAllProjects() {
     this.httpService.get<ProjectResponse[]>('/api/project', (response: ProjectResponse[]) => {
       this.userProjectsResponse.set(response);
+      this.loading.set(false);
     });
   }
 

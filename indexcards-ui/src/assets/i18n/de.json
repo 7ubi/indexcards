@@ -46,6 +46,7 @@
     "hide_answer": "Antwort verstecken",
     "show_answer": "Antwort anzeigen",
     "stat": "Akutelle Statistik für",
+    "statistics_button": "Statistik",
     "to_project": "Zurück zum Projekt",
     "spaced_repetition": "Abstandswiederholung",
     "created": "Karteikarte wurde erfolgreich erstellt!",
@@ -55,6 +56,7 @@
     "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!",
     "deleted": "Karteikarte wurde erfolgreich gelöscht!",
     "edit": "Editiere die Karteikarte",
+    "edited": "Karteikarte wurde erfolgreich editiert!",
     "imported": "Karteikarten importriert",
     "import_tooltip": "Importiere Karteikarten aus einer CSV Datei"
   },

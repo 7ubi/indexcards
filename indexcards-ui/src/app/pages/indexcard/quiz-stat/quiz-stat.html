@@ -1,0 +1,40 @@
+<div class="center full-width">
+  <div class="container">
+    @if (loading) {
+      <app-loading-spinner/>
+    } @else {
+      <h1 class="title">
+        {{ 'indexcard.stat' | translate }} {{ userProject?.name }}
+      </h1>
+
+      <mat-card class="full-width stat-card">
+        <div class="chart-container">
+          <div class="chart" [style.background]="chartBackground">
+            <div class="chart-center">{{ total }}</div>
+          </div>
+
+          <div class="legend">
+            @for (slice of slices; track slice.assessment) {
+              <div class="stat-row">
+                <span class="legend-label">
+                  <span class="legend-dot" [style.background-color]="slice.color"></span>
+                  {{ slice.label | translate }}
+                </span>
+                <span>{{ slice.count }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </mat-card>
+
+      <div class="header-container">
+        <button matButton type="button" (click)="onClickToProject()">
+          {{ 'indexcard.to_project' | translate }}
+        </button>
+        <button matButton="filled" type="button" (click)="onClickQuizButton()">
+          {{ 'indexcard.spaced_repetition' | translate }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

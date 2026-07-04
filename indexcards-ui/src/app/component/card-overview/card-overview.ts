@@ -6,11 +6,12 @@ import HttpService from '../../service/http/http.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SnackbarService} from '../../service/snackbar/snackbar.service';
 import {MatIcon} from '@angular/material/icon';
+import {MathjaxDirective} from '../../directives/mathjax.directive';
 
 @Component({
   selector: 'app-card-overview',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIcon],
+  imports: [MatCardModule, MatButtonModule, MatIcon, MathjaxDirective],
   templateUrl: './card-overview.html',
   styleUrls: ['./card-overview.css']
 })

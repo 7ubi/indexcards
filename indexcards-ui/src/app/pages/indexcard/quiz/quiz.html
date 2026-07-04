@@ -1,1 +1,31 @@
-<p>quiz works!</p>
+<div class="quiz-page">
+  @if (loading) {
+    <app-loading-spinner/>
+  } @else {
+    <div class="quiz-content">
+      <div class="indexcard">
+        <div class="indexcard-text" [innerHTML]="getIndexCard()?.question" appMathjax></div>
+
+        <button matButton="filled" type="button" (click)="showAnswer = !showAnswer">
+          {{ (showAnswer ? 'indexcard.hide_answer' : 'indexcard.show_answer') | translate }}
+        </button>
+
+        @if (showAnswer) {
+          <div class="indexcard-text" [innerHTML]="getIndexCard()?.answer" appMathjax></div>
+        }
+      </div>
+    </div>
+
+    <div class="assessment-buttons">
+      <button matButton="filled" class="assessment-bad" type="button" (click)="assessIndexCard('BAD')">
+        {{ 'bad' | translate }}
+      </button>
+      <button matButton="filled" class="assessment-ok" type="button" (click)="assessIndexCard('OK')">
+        {{ 'ok' | translate }}
+      </button>
+      <button matButton="filled" class="assessment-good" type="button" (click)="assessIndexCard('GOOD')">
+        {{ 'good' | translate }}
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,74 @@
+.quiz-page {
+  height: calc(100dvh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow: auto;
+}
+
+.indexcard {
+  width: 60%;
+  height: 100%;
+  background-color: var(--mat-sys-secondary-container);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  overflow: auto;
+}
+
+.indexcard-text {
+  font-size: 1.5em;
+  text-align: left;
+  width: 100%;
+}
+
+.assessment-buttons {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  padding: 15px 20px;
+  box-sizing: border-box;
+}
+
+.assessment-buttons button {
+  flex: 1;
+  max-width: 300px;
+}
+
+.assessment-bad {
+  background-color: #c62828 !important;
+  color: #fff !important;
+}
+
+.assessment-ok {
+  background-color: #f9a825 !important;
+  color: #000 !important;
+}
+
+.assessment-good {
+  background-color: #2e7d32 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 599px) {
+  .quiz-page {
+    height: calc(100dvh - 56px);
+  }
+
+  .indexcard {
+    width: 100%;
+  }
+}

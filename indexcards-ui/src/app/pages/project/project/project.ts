@@ -7,10 +7,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {CardOverview} from '../../../component/card-overview/card-overview';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
+import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-project',
-  imports: [MatButtonModule, CardOverview, TranslatePipe],
+  imports: [MatButtonModule, CardOverview, TranslatePipe, MatIcon, MatTooltip, LoadingSpinner],
   templateUrl: './project.html',
   styleUrl: './project.css',
 })
@@ -18,6 +21,7 @@ export class Project implements OnInit, OnDestroy {
   userProject?: ProjectResponse;
   id: string | null = '';
   showChild = false;
+  loading = true;
 
   private routerEventsSub?: Subscription;
 
@@ -49,9 +53,11 @@ export class Project implements OnInit, OnDestroy {
   }
 
   getIndexCards() {
+    this.loading = true;
     this.httpService.get<ProjectResponse>('/api/project/' + this.id,
       (response) => {
         this.userProject = response;
+        this.loading = false;
         this.cdr.detectChanges();
       },
       () => this.router.navigate(['']));
@@ -63,6 +69,10 @@ export class Project implements OnInit, OnDestroy {
 
   onClickQuizButton() {
     this.router.navigate(['quiz'], {relativeTo: this.route});
+  }
+
+  onClickStatButton() {
+    this.router.navigate(['quiz', 'stat'], {relativeTo: this.route});
   }
 
   canStartQuiz() {

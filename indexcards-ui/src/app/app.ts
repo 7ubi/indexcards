@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Header} from './component/header/header';
+import {version} from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,8 @@ import {Header} from './component/header/header';
   styleUrl: './app.css'
 })
 export class App {
+  readonly version = version;
+
   constructor() {
   }
 }

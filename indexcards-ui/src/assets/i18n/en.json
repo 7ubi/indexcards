@@ -46,6 +46,7 @@
     "hide_answer": "Hide Answer",
     "show_answer": "Show Answer",
     "stat": "Current Stats for",
+    "statistics_button": "Statistics",
     "to_project": "Back to Project",
     "spaced_repetition": "Spaced Repetition",
     "created": "Index card was successfully created!",
@@ -55,6 +56,7 @@
     "no_index_cards": "Create index cards to start a quiz!",
     "deleted": "Index card was successfully deleted!",
     "edit": "Edit index card",
+    "edited": "Index card was successfully edited!",
     "imported": "Index cards imported",
     "import_tooltip": "Import index cards from a CSV file"
   },
