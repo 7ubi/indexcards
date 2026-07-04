@@ -1,11 +1,9 @@
 <div class="center full-width">
   <div class="container">
     @if (loading) {
-      <app-loading-spinner/>
+      <app-loading-spinner />
     } @else {
-      <h1 class="title">
-        {{ 'indexcard.stat' | translate }} {{ userProject?.name }}
-      </h1>
+      <h1 class="title">{{ 'indexcard.stat' | translate }} {{ userProject?.name }}</h1>
 
       <mat-card class="full-width stat-card">
         <div class="chart-container">

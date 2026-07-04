@@ -22,5 +22,5 @@ export enum Assessment {
   UNRATED,
   BAD,
   OK,
-  GOOD
+  GOOD,
 }

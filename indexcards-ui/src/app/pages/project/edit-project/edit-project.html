@@ -1,17 +1,15 @@
 @if (loading) {
-  <app-loading-spinner/>
+  <app-loading-spinner />
 } @else {
   <form [formGroup]="editProjectFormGroup" (ngSubmit)="editProject()">
     <div class="center">
       <div class="form-container">
         <div class="header-container">
-          <h1 class="title">
-            {{ 'project.edit' | translate }} {{ userProject?.name }}
-          </h1>
+          <h1 class="title">{{ 'project.edit' | translate }} {{ userProject?.name }}</h1>
         </div>
         <mat-form-field class="full-width">
           <mat-label>{{ 'project.project_name' | translate }}</mat-label>
-          <input matInput formControlName="name" name="name" id="name" type="text">
+          <input matInput formControlName="name" name="name" id="name" type="text" />
         </mat-form-field>
         <button matButton="filled" type="submit">{{ 'project.edit' | translate }}</button>
       </div>

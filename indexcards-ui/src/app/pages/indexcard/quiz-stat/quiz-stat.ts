@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
-import {Assessment, ProjectResponse} from '../../../app.responses';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {TranslatePipe} from '@ngx-translate/core';
-import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+import { Assessment, ProjectResponse } from '../../../app.responses';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
 interface AssessmentSlice {
   assessment: Assessment;
@@ -28,6 +28,10 @@ const ASSESSMENT_COLORS: Record<Assessment, string> = {
   styleUrl: './quiz-stat.css',
 })
 export class QuizStat implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private httpService = inject(HttpService);
+  private cdr = inject(ChangeDetectorRef);
 
   userProject?: ProjectResponse;
 
@@ -41,40 +45,40 @@ export class QuizStat implements OnInit {
 
   loading = true;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private httpService: HttpService,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
-
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<ProjectResponse>(`/api/project/${this.id}`,
-      response => {
+    this.httpService.get<ProjectResponse>(
+      `/api/project/${this.id}`,
+      (response) => {
         this.userProject = response;
         this.generateChartData();
         this.loading = false;
         this.cdr.detectChanges();
-      }, () => this.router.navigate(['']));
+      },
+      () => this.router.navigate(['']),
+    );
   }
 
   private countForAssessment(assessment: Assessment): number {
     const assessmentName = Assessment[assessment];
 
-    return this.userProject?.indexCardResponses
-      .filter(indexCard => indexCard.assessment as unknown as string === assessmentName).length ?? 0;
+    return (
+      this.userProject?.indexCardResponses.filter(
+        (indexCard) => (indexCard.assessment as unknown as string) === assessmentName,
+      ).length ?? 0
+    );
   }
 
   private generateChartData(): void {
-    this.slices = [Assessment.UNRATED, Assessment.BAD, Assessment.OK, Assessment.GOOD].map(assessment => ({
-      assessment,
-      label: Assessment[assessment].toLowerCase(),
-      color: ASSESSMENT_COLORS[assessment],
-      count: this.countForAssessment(assessment),
-    }));
+    this.slices = [Assessment.UNRATED, Assessment.BAD, Assessment.OK, Assessment.GOOD].map(
+      (assessment) => ({
+        assessment,
+        label: Assessment[assessment].toLowerCase(),
+        color: ASSESSMENT_COLORS[assessment],
+        count: this.countForAssessment(assessment),
+      }),
+    );
 
     this.total = this.slices.reduce((sum, slice) => sum + slice.count, 0);
 

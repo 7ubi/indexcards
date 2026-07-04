@@ -1,11 +1,17 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterModule} from '@angular/router';
+import { Component, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
-import {SnackbarService} from '../../../service/snackbar/snackbar.service';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatButton} from '@angular/material/button';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 
 @Component({
   selector: 'app-create-project',
@@ -17,23 +23,22 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
     MatButton,
     MatFormField,
     MatInput,
-    MatLabel
+    MatLabel,
   ],
   templateUrl: './create-project.html',
   styleUrl: './create-project.css',
 })
 export class CreateProject {
+  private snackbarService = inject(SnackbarService);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private httpService = inject(HttpService);
 
   createProjectFormGroup: FormGroup;
 
-  constructor(
-    private snackbarService: SnackbarService,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private httpService: HttpService
-  ) {
+  constructor() {
     this.createProjectFormGroup = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
     });
   }
 
@@ -46,15 +51,16 @@ export class CreateProject {
     this.httpService.post<undefined>(
       '/api/project',
       this.getCreateProjectRequestParameter(),
-      _ => {
+      () => {
         this.snackbarService.showSuccessMessage('project.created');
         this.router.navigate(['/']).then();
-      });
+      },
+    );
   }
 
   getCreateProjectRequestParameter() {
     return {
-      name: this.createProjectFormGroup.get('name')?.value
+      name: this.createProjectFormGroup.get('name')?.value,
     };
   }
 }

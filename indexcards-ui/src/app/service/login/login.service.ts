@@ -1,19 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {LoginResponse} from '../../app.responses';
-import {HttpHeaders} from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginResponse } from '../../app.responses';
+import { HttpHeaders } from '@angular/common/http';
 import LocalService from '../local/local.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
+  private router = inject(Router);
 
   private type = 'Bearer';
-
-  constructor(private router: Router) {
-  }
-
 
   public saveBearer(loginResponse: LoginResponse) {
     LocalService.saveData(loginResponse.type, loginResponse.token);
@@ -30,8 +27,8 @@ export class LoginService {
   public getHeaderWithBearer(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getBearer()}`
-    })
+      Authorization: `Bearer ${this.getBearer()}`,
+    });
   }
 
   public logout(): void {

@@ -1,7 +1,7 @@
 <div class="center full-width">
   <div class="container">
     @if (loading) {
-      <app-loading-spinner/>
+      <app-loading-spinner />
     } @else {
       <div class="header-container">
         <h1 class="title">
@@ -10,28 +10,56 @@
       </div>
 
       <div class="actions-container full-width">
-        <input type="file" accept=".csv" class="file-input" (change)="onClickImportCsv($event)" #fileUpload>
-        <button matIconButton class="upload-button" type="button" [matTooltip]="'indexcard.import_tooltip' | translate" (click)="fileUpload.click()">
+        <input
+          type="file"
+          accept=".csv"
+          class="file-input"
+          (change)="onClickImportCsv($event)"
+          #fileUpload
+        />
+        <button
+          matIconButton
+          class="upload-button"
+          type="button"
+          [matTooltip]="'indexcard.import_tooltip' | translate"
+          (click)="fileUpload.click()"
+        >
           <mat-icon>upload</mat-icon>
         </button>
-        <button mat-raised-button color="primary" (click)="onClickCreateIndexcardButton()" type="button">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onClickCreateIndexcardButton()"
+          type="button"
+        >
           {{ 'indexcard.create' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!canStartQuiz()" (click)="onClickStatButton()" type="button">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!canStartQuiz()"
+          (click)="onClickStatButton()"
+          type="button"
+        >
           {{ 'indexcard.statistics_button' | translate }}
         </button>
-        <button mat-raised-button color="accent" class="quiz-button" [disabled]="!canStartQuiz()" (click)="onClickQuizButton()" type="button">
+        <button
+          mat-raised-button
+          color="accent"
+          class="quiz-button"
+          [disabled]="!canStartQuiz()"
+          (click)="onClickQuizButton()"
+          type="button"
+        >
           {{ 'indexcard.spaced_repetition' | translate }}
         </button>
       </div>
 
       <div class="cards-grid full-width">
         @for (indexcard of userProject?.indexCardResponses; track indexcard.indexCardId) {
-          <app-card-overview [indexCard]="indexcard" (reloadIndexCards)="getIndexCards()"/>
+          <app-card-overview [indexCard]="indexcard" (reloadIndexCards)="getIndexCards()" />
         }
       </div>
     }
-
   </div>
 </div>
-

@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {LoginService} from '../../../service/login/login.service';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../../../service/login/login.service';
 import HttpService from '../../../service/http/http.service';
-import {SnackbarService} from '../../../service/snackbar/snackbar.service';
-import {IndexCardResponse} from '../../../app.responses';
-import {MatButtonModule} from '@angular/material/button';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MathjaxDirective} from '../../../directives/mathjax.directive';
-import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import { IndexCardResponse } from '../../../app.responses';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MathjaxDirective } from '../../../directives/mathjax.directive';
+import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-quiz',
@@ -16,45 +16,45 @@ import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner
   styleUrl: './quiz.css',
 })
 export class Quiz implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private loginService = inject(LoginService);
+  private httpService = inject(HttpService);
+  private snackbarService = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
+
   indexCards?: IndexCardResponse[];
 
   index = 0;
 
   showAnswer = false;
 
-  id: string | null = "";
+  id: string | null = '';
 
   loading = true;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private loginService: LoginService,
-    private httpService: HttpService,
-    private snackbarService: SnackbarService,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<IndexCardResponse[]>(`/api/indexCard/quizIndexCards?id=${this.id}`,
-      response => {
+    this.httpService.get<IndexCardResponse[]>(
+      `/api/indexCard/quizIndexCards?id=${this.id}`,
+      (response) => {
         this.indexCards = response;
         this.canStartQuiz();
         this.loading = false;
         this.cdr.detectChanges();
-      }, () => this.router.navigate(['']));
+      },
+      () => this.router.navigate(['']),
+    );
   }
 
   assessIndexCard(assessment: string): void {
     const request = this.createAssessmentRequest(assessment);
 
-    this.httpService.post<undefined>('/api/indexCard/assess',
-      request, _ => {
-        this.nextIndexCard();
-      });
+    this.httpService.post<undefined>('/api/indexCard/assess', request, () => {
+      this.nextIndexCard();
+      this.cdr.detectChanges();
+    });
   }
 
   nextIndexCard() {
@@ -62,7 +62,9 @@ export class Quiz implements OnInit {
     this.showAnswer = false;
 
     if (this.index >= this.getIndexCardLength()) {
-      this.router.navigate(["/project", this.id, "quiz", "stat"]).then(() => this.snackbarService.showSuccessMessage('indexcard.spaced_repetition_done'));
+      this.router
+        .navigate(['/project', this.id, 'quiz', 'stat'])
+        .then(() => this.snackbarService.showSuccessMessage('indexcard.spaced_repetition_done'));
     }
   }
 
@@ -83,13 +85,15 @@ export class Quiz implements OnInit {
   createAssessmentRequest(assessment: string) {
     return {
       indexCardId: this.getIndexCard()?.indexCardId,
-      assessment: assessment
+      assessment: assessment,
     };
   }
 
   canStartQuiz() {
     if (this.indexCards!.length == 0) {
-      this.router.navigate(["/project", this.id]).then(() => this.snackbarService.showErrorMessage('indexcard.no_index_cards'));
+      this.router
+        .navigate(['/project', this.id])
+        .then(() => this.snackbarService.showErrorMessage('indexcard.no_index_cards'));
     }
   }
 }

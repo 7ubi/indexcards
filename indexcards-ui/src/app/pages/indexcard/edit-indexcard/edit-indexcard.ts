@@ -1,13 +1,19 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
-import {SnackbarService} from '../../../service/snackbar/snackbar.service';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatButton} from '@angular/material/button';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {IndexCardResponse} from '../../../app.responses';
-import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { IndexCardResponse } from '../../../app.responses';
+import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-edit-indexcard',
@@ -20,12 +26,18 @@ import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner
     MatFormField,
     MatInput,
     MatLabel,
-    LoadingSpinner
+    LoadingSpinner,
   ],
   templateUrl: './edit-indexcard.html',
   styleUrl: './edit-indexcard.css',
 })
 export class EditIndexcard implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private httpService = inject(HttpService);
+  private snackbarService = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   indexCardResponse?: IndexCardResponse;
 
@@ -35,14 +47,7 @@ export class EditIndexcard implements OnInit {
   indexCardId: string | null = '';
   loading = true;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private httpService: HttpService,
-    private snackbarService: SnackbarService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.editIndexCardFormGroup = this.formBuilder.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
@@ -53,12 +58,19 @@ export class EditIndexcard implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.indexCardId = this.route.snapshot.paramMap.get('indexCardId');
 
-    this.httpService.get<IndexCardResponse>(`/api/indexCard?id=${this.indexCardId}`, response => {
-      this.indexCardResponse = response;
-      this.editIndexCardFormGroup.setValue({question: response.question, answer: response.answer});
-      this.loading = false;
-      this.cdr.detectChanges();
-    }, () => this.router.navigate(['/project', this.id]));
+    this.httpService.get<IndexCardResponse>(
+      `/api/indexCard?id=${this.indexCardId}`,
+      (response) => {
+        this.indexCardResponse = response;
+        this.editIndexCardFormGroup.setValue({
+          question: response.question,
+          answer: response.answer,
+        });
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      () => this.router.navigate(['/project', this.id]),
+    );
   }
 
   editIndexCard(): void {
@@ -67,11 +79,14 @@ export class EditIndexcard implements OnInit {
       return;
     }
 
-    this.httpService.put<undefined>(`/api/indexCard?id=${this.indexCardId}`, this.getRequest(),
+    this.httpService.put<undefined>(
+      `/api/indexCard?id=${this.indexCardId}`,
+      this.getRequest(),
       () => {
         this.snackbarService.showSuccessMessage('indexcard.edited');
         this.router.navigate(['/project', this.id]).then();
-      });
+      },
+    );
   }
 
   private getRequest() {

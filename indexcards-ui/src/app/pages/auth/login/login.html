@@ -3,11 +3,12 @@
     <div class="form-container">
       <mat-form-field class="full-width">
         <mat-label>{{ 'auth.username' | translate }}</mat-label>
-        <input matInput id="username" formControlName="username">
+        <input matInput id="username" formControlName="username" />
       </mat-form-field>
       <app-password-input class="full-width" formControlName="password"></app-password-input>
       <p class="full-width centering">
-        {{ 'auth.no_account' | translate }} <a routerLink="/signup">{{ 'auth.here' | translate }}</a>!
+        {{ 'auth.no_account' | translate }} <a routerLink="/signup">{{ 'auth.here' | translate }}</a
+        >!
       </p>
       <button matButton="filled" type="submit">{{ 'auth.login' | translate }}</button>
     </div>

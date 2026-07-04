@@ -1,27 +1,18 @@
-import {Component} from '@angular/core';
-import {MatToolbar} from '@angular/material/toolbar';
-import {LoginService} from '../../service/login/login.service';
-import {MatIcon} from '@angular/material/icon';
-import {MatIconButton} from '@angular/material/button';
-import {Router} from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { MatToolbar } from '@angular/material/toolbar';
+import { LoginService } from '../../service/login/login.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    MatToolbar,
-    MatIcon,
-    MatIconButton
-  ],
+  imports: [MatToolbar, MatIcon, MatIconButton, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
-
-  constructor(
-    private router: Router,
-    private loginService: LoginService
-  ) {
-  }
+  private loginService = inject(LoginService);
 
   isLoggedIn() {
     return this.loginService.isLoggedIn();
@@ -29,9 +20,5 @@ export class Header {
 
   logout() {
     this.loginService.logout();
-  }
-
-  toHome() {
-    this.router.navigate(['/']).then();
   }
 }

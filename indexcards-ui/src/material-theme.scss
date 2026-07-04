@@ -7,14 +7,16 @@
 
 html {
   height: 100%;
-  @include mat.theme((
-    color: (
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$magenta-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 body {
@@ -36,8 +38,10 @@ body {
 }
 
 :root {
-  @include mat.toolbar-overrides((
-    container-background-color: var(--mat-sys-primary-container),
-    container-text-color: var(--mat-sys-on-surface),
-  ));
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-container),
+      container-text-color: var(--mat-sys-on-surface),
+    )
+  );
 }

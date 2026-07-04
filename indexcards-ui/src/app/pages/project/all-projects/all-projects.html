@@ -10,11 +10,18 @@
       </button>
     </div>
     @if (loading()) {
-      <app-loading-spinner/>
+      <app-loading-spinner />
     } @else {
       @for (project of userProjectsResponse(); track project.id) {
         <div class="project full-width">
-          <div class="project-content" (click)="goToProject(project.id)">
+          <div
+            class="project-content"
+            role="button"
+            tabindex="0"
+            (click)="goToProject(project.id)"
+            (keydown.enter)="goToProject(project.id)"
+            (keydown.space)="$event.preventDefault(); goToProject(project.id)"
+          >
             <div class="projectName">
               {{ project.name }}
             </div>
@@ -41,6 +48,5 @@
         </div>
       }
     }
-
   </div>
 </div>

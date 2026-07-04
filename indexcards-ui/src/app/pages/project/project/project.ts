@@ -1,15 +1,15 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {ProjectResponse} from '../../../app.responses';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ProjectResponse } from '../../../app.responses';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
-import {SnackbarService} from '../../../service/snackbar/snackbar.service';
-import {MatButtonModule} from '@angular/material/button';
-import {CardOverview} from '../../../component/card-overview/card-overview';
-import {TranslatePipe} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {MatIcon} from '@angular/material/icon';
-import {MatTooltip} from '@angular/material/tooltip';
-import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import { MatButtonModule } from '@angular/material/button';
+import { CardOverview } from '../../../component/card-overview/card-overview';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-project',
@@ -18,21 +18,18 @@ import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner
   styleUrl: './project.css',
 })
 export class Project implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private httpService = inject(HttpService);
+  private router = inject(Router);
+  private snackbarService = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
+
   userProject?: ProjectResponse;
   id: string | null = '';
   showChild = false;
   loading = true;
 
   private routerEventsSub?: Subscription;
-
-  constructor(
-    private route: ActivatedRoute,
-    private httpService: HttpService,
-    private router: Router,
-    private snackbarService: SnackbarService,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -54,43 +51,47 @@ export class Project implements OnInit, OnDestroy {
 
   getIndexCards() {
     this.loading = true;
-    this.httpService.get<ProjectResponse>('/api/project/' + this.id,
+    this.httpService.get<ProjectResponse>(
+      '/api/project/' + this.id,
       (response) => {
         this.userProject = response;
         this.loading = false;
         this.cdr.detectChanges();
       },
-      () => this.router.navigate(['']));
+      () => this.router.navigate(['']),
+    );
   }
 
   onClickCreateIndexcardButton() {
-    this.router.navigate(['createIndexCard'], {relativeTo: this.route});
+    this.router.navigate(['createIndexCard'], { relativeTo: this.route });
   }
 
   onClickQuizButton() {
-    this.router.navigate(['quiz'], {relativeTo: this.route});
+    this.router.navigate(['quiz'], { relativeTo: this.route });
   }
 
   onClickStatButton() {
-    this.router.navigate(['quiz', 'stat'], {relativeTo: this.route});
+    this.router.navigate(['quiz', 'stat'], { relativeTo: this.route });
   }
 
   canStartQuiz() {
-    return this.userProject?.indexCardResponses
-      && this.userProject?.indexCardResponses?.length > 0
+    return this.userProject?.indexCardResponses && this.userProject?.indexCardResponses?.length > 0;
   }
 
   async onClickImportCsv(event: Event) {
-
     const file: File = (event.target as HTMLInputElement)!.files![0];
     if (file) {
       const text = await file.text();
 
-      this.httpService.post<undefined>('/api/indexCard/import', {csv: text, projectId: this.id}, () => {
+      this.httpService.post<undefined>(
+        '/api/indexCard/import',
+        { csv: text, projectId: this.id },
+        () => {
           this.snackbarService.showSuccessMessage('indexcard.imported');
           this.getIndexCards();
-        }
-        , () => this.router.navigate(['']));
+        },
+        () => this.router.navigate(['']),
+      );
     }
   }
 }

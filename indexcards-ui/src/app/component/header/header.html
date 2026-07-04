@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span class="pointer" (click)="toHome()">Indexcards</span>
+  <a class="pointer" routerLink="/">Indexcards</a>
   @if (isLoggedIn()) {
     <span class="spacer"></span>
     <button matIconButton (click)="logout()">

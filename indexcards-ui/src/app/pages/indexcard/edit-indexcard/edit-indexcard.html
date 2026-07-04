@@ -1,5 +1,5 @@
 @if (loading) {
-  <app-loading-spinner/>
+  <app-loading-spinner />
 } @else {
   <form [formGroup]="editIndexCardFormGroup" (ngSubmit)="editIndexCard()">
     <div class="center">
@@ -11,7 +11,13 @@
         </div>
         <mat-form-field class="full-width">
           <mat-label>{{ 'indexcard.question' | translate }}</mat-label>
-          <textarea matInput formControlName="question" name="question" id="question" rows="6"></textarea>
+          <textarea
+            matInput
+            formControlName="question"
+            name="question"
+            id="question"
+            rows="6"
+          ></textarea>
         </mat-form-field>
         <mat-form-field class="full-width">
           <mat-label>{{ 'indexcard.answer' | translate }}</mat-label>

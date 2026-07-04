@@ -1,10 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class LocalService {
-
   public static saveData(key: string, value: string) {
     sessionStorage.setItem(key, value);
   }

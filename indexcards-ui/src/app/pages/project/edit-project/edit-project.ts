@@ -1,13 +1,19 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
-import {SnackbarService} from '../../../service/snackbar/snackbar.service';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatButton} from '@angular/material/button';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {ProjectResponse} from '../../../app.responses';
-import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { ProjectResponse } from '../../../app.responses';
+import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-edit-project',
@@ -20,12 +26,18 @@ import {LoadingSpinner} from '../../../component/loading-spinner/loading-spinner
     MatFormField,
     MatInput,
     MatLabel,
-    LoadingSpinner
+    LoadingSpinner,
   ],
   templateUrl: './edit-project.html',
   styleUrl: './edit-project.css',
 })
 export class EditProject implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private httpService = inject(HttpService);
+  private snackbarService = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   editProjectFormGroup: FormGroup;
 
@@ -33,28 +45,25 @@ export class EditProject implements OnInit {
   id: string | null = '';
   loading = true;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private httpService: HttpService,
-    private snackbarService: SnackbarService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.editProjectFormGroup = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<ProjectResponse>(`/api/project/${this.id}`, response => {
-      this.userProject = response;
-      this.editProjectFormGroup.setValue({name: response.name});
-      this.loading = false;
-      this.cdr.detectChanges();
-    }, () => this.router.navigate(['']));
+    this.httpService.get<ProjectResponse>(
+      `/api/project/${this.id}`,
+      (response) => {
+        this.userProject = response;
+        this.editProjectFormGroup.setValue({ name: response.name });
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      () => this.router.navigate(['']),
+    );
   }
 
   editProject(): void {
@@ -69,16 +78,19 @@ export class EditProject implements OnInit {
       return;
     }
 
-    this.httpService.put<undefined>(`/api/project?id=${this.id}`, this.getEditProjectRequestParameter(),
+    this.httpService.put<undefined>(
+      `/api/project?id=${this.id}`,
+      this.getEditProjectRequestParameter(),
       () => {
         this.snackbarService.showSuccessMessage('project.edited');
         this.router.navigate(['/']).then();
-      });
+      },
+    );
   }
 
   getEditProjectRequestParameter() {
     return {
-      name: this.editProjectFormGroup.get('name')?.value
+      name: this.editProjectFormGroup.get('name')?.value,
     };
   }
 }

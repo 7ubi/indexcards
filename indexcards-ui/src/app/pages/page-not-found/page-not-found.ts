@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
+import { Component } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-page-not-found',
@@ -7,5 +7,4 @@ import {TranslatePipe} from '@ngx-translate/core';
   templateUrl: './page-not-found.html',
   styleUrl: './page-not-found.css',
 })
-export class PageNotFound {
-}
+export class PageNotFound {}

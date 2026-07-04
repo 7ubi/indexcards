@@ -1,6 +1,6 @@
 <div class="quiz-page">
   @if (loading) {
-    <app-loading-spinner/>
+    <app-loading-spinner />
   } @else {
     <div class="quiz-content">
       <div class="indexcard">
@@ -17,13 +17,28 @@
     </div>
 
     <div class="assessment-buttons">
-      <button matButton="filled" class="assessment-bad" type="button" (click)="assessIndexCard('BAD')">
+      <button
+        matButton="filled"
+        class="assessment-bad"
+        type="button"
+        (click)="assessIndexCard('BAD')"
+      >
         {{ 'bad' | translate }}
       </button>
-      <button matButton="filled" class="assessment-ok" type="button" (click)="assessIndexCard('OK')">
+      <button
+        matButton="filled"
+        class="assessment-ok"
+        type="button"
+        (click)="assessIndexCard('OK')"
+      >
         {{ 'ok' | translate }}
       </button>
-      <button matButton="filled" class="assessment-good" type="button" (click)="assessIndexCard('GOOD')">
+      <button
+        matButton="filled"
+        class="assessment-good"
+        type="button"
+        (click)="assessIndexCard('GOOD')"
+      >
         {{ 'good' | translate }}
       </button>
     </div>
