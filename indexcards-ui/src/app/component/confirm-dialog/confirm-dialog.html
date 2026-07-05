@@ -1,0 +1,5 @@
+<h2 mat-dialog-title>{{ 'project.delete_confirmation' | translate }} {{ data.project.name }}?</h2>
+<mat-dialog-actions>
+  <button matButton type="button" [mat-dialog-close]="false">{{ 'project.no' | translate }}</button>
+  <button matButton type="button" [mat-dialog-close]="true">{{ 'project.yes' | translate }}</button>
+</mat-dialog-actions>

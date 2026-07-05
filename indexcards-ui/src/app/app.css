@@ -1,0 +1,9 @@
+.app-version {
+  position: fixed;
+  right: 10px;
+  bottom: 6px;
+  font-size: 0.75em;
+  color: var(--mat-sys-on-surface-variant);
+  pointer-events: none;
+  z-index: 10;
+}

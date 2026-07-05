@@ -1,0 +1,25 @@
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.file-input {
+  display: none;
+}
+
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.upload-button {
+  color: var(--mat-sys-primary);
+}
+
+.quiz-button {
+  margin-left: auto;
+}

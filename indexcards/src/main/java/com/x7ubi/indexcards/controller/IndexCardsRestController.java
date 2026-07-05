@@ -5,8 +5,8 @@ import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
-import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.service.indexcard.*;
 import org.slf4j.Logger;
@@ -51,7 +51,7 @@ public class IndexCardsRestController {
         this.deleteIndexCardService = deleteIndexCardService;
     }
 
-    @GetMapping("/get")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<IndexCardResponse> getIndexCard(
             @RequestHeader("Authorization") String authorization,
@@ -65,7 +65,7 @@ public class IndexCardsRestController {
         return ResponseEntity.status(HttpStatus.OK).body(indexCardResponse);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createIndexCard(
             @RequestHeader("Authorization") String authorization,
@@ -80,7 +80,7 @@ public class IndexCardsRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/edit")
+    @PutMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> editIndexCard(
             @RequestHeader("Authorization") String authorization,
@@ -96,7 +96,7 @@ public class IndexCardsRestController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteIndexCard(
             @RequestHeader("Authorization") String authorization,
@@ -144,7 +144,7 @@ public class IndexCardsRestController {
     public ResponseEntity<?> importIndexCards(
             @RequestHeader("Authorization") String authorization,
             @RequestBody IndexCardCsvImportRequest indexCardCsvImportRequest
-            ) throws EntityNotFoundException, UnauthorizedException {
+    ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Importing Index Cards from CSV");
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);

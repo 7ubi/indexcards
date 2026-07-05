@@ -1,0 +1,17 @@
+<mat-card>
+  <div class="card-content">
+    <div
+      class="question"
+      [innerHTML]="$safeNavigationMigration(indexCard?.question)"
+      appMathjax
+    ></div>
+    <div class="actions">
+      <button matIconButton type="button" (click)="editIndexCard()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button matIconButton type="button" color="warn" (click)="deleteIndexCard()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card>

@@ -1,17 +1,17 @@
-import {AfterViewInit, Directive, ElementRef, OnDestroy} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, inject } from '@angular/core';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let MathJax: any;
 
 @Directive({
-  selector: '[appMathjax]'
+  selector: '[appMathjax]',
 })
 export class MathjaxDirective implements AfterViewInit, OnDestroy {
+  private el = inject(ElementRef);
+
   private observer?: MutationObserver;
   private isTypesetting = false;
-  private debounceTimer: any;
-
-  constructor(private el: ElementRef) {
-  }
+  private debounceTimer?: ReturnType<typeof setTimeout>;
 
   ngAfterViewInit(): void {
     // Initial typeset (if MathJax already loaded)
@@ -34,7 +34,7 @@ export class MathjaxDirective implements AfterViewInit, OnDestroy {
     this.observer.observe(this.el.nativeElement, {
       childList: true,
       subtree: true,
-      characterData: true
+      characterData: true,
     });
   }
 
@@ -42,11 +42,11 @@ export class MathjaxDirective implements AfterViewInit, OnDestroy {
     // Clear any pending debounce timer
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
-      this.debounceTimer = null;
+      this.debounceTimer = undefined;
     }
 
     // If MathJax is not yet loaded, retry after a short delay (single timer)
-    if (typeof (window as any).MathJax === 'undefined') {
+    if (typeof MathJax === 'undefined') {
       if (!this.debounceTimer) {
         this.debounceTimer = setTimeout(() => this.typeset(), 200);
       }
@@ -61,7 +61,7 @@ export class MathjaxDirective implements AfterViewInit, OnDestroy {
     this.isTypesetting = true;
     try {
       MathJax.typesetPromise([this.el.nativeElement])
-        .catch((err: any) => console.error('MathJax typeset failed', err))
+        .catch((err: unknown) => console.error('MathJax typeset failed', err))
         .finally(() => {
           this.isTypesetting = false;
         });

@@ -19,7 +19,7 @@
     "have_account": "Du hast bereits ein Konto? Dann melde dich an: ",
     "fields_required": "Alle Felder müssen ausgefüllt werden!",
     "password_match": "Passwörter sind nicht gleich!",
-    "account_created": "Konto wurder erstellt! Bitte melde dich an!",
+    "account_created": "Konto wurde erstellt! Bitte melde dich an!",
     "username_required": "Nutzername ist ein Pflichtfeld",
     "password_required": "Passwort ist ein Pflichtfeld",
     "unauthorized": "Du musst angemeldet sein, um auf diese Seite zu kommen!"
@@ -32,7 +32,7 @@
     "edit": "Editiere das Projekt",
     "yes": "Ja",
     "no": "Nein",
-    "delete_confirmation": "Bist du dir sicher, dass du das Projekt löschen willst?",
+    "delete_confirmation": "Bist du dir sicher, dass du das folgende Projekt löschen willst: ",
     "created": "Das Projekt wurde erfolgreich erstellt!",
     "edited": "Das Projekt wurde erfolgreich editiert!",
     "deleted": "Das Projekt wurde erfolgreich gelöscht!",
@@ -46,6 +46,7 @@
     "hide_answer": "Antwort verstecken",
     "show_answer": "Antwort anzeigen",
     "stat": "Akutelle Statistik für",
+    "statistics_button": "Statistik",
     "to_project": "Zurück zum Projekt",
     "spaced_repetition": "Abstandswiederholung",
     "created": "Karteikarte wurde erfolgreich erstellt!",
@@ -55,6 +56,7 @@
     "no_index_cards": "Erstelle Karteikarten, um das Quiz zu starten!",
     "deleted": "Karteikarte wurde erfolgreich gelöscht!",
     "edit": "Editiere die Karteikarte",
+    "edited": "Karteikarte wurde erfolgreich editiert!",
     "imported": "Karteikarten importriert",
     "import_tooltip": "Importiere Karteikarten aus einer CSV Datei"
   },
