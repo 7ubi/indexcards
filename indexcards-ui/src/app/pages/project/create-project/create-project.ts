@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,6 +26,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     MatLabel,
   ],
   templateUrl: './create-project.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-project.css',
 })
 export class CreateProject {

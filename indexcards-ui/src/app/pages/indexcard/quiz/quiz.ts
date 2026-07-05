@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../../service/login/login.service';
 import HttpService from '../../../service/http/http.service';
@@ -13,6 +19,7 @@ import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinn
   selector: 'app-quiz',
   imports: [MatButtonModule, TranslatePipe, MathjaxDirective, LoadingSpinner],
   templateUrl: './quiz.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './quiz.css',
 })
 export class Quiz implements OnInit {

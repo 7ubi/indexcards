@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { LoginService } from '../../service/login/login.service';
 import { MatIcon } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-header',
   imports: [MatToolbar, MatIcon, MatIconButton, RouterLink],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.css',
 })
 export class Header {

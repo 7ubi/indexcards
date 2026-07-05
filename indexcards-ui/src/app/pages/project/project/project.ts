@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ProjectResponse } from '../../../app.responses';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
@@ -15,6 +22,7 @@ import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinn
   selector: 'app-project',
   imports: [MatButtonModule, CardOverview, TranslatePipe, MatIcon, MatTooltip, LoadingSpinner],
   templateUrl: './project.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './project.css',
 })
 export class Project implements OnInit, OnDestroy {

@@ -1,6 +1,10 @@
 <mat-card>
   <div class="card-content">
-    <div class="question" [innerHTML]="indexCard?.question" appMathjax></div>
+    <div
+      class="question"
+      [innerHTML]="$safeNavigationMigration(indexCard?.question)"
+      appMathjax
+    ></div>
     <div class="actions">
       <button matIconButton type="button" (click)="editIndexCard()">
         <mat-icon>edit</mat-icon>

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { IndexCardResponse } from '../../app.responses';
@@ -13,6 +20,7 @@ import { MathjaxDirective } from '../../directives/mathjax.directive';
   standalone: true,
   imports: [MatCardModule, MatButtonModule, MatIcon, MathjaxDirective],
   templateUrl: './card-overview.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./card-overview.css'],
 })
 export class CardOverview {

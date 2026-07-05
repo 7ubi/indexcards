@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
 import { Assessment, ProjectResponse } from '../../../app.responses';
@@ -25,6 +31,7 @@ const ASSESSMENT_COLORS: Record<Assessment, string> = {
   selector: 'app-quiz-stat',
   imports: [MatButtonModule, MatCardModule, TranslatePipe, LoadingSpinner],
   templateUrl: './quiz-stat.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './quiz-stat.css',
 })
 export class QuizStat implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,6 +26,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     MatLabel,
   ],
   templateUrl: './create-indexcard.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-indexcard.css',
 })
 export class CreateIndexcard implements OnInit {

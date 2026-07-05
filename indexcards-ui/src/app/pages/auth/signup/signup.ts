@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import HttpService from '../../../service/http/http.service';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -29,6 +29,7 @@ import { LoginService } from '../../../service/login/login.service';
     PasswordInput,
   ],
   templateUrl: './signup.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './signup.css',
 })
 export class Signup {

@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,6 +35,7 @@ import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinn
     LoadingSpinner,
   ],
   templateUrl: './edit-project.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-project.css',
 })
 export class EditProject implements OnInit {

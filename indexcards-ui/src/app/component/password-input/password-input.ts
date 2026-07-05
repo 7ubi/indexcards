@@ -1,4 +1,11 @@
-import { Component, forwardRef, Input, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  Input,
+  signal,
+  WritableSignal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
@@ -25,6 +32,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     },
   ],
   templateUrl: './password-input.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './password-input.css',
 })
 export class PasswordInput implements ControlValueAccessor {
