@@ -4,5 +4,5 @@ COPY . .
 RUN npm install && \
     npm run build
 FROM nginx:alpine
-COPY --from=builder /app/dist/indexcards-ui/browser/* /usr/share/nginx/html/
+COPY --from=builder /app/dist/indexcards-ui/browser/. /usr/share/nginx/html/
 COPY /nginx.conf /etc/nginx/conf.d/default.conf
