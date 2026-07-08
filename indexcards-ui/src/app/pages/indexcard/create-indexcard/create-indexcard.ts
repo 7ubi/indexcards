@@ -12,6 +12,8 @@ import { SnackbarService } from '../../../service/snackbar/snackbar.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MathjaxDirective } from '../../../directives/mathjax.directive';
+import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
 
 @Component({
   selector: 'app-create-indexcard',
@@ -24,6 +26,8 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     MatFormField,
     MatInput,
     MatLabel,
+    MathjaxDirective,
+    MarkdownMathPipe,
   ],
   templateUrl: './create-indexcard.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -40,6 +44,8 @@ export class CreateIndexcard implements OnInit {
 
   createIndexCardFormGroup: FormGroup;
 
+  previewMode = false;
+
   constructor() {
     this.createIndexCardFormGroup = this.formBuilder.group({
       question: ['', Validators.required],
@@ -49,6 +55,10 @@ export class CreateIndexcard implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
+  }
+
+  togglePreview(): void {
+    this.previewMode = !this.previewMode;
   }
 
   createIndexcard(): void {

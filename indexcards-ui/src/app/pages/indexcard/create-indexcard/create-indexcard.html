@@ -5,21 +5,43 @@
         <h1 class="title">
           {{ 'indexcard.create' | translate }}
         </h1>
+        <button matButton type="button" (click)="togglePreview()">
+          {{ (previewMode ? 'indexcard.edit_mode' : 'indexcard.preview') | translate }}
+        </button>
       </div>
-      <mat-form-field class="full-width">
-        <mat-label>{{ 'indexcard.question' | translate }}</mat-label>
-        <textarea
-          matInput
-          formControlName="question"
-          name="question"
-          id="question"
-          rows="6"
-        ></textarea>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>{{ 'indexcard.answer' | translate }}</mat-label>
-        <textarea matInput formControlName="answer" name="answer" id="answer" rows="6"></textarea>
-      </mat-form-field>
+      @if (previewMode) {
+        <div class="preview-field">
+          <span class="preview-label">{{ 'indexcard.question' | translate }}</span>
+          <div
+            class="preview-content"
+            [innerHTML]="createIndexCardFormGroup.get('question')?.value | markdownMath"
+            appMathjax
+          ></div>
+        </div>
+        <div class="preview-field">
+          <span class="preview-label">{{ 'indexcard.answer' | translate }}</span>
+          <div
+            class="preview-content"
+            [innerHTML]="createIndexCardFormGroup.get('answer')?.value | markdownMath"
+            appMathjax
+          ></div>
+        </div>
+      } @else {
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'indexcard.question' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="question"
+            name="question"
+            id="question"
+            rows="6"
+          ></textarea>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'indexcard.answer' | translate }}</mat-label>
+          <textarea matInput formControlName="answer" name="answer" id="answer" rows="6"></textarea>
+        </mat-form-field>
+      }
       <button matButton="filled" type="submit">{{ 'indexcard.create' | translate }}</button>
     </div>
   </div>

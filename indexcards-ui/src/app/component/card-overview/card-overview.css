@@ -65,6 +65,28 @@
   height: 16px;
 }
 
+.question {
+  overflow-wrap: break-word;
+}
+
+.question :first-child {
+  margin-top: 0;
+}
+
+.question :last-child {
+  margin-bottom: 0;
+}
+
+.question pre {
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.question ul,
+.question ol {
+  padding-left: 1.2em;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

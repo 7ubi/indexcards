@@ -17,7 +17,7 @@
           <span class="card-label">{{ 'indexcard.question' | translate }}</span>
           <div
             class="indexcard-text"
-            [innerHTML]="$safeNavigationMigration(getIndexCard()?.question)"
+            [innerHTML]="getIndexCard()?.question | markdownMath"
             appMathjax
           ></div>
           <span class="card-hint">{{ 'indexcard.tap_to_reveal' | translate }}</span>
@@ -27,7 +27,7 @@
           <span class="card-label">{{ 'indexcard.answer' | translate }}</span>
           <div
             class="indexcard-text"
-            [innerHTML]="$safeNavigationMigration(getIndexCard()?.answer)"
+            [innerHTML]="getIndexCard()?.answer | markdownMath"
             appMathjax
           ></div>
         </div>
