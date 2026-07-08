@@ -13,6 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MathjaxDirective } from '../../../directives/mathjax.directive';
+import { PasteImageDirective } from '../../../directives/paste-image.directive';
 import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
 
 @Component({
@@ -27,6 +28,7 @@ import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
     MatInput,
     MatLabel,
     MathjaxDirective,
+    PasteImageDirective,
     MarkdownMathPipe,
   ],
   templateUrl: './create-indexcard.html',

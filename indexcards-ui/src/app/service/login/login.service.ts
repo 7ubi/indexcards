@@ -31,6 +31,12 @@ export class LoginService {
     });
   }
 
+  public getBearerOnlyHeader(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.getBearer()}`,
+    });
+  }
+
   public logout(): void {
     LocalService.clearData();
     this.router.navigate(['/login']);
