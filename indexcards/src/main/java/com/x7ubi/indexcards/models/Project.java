@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,8 @@ public class Project {
 
     @Column(nullable = false, length = 100)
     private String name;
+
+    private LocalDate examDate;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "project")
     private Set<IndexCard> indexCards;
@@ -39,6 +42,14 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(LocalDate examDate) {
+        this.examDate = examDate;
     }
 
     public Set<IndexCard> getIndexCards() {

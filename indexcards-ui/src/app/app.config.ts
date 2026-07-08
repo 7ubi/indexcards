@@ -11,11 +11,24 @@ import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormGroupDirective } from '@angular/forms';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import HttpService from './service/http/http.service';
 import LocalService from './service/local/local.service';
 import { LoginService } from './service/login/login.service';
 import { LoginRequired } from './service/login/login-required';
 import { SnackbarService } from './service/snackbar/snackbar.service';
+
+const DD_MM_YYYY_DATE_FORMATS = {
+  parse: {
+    dateInput: { day: '2-digit', month: '2-digit', year: 'numeric' },
+  },
+  display: {
+    dateInput: { day: '2-digit', month: '2-digit', year: 'numeric' },
+    monthYearLabel: { year: 'numeric', month: 'short' },
+    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+    monthYearA11yLabel: { year: 'numeric', month: 'long' },
+  },
+};
 
 export function appInitFactory() {
   return (): void => {
@@ -60,5 +73,7 @@ export const appConfig: ApplicationConfig = {
     SnackbarService,
     LoginRequired,
     provideAppInitializer(appInitFactory()),
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
+    provideNativeDateAdapter(DD_MM_YYYY_DATE_FORMATS),
   ],
 };

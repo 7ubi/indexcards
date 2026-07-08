@@ -1,7 +1,9 @@
 package com.x7ubi.indexcards.response.project;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ProjectResponse {
@@ -9,6 +11,9 @@ public class ProjectResponse {
     private Long id;
 
     private String name;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private LocalDate examDate;
 
     private List<IndexCardResponse> indexCardResponses;
 
@@ -26,6 +31,14 @@ public class ProjectResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(LocalDate examDate) {
+        this.examDate = examDate;
     }
 
     public List<IndexCardResponse> getIndexCardResponses() {

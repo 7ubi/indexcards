@@ -1,6 +1,72 @@
+.index-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.index-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mat-sys-level2);
+}
+
+.card-accent {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+}
+
 .card-content {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 10px;
+  gap: 0.6rem;
+  padding: 10px 10px 10px 16px;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.assessment-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.due-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.due-badge.due-now {
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  font-weight: 600;
+}
+
+.due-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
 }

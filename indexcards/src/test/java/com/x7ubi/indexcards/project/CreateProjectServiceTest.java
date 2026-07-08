@@ -15,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
@@ -39,6 +40,21 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
         // then
         Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
         Assertions.assertEquals(createProjectRequest.getName(), project.getName());
+    }
+
+    @Test
+    public void createProjectWithExamDateTest() throws EntityNotFoundException, EntityCreationException {
+        // given
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest();
+        createProjectRequest.setName("TestProject1");
+        createProjectRequest.setExamDate(LocalDate.now().plusDays(30));
+
+        // when
+        this.createProjectService.createProject("test", createProjectRequest);
+
+        // then
+        Project project = this.projectRepo.findProjectByName(createProjectRequest.getName()).get(0);
+        Assertions.assertEquals(createProjectRequest.getExamDate(), project.getExamDate());
     }
 
     @Test

@@ -1,6 +1,9 @@
 package com.x7ubi.indexcards.response.indexcard;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.x7ubi.indexcards.models.Assessment;
+
+import java.time.LocalDateTime;
 
 public class IndexCardResponse {
     private Long indexCardId;
@@ -10,6 +13,9 @@ public class IndexCardResponse {
     private String answer;
 
     private Assessment assessment;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private LocalDateTime dueDate;
 
     public IndexCardResponse() {}
 
@@ -50,5 +56,13 @@ public class IndexCardResponse {
 
     public void setAssessment(Assessment assessment) {
         this.assessment = assessment;
+    }
+
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
     }
 }

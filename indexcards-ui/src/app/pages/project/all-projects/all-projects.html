@@ -11,42 +11,64 @@
     </div>
     @if (loading()) {
       <app-loading-spinner />
+    } @else if (userProjectsResponse().length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">auto_stories</mat-icon>
+        <div class="empty-title">{{ 'project.no_projects' | translate }}</div>
+        <div class="empty-hint">{{ 'project.no_projects_hint' | translate }}</div>
+      </div>
     } @else {
-      @for (project of userProjectsResponse(); track project.id) {
-        <div class="project full-width">
+      <div class="projects-grid full-width">
+        @for (project of userProjectsResponse(); track project.id; let i = $index) {
           <div
-            class="project-content"
+            class="project-card"
+            [class.accent-0]="i % 3 === 0"
+            [class.accent-1]="i % 3 === 1"
+            [class.accent-2]="i % 3 === 2"
             role="button"
             tabindex="0"
             (click)="goToProject(project.id)"
             (keydown.enter)="goToProject(project.id)"
             (keydown.space)="$event.preventDefault(); goToProject(project.id)"
           >
-            <div class="projectName">
-              {{ project.name }}
+            <div class="project-card-header">
+              <div class="project-avatar">{{ getInitial(project.name) }}</div>
+              <div class="project-info">
+                <div class="project-name">{{ project.name }}</div>
+                <div class="project-card-count">
+                  {{ project.indexCardResponses.length }} {{ 'project.cards_label' | translate }}
+                </div>
+              </div>
+            </div>
+
+            @if (project.examDate) {
+              <div class="exam-badge badge-{{ examDateStatus(project.examDate) }}">
+                <mat-icon class="badge-icon">event</mat-icon>
+                {{ project.examDate | date: 'dd.MM.yyyy' }}
+              </div>
+            }
+
+            <div class="project-actions">
+              <button
+                type="button"
+                matIconButton
+                [matTooltip]="'project.edit' | translate"
+                (click)="$event.stopPropagation(); editProject(project.id)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                matIconButton
+                [matTooltip]="'project.delete' | translate"
+                (click)="$event.stopPropagation(); openDialog(project)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
             </div>
           </div>
-
-          <div class="project-actions">
-            <button
-              type="button"
-              matIconButton
-              class="project-delete"
-              (click)="$event.stopPropagation(); editProject(project.id)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              type="button"
-              matIconButton
-              class="project-delete"
-              (click)="$event.stopPropagation(); openDialog(project)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-      }
+        }
+      </div>
     }
   </div>
 </div>

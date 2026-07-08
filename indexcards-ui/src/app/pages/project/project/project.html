@@ -7,6 +7,11 @@
         <h1 class="title">
           {{ userProject?.name }}
         </h1>
+        @if (userProject?.examDate) {
+          <div class="exam-date">
+            {{ 'project.exam_date' | translate }}: {{ userProject?.examDate | date: 'dd.MM.yyyy' }}
+          </div>
+        }
       </div>
 
       <div class="actions-container full-width">

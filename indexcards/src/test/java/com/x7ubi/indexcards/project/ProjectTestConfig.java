@@ -3,6 +3,7 @@ package com.x7ubi.indexcards.project;
 import com.x7ubi.indexcards.TestConfig;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
@@ -35,6 +36,9 @@ public abstract class ProjectTestConfig extends TestConfig {
 
     @Autowired
     protected ProjectRepo projectRepo;
+
+    @Autowired
+    protected IndexCardRepo indexCardRepo;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

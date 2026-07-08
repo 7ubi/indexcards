@@ -46,14 +46,18 @@ public class AbstractProjectService {
     }
 
     protected void getProjectError(CreateProjectRequest createProjectRequest, User user) throws EntityCreationException {
+        getProjectError(createProjectRequest, user, null);
+    }
+
+    protected void getProjectError(CreateProjectRequest createProjectRequest, User user, Long excludeProjectId) throws EntityCreationException {
         if (createProjectRequest.getName().length() > 100) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
             throw new EntityCreationException(ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
         }
 
-        boolean projectNameExists = user.getProjects().stream().anyMatch(project ->
-                project.getName().equals(createProjectRequest.getName())
-        );
+        boolean projectNameExists = user.getProjects().stream()
+                .filter(project -> excludeProjectId == null || !Objects.equals(project.getId(), excludeProjectId))
+                .anyMatch(project -> project.getName().equals(createProjectRequest.getName()));
 
         if (projectNameExists) {
             logger.error(ErrorMessage.Project.PROJECT_NAME_EXISTS);

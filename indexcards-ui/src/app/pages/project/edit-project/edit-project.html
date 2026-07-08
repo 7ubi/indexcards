@@ -11,6 +11,18 @@
           <mat-label>{{ 'project.project_name' | translate }}</mat-label>
           <input matInput formControlName="name" name="name" id="name" type="text" />
         </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'project.exam_date' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="examDatePicker"
+            formControlName="examDate"
+            name="examDate"
+            id="examDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="examDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #examDatePicker></mat-datepicker>
+        </mat-form-field>
         <button matButton="filled" type="submit">{{ 'project.edit' | translate }}</button>
       </div>
     </div>

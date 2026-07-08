@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
+import { DatePipe } from '@angular/common';
 
 function escapeCsvField(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
@@ -24,7 +25,15 @@ function escapeCsvField(value: string): string {
 
 @Component({
   selector: 'app-project',
-  imports: [MatButtonModule, CardOverview, TranslatePipe, MatIcon, MatTooltip, LoadingSpinner],
+  imports: [
+    MatButtonModule,
+    CardOverview,
+    TranslatePipe,
+    MatIcon,
+    MatTooltip,
+    LoadingSpinner,
+    DatePipe,
+  ],
   templateUrl: './project.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './project.css',

@@ -11,7 +11,13 @@ import HttpService from '../../../service/http/http.service';
 import { SnackbarService } from '../../../service/snackbar/snackbar.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+} from '@angular/material/datepicker';
+import { toIsoDateString } from '../../../util/date.util';
 
 @Component({
   selector: 'app-create-project',
@@ -24,6 +30,10 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     MatFormField,
     MatInput,
     MatLabel,
+    MatSuffix,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
   ],
   templateUrl: './create-project.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -40,6 +50,7 @@ export class CreateProject {
   constructor() {
     this.createProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
+      examDate: [null],
     });
   }
 
@@ -62,6 +73,7 @@ export class CreateProject {
   getCreateProjectRequestParameter() {
     return {
       name: this.createProjectFormGroup.get('name')?.value,
+      examDate: toIsoDateString(this.createProjectFormGroup.get('examDate')?.value ?? null),
     };
   }
 }
