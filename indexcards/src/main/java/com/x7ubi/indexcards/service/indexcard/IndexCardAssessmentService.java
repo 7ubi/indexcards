@@ -38,11 +38,15 @@ public class IndexCardAssessmentService extends AbstractIndexCardService {
 
         this.getProjectOwnerError(user, indexCard.getProject());
 
+        LocalDateTime now = LocalDateTime.now();
+
         IndexCardAssessment indexCardAssessment
-                = new IndexCardAssessment(assessmentRequest.getAssessment(), LocalDateTime.now());
+                = new IndexCardAssessment(assessmentRequest.getAssessment(), now);
         this.indexCardAssessmentRepo.save(indexCardAssessment);
         indexCard.setAssessment(assessmentRequest.getAssessment());
         indexCard.getAssessmentHistory().add(indexCardAssessment);
+        SpacedRepetitionScheduler.schedule(
+                indexCard, assessmentRequest.getAssessment(), now, indexCard.getProject().getExamDate());
         indexCard.getAssessmentHistory().forEach(item ->
                 logger.info(String.format("%s, %s", item.getAssessment().toString(), item.getDate().toString())));
         this.indexCardRepo.save(indexCard);

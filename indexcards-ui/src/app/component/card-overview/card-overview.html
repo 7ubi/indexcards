@@ -1,5 +1,19 @@
-<mat-card>
+<mat-card class="index-card">
+  <div class="card-accent" [style.background-color]="assessmentColor()"></div>
   <div class="card-content">
+    <div class="card-top">
+      <span class="assessment-chip" [style.background-color]="assessmentColor()">
+        {{ assessmentLabel() | translate }}
+      </span>
+      <span class="due-badge" [class.due-now]="isDue()">
+        <mat-icon class="due-icon">{{ isDue() ? 'alarm' : 'event' }}</mat-icon>
+        @if (isDue()) {
+          {{ 'indexcard.due_now' | translate }}
+        } @else {
+          {{ indexCard?.dueDate | date: 'dd.MM.yyyy' }}
+        }
+      </span>
+    </div>
     <div
       class="question"
       [innerHTML]="$safeNavigationMigration(indexCard?.question)"

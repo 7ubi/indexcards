@@ -4,7 +4,6 @@ import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
 import com.x7ubi.indexcards.models.IndexCard;
-import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardAssessmentRepo;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -43,19 +41,9 @@ public class IndexCardQuizService extends AbstractIndexCardService {
         getProjectOwnerError(user, project);
 
         List<IndexCard> indexCards = new ArrayList<>(project.getIndexCards());
-        indexCards.sort(Comparator.comparing(IndexCard::getAssessment).thenComparing((o1, o2) -> {
-            List<IndexCardAssessment> indexCardAssessments1 = new ArrayList<>(o1.getAssessmentHistory());
-            List<IndexCardAssessment> indexCardAssessments2 = new ArrayList<>(o2.getAssessmentHistory());
-
-            if (indexCardAssessments1.isEmpty() || indexCardAssessments2.isEmpty()) {
-                return o1.getId().compareTo(o2.getId());
-            }
-
-            LocalDateTime date1 = indexCardAssessments1.get(indexCardAssessments1.size() - 1).getDate();
-            LocalDateTime date2 = indexCardAssessments2.get(indexCardAssessments2.size() - 1).getDate();
-
-            return date1.compareTo(date2);
-        }));
+        // Due/overdue cards sort first (most overdue first); once none are due, the remaining
+        // cards are ordered by soonest-upcoming so the quiz still fills up to maxIndexCardsPerQuiz.
+        indexCards.sort(Comparator.comparing(IndexCard::getDueDate).thenComparing(IndexCard::getId));
 
         return this.indexCardMapper.mapToResponses(indexCards.subList(0, Math.min(maxIndexCardsPerQuiz, indexCards.size())));
     }

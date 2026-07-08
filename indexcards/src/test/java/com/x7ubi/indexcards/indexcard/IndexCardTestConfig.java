@@ -11,6 +11,7 @@ import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.EditIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
+import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,6 +34,9 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     @Autowired
     protected IndexCardAssessmentService indexCardAssessmentService;
+
+    @Autowired
+    protected IndexCardQuizService indexCardQuizService;
 
     @Autowired
     protected DeleteIndexCardService deleteIndexCardService;

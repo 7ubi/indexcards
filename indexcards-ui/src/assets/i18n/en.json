@@ -36,8 +36,13 @@
     "created": "Project was successfully created!",
     "edited": "Project successfully edited!",
     "deleted": "Project was deleted successfully!",
-    "not_changed": "Project name did not change",
-    "no_name": "Enter a project name to create a project!"
+    "not_changed": "Project did not change",
+    "no_name": "Enter a project name to create a project!",
+    "exam_date": "Exam date",
+    "delete": "Delete project",
+    "no_projects": "No projects yet",
+    "no_projects_hint": "Create your first project to start adding index cards.",
+    "cards_label": "cards"
   },
   "indexcard": {
     "create": "Create index card",
@@ -59,7 +64,9 @@
     "edited": "Index card was successfully edited!",
     "imported": "Index cards imported",
     "import_tooltip": "Import index cards from a CSV file",
-    "export_tooltip": "Export index cards as a CSV file"
+    "export_tooltip": "Export index cards as a CSV file",
+    "due_now": "Due now",
+    "next_review": "Next review"
   },
   "backend": {
     "username_exists": "Username already exists!",

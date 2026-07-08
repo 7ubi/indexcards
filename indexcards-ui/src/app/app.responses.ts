@@ -10,11 +10,13 @@ export interface IndexCardResponse {
   readonly question: string;
   readonly answer: string;
   readonly assessment: Assessment;
+  readonly dueDate: string;
 }
 
 export interface ProjectResponse {
   readonly id: number;
   readonly name: string;
+  readonly examDate: string | null;
   readonly indexCardResponses: IndexCardResponse[];
 }
 

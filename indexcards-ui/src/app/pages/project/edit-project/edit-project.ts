@@ -17,9 +17,15 @@ import HttpService from '../../../service/http/http.service';
 import { SnackbarService } from '../../../service/snackbar/snackbar.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+} from '@angular/material/datepicker';
 import { ProjectResponse } from '../../../app.responses';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
+import { parseIsoDateString, toIsoDateString } from '../../../util/date.util';
 
 @Component({
   selector: 'app-edit-project',
@@ -32,6 +38,10 @@ import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinn
     MatFormField,
     MatInput,
     MatLabel,
+    MatSuffix,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
     LoadingSpinner,
   ],
   templateUrl: './edit-project.html',
@@ -55,6 +65,7 @@ export class EditProject implements OnInit {
   constructor() {
     this.editProjectFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
+      examDate: [null],
     });
   }
 
@@ -65,7 +76,10 @@ export class EditProject implements OnInit {
       `/api/project/${this.id}`,
       (response) => {
         this.userProject = response;
-        this.editProjectFormGroup.setValue({ name: response.name });
+        this.editProjectFormGroup.setValue({
+          name: response.name,
+          examDate: parseIsoDateString(response.examDate),
+        });
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -74,7 +88,12 @@ export class EditProject implements OnInit {
   }
 
   editProject(): void {
-    if (this.editProjectFormGroup.get('name')?.value === this.userProject?.name) {
+    const nameUnchanged = this.editProjectFormGroup.get('name')?.value === this.userProject?.name;
+    const examDateUnchanged =
+      toIsoDateString(this.editProjectFormGroup.get('examDate')?.value ?? null) ===
+      (this.userProject?.examDate ?? null);
+
+    if (nameUnchanged && examDateUnchanged) {
       this.snackbarService.showWarnMessage('project.not_changed');
       this.router.navigate(['/']).then();
       return;
@@ -98,6 +117,7 @@ export class EditProject implements OnInit {
   getEditProjectRequestParameter() {
     return {
       name: this.editProjectFormGroup.get('name')?.value,
+      examDate: toIsoDateString(this.editProjectFormGroup.get('examDate')?.value ?? null),
     };
   }
 }

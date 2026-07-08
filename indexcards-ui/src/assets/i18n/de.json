@@ -36,8 +36,13 @@
     "created": "Das Projekt wurde erfolgreich erstellt!",
     "edited": "Das Projekt wurde erfolgreich editiert!",
     "deleted": "Das Projekt wurde erfolgreich gelöscht!",
-    "not_changed": "Projektname hat sich nicht geändert",
-    "no_name": "Ein Projektname ist erforderlich, um ein Projekt zu erstellen!"
+    "not_changed": "Projekt hat sich nicht geändert",
+    "no_name": "Ein Projektname ist erforderlich, um ein Projekt zu erstellen!",
+    "exam_date": "Prüfungsdatum",
+    "delete": "Projekt löschen",
+    "no_projects": "Noch keine Projekte",
+    "no_projects_hint": "Erstelle dein erstes Projekt, um Karteikarten hinzuzufügen.",
+    "cards_label": "Karten"
   },
   "indexcard": {
     "create": "Erstelle eine Karteikarte",
@@ -59,7 +64,9 @@
     "edited": "Karteikarte wurde erfolgreich editiert!",
     "imported": "Karteikarten importriert",
     "import_tooltip": "Importiere Karteikarten aus einer CSV Datei",
-    "export_tooltip": "Exportiere Karteikarten als CSV Datei"
+    "export_tooltip": "Exportiere Karteikarten als CSV Datei",
+    "due_now": "Jetzt fällig",
+    "next_review": "Nächste Wiederholung"
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
