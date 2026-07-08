@@ -55,6 +55,10 @@ export class Quiz implements OnInit {
     );
   }
 
+  toggleAnswer(): void {
+    this.showAnswer = !this.showAnswer;
+  }
+
   assessIndexCard(assessment: string): void {
     const request = this.createAssessmentRequest(assessment);
 
