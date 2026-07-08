@@ -58,7 +58,8 @@
     "edit": "Edit index card",
     "edited": "Index card was successfully edited!",
     "imported": "Index cards imported",
-    "import_tooltip": "Import index cards from a CSV file"
+    "import_tooltip": "Import index cards from a CSV file",
+    "export_tooltip": "Export index cards as a CSV file"
   },
   "backend": {
     "username_exists": "Username already exists!",

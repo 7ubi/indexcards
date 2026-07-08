@@ -78,17 +78,20 @@ public class CreateIndexCardService extends AbstractIndexCardService {
             return new String[0];
         }
 
+        String[] values;
         if (line.charAt(0) == '"' && line.charAt(line.length() - 1) != '"') {
-            line = line.substring(1, line.length() - 1);
-            return line.split("\",", -1);
+            values = line.substring(1, line.length() - 1).split("\",", -1);
         } else if (line.charAt(0) == '"' && line.charAt(line.length() - 1) == '"') {
-            line = line.substring(1, line.length() - 1);
-            return line.split("\",\"", -1);
+            values = line.substring(1, line.length() - 1).split("\",\"", -1);
         } else if (line.charAt(0) != '"' && line.charAt(line.length() - 1) == '"') {
-            line = line.substring(0, line.length() - 1);
-            return line.split(",\"", -1);
-        }else {
-            return line.split(",", -1);
+            values = line.substring(0, line.length() - 1).split(",\"", -1);
+        } else {
+            values = line.split(",", -1);
         }
+
+        for (int i = 0; i < values.length; i++) {
+            values[i] = values[i].replace("\"\"", "\"");
+        }
+        return values;
     }
 }

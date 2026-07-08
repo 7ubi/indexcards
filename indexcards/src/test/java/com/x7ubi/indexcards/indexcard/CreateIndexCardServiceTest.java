@@ -6,6 +6,7 @@ import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
+import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,24 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         Assertions.assertEquals(createIndexCardRequest.getQuestion(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))));
         Assertions.assertEquals(createIndexCardRequest.getAnswer(), String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))));
         Assertions.assertEquals(Assessment.UNRATED, indexCard.getAssessment());
+    }
+
+    @Test
+    public void importIndexCardsFromCsvWithEscapedQuotesTest() throws EntityNotFoundException, UnauthorizedException {
+        // given
+        IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
+        indexCardCsvImportRequest.setProjectId(projects.get(0).getId());
+        indexCardCsvImportRequest.setCsv("\"He said \"\"hi\"\"\",\"Answer\"");
+
+        // when
+        this.createIndexCardService.importIndexCardsFromCsv(user.getUsername(), indexCardCsvImportRequest);
+
+        // then
+        String expectedQuestion = "He said \"hi\"";
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(expectedQuestion).array());
+        Assertions.assertNotNull(indexCard);
+        Assertions.assertEquals(expectedQuestion, String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getQuestion()))).trim());
+        Assertions.assertEquals("Answer", String.valueOf(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCard.getAnswer()))).trim());
     }
 
     @Test

@@ -27,6 +27,16 @@
           <mat-icon>upload</mat-icon>
         </button>
         <button
+          matIconButton
+          class="upload-button"
+          type="button"
+          [matTooltip]="'indexcard.export_tooltip' | translate"
+          [disabled]="!hasIndexCards()"
+          (click)="onClickExportCsv()"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <button
           mat-raised-button
           color="primary"
           (click)="onClickCreateIndexcardButton()"

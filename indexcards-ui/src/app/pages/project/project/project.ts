@@ -18,6 +18,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 
+function escapeCsvField(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
 @Component({
   selector: 'app-project',
   imports: [MatButtonModule, CardOverview, TranslatePipe, MatIcon, MatTooltip, LoadingSpinner],
@@ -82,8 +86,12 @@ export class Project implements OnInit, OnDestroy {
     this.router.navigate(['quiz', 'stat'], { relativeTo: this.route });
   }
 
+  hasIndexCards() {
+    return !!this.userProject?.indexCardResponses && this.userProject.indexCardResponses.length > 0;
+  }
+
   canStartQuiz() {
-    return this.userProject?.indexCardResponses && this.userProject?.indexCardResponses?.length > 0;
+    return this.hasIndexCards();
   }
 
   async onClickImportCsv(event: Event) {
@@ -91,6 +99,7 @@ export class Project implements OnInit, OnDestroy {
     if (file) {
       const text = await file.text();
 
+      this.loading = true;
       this.httpService.post<undefined>(
         '/api/indexCard/import',
         { csv: text, projectId: this.id },
@@ -101,5 +110,20 @@ export class Project implements OnInit, OnDestroy {
         () => this.router.navigate(['']),
       );
     }
+  }
+
+  onClickExportCsv() {
+    const cards = this.userProject?.indexCardResponses ?? [];
+    const csv = cards
+      .map((card) => `${escapeCsvField(card.question)},${escapeCsvField(card.answer)}`)
+      .join('\r\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${this.userProject?.name ?? 'indexcards'}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
   }
 }

@@ -58,7 +58,8 @@
     "edit": "Editiere die Karteikarte",
     "edited": "Karteikarte wurde erfolgreich editiert!",
     "imported": "Karteikarten importriert",
-    "import_tooltip": "Importiere Karteikarten aus einer CSV Datei"
+    "import_tooltip": "Importiere Karteikarten aus einer CSV Datei",
+    "export_tooltip": "Exportiere Karteikarten als CSV Datei"
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
