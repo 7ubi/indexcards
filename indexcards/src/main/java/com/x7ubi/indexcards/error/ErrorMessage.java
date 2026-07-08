@@ -31,4 +31,11 @@ public class ErrorMessage {
 
         public static String INDEXCARD_ANSWER_TOO_LONG = "indexcard_answer_too_long";
     }
+
+    public static class Images {
+
+        public static String INVALID_IMAGE = "invalid_image";
+
+        public static String IMAGE_NOT_FOUND = "image_not_found";
+    }
 }

@@ -22,20 +22,25 @@
   overflow-wrap: break-word;
 }
 
-.preview-content :first-child {
+.preview-content ::ng-deep :first-child {
   margin-top: 0;
 }
 
-.preview-content :last-child {
+.preview-content ::ng-deep :last-child {
   margin-bottom: 0;
 }
 
-.preview-content pre {
+.preview-content ::ng-deep pre {
   white-space: pre-wrap;
   overflow-x: auto;
 }
 
-.preview-content ul,
-.preview-content ol {
+.preview-content ::ng-deep img {
+  max-width: 100%;
+  height: auto;
+}
+
+.preview-content ::ng-deep ul,
+.preview-content ::ng-deep ol {
   padding-left: 1.2em;
 }

@@ -69,21 +69,26 @@
   overflow-wrap: break-word;
 }
 
-.question :first-child {
+.question ::ng-deep :first-child {
   margin-top: 0;
 }
 
-.question :last-child {
+.question ::ng-deep :last-child {
   margin-bottom: 0;
 }
 
-.question pre {
+.question ::ng-deep pre {
   white-space: pre-wrap;
   overflow-x: auto;
 }
 
-.question ul,
-.question ol {
+.question ::ng-deep img {
+  max-width: 100%;
+  height: auto;
+}
+
+.question ::ng-deep ul,
+.question ::ng-deep ol {
   padding-left: 1.2em;
 }
 

@@ -21,6 +21,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { IndexCardResponse } from '../../../app.responses';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 import { MathjaxDirective } from '../../../directives/mathjax.directive';
+import { PasteImageDirective } from '../../../directives/paste-image.directive';
 import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
 
 @Component({
@@ -36,6 +37,7 @@ import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
     MatLabel,
     LoadingSpinner,
     MathjaxDirective,
+    PasteImageDirective,
     MarkdownMathPipe,
   ],
   templateUrl: './edit-indexcard.html',

@@ -64,24 +64,30 @@
   font-size: 1.5em;
   text-align: left;
   width: 100%;
+  min-width: 0;
   overflow-wrap: break-word;
 }
 
-.indexcard-text :first-child {
+.indexcard-text ::ng-deep :first-child {
   margin-top: 0;
 }
 
-.indexcard-text :last-child {
+.indexcard-text ::ng-deep :last-child {
   margin-bottom: 0;
 }
 
-.indexcard-text pre {
+.indexcard-text ::ng-deep pre {
   white-space: pre-wrap;
   overflow-x: auto;
 }
 
-.indexcard-text ul,
-.indexcard-text ol {
+.indexcard-text ::ng-deep img {
+  max-width: 100%;
+  height: auto;
+}
+
+.indexcard-text ::ng-deep ul,
+.indexcard-text ::ng-deep ol {
   padding-left: 1.2em;
 }
 

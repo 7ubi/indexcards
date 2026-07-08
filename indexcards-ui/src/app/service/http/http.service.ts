@@ -45,6 +45,18 @@ class HttpService {
     this.subscribe(observable, subscribe, error);
   }
 
+  public postFormData<Type>(
+    url: string,
+    formData: FormData,
+    subscribe: (response: Type) => void,
+    error?: () => void,
+  ): void {
+    const observable = this.http.post<Type>(url, formData, {
+      headers: this.loginService.getBearerOnlyHeader(),
+    });
+    this.subscribe(observable, subscribe, error);
+  }
+
   public get<Type>(url: string, subscribe: (response: Type) => void, error?: () => void): void {
     const observable = this.http.get<Type>(url, {
       headers: this.loginService.getHeaderWithBearer(),

@@ -17,7 +17,7 @@ public class IndexCard {
     @Lob
     private byte[] question;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false)
     @Lob
     private byte[] answer;
 

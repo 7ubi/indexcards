@@ -13,6 +13,10 @@ export interface IndexCardResponse {
   readonly dueDate: string;
 }
 
+export interface ImageUploadResponse {
+  readonly imageId: string;
+}
+
 export interface ProjectResponse {
   readonly id: number;
   readonly name: string;
