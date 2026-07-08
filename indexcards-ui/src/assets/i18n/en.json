@@ -65,7 +65,9 @@
     "import_tooltip": "Import index cards from a CSV file",
     "export_tooltip": "Export index cards as a CSV file",
     "due_now": "Due now",
-    "next_review": "Next review"
+    "next_review": "Next review",
+    "preview": "Preview",
+    "edit_mode": "Edit"
   },
   "backend": {
     "username_exists": "Username already exists!",

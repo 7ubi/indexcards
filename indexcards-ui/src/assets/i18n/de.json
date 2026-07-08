@@ -65,7 +65,9 @@
     "import_tooltip": "Importiere Karteikarten aus einer CSV Datei",
     "export_tooltip": "Exportiere Karteikarten als CSV Datei",
     "due_now": "Jetzt fällig",
-    "next_review": "Nächste Wiederholung"
+    "next_review": "Nächste Wiederholung",
+    "preview": "Vorschau",
+    "edit_mode": "Bearbeiten"
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",

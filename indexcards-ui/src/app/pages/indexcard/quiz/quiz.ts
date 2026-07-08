@@ -14,10 +14,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MathjaxDirective } from '../../../directives/mathjax.directive';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
+import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
 
 @Component({
   selector: 'app-quiz',
-  imports: [MatButtonModule, TranslatePipe, MathjaxDirective, LoadingSpinner],
+  imports: [MatButtonModule, TranslatePipe, MathjaxDirective, LoadingSpinner, MarkdownMathPipe],
   templateUrl: './quiz.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './quiz.css',

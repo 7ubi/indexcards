@@ -16,6 +16,7 @@ import { SnackbarService } from '../../service/snackbar/snackbar.service';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MathjaxDirective } from '../../directives/mathjax.directive';
+import { MarkdownMathPipe } from '../../pipes/markdown-math.pipe';
 
 const ASSESSMENT_COLORS: Record<string, string> = {
   UNRATED: '#9e9e9e',
@@ -27,7 +28,15 @@ const ASSESSMENT_COLORS: Record<string, string> = {
 @Component({
   selector: 'app-card-overview',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIcon, MathjaxDirective, DatePipe, TranslatePipe],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIcon,
+    MathjaxDirective,
+    DatePipe,
+    TranslatePipe,
+    MarkdownMathPipe,
+  ],
   templateUrl: './card-overview.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./card-overview.css'],

@@ -20,6 +20,8 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { IndexCardResponse } from '../../../app.responses';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
+import { MathjaxDirective } from '../../../directives/mathjax.directive';
+import { MarkdownMathPipe } from '../../../pipes/markdown-math.pipe';
 
 @Component({
   selector: 'app-edit-indexcard',
@@ -33,6 +35,8 @@ import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinn
     MatInput,
     MatLabel,
     LoadingSpinner,
+    MathjaxDirective,
+    MarkdownMathPipe,
   ],
   templateUrl: './edit-indexcard.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -53,6 +57,8 @@ export class EditIndexcard implements OnInit {
   id: string | null = '';
   indexCardId: string | null = '';
   loading = true;
+
+  previewMode = false;
 
   constructor() {
     this.editIndexCardFormGroup = this.formBuilder.group({
@@ -78,6 +84,10 @@ export class EditIndexcard implements OnInit {
       },
       () => this.router.navigate(['/project', this.id]),
     );
+  }
+
+  togglePreview(): void {
+    this.previewMode = !this.previewMode;
   }
 
   editIndexCard(): void {
