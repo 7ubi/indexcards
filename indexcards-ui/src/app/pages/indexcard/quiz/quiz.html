@@ -3,24 +3,34 @@
     <app-loading-spinner />
   } @else {
     <div class="quiz-content">
-      <div class="indexcard">
-        <div
-          class="indexcard-text"
-          [innerHTML]="$safeNavigationMigration(getIndexCard()?.question)"
-          appMathjax
-        ></div>
+      <div
+        class="card-flip"
+        [class.flipped]="showAnswer"
+        role="button"
+        tabindex="0"
+        [attr.aria-pressed]="showAnswer"
+        (click)="toggleAnswer()"
+        (keydown.enter)="toggleAnswer()"
+        (keydown.space)="toggleAnswer()"
+      >
+        <div class="card-face card-front">
+          <span class="card-label">{{ 'indexcard.question' | translate }}</span>
+          <div
+            class="indexcard-text"
+            [innerHTML]="$safeNavigationMigration(getIndexCard()?.question)"
+            appMathjax
+          ></div>
+          <span class="card-hint">{{ 'indexcard.tap_to_reveal' | translate }}</span>
+        </div>
 
-        <button matButton="filled" type="button" (click)="showAnswer = !showAnswer">
-          {{ (showAnswer ? 'indexcard.hide_answer' : 'indexcard.show_answer') | translate }}
-        </button>
-
-        @if (showAnswer) {
+        <div class="card-face card-back">
+          <span class="card-label">{{ 'indexcard.answer' | translate }}</span>
           <div
             class="indexcard-text"
             [innerHTML]="$safeNavigationMigration(getIndexCard()?.answer)"
             appMathjax
           ></div>
-        }
+        </div>
       </div>
     </div>
 

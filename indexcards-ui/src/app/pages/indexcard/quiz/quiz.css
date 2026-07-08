@@ -12,11 +12,28 @@
   align-items: center;
   padding: 20px;
   overflow: auto;
+  perspective: 1800px;
 }
 
-.indexcard {
+.card-flip {
   width: 60%;
   height: 100%;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  outline: none;
+}
+
+.card-flip.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background-color: var(--mat-sys-secondary-container);
   border-radius: 10px;
   padding: 20px;
@@ -25,12 +42,35 @@
   align-items: center;
   gap: 15px;
   overflow: auto;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background-color: var(--mat-sys-tertiary-container);
+}
+
+.card-label {
+  align-self: flex-start;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 0.05em;
 }
 
 .indexcard-text {
   font-size: 1.5em;
   text-align: left;
   width: 100%;
+}
+
+.card-hint {
+  margin-top: auto;
+  align-self: center;
+  font-size: 0.85em;
+  opacity: 0.5;
 }
 
 .assessment-buttons {
@@ -68,7 +108,7 @@
     height: calc(100dvh - 56px);
   }
 
-  .indexcard {
+  .card-flip {
     width: 100%;
   }
 }
