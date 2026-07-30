@@ -10,6 +10,7 @@ import { EditProject } from './pages/project/edit-project/edit-project';
 import { CreateIndexcard } from './pages/indexcard/create-indexcard/create-indexcard';
 import { EditIndexcard } from './pages/indexcard/edit-indexcard/edit-indexcard';
 import { QuizStat } from './pages/indexcard/quiz-stat/quiz-stat';
+import { Practice } from './pages/indexcard/practice/practice';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
 
 export const routes: Routes = [
@@ -57,6 +58,10 @@ export const routes: Routes = [
       {
         path: ':id/quiz/stat',
         component: QuizStat,
+      },
+      {
+        path: ':id/practice',
+        component: Practice,
       },
     ],
   },

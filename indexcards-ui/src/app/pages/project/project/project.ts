@@ -91,6 +91,10 @@ export class Project implements OnInit, OnDestroy {
     this.router.navigate(['quiz'], { relativeTo: this.route });
   }
 
+  onClickPracticeButton() {
+    this.router.navigate(['practice'], { relativeTo: this.route });
+  }
+
   onClickStatButton() {
     this.router.navigate(['quiz', 'stat'], { relativeTo: this.route });
   }
