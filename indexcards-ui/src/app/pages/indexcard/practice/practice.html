@@ -1,0 +1,63 @@
+<div class="practice-page">
+  @if (loading) {
+    <app-loading-spinner />
+  } @else if (finished) {
+    <div class="center full-width practice-summary">
+      <div class="container">
+        <h1 class="title">{{ 'indexcard.practice_done' | translate }}</h1>
+
+        <mat-card class="full-width stat-card">
+          <app-assessment-chart [slices]="slices" />
+        </mat-card>
+
+        <div class="header-container">
+          <button matButton type="button" (click)="backToProject()">
+            {{ 'indexcard.to_project' | translate }}
+          </button>
+          <button matButton="filled" type="button" (click)="restartPractice()">
+            {{ 'indexcard.practice_again' | translate }}
+          </button>
+          <button matButton="filled" type="button" (click)="goToSpacedRepetition()">
+            {{ 'indexcard.spaced_repetition' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="practice-content">
+      <app-card-flip
+        [question]="getIndexCard()?.question"
+        [answer]="getIndexCard()?.answer"
+        [showAnswer]="showAnswer"
+        (showAnswerChange)="showAnswer = $event"
+      />
+    </div>
+
+    <div class="assessment-buttons">
+      <button
+        matButton="filled"
+        class="assessment-bad"
+        type="button"
+        (click)="assessIndexCard('BAD')"
+      >
+        {{ 'bad' | translate }}
+      </button>
+      <button
+        matButton="filled"
+        class="assessment-ok"
+        type="button"
+        (click)="assessIndexCard('OK')"
+      >
+        {{ 'ok' | translate }}
+      </button>
+      <button
+        matButton="filled"
+        class="assessment-good"
+        type="button"
+        (click)="assessIndexCard('GOOD')"
+      >
+        {{ 'good' | translate }}
+      </button>
+    </div>
+  }
+</div>

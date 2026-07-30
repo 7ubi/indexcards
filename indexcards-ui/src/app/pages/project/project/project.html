@@ -58,14 +58,27 @@
         >
           {{ 'indexcard.statistics_button' | translate }}
         </button>
+      </div>
+
+      <div class="cta-container full-width">
         <button
-          mat-raised-button
-          color="accent"
-          class="quiz-button"
+          matButton="filled"
+          class="cta-button"
+          [disabled]="!canStartQuiz()"
+          (click)="onClickPracticeButton()"
+          type="button"
+        >
+          <mat-icon>style</mat-icon>
+          {{ 'indexcard.practice' | translate }}
+        </button>
+        <button
+          matButton="filled"
+          class="cta-button"
           [disabled]="!canStartQuiz()"
           (click)="onClickQuizButton()"
           type="button"
         >
+          <mat-icon>psychology</mat-icon>
           {{ 'indexcard.spaced_repetition' | translate }}
         </button>
       </div>

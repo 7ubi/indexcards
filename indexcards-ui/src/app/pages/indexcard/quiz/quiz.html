@@ -3,35 +3,12 @@
     <app-loading-spinner />
   } @else {
     <div class="quiz-content">
-      <div
-        class="card-flip"
-        [class.flipped]="showAnswer"
-        role="button"
-        tabindex="0"
-        [attr.aria-pressed]="showAnswer"
-        (click)="toggleAnswer()"
-        (keydown.enter)="toggleAnswer()"
-        (keydown.space)="toggleAnswer()"
-      >
-        <div class="card-face card-front">
-          <span class="card-label">{{ 'indexcard.question' | translate }}</span>
-          <div
-            class="indexcard-text"
-            [innerHTML]="getIndexCard()?.question | markdownMath"
-            appMathjax
-          ></div>
-          <span class="card-hint">{{ 'indexcard.tap_to_reveal' | translate }}</span>
-        </div>
-
-        <div class="card-face card-back">
-          <span class="card-label">{{ 'indexcard.answer' | translate }}</span>
-          <div
-            class="indexcard-text"
-            [innerHTML]="getIndexCard()?.answer | markdownMath"
-            appMathjax
-          ></div>
-        </div>
-      </div>
+      <app-card-flip
+        [question]="getIndexCard()?.question"
+        [answer]="getIndexCard()?.answer"
+        [showAnswer]="showAnswer"
+        (showAnswerChange)="showAnswer = $event"
+      />
     </div>
 
     <div class="assessment-buttons">

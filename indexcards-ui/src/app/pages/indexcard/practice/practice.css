@@ -1,10 +1,10 @@
-.quiz-page {
+.practice-page {
   height: calc(100dvh - 64px);
   display: flex;
   flex-direction: column;
 }
 
-.quiz-content {
+.practice-content {
   flex: 1;
   min-height: 0;
   display: flex;
@@ -45,8 +45,25 @@
   color: #fff !important;
 }
 
+.practice-summary {
+  height: calc(100dvh - 64px);
+}
+
+.practice-summary .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 @media (max-width: 599px) {
-  .quiz-page {
+  .practice-page,
+  .practice-summary {
     height: calc(100dvh - 56px);
   }
 }

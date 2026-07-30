@@ -6,26 +6,42 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginService } from '../../../service/login/login.service';
 import HttpService from '../../../service/http/http.service';
 import { SnackbarService } from '../../../service/snackbar/snackbar.service';
-import { IndexCardResponse } from '../../../app.responses';
+import { IndexCardResponse, ProjectResponse } from '../../../app.responses';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 import { CardFlip } from '../../../component/card-flip/card-flip';
+import {
+  AssessmentChart,
+  AssessmentSlice,
+} from '../../../component/assessment-chart/assessment-chart';
+
+const TALLY_COLORS: Record<'BAD' | 'OK' | 'GOOD', string> = {
+  BAD: '#c62828',
+  OK: '#f9a825',
+  GOOD: '#2e7d32',
+};
 
 @Component({
-  selector: 'app-quiz',
-  imports: [MatButtonModule, TranslatePipe, LoadingSpinner, CardFlip],
-  templateUrl: './quiz.html',
+  selector: 'app-practice',
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    TranslatePipe,
+    LoadingSpinner,
+    CardFlip,
+    AssessmentChart,
+  ],
+  templateUrl: './practice.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './quiz.css',
+  styleUrl: './practice.css',
 })
-export class Quiz implements OnInit {
+export class Practice implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private loginService = inject(LoginService);
   private httpService = inject(HttpService);
   private snackbarService = inject(SnackbarService);
   private cdr = inject(ChangeDetectorRef);
@@ -36,6 +52,10 @@ export class Quiz implements OnInit {
 
   showAnswer = false;
 
+  finished = false;
+
+  slices: AssessmentSlice[] = this.createEmptySlices();
+
   id: string | null = '';
 
   loading = true;
@@ -43,11 +63,11 @@ export class Quiz implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.httpService.get<IndexCardResponse[]>(
-      `/api/indexCard/quizIndexCards?id=${this.id}`,
+    this.httpService.get<ProjectResponse>(
+      `/api/project/${this.id}`,
       (response) => {
-        this.indexCards = response;
-        this.canStartQuiz();
+        this.indexCards = response.indexCardResponses;
+        this.canStartPractice();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -55,13 +75,13 @@ export class Quiz implements OnInit {
     );
   }
 
-  assessIndexCard(assessment: string): void {
-    const request = this.createAssessmentRequest(assessment);
-
-    this.httpService.post<undefined>('/api/indexCard/assess', request, () => {
-      this.nextIndexCard();
-      this.cdr.detectChanges();
-    });
+  assessIndexCard(assessment: 'BAD' | 'OK' | 'GOOD'): void {
+    const slice = this.slices.find((s) => s.label === assessment.toLowerCase());
+    if (slice) {
+      slice.count++;
+    }
+    this.nextIndexCard();
+    this.cdr.detectChanges();
   }
 
   nextIndexCard() {
@@ -69,9 +89,7 @@ export class Quiz implements OnInit {
     this.showAnswer = false;
 
     if (this.index >= this.getIndexCardLength()) {
-      this.router
-        .navigate(['/project', this.id, 'quiz', 'stat'])
-        .then(() => this.snackbarService.showSuccessMessage('indexcard.spaced_repetition_done'));
+      this.finished = true;
     }
   }
 
@@ -89,18 +107,34 @@ export class Quiz implements OnInit {
     return this.indexCards[this.index];
   }
 
-  createAssessmentRequest(assessment: string) {
-    return {
-      indexCardId: this.getIndexCard()?.indexCardId,
-      assessment: assessment,
-    };
-  }
-
-  canStartQuiz() {
+  canStartPractice() {
     if (this.indexCards!.length == 0) {
       this.router
         .navigate(['/project', this.id])
         .then(() => this.snackbarService.showErrorMessage('indexcard.no_index_cards'));
     }
+  }
+
+  backToProject() {
+    this.router.navigate(['/project', this.id]);
+  }
+
+  restartPractice(): void {
+    this.index = 0;
+    this.showAnswer = false;
+    this.finished = false;
+    this.slices = this.createEmptySlices();
+  }
+
+  goToSpacedRepetition(): void {
+    this.router.navigate(['/project', this.id, 'quiz']);
+  }
+
+  private createEmptySlices(): AssessmentSlice[] {
+    return (['BAD', 'OK', 'GOOD'] as const).map((assessment) => ({
+      label: assessment.toLowerCase(),
+      color: TALLY_COLORS[assessment],
+      count: 0,
+    }));
   }
 }

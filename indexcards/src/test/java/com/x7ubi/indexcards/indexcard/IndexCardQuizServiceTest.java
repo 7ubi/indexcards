@@ -42,7 +42,7 @@ public class IndexCardQuizServiceTest extends IndexCardTestConfig {
             throws EntityNotFoundException, UnauthorizedException {
         // given
         LocalDateTime now = LocalDateTime.now();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             createIndexCardWithDueDate(now.minusDays(i + 1));
         }
         IndexCard futureCard = createIndexCardWithDueDate(now.plusDays(10));
@@ -52,7 +52,7 @@ public class IndexCardQuizServiceTest extends IndexCardTestConfig {
                 user.getUsername(), this.projects.get(0).getId());
 
         // then
-        Assertions.assertEquals(5, quiz.size());
+        Assertions.assertEquals(15, quiz.size());
         List<Long> ids = quiz.stream().map(IndexCardResponse::getIndexCardId).collect(Collectors.toList());
         Assertions.assertFalse(ids.contains(futureCard.getId()));
     }

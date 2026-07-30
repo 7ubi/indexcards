@@ -25,7 +25,7 @@ public class IndexCardQuizService extends AbstractIndexCardService {
     private final Logger logger = LoggerFactory.getLogger(IndexCardQuizService.class);
 
 
-    private final int maxIndexCardsPerQuiz = 5;
+    private final int maxIndexCardsPerQuiz = 15;
 
     public IndexCardQuizService(
             ProjectRepo projectRepo, IndexCardRepo indexCardRepo, IndexCardAssessmentRepo indexCardAssessmentRepo, IndexCardMapper indexCardMapper, UserRepo userRepo) {
