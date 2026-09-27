@@ -5,7 +5,6 @@ import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,7 +20,7 @@ import java.util.List;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -41,7 +40,7 @@ public class ProjectServiceTest extends ProjectTestConfig {
     @Test
     public void getAllUserProjectsWithWrongUsernameTest() {
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.projectService.getUserProjects("wrong username"));
 
         // then

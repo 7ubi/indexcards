@@ -5,7 +5,6 @@ import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.service.image.ImageStorageService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +25,7 @@ import java.util.UUID;
 @SpringBootTest
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 // Close the context after this class so its H2 "testdb" connection pool does not keep the in-memory
 // database (and its rows) alive for the other test classes.
@@ -63,7 +62,7 @@ public class ImageStorageServiceTest extends TestConfig {
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "not-an-image".getBytes());
 
         // when
-        EntityCreationException exception = Assert.assertThrows(EntityCreationException.class, () ->
+        EntityCreationException exception = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.imageStorageService.store(file));
 
         // then
@@ -73,7 +72,7 @@ public class ImageStorageServiceTest extends TestConfig {
     @Test
     public void loadMissingImageThrowsNotFoundTest() {
         // when
-        EntityNotFoundException exception = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.imageStorageService.load(UUID.randomUUID()));
 
         // then

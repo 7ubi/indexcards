@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repo has three parts:
 
-- `indexcards/` — Backend (Spring Boot 2.7, Java 11)
+- `indexcards/` — Backend (Spring Boot 4.1, Java 21)
 - `indexcards-ui/` — Frontend (Angular 22, standalone components, Angular Material)
 - `indexcards-docu/` — Documentation site (MkDocs), published to https://documentation.indexcards.7ubi.de/
 

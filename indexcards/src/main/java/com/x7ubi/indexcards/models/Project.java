@@ -1,6 +1,6 @@
 package com.x7ubi.indexcards.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -8,7 +8,10 @@ import java.util.Set;
 @Table(name = "PROJECT")
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // All entities share the hibernate_sequence table (incremented by 1) that Hibernate 5 created; without this,
+    // Hibernate 6+ would expect a separate <entity>_seq table per entity.
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequenceName = "hibernate_sequence", allocationSize = 1)
     @Column(name = "project_id", nullable = false, updatable = false)
     private Long projectId;
 

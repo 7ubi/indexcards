@@ -46,7 +46,7 @@ import java.util.UUID;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 // AFTER_EACH (not BEFORE_EACH): this class has its own context configuration (image storage path), so its last

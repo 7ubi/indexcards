@@ -5,7 +5,6 @@ import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -55,7 +54,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest));
 
         // then
@@ -72,7 +71,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.deleteIndexCardService.deleteIndexCard(user2.getUsername(), deleteIndexCardRequest));
 
         // then

@@ -4,7 +4,7 @@ The repository is separated into three parts:
 
 | Directory         | Part          | Technology                                      |
 |-------------------|---------------|-------------------------------------------------|
-| `indexcards`      | Backend       | Spring Boot 2.7, Java 11, MySQL, Flyway         |
+| `indexcards`      | Backend       | Spring Boot 4.1, Java 21, MySQL, Flyway         |
 | `indexcards-ui`   | Frontend      | Angular 22, Angular Material, ngx-translate     |
 | `indexcards-docu` | Documentation | MkDocs with the Material theme                  |
 

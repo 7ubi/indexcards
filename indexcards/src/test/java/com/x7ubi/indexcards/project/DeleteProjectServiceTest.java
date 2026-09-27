@@ -6,7 +6,6 @@ import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -23,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -50,7 +49,7 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
     public void deleteProjectTest() throws EntityNotFoundException, UnauthorizedException {
         // given
         createIndexCardsForProject();
-        Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
+        Project project = this.projectRepo.findProjectByName(this.projects.getFirst().getName()).getFirst();
 
         //when
         this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId());
@@ -71,7 +70,7 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
 
         //when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.deleteProjectService.deleteProject(this.user.getUsername(), project.getId() + 1));
 
         //then
@@ -88,7 +87,7 @@ public class DeleteProjectServiceTest extends ProjectTestConfig {
         Project project = this.projectRepo.findProjectByName(this.projects.get(0).getName()).get(0);
 
         //when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.deleteProjectService.deleteProject("test2", project.getId()));
 
         //then
