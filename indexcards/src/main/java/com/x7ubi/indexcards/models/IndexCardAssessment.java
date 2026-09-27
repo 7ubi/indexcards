@@ -1,13 +1,16 @@
 package com.x7ubi.indexcards.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "INDEXCARDASSESSMENT")
 public class IndexCardAssessment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // All entities share the hibernate_sequence table (incremented by 1) that Hibernate 5 created; without this,
+    // Hibernate 6+ would expect a separate <entity>_seq table per entity.
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequenceName = "hibernate_sequence", allocationSize = 1)
     @Column(name = "indexcard_assessment_id", nullable = false, updatable = false)
     private Long indexcardAssessmentId;
 

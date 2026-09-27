@@ -1,6 +1,6 @@
 package com.x7ubi.indexcards.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,9 +8,12 @@ import java.util.List;
 @Table(name = "USER")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long user_id;
+    // All entities share the hibernate_sequence table (incremented by 1) that Hibernate 5 created; without this,
+    // Hibernate 6+ would expect a separate <entity>_seq table per entity.
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequenceName = "hibernate_sequence", allocationSize = 1)
+    @Column(name = "user_id", nullable = false, updatable = false)
+    private Long userId;
 
     @Column(nullable = false, length = 100)
     private String username;
@@ -39,7 +42,7 @@ public class User implements Serializable {
     }
 
     public Long getId() {
-        return user_id;
+        return userId;
     }
 
     public String getUsername() {

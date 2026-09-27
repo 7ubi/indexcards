@@ -7,7 +7,6 @@ import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.models.IndexCardAssessment;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ import java.util.List;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -192,7 +191,7 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
         assessmentRequest.setIndexCardId(this.indexCard.getId() + 1);
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.indexCardAssessmentService.assessIndexCard(user.getUsername(), assessmentRequest));
 
         // then
@@ -213,7 +212,7 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
         assessmentRequest.setIndexCardId(this.indexCard.getId());
 
         // when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.indexCardAssessmentService.assessIndexCard(user2.getUsername(), assessmentRequest));
 
         // then

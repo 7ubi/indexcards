@@ -7,7 +7,6 @@ import com.x7ubi.indexcards.models.Assessment;
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -77,7 +76,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.createIndexCardService.createIndexCard(user.getUsername(), createIndexCardRequest));
 
         // then
@@ -96,7 +95,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         );
 
         // when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.createIndexCardService.createIndexCard(user2.getUsername(), createIndexCardRequest));
 
         // then
@@ -113,7 +112,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         indexCardCsvImportRequest.setCsv("Injected question,Injected answer");
 
         // when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.createIndexCardService.importIndexCardsFromCsv(user2.getUsername(), indexCardCsvImportRequest));
 
         // then
@@ -130,7 +129,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         indexCardCsvImportRequest.setCsv("Question,Answer");
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.createIndexCardService.importIndexCardsFromCsv(user.getUsername(), indexCardCsvImportRequest));
 
         // then

@@ -1,6 +1,6 @@
 # Backend
 
-The backend is a Spring Boot 2.7 application (Java 11) in `indexcards/`. The package root is `com.x7ubi.indexcards`.
+The backend is a Spring Boot 4.1 application (Java 21) in `indexcards/`. The package root is `com.x7ubi.indexcards`.
 
 ## Packages
 

@@ -12,7 +12,7 @@ import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 public class DeleteIndexCardService extends AbstractIndexCardService {

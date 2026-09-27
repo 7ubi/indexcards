@@ -10,7 +10,6 @@ import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -151,7 +150,7 @@ public class EditProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName("TestProject1");
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.editProjectService.editProject(createProjectRequest, project.getId(), "nonexistent"));
 
         // then
@@ -169,7 +168,7 @@ public class EditProjectServiceTest extends ProjectTestConfig {
 
         // when
         this.createProjectService.createProject("test", createProjectRequest);
-        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.editProjectService.editProject(createProjectRequest, project.getId(), "test"));
 
         // then
@@ -187,7 +186,7 @@ public class EditProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName(projectName);
 
         // when
-        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.editProjectService.editProject(createProjectRequest, project.getId(), "test"));
         // then
         Assertions.assertEquals(entityCreationException.getMessage(), ErrorMessage.Project.PROJECT_NAME_TOO_LONG);
@@ -203,7 +202,7 @@ public class EditProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName("Edit Project");
 
         // when
-        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.editProjectService.editProject(createProjectRequest, project.getId(), "test2"));
 
         // then

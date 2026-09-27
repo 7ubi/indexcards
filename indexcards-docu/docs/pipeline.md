@@ -16,7 +16,7 @@ and on every pull request targeting `main`.
 
 ## Build and Test
 
-Builds the backend with Maven on JDK 11 (`mvn -B package`) and runs all tests. If there are failures, the pipeline
+Builds the backend with Maven on JDK 21 (`mvn -B package`) and runs all tests. If there are failures, the pipeline
 fails and the change **should not be merged into main**.
 
 ## Linting

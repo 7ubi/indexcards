@@ -4,7 +4,9 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
+
+import jakarta.annotation.PostConstruct;
 
 import com.x7ubi.indexcards.models.SecurityUser;
 import org.slf4j.Logger;
@@ -14,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.util.StringUtils;
 
 @Component
@@ -26,6 +31,8 @@ public class JwtUtils {
     @Value("${bezkoder.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    private SecretKey signingKey;
+
     @PostConstruct
     void initJwtSecret() {
         if (!StringUtils.hasText(jwtSecret)) {
@@ -37,6 +44,13 @@ public class JwtUtils {
             logger.warn("No JWT secret configured (JWT_SECRET). Using a random key; "
                     + "all issued tokens become invalid when the application restarts.");
         }
+        // The secret is Base64-encoded, like jjwt 0.9 interpreted it, so tokens issued before the upgrade stay valid.
+        // HS512 requires a key of at least 64 bytes, so shorter secrets fail at startup instead of on the first login.
+        signingKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        if (signingKey.getEncoded().length < 64) {
+            throw new IllegalStateException("JWT_SECRET must be a Base64-encoded key of at least 64 bytes, "
+                    + "e.g. `openssl rand -base64 64 | tr -d '\\n'`");
+        }
     }
 
     public String generateJwtToken(Authentication authentication) {
@@ -44,10 +58,10 @@ public class JwtUtils {
         SecurityUser userPrincipal = (SecurityUser) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .subject(userPrincipal.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(signingKey, Jwts.SIG.HS512)
                 .compact();
     }
 
@@ -60,12 +74,12 @@ public class JwtUtils {
     }
 
     public String getUsernameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return parseClaims(token).getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            parseClaims(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());
@@ -80,5 +94,9 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser().verifyWith(signingKey).build().parseSignedClaims(token).getPayload();
     }
 }

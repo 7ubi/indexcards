@@ -33,7 +33,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: '${DB_PASSWORD}'
       # Base64-encoded JWT signing key (set in .env, e.g. `openssl rand -base64 64 | tr -d '\n'`)
       JWT_SECRET: '${JWT_SECRET}'
-      SPRING_JPA_DATABASE-PLATFORM: 'org.hibernate.dialect.MySQL8Dialect'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images

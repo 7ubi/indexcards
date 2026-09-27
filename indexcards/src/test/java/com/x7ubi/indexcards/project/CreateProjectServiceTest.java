@@ -5,7 +5,6 @@ import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,7 +21,7 @@ import java.util.List;
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb"
+        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -64,7 +63,7 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName("TestProject1");
 
         // when
-        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+        EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.createProjectService.createProject("nonexistent", createProjectRequest));
 
         // then
@@ -79,7 +78,7 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
 
         // when
         this.createProjectService.createProject("test", createProjectRequest);
-        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.createProjectService.createProject("test", createProjectRequest));
 
         // then
@@ -112,7 +111,7 @@ public class CreateProjectServiceTest extends ProjectTestConfig {
         createProjectRequest.setName(projectName);
 
         // when
-        EntityCreationException entityCreationException = Assert.assertThrows(EntityCreationException.class, () ->
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.createProjectService.createProject("test", createProjectRequest));
 
         // then

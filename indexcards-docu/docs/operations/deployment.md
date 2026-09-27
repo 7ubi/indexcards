@@ -23,7 +23,7 @@ flowchart LR
 - The **frontend** image builds the Angular app with Node and serves it with nginx (`indexcards-ui/nginx.conf`).
   nginx serves the app for all paths (falling back to `index.html` for client-side routing) and forwards `/api/` to
   `backendcontainer:8080`.
-- The **backend** image builds the jar with Maven and runs it on Java 11.
+- The **backend** image builds the jar with Maven and runs it on Java 21.
 - The frontend and backend are also attached to the external network `nginx_backend`, which is used by the reverse
   proxy on the server. It has to exist before starting: `docker network create nginx_backend`.
 

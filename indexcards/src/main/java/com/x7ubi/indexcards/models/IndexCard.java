@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import org.hibernate.Length;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,15 +10,18 @@ import java.util.Set;
 @Table(name = "INDEXCARDS")
 public class IndexCard {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // All entities share the hibernate_sequence table (incremented by 1) that Hibernate 5 created; without this,
+    // Hibernate 6+ would expect a separate <entity>_seq table per entity.
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequenceName = "hibernate_sequence", allocationSize = 1)
     @Column(name = "indexcard_id", nullable = false, updatable = false)
     private Long indexcardId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = Length.LONG32)
     @Lob
     private byte[] question;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = Length.LONG32)
     @Lob
     private byte[] answer;
 
