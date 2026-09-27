@@ -204,4 +204,22 @@ public class IndexCardAssessmentServiceTest extends IndexCardTestConfig {
         Assertions.assertEquals(newIndexCard.getAssessment(), Assessment.UNRATED);
         Assertions.assertTrue(history.isEmpty());
     }
+
+    @Test
+    public void assessIndexCardWithUnauthorizedUserTest() {
+        // given
+        AssessmentRequest assessmentRequest = new AssessmentRequest();
+        assessmentRequest.setAssessment(Assessment.GOOD);
+        assessmentRequest.setIndexCardId(this.indexCard.getId());
+
+        // when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.indexCardAssessmentService.assessIndexCard(user2.getUsername(), assessmentRequest));
+
+        // then
+        IndexCard newIndexCard = this.indexCardRepo.findIndexCardByIndexcardId(this.indexCard.getId());
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
+        Assertions.assertEquals(Assessment.UNRATED, newIndexCard.getAssessment());
+        Assertions.assertTrue(newIndexCard.getAssessmentHistory().isEmpty());
+    }
 }

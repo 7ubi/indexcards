@@ -20,7 +20,11 @@ class HttpService {
     observable.subscribe({
       next: (response: Type) => subscribe(response),
       error: (err: HttpErrorResponse) => {
-        if (err.status === 401 && err.error !== 'user_not_project_owner') {
+        // These 401s are expected user errors, not an invalid session: stay logged in.
+        if (
+          err.status === 401 &&
+          !['user_not_project_owner', 'wrong_password'].includes(err.error)
+        ) {
           this.loginService.logout();
         }
 

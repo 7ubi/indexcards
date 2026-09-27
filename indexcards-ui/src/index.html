@@ -17,6 +17,9 @@
     <!-- MathJax configuration: enable TeX input with common extensions and typical delimiters -->
     <script>
       window.MathJax = {
+        // ui/safe filters user-supplied TeX (e.g. \href{javascript:...}, \style, \class) since MathJax
+        // writes into the DOM after Angular's sanitizer has already run.
+        loader: { load: ['ui/safe'] },
         tex: {
           inlineMath: [
             ['$', '$'],

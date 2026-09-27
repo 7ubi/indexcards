@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.indexcard;
 
+import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
@@ -109,5 +110,18 @@ public class IndexCardQuizServiceTest extends IndexCardTestConfig {
 
         // then
         Assertions.assertTrue(ids.indexOf(this.indexCard.getId()) < ids.indexOf(futureCard.getId()));
+    }
+
+    @Test
+    public void quizWithUnauthorizedUserTest() {
+        // given
+        createIndexCard();
+
+        // when
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
+                this.indexCardQuizService.getIndexCardResponsesForQuiz(user2.getUsername(), this.projects.get(0).getId()));
+
+        // then
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
     }
 }

@@ -12,6 +12,8 @@ import { EditIndexcard } from './pages/indexcard/edit-indexcard/edit-indexcard';
 import { QuizStat } from './pages/indexcard/quiz-stat/quiz-stat';
 import { Practice } from './pages/indexcard/practice/practice';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
+import { Privacy } from './pages/privacy/privacy';
+import { DeleteAccount } from './pages/account/delete-account/delete-account';
 
 export const routes: Routes = [
   {
@@ -23,8 +25,17 @@ export const routes: Routes = [
     component: Signup,
   },
   {
+    path: 'privacy',
+    component: Privacy,
+  },
+  {
     path: '',
     component: AllProjects,
+    canActivate: [LoginRequired],
+  },
+  {
+    path: 'account/delete',
+    component: DeleteAccount,
     canActivate: [LoginRequired],
   },
   {

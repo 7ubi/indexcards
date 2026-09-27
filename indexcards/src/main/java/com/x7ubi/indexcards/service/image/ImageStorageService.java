@@ -59,6 +59,20 @@ public class ImageStorageService {
         }
     }
 
+    /**
+     * Deletes the stored image with the given id. Missing images are ignored.
+     *
+     * @return true if a file was deleted
+     */
+    public boolean delete(UUID imageId) {
+        try {
+            return Files.deleteIfExists(resolveImagePath(imageId));
+        } catch (IOException e) {
+            logger.error("Failed to delete image {}", imageId, e);
+            return false;
+        }
+    }
+
     private Path resolveImagePath(UUID imageId) {
         return storageDir.resolve(imageId + ".jpg");
     }

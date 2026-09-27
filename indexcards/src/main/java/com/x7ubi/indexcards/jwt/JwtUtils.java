@@ -1,6 +1,10 @@
 package com.x7ubi.indexcards.jwt;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
+
+import javax.annotation.PostConstruct;
 
 import com.x7ubi.indexcards.models.SecurityUser;
 import org.slf4j.Logger;
@@ -21,6 +25,19 @@ public class JwtUtils {
 
     @Value("${bezkoder.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
+    @PostConstruct
+    void initJwtSecret() {
+        if (!StringUtils.hasText(jwtSecret)) {
+            // No secret configured: fall back to a random per-process key instead of a hardcoded one, so
+            // tokens can never be forged with a publicly known value. Tokens are invalidated on restart.
+            byte[] randomKey = new byte[64];
+            new SecureRandom().nextBytes(randomKey);
+            jwtSecret = Base64.getEncoder().encodeToString(randomKey);
+            logger.warn("No JWT secret configured (JWT_SECRET). Using a random key; "
+                    + "all issued tokens become invalid when the application restarts.");
+        }
+    }
 
     public String generateJwtToken(Authentication authentication) {
 

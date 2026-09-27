@@ -9,6 +9,10 @@ public class ErrorMessage {
         public static String USERNAME_EXITS = "username_exists";
     }
 
+    public static class User {
+        public static final String WRONG_PASSWORD = "wrong_password";
+    }
+
     public static class Project {
         public static final String USER_NOT_PROJECT_OWNER = "user_not_project_owner";
 

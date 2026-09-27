@@ -1,0 +1,35 @@
+<div class="center">
+  <article class="privacy">
+    <h1>{{ 'privacy.title' | translate }}</h1>
+    <p class="last-updated">{{ 'privacy.last_updated' | translate }}</p>
+    @for (line of toLines('privacy.intro' | translate); track $index) {
+      <p>{{ line }}</p>
+    }
+
+    @for (section of sections; track section; let i = $index) {
+      <section>
+        <h2>{{ i + 1 }}. {{ 'privacy.sections.' + section + '.title' | translate }}</h2>
+        @for (
+          line of toLines('privacy.sections.' + section + '.paragraphs' | translate);
+          track $index
+        ) {
+          <p>{{ line }}</p>
+        }
+        @let items = toLines('privacy.sections.' + section + '.items' | translate);
+        @if (items.length > 0) {
+          <ul>
+            @for (item of items; track $index) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        }
+        @for (
+          line of toLines('privacy.sections.' + section + '.paragraphs_after' | translate);
+          track $index
+        ) {
+          <p>{{ line }}</p>
+        }
+      </section>
+    }
+  </article>
+</div>
