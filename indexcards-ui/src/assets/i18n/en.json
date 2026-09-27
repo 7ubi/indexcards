@@ -72,6 +72,24 @@
     "preview": "Preview",
     "edit_mode": "Edit"
   },
+  "account": {
+    "menu": "Account",
+    "logout": "Logout",
+    "delete_title": "Delete account",
+    "delete_warning": "Deleting your account is permanent and cannot be undone. Your data cannot be restored afterwards.",
+    "delete_items_intro": "The following data will be deleted:",
+    "delete_items": {
+      "account": "your user account (username, first and last name, password hash),",
+      "projects": "all of your projects,",
+      "cards": "all index cards in these projects,",
+      "progress": "your learning progress (ratings, rating history and review dates),",
+      "images": "uploaded images that are embedded in your index cards."
+    },
+    "delete_password_hint": "Please enter your password to confirm.",
+    "delete_button": "Delete account permanently",
+    "cancel": "Cancel",
+    "deleted": "Your account and all associated data were deleted."
+  },
   "backend": {
     "username_exists": "Username already exists!",
     "username_not_found": "Username not found",
@@ -82,10 +100,183 @@
     "indexcard_question_too_long": "The question of the index card was too long, only 500 characters are allowed",
     "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed",
     "user_not_project_owner": "You are not the owner of this project",
-    "bad_credentials": "Wrong Username or Password!"
+    "bad_credentials": "Wrong Username or Password!",
+    "wrong_password": "Wrong password!"
   },
   "unrated": "Unrated",
   "bad": "Bad",
   "ok": "Ok",
-  "good": "Good"
+  "good": "Good",
+  "privacy": {
+    "link": "Privacy",
+    "signup_notice": "For information on how we process your data, please see our",
+    "signup_notice_link": "privacy policy",
+    "title": "Privacy Policy",
+    "last_updated": "Last updated: September 2026",
+    "intro": [
+      "In this privacy policy we inform you, in accordance with Articles 13 and 14 of the General Data Protection Regulation (GDPR), which personal data is processed when you use the web application “Indexcards”, for which purposes and on which legal basis, and which rights you have. In case of doubt, the German version of this privacy policy prevails."
+    ],
+    "sections": {
+      "controller": {
+        "title": "Controller",
+        "paragraphs": [
+          "The controller responsible for data processing within the meaning of Art. 4(7) GDPR is:",
+          "Tobias Renner",
+          "Email: tobi.renner@proton.me",
+          "No data protection officer has been appointed, as there is no legal obligation to do so."
+        ]
+      },
+      "overview": {
+        "title": "Overview of processing",
+        "paragraphs": [
+          "Indexcards is a learning application that lets you create, quiz and rate projects and index cards. We only process the data required to provide these features:"
+        ],
+        "items": [
+          "data that is technically generated when you access the application (server log data),",
+          "the data of your user account,",
+          "the content you create and your learning progress,",
+          "entries in your browser's storage (no cookies)."
+        ],
+        "paragraphs_after": [
+          "We do not use cookies, analytics or tracking tools, or advertising. Your data is not sold and is not used for advertising purposes."
+        ]
+      },
+      "hosting": {
+        "title": "Hosting and server log files",
+        "paragraphs": [
+          "The application and its database (MySQL) are hosted by STRATO GmbH, Otto-Ostrowski-Straße 7, 10249 Berlin, Germany. The servers are located in Germany. STRATO processes the data solely on our behalf under a data processing agreement pursuant to Art. 28 GDPR.",
+          "Each time you access the application, the web server automatically processes information transmitted by your browser and stores it in log files:"
+        ],
+        "items": [
+          "IP address of the requesting device,",
+          "date and time of access,",
+          "requested address (URL) and HTTP method,",
+          "HTTP status code and amount of data transferred,",
+          "referrer URL (previously visited page), if transmitted,",
+          "browser and operating system used (user agent)."
+        ],
+        "paragraphs_after": [
+          "This data is required to deliver the application, to ensure the stability and security of the system and to detect errors and misuse. The legal basis is Art. 6(1)(f) GDPR; our legitimate interest lies in the secure and error-free operation of the application. Log data is only stored for a short time: it is automatically rotated and overwritten (at most 30 MB per service) and completely deleted with the next update of the application at the latest, unless it is needed for longer to investigate a specific security incident."
+        ]
+      },
+      "account": {
+        "title": "Registration and user account",
+        "paragraphs": [
+          "A user account is required to use Indexcards. When you register, we process:"
+        ],
+        "items": [
+          "username,",
+          "first name and last name,",
+          "password – this is stored exclusively as a cryptographic hash (bcrypt) and cannot be viewed by us in plain text."
+        ],
+        "paragraphs_after": [
+          "No email address is collected. When you log in, your username and password are verified and an access token (JSON Web Token) is issued that contains your username and is valid for 24 hours.",
+          "This processing is carried out to provide the user account and thus to perform the user agreement (Art. 6(1)(b) GDPR). You may also use pseudonyms for your first and last name."
+        ]
+      },
+      "content": {
+        "title": "Your content and learning progress",
+        "paragraphs": [
+          "To provide the core features of the application, we store the content you create as well as data about your learning progress, each linked to your user account:"
+        ],
+        "items": [
+          "projects with project name and optional exam date,",
+          "index cards with question and answer (including Markdown and LaTeX formatting),",
+          "images you upload or paste into index cards,",
+          "ratings of your answers (“Unrated”, “Bad”, “Ok”, “Good”) with date and time, as well as the spaced repetition values calculated from them (e.g. next review date),",
+          "content from CSV files you import."
+        ],
+        "paragraphs_after": [
+          "The legal basis is Art. 6(1)(b) GDPR. The CSV export is created locally in your browser only; no additional data is sent to the server.",
+          "Uploaded images are stored on the server under a randomly generated identifier. They can be retrieved via their address without logging in so that they can be displayed in the index cards – however, the address cannot be guessed and is not published anywhere. Please do not upload images containing particularly sensitive information.",
+          "Please do not store special categories of personal data (e.g. health data) or personal data of other people in your index cards unless you are entitled to do so."
+        ]
+      },
+      "browser_storage": {
+        "title": "Storage in your browser (no cookies)",
+        "paragraphs": [
+          "The application does not set any cookies. It does, however, store the following entries in your browser's storage:"
+        ],
+        "items": [
+          "Session storage: your access token (JSON Web Token) after logging in and a technical status value. These entries are deleted when you log out or close the browser tab; the token also expires after 24 hours.",
+          "Local storage: your language setting (German or English) so that the application is displayed in your language. This entry remains until you delete it via your browser settings."
+        ],
+        "paragraphs_after": [
+          "Storing this information on your device is strictly necessary to provide the service you have explicitly requested and is therefore permitted without consent under Section 25(2) no. 2 of the German Telecommunications Digital Services Data Protection Act (TDDDG). The subsequent processing is based on Art. 6(1)(b) GDPR (login) and Art. 6(1)(f) GDPR (display in your language), respectively."
+        ]
+      },
+      "third_parties": {
+        "title": "Embedded third-party services",
+        "paragraphs": [
+          "When you open the application, your browser loads some resources directly from third-party servers. For technical reasons, your IP address and the information which resource was requested are transmitted to the respective provider:"
+        ],
+        "items": [
+          "Google Fonts: The “Roboto” font and the “Material Icons” icon font are loaded from servers of Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. A transfer of data to Google LLC in the USA cannot be ruled out; Google LLC is certified under the EU-US Data Privacy Framework (adequacy decision of the European Commission, Art. 45 GDPR). More information: https://policies.google.com/privacy",
+          "jsDelivr: The MathJax library for rendering mathematical formulas is loaded via the jsDelivr content delivery network (cdn.jsdelivr.net). More information: https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net",
+          "External images: If you embed an image hosted on a third-party server in an index card using Markdown, your browser loads that image directly from that server when it is displayed. We have no influence on that server's data processing."
+        ],
+        "paragraphs_after": [
+          "Google Fonts and jsDelivr are embedded on the basis of Art. 6(1)(f) GDPR. Our legitimate interest lies in a consistent, easily readable presentation of the application and the correct display of mathematical formulas. We do not store any information on your device in this context."
+        ]
+      },
+      "recipients": {
+        "title": "Recipients of your data",
+        "paragraphs": [
+          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
+          "Data is only disclosed to authorities if we are legally obliged to do so (Art. 6(1)(c) GDPR)."
+        ]
+      },
+      "retention": {
+        "title": "Retention and deletion",
+        "paragraphs": [
+          "We only store personal data for as long as is necessary for the respective purposes:"
+        ],
+        "items": [
+          "Account data, projects, index cards and learning progress are stored for as long as your user account exists.",
+          "You can delete projects and index cards yourself in the application at any time. Deleting a project also deletes all of its index cards and their rating history.",
+          "You can delete your user account yourself at any time in the application: after logging in, open the account menu (person icon at the top right) and select “Delete account”; confirm the deletion with your password. This immediately and permanently deletes your user account (username, first and last name, password hash), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards.",
+          "Alternatively, you can request the deletion of your account, including all content and uploaded images, at any time and without any formal requirements using the contact address above; we will carry out the deletion without undue delay and within one month at the latest.",
+          "Uploaded images are not removed automatically when an index card is deleted or an image is removed from an index card; such images are also not covered by the account deletion in the application, as they are no longer linked to your account. We will delete them completely on request.",
+          "Server log data is rotated automatically and deleted with the next update of the application at the latest (see section “Hosting and server log files”)."
+        ]
+      },
+      "security": {
+        "title": "Data security",
+        "paragraphs": [
+          "We take appropriate technical and organisational measures to protect your data. These include, in particular, encrypted transmission via HTTPS (TLS), storing passwords exclusively as bcrypt hashes and token-based authentication in which every access to projects and index cards is checked against the permissions of the respective account."
+        ]
+      },
+      "rights": {
+        "title": "Your rights",
+        "paragraphs": [
+          "With regard to your personal data, you have the following rights against us:"
+        ],
+        "items": [
+          "right of access (Art. 15 GDPR),",
+          "right to rectification (Art. 16 GDPR),",
+          "right to erasure (Art. 17 GDPR),",
+          "right to restriction of processing (Art. 18 GDPR),",
+          "right to data portability (Art. 20 GDPR),",
+          "right to object, on grounds relating to your particular situation, to processing based on Art. 6(1)(f) GDPR (Art. 21 GDPR)."
+        ],
+        "paragraphs_after": [
+          "To exercise your rights, an informal message to the contact address above is sufficient. Please state your username so that we can identify you. You can also exercise your right to erasure directly in the application by deleting your account (see section “Retention and deletion”).",
+          "You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR), in particular in the Member State of your habitual residence, place of work or place of the alleged infringement."
+        ]
+      },
+      "obligation": {
+        "title": "Obligation to provide data and automated decision-making",
+        "paragraphs": [
+          "Providing a username, first and last name and password is required for registration. Without this information you cannot use the application. There is no legal obligation to provide this data.",
+          "No automated decision-making, including profiling, within the meaning of Art. 22 GDPR takes place. The automatic calculation of review dates for your index cards serves solely to plan your learning and has no legal or similarly significant effect."
+        ]
+      },
+      "changes": {
+        "title": "Changes to this privacy policy",
+        "paragraphs": [
+          "We will update this privacy policy if the application or the legal requirements change. The current version published on this page applies. Further technical information about the application can be found in the documentation at https://documentation.indexcards.7ubi.de/."
+        ]
+      }
+    }
+  }
 }

@@ -104,4 +104,36 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
         Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
         Assertions.assertNull(indexCard);
     }
+
+    @Test
+    public void importIndexCardsFromCsvWithUnauthorizedUserTest() {
+        // given
+        IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
+        indexCardCsvImportRequest.setProjectId(projects.get(0).getId());
+        indexCardCsvImportRequest.setCsv("Injected question,Injected answer");
+
+        // when
+        UnauthorizedException unauthorizedException = Assert.assertThrows(UnauthorizedException.class, () ->
+                this.createIndexCardService.importIndexCardsFromCsv(user2.getUsername(), indexCardCsvImportRequest));
+
+        // then
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode("Injected question").array());
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
+        Assertions.assertNull(indexCard);
+    }
+
+    @Test
+    public void importIndexCardsFromCsvWithNonexistentProjectTest() {
+        // given
+        IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
+        indexCardCsvImportRequest.setProjectId(projects.get(0).getId() + 1);
+        indexCardCsvImportRequest.setCsv("Question,Answer");
+
+        // when
+        EntityNotFoundException entityNotFoundException = Assert.assertThrows(EntityNotFoundException.class, () ->
+                this.createIndexCardService.importIndexCardsFromCsv(user.getUsername(), indexCardCsvImportRequest));
+
+        // then
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
+    }
 }

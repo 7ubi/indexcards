@@ -72,6 +72,24 @@
     "preview": "Vorschau",
     "edit_mode": "Bearbeiten"
   },
+  "account": {
+    "menu": "Konto",
+    "logout": "Abmelden",
+    "delete_title": "Konto löschen",
+    "delete_warning": "Das Löschen deines Kontos ist endgültig und kann nicht rückgängig gemacht werden. Deine Daten können danach nicht wiederhergestellt werden.",
+    "delete_items_intro": "Folgende Daten werden gelöscht:",
+    "delete_items": {
+      "account": "dein Benutzerkonto (Nutzername, Vor- und Nachname, Passwort-Hash),",
+      "projects": "alle deine Projekte,",
+      "cards": "alle Karteikarten in diesen Projekten,",
+      "progress": "dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine),",
+      "images": "hochgeladene Bilder, die in deinen Karteikarten eingebunden sind."
+    },
+    "delete_password_hint": "Bitte gib zur Bestätigung dein Passwort ein.",
+    "delete_button": "Konto endgültig löschen",
+    "cancel": "Abbrechen",
+    "deleted": "Dein Konto und alle zugehörigen Daten wurden gelöscht."
+  },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
     "username_not_found": "Nutzername wurde nicht gefunden",
@@ -82,10 +100,183 @@
     "indexcard_question_too_long": "Die Frage der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
-    "bad_credentials": "Falscher Nutzername oder Passwort!"
+    "bad_credentials": "Falscher Nutzername oder Passwort!",
+    "wrong_password": "Falsches Passwort!"
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",
   "ok": "Okay",
-  "good": "Gut"
+  "good": "Gut",
+  "privacy": {
+    "link": "Datenschutz",
+    "signup_notice": "Informationen dazu, wie wir deine Daten verarbeiten, findest du in der",
+    "signup_notice_link": "Datenschutzerklärung",
+    "title": "Datenschutzerklärung",
+    "last_updated": "Stand: September 2026",
+    "intro": [
+      "Mit dieser Datenschutzerklärung informieren wir dich gemäß Art. 13 und 14 der Datenschutz-Grundverordnung (DSGVO) darüber, welche personenbezogenen Daten bei der Nutzung der Webanwendung „Indexcards“ verarbeitet werden, zu welchen Zwecken und auf welcher Rechtsgrundlage dies geschieht und welche Rechte du hast."
+    ],
+    "sections": {
+      "controller": {
+        "title": "Verantwortlicher",
+        "paragraphs": [
+          "Verantwortlich für die Datenverarbeitung im Sinne von Art. 4 Nr. 7 DSGVO ist:",
+          "Tobias Renner",
+          "E-Mail: tobi.renner@proton.me",
+          "Ein Datenschutzbeauftragter ist nicht bestellt, da hierzu keine gesetzliche Verpflichtung besteht."
+        ]
+      },
+      "overview": {
+        "title": "Überblick über die Verarbeitung",
+        "paragraphs": [
+          "Indexcards ist eine Lernanwendung, mit der du Projekte und Karteikarten anlegen, abfragen und bewerten kannst. Wir verarbeiten nur die Daten, die für die Bereitstellung dieser Funktionen erforderlich sind:"
+        ],
+        "items": [
+          "Daten, die beim Aufruf der Anwendung technisch anfallen (Server-Logdaten),",
+          "Daten deines Benutzerkontos,",
+          "die von dir erstellten Inhalte und dein Lernfortschritt,",
+          "Einträge im Speicher deines Browsers (keine Cookies)."
+        ],
+        "paragraphs_after": [
+          "Wir setzen keine Cookies, keine Analyse- oder Tracking-Werkzeuge und keine Werbung ein. Deine Daten werden nicht verkauft und nicht für Werbezwecke genutzt."
+        ]
+      },
+      "hosting": {
+        "title": "Hosting und Server-Logdateien",
+        "paragraphs": [
+          "Die Anwendung und die zugehörige Datenbank (MySQL) werden bei der STRATO GmbH, Otto-Ostrowski-Straße 7, 10249 Berlin, Deutschland, gehostet. Die Server befinden sich in Deutschland. STRATO verarbeitet die Daten ausschließlich in unserem Auftrag auf Grundlage eines Vertrags zur Auftragsverarbeitung nach Art. 28 DSGVO.",
+          "Bei jedem Aufruf der Anwendung verarbeitet der Webserver automatisch Informationen, die dein Browser übermittelt, und speichert diese in Protokolldateien (Logfiles):"
+        ],
+        "items": [
+          "IP-Adresse des anfragenden Geräts,",
+          "Datum und Uhrzeit des Zugriffs,",
+          "aufgerufene Adresse (URL) und HTTP-Methode,",
+          "HTTP-Statuscode und übertragene Datenmenge,",
+          "Referrer-URL (zuvor besuchte Seite), sofern übermittelt,",
+          "verwendeter Browser und Betriebssystem (User-Agent)."
+        ],
+        "paragraphs_after": [
+          "Diese Daten sind erforderlich, um die Anwendung auszuliefern, die Stabilität und Sicherheit des Systems zu gewährleisten sowie Fehler und Missbrauch zu erkennen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt im sicheren und fehlerfreien Betrieb der Anwendung. Die Logdaten werden nur kurzfristig gespeichert: Sie werden automatisch rotiert und überschrieben (höchstens 30 MB je Dienst) und spätestens bei der nächsten Aktualisierung der Anwendung vollständig gelöscht, sofern sie nicht zur Aufklärung eines konkreten Sicherheitsvorfalls länger benötigt werden."
+        ]
+      },
+      "account": {
+        "title": "Registrierung und Benutzerkonto",
+        "paragraphs": [
+          "Für die Nutzung von Indexcards ist ein Benutzerkonto erforderlich. Bei der Registrierung verarbeiten wir:"
+        ],
+        "items": [
+          "Nutzername,",
+          "Vorname und Nachname,",
+          "Passwort – dieses wird ausschließlich als kryptografischer Hash (bcrypt) gespeichert und ist für uns nicht im Klartext einsehbar."
+        ],
+        "paragraphs_after": [
+          "Eine E-Mail-Adresse wird nicht erhoben. Bei der Anmeldung werden Nutzername und Passwort geprüft und anschließend ein Zugangstoken (JSON Web Token) ausgestellt, das deinen Nutzernamen enthält und 24 Stunden gültig ist.",
+          "Die Verarbeitung erfolgt zur Bereitstellung des Benutzerkontos und damit zur Erfüllung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO). Du kannst für Vor- und Nachname auch Pseudonyme verwenden."
+        ]
+      },
+      "content": {
+        "title": "Deine Inhalte und dein Lernfortschritt",
+        "paragraphs": [
+          "Um die Kernfunktionen der Anwendung bereitzustellen, speichern wir die Inhalte, die du anlegst, sowie Daten zu deinem Lernfortschritt, jeweils verknüpft mit deinem Benutzerkonto:"
+        ],
+        "items": [
+          "Projekte mit Projektname und optionalem Prüfungsdatum,",
+          "Karteikarten mit Frage und Antwort (einschließlich Markdown- und LaTeX-Formatierung),",
+          "Bilder, die du in Karteikarten hochlädst oder einfügst,",
+          "Bewertungen deiner Antworten („Unbewertet“, „Schlecht“, „Okay“, „Gut“) mit Datum und Uhrzeit sowie die daraus berechneten Werte für die Abstandswiederholung (z. B. nächster Wiederholungstermin),",
+          "Inhalte aus CSV-Dateien, die du importierst."
+        ],
+        "paragraphs_after": [
+          "Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Der CSV-Export wird ausschließlich lokal in deinem Browser erstellt; dabei werden keine zusätzlichen Daten an den Server übertragen.",
+          "Hochgeladene Bilder werden unter einer zufällig erzeugten Kennung auf dem Server gespeichert. Sie sind über ihre Adresse ohne Anmeldung abrufbar, damit sie in den Karteikarten angezeigt werden können – die Adresse ist jedoch nicht erratbar und wird nirgends veröffentlicht. Bitte lade keine Bilder hoch, die besonders schutzwürdige Informationen enthalten.",
+          "Bitte speichere in deinen Karteikarten keine besonderen Kategorien personenbezogener Daten (z. B. Gesundheitsdaten) oder personenbezogene Daten anderer Personen, sofern du dazu nicht berechtigt bist."
+        ]
+      },
+      "browser_storage": {
+        "title": "Speicherung im Browser (kein Einsatz von Cookies)",
+        "paragraphs": [
+          "Die Anwendung setzt keine Cookies. Sie legt jedoch folgende Einträge im Speicher deines Browsers ab:"
+        ],
+        "items": [
+          "Session Storage: dein Zugangstoken (JSON Web Token) nach der Anmeldung sowie ein technischer Statuswert. Diese Einträge werden beim Abmelden oder beim Schließen des Browser-Tabs gelöscht; das Token verliert zudem nach 24 Stunden seine Gültigkeit.",
+          "Local Storage: deine Spracheinstellung (Deutsch oder Englisch), damit die Anwendung in deiner Sprache angezeigt wird. Dieser Eintrag bleibt bestehen, bis du ihn über die Einstellungen deines Browsers löschst."
+        ],
+        "paragraphs_after": [
+          "Die Speicherung dieser Informationen auf deinem Endgerät ist unbedingt erforderlich, um den von dir ausdrücklich gewünschten Dienst bereitzustellen, und daher nach § 25 Abs. 2 Nr. 2 TDDDG ohne Einwilligung zulässig. Die anschließende Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Anmeldung) bzw. Art. 6 Abs. 1 lit. f DSGVO (Anzeige in deiner Sprache)."
+        ]
+      },
+      "third_parties": {
+        "title": "Eingebundene Dienste Dritter",
+        "paragraphs": [
+          "Beim Aufruf der Anwendung lädt dein Browser einige Ressourcen direkt von Servern Dritter. Dabei wird technisch bedingt deine IP-Adresse sowie die Information, welche Ressource abgerufen wurde, an den jeweiligen Anbieter übermittelt:"
+        ],
+        "items": [
+          "Google Fonts: Die Schriftart „Roboto“ und die Symbolschrift „Material Icons“ werden von Servern der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, geladen. Eine Übermittlung von Daten in die USA an die Google LLC kann nicht ausgeschlossen werden; die Google LLC ist unter dem EU-US Data Privacy Framework zertifiziert (Angemessenheitsbeschluss der EU-Kommission, Art. 45 DSGVO). Weitere Informationen: https://policies.google.com/privacy",
+          "jsDelivr: Die Bibliothek MathJax zur Darstellung mathematischer Formeln wird über das Content Delivery Network jsDelivr (cdn.jsdelivr.net) geladen. Weitere Informationen: https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net",
+          "Externe Bilder: Bindest du in einer Karteikarte per Markdown ein Bild ein, das auf einem fremden Server liegt, lädt dein Browser dieses Bild beim Anzeigen direkt von dem jeweiligen Server. Auf dessen Datenverarbeitung haben wir keinen Einfluss."
+        ],
+        "paragraphs_after": [
+          "Die Einbindung von Google Fonts und jsDelivr erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer einheitlichen, gut lesbaren Darstellung der Anwendung und der korrekten Anzeige mathematischer Formeln. Dabei werden auf deinem Endgerät keine Informationen durch uns gespeichert."
+        ]
+      },
+      "recipients": {
+        "title": "Empfänger deiner Daten",
+        "paragraphs": [
+          "Deine Kontodaten und Inhalte werden nicht an Dritte weitergegeben. Zugriff haben ausschließlich wir als Betreiber sowie unser in unserem Auftrag tätiger Hosting-Anbieter STRATO (siehe Abschnitt „Hosting und Server-Logdateien“). Zu den in Abschnitt „Eingebundene Dienste Dritter“ genannten Anbietern gelangt nur deine IP-Adresse beim Laden der jeweiligen Ressource.",
+          "Eine Weitergabe an Behörden erfolgt nur, wenn wir hierzu gesetzlich verpflichtet sind (Art. 6 Abs. 1 lit. c DSGVO)."
+        ]
+      },
+      "retention": {
+        "title": "Speicherdauer und Löschung",
+        "paragraphs": [
+          "Wir speichern personenbezogene Daten nur so lange, wie es für die jeweiligen Zwecke erforderlich ist:"
+        ],
+        "items": [
+          "Kontodaten, Projekte, Karteikarten und Lernfortschritt werden gespeichert, solange dein Benutzerkonto besteht.",
+          "Projekte und Karteikarten kannst du jederzeit selbst in der Anwendung löschen. Beim Löschen eines Projekts werden auch alle zugehörigen Karteikarten und deren Bewertungsverlauf gelöscht.",
+          "Dein Benutzerkonto kannst du jederzeit selbst in der Anwendung löschen: Öffne nach dem Anmelden das Kontomenü (Personen-Symbol oben rechts) und wähle „Konto löschen“; die Löschung bestätigst du mit deinem Passwort. Dabei werden sofort und endgültig dein Benutzerkonto (Nutzername, Vor- und Nachname, Passwort-Hash), alle deine Projekte und Karteikarten, dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine) sowie die hochgeladenen Bilder gelöscht, die zum Zeitpunkt der Löschung in deinen Karteikarten eingebunden sind. Bilder, die auch in Karteikarten anderer Nutzer eingebunden sind, bleiben für diese Karteikarten erhalten.",
+          "Alternativ kannst du die Löschung deines Kontos einschließlich aller Inhalte und hochgeladenen Bilder jederzeit formlos unter der oben genannten Kontaktadresse verlangen; wir setzen die Löschung unverzüglich, spätestens innerhalb eines Monats, um.",
+          "Hochgeladene Bilder werden nicht automatisch entfernt, wenn eine Karteikarte gelöscht oder ein Bild aus einer Karteikarte entfernt wird; solche Bilder werden auch von der Kontolöschung in der Anwendung nicht erfasst, da sie nicht mehr mit deinem Konto verknüpft sind. Auf Anfrage löschen wir sie vollständig.",
+          "Server-Logdaten werden automatisch rotiert und spätestens bei der nächsten Aktualisierung der Anwendung gelöscht (siehe Abschnitt „Hosting und Server-Logdateien“)."
+        ]
+      },
+      "security": {
+        "title": "Datensicherheit",
+        "paragraphs": [
+          "Wir treffen angemessene technische und organisatorische Maßnahmen, um deine Daten zu schützen. Dazu gehören insbesondere die verschlüsselte Übertragung über HTTPS (TLS), die ausschließliche Speicherung von Passwörtern als bcrypt-Hash sowie eine tokenbasierte Anmeldung, bei der jeder Zugriff auf Projekte und Karteikarten auf die Berechtigung des jeweiligen Kontos geprüft wird."
+        ]
+      },
+      "rights": {
+        "title": "Deine Rechte",
+        "paragraphs": [
+          "Dir stehen gegenüber uns hinsichtlich deiner personenbezogenen Daten folgende Rechte zu:"
+        ],
+        "items": [
+          "Recht auf Auskunft (Art. 15 DSGVO),",
+          "Recht auf Berichtigung (Art. 16 DSGVO),",
+          "Recht auf Löschung (Art. 17 DSGVO),",
+          "Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO),",
+          "Recht auf Datenübertragbarkeit (Art. 20 DSGVO),",
+          "Recht auf Widerspruch gegen Verarbeitungen, die auf Art. 6 Abs. 1 lit. f DSGVO beruhen, aus Gründen, die sich aus deiner besonderen Situation ergeben (Art. 21 DSGVO)."
+        ],
+        "paragraphs_after": [
+          "Zur Ausübung deiner Rechte genügt eine formlose Nachricht an die oben genannte Kontaktadresse. Damit wir dich eindeutig zuordnen können, gib bitte deinen Nutzernamen an. Dein Recht auf Löschung kannst du außerdem direkt in der Anwendung ausüben, indem du dein Konto löschst (siehe Abschnitt „Speicherdauer und Löschung“).",
+          "Außerdem hast du das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO), insbesondere in dem Mitgliedstaat deines Aufenthaltsorts, deines Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes."
+        ]
+      },
+      "obligation": {
+        "title": "Pflicht zur Bereitstellung und automatisierte Entscheidungsfindung",
+        "paragraphs": [
+          "Die Angabe von Nutzername, Vor- und Nachname und Passwort ist für die Registrierung erforderlich. Ohne diese Angaben kannst du die Anwendung nicht nutzen. Eine gesetzliche Pflicht zur Bereitstellung besteht nicht.",
+          "Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt. Die automatische Berechnung von Wiederholungsterminen für deine Karteikarten dient allein der Lernplanung und entfaltet keine rechtliche oder ähnlich erhebliche Wirkung."
+        ]
+      },
+      "changes": {
+        "title": "Änderungen dieser Datenschutzerklärung",
+        "paragraphs": [
+          "Wir passen diese Datenschutzerklärung an, wenn sich die Anwendung oder die rechtlichen Anforderungen ändern. Es gilt jeweils die auf dieser Seite veröffentlichte aktuelle Fassung. Weitere technische Informationen zur Anwendung findest du in der Dokumentation unter https://documentation.indexcards.7ubi.de/."
+        ]
+      }
+    }
+  }
 }

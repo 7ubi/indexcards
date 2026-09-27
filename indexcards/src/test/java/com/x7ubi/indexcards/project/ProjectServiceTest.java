@@ -72,4 +72,17 @@ public class ProjectServiceTest extends ProjectTestConfig {
         // then
         Assertions.assertEquals(ErrorMessage.Project.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
     }
+
+    @Test
+    public void getUserProjectWithUnauthorizedUserTest() {
+        // given
+        long projectId = this.projects.get(0).getId();
+
+        // when
+        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
+                this.projectService.getProject(user2.getUsername(), projectId));
+
+        // then
+        Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
+    }
 }

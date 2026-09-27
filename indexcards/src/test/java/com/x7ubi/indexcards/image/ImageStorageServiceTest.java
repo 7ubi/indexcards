@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -27,6 +28,9 @@ import java.util.UUID;
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.datasource.url=jdbc:h2:mem:testdb"
 })
+// Close the context after this class so its H2 "testdb" connection pool does not keep the in-memory
+// database (and its rows) alive for the other test classes.
+@DirtiesContext
 public class ImageStorageServiceTest extends TestConfig {
 
     @TempDir

@@ -2,8 +2,22 @@
   <a class="pointer" routerLink="/">Indexcards</a>
   @if (isLoggedIn()) {
     <span class="spacer"></span>
-    <button matIconButton (click)="logout()">
-      <mat-icon>logout</mat-icon>
+    <button
+      matIconButton
+      [matMenuTriggerFor]="accountMenu"
+      [attr.aria-label]="'account.menu' | translate"
+    >
+      <mat-icon>account_circle</mat-icon>
     </button>
+    <mat-menu #accountMenu="matMenu">
+      <a mat-menu-item routerLink="/account/delete">
+        <mat-icon>delete_forever</mat-icon>
+        <span>{{ 'account.delete_title' | translate }}</span>
+      </a>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>{{ 'account.logout' | translate }}</span>
+      </button>
+    </mat-menu>
   }
 </mat-toolbar>

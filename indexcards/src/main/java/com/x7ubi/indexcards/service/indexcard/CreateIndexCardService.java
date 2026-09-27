@@ -45,6 +45,7 @@ public class CreateIndexCardService extends AbstractIndexCardService {
 
 
     public void importIndexCardsFromCsv(String username, IndexCardCsvImportRequest indexCardCsvImportRequest) throws EntityNotFoundException, UnauthorizedException {
+        this.getProjectNotFoundError(indexCardCsvImportRequest.getProjectId());
         User user = getUser(username);
 
         Project project = this.projectRepo.findProjectByProjectId(indexCardCsvImportRequest.getProjectId());

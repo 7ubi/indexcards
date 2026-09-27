@@ -1,0 +1,27 @@
+<form [formGroup]="deleteAccountFormGroup" (ngSubmit)="deleteAccount()">
+  <div class="center">
+    <div class="form-container">
+      <div class="header-container">
+        <h1 class="title">{{ 'account.delete_title' | translate }}</h1>
+      </div>
+      <div class="warning full-width" role="alert">
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <p>{{ 'account.delete_warning' | translate }}</p>
+      </div>
+      <p class="full-width">{{ 'account.delete_items_intro' | translate }}</p>
+      <ul class="full-width">
+        @for (item of deletedItems; track item) {
+          <li>{{ 'account.delete_items.' + item | translate }}</li>
+        }
+      </ul>
+      <p class="full-width">{{ 'account.delete_password_hint' | translate }}</p>
+      <app-password-input class="full-width" formControlName="password"></app-password-input>
+      <div class="actions full-width">
+        <a matButton routerLink="/">{{ 'account.cancel' | translate }}</a>
+        <button matButton="filled" class="danger" type="submit" [disabled]="deleting()">
+          {{ 'account.delete_button' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

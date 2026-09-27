@@ -63,6 +63,7 @@ jobs:
       - name: Start docker-compose
         run: |
           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          export JWT_SECRET=${{ secrets.JWT_SECRET }}
           docker-compose down
           docker-compose up --build -d
   documentation:

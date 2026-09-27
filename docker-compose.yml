@@ -1,8 +1,16 @@
 version: '3'
 
+# Rotate container logs (incl. nginx access logs with IP addresses): at most 3 x 10 MB per container.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+
 services:
   mysqldb:
     container_name: dbcontainer
+    logging: *default-logging
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: 'indexcardsdb'
@@ -17,11 +25,14 @@ services:
       - my-db:/var/lib/mysql
   backend:
     container_name: backendcontainer
+    logging: *default-logging
     build: ./indexcards
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: 'root'
       SPRING_DATASOURCE_PASSWORD: '${DB_PASSWORD}'
+      # Base64-encoded JWT signing key (set in .env, e.g. `openssl rand -base64 64 | tr -d '\n'`)
+      JWT_SECRET: '${JWT_SECRET}'
       SPRING_JPA_DATABASE-PLATFORM: 'org.hibernate.dialect.MySQL5InnoDBDialect'
     volumes:
       - './indexcards:/usr/src/app'
@@ -37,6 +48,7 @@ services:
       - mysqldb
   frontend:
     container_name: frontendcontainer
+    logging: *default-logging
     build: ./indexcards-ui
     volumes:
       - './indexcards-ui:/usr/src/app'

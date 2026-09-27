@@ -7,3 +7,12 @@
   pointer-events: none;
   z-index: 10;
 }
+
+.app-privacy-link {
+  position: fixed;
+  left: 10px;
+  bottom: 6px;
+  font-size: 0.75em;
+  color: var(--mat-sys-on-surface-variant);
+  z-index: 10;
+}

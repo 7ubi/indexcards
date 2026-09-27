@@ -4,10 +4,21 @@ import { LoginService } from '../../service/login/login.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
-  imports: [MatToolbar, MatIcon, MatIconButton, RouterLink],
+  imports: [
+    MatToolbar,
+    MatIcon,
+    MatIconButton,
+    RouterLink,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
+    TranslatePipe,
+  ],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.css',
