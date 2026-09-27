@@ -11,7 +11,7 @@ services:
   mysqldb:
     container_name: dbcontainer
     logging: *default-logging
-    image: mysql:5.7
+    image: mysql:8.0
     environment:
       MYSQL_DATABASE: 'indexcardsdb'
       # Password for root access
@@ -28,12 +28,12 @@ services:
     logging: *default-logging
     build: ./indexcards
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: 'root'
       SPRING_DATASOURCE_PASSWORD: '${DB_PASSWORD}'
       # Base64-encoded JWT signing key (set in .env, e.g. `openssl rand -base64 64 | tr -d '\n'`)
       JWT_SECRET: '${JWT_SECRET}'
-      SPRING_JPA_DATABASE-PLATFORM: 'org.hibernate.dialect.MySQL5InnoDBDialect'
+      SPRING_JPA_DATABASE-PLATFORM: 'org.hibernate.dialect.MySQL8Dialect'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images
