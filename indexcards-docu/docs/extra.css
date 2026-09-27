@@ -23,7 +23,22 @@ Main headlines
 
 /*
 Tables
+Material gives tables a white background (--md-default-bg-color) and dark borders.
 */
+.md-typeset table:not([class]) {
+    background-color: var(--dark-background) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.md-typeset table:not([class]) td,
+.md-typeset table:not([class]) th {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.md-typeset table:not([class]) th {
+    color: white !important;
+}
+
 tbody {
     background-color: rgba(255, 255, 255, 0.05) !important;
 }
@@ -43,6 +58,15 @@ Blockquotes
 .md-typeset blockquote {
     color: rgba(255,255,255,0.8) !important;
     border-color: rgba(255,255,255,0.54) !important;
+}
+
+/*
+Admonitions (note, warning, ...) also default to a white background
+*/
+.md-typeset .admonition,
+.md-typeset details {
+    color: #F5F5F5 !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 /*
