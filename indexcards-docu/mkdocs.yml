@@ -2,14 +2,37 @@ site_name: Indexcards Documentation
 repo_url: https://github.com/7ubi/indexcards
 nav:
   - Indexcards: index.md
-  - Project Structure: projectStructure.md
-  - Database: database.md
-  - Pipeline: pipeline.md
-  - Pages:
-    - Authentication: pages/authentication.md
+  - User Guide:
+    - Account: user-guide/account.md
+    - Projects: user-guide/projects.md
+    - Index Cards: user-guide/indexcards.md
+    - Studying: user-guide/studying.md
+    - Import & Export: user-guide/import-export.md
+  - Development:
+    - Getting Started: development/getting-started.md
+    - Project Structure: projectStructure.md
+    - Backend: development/backend.md
+    - Frontend: development/frontend.md
+    - REST API: development/api.md
+    - Database: database.md
+    - Spaced Repetition: development/spaced-repetition.md
+  - Operations:
+    - Pipeline: pipeline.md
+    - Deployment: operations/deployment.md
   - License: license.md
 
 extra_css: [extra.css]
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 theme:
   name: material
