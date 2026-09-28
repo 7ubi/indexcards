@@ -15,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +30,7 @@ import java.util.List;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DueIndexCardServiceTest extends IndexCardTestConfig {
 
-    // Fixed mid-day so "later today" and "tomorrow" are unambiguous.
-    private final LocalDateTime now = LocalDateTime.of(2026, 9, 27, 12, 0);
+    private final LocalDateTime now = LocalDate.now().atTime(12, 0);
 
     private IndexCard createIndexCardWithDueDate(Project project, LocalDateTime dueDate) {
         IndexCard card = new IndexCard();
