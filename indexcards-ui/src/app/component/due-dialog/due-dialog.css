@@ -1,0 +1,44 @@
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.due-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Material's baseline spacer would sit beside the icon as a flex item and push the title off-centre. */
+.due-title::before {
+  display: none;
+}
+
+.due-table {
+  margin-top: 8px;
+}
+
+.project-name {
+  max-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.due-table .mat-mdc-footer-cell {
+  font-weight: 600;
+}

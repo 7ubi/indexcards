@@ -42,7 +42,14 @@
     "delete": "Projekt löschen",
     "no_projects": "Noch keine Projekte",
     "no_projects_hint": "Erstelle dein erstes Projekt, um Karteikarten hinzuzufügen.",
-    "cards_label": "Karten"
+    "cards_label": "Karten",
+    "study_all_due": "Alle fälligen lernen",
+    "later": "Später",
+    "due_today": "Heute fällig",
+    "project": "Projekt",
+    "due_column": "Fällige Karten",
+    "total": "Gesamt",
+    "close": "Schließen"
   },
   "indexcard": {
     "create": "Erstelle eine Karteikarte",
@@ -70,7 +77,10 @@
     "due_now": "Jetzt fällig",
     "next_review": "Nächste Wiederholung",
     "preview": "Vorschau",
-    "edit_mode": "Bearbeiten"
+    "edit_mode": "Bearbeiten",
+    "due_done": "Du hast alle fälligen Karteikarten wiederholt!",
+    "nothing_due": "Heute sind keine Karteikarten fällig!",
+    "to_projects": "Zurück zu den Projekten"
   },
   "account": {
     "menu": "Konto",

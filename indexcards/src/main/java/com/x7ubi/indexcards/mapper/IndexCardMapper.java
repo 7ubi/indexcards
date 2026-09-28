@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.mapper;
 
 import com.x7ubi.indexcards.models.IndexCard;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
+import com.x7ubi.indexcards.response.indexcard.DueIndexCardResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,6 +23,15 @@ public interface IndexCardMapper {
     @Mapping(target = "question", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getQuestion()))))")
     @Mapping(target = "answer", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getAnswer()))))")
     IndexCardResponse mapToResponse(IndexCard indexCard);
+
+    List<DueIndexCardResponse> mapToDueResponses(List<IndexCard> indexCards);
+
+    @Mapping(source = "indexcardId", target = "indexCardId")
+    @Mapping(source = "project.id", target = "projectId")
+    @Mapping(source = "project.name", target = "projectName")
+    @Mapping(target = "question", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getQuestion()))))")
+    @Mapping(target = "answer", expression = "java(String.valueOf(java.nio.charset.StandardCharsets.UTF_8.decode(java.nio.ByteBuffer.wrap(indexCard.getAnswer()))))")
+    DueIndexCardResponse mapToDueResponse(IndexCard indexCard);
 
     @Mapping(target = "question", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array())")
     @Mapping(target = "answer", expression = "java(java.nio.charset.StandardCharsets.UTF_8.encode(createIndexCardRequest.getAnswer()).array())")

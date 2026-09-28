@@ -9,6 +9,7 @@ import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.service.indexcard.CreateIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.DeleteIndexCardService;
+import com.x7ubi.indexcards.service.indexcard.DueIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.EditIndexCardService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardAssessmentService;
 import com.x7ubi.indexcards.service.indexcard.IndexCardQuizService;
@@ -43,6 +44,9 @@ public abstract class IndexCardTestConfig extends TestConfig {
 
     @Autowired
     protected EditIndexCardService editIndexCardService;
+
+    @Autowired
+    protected DueIndexCardService dueIndexCardService;
 
     protected User user;
 
@@ -89,7 +93,7 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.indexCard.setQuestion(StandardCharsets.UTF_8.encode("Question").array());
         this.indexCard.setAnswer(StandardCharsets.UTF_8.encode("Answer").array());
 
-        this.indexCard.setProject(this.projects.get(0));
+        this.indexCard.setProject(this.projects.getFirst());
 
         this.indexCard = this.indexCardRepo.save(this.indexCard);
     }

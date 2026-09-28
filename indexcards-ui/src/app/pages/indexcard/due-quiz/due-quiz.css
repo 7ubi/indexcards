@@ -1,0 +1,90 @@
+.quiz-page {
+  height: calc(100dvh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-progress {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px 0;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.project-label {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quiz-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow: auto;
+  perspective: 1800px;
+}
+
+.assessment-buttons {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  padding: 15px 20px;
+  box-sizing: border-box;
+}
+
+.assessment-buttons button {
+  flex: 1;
+  max-width: 300px;
+}
+
+.assessment-bad {
+  background-color: #c62828 !important;
+  color: #fff !important;
+}
+
+.assessment-ok {
+  background-color: #f9a825 !important;
+  color: #000 !important;
+}
+
+.assessment-good {
+  background-color: #2e7d32 !important;
+  color: #fff !important;
+}
+
+.quiz-summary {
+  height: calc(100dvh - 64px);
+}
+
+.quiz-summary .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 599px) {
+  .quiz-page,
+  .quiz-summary {
+    height: calc(100dvh - 56px);
+  }
+}
