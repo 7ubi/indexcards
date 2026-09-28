@@ -32,7 +32,7 @@ public class DueIndexCardService extends AbstractIndexCardService {
     }
 
     /**
-     * Returns every card across all of the user's projects that is due before the end of today
+     * Returns every card across all of the user's non-archived projects that is due before the end of today
      * (server time), most overdue first. Filtering happens in memory rather than in a query so
      * never-scheduled cards ({@code NULL} due date) count as due via {@link IndexCard#getDueDate()}.
      */
@@ -41,6 +41,7 @@ public class DueIndexCardService extends AbstractIndexCardService {
         LocalDateTime startOfTomorrow = now.toLocalDate().plusDays(1).atStartOfDay();
 
         List<IndexCard> dueIndexCards = user.getProjects().stream()
+                .filter(project -> !project.isArchived())
                 .flatMap(project -> project.getIndexCards().stream())
                 .filter(indexCard -> indexCard.getDueDate().isBefore(startOfTomorrow))
                 .sorted(Comparator.comparing(IndexCard::getDueDate).thenComparing(IndexCard::getId))

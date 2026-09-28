@@ -34,6 +34,8 @@ public class ErrorMessage {
         public static String INDEXCARD_QUESTION_TOO_LONG = "indexcard_question_too_long";
 
         public static String INDEXCARD_ANSWER_TOO_LONG = "indexcard_answer_too_long";
+
+        public static final String PROJECT_ARCHIVED = "project_archived";
     }
 
     public static class Images {

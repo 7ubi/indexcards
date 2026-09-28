@@ -18,6 +18,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 import { DatePipe } from '@angular/common';
+import { ProjectArchiveService } from '../../../service/project/project-archive.service';
 
 function escapeCsvField(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
@@ -44,6 +45,7 @@ export class Project implements OnInit, OnDestroy {
   private router = inject(Router);
   private snackbarService = inject(SnackbarService);
   private cdr = inject(ChangeDetectorRef);
+  private projectArchiveService = inject(ProjectArchiveService);
 
   userProject?: ProjectResponse;
   id: string | null = '';
@@ -101,6 +103,16 @@ export class Project implements OnInit, OnDestroy {
 
   hasIndexCards() {
     return !!this.userProject?.indexCardResponses && this.userProject.indexCardResponses.length > 0;
+  }
+
+  isArchived() {
+    return !!this.userProject?.archived;
+  }
+
+  onClickToggleArchive() {
+    if (this.userProject) {
+      this.projectArchiveService.toggleArchive(this.userProject, () => this.getIndexCards());
+    }
   }
 
   canStartQuiz() {

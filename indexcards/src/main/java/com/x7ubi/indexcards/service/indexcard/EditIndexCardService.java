@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
@@ -19,13 +20,14 @@ public class EditIndexCardService extends AbstractIndexCardService {
         super(projectRepo, indexCardRepo, indexCardAssessmentRepo, indexCardMapper, userRepo);
     }
 
-    public void editIndexCard(String username, Long id, CreateIndexCardRequest request) throws EntityNotFoundException, UnauthorizedException {
+    public void editIndexCard(String username, Long id, CreateIndexCardRequest request) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         this.getIndexCardNotFoundError(id);
 
         User user = this.getUser(username);
         IndexCard indexCard = this.indexCardRepo.findIndexCardByIndexcardId(id);
 
         getProjectOwnerError(user, indexCard.getProject());
+        getProjectArchivedError(indexCard.getProject());
 
         this.indexCardMapper.mapRequestToIndexCard(request, indexCard);
         this.indexCardRepo.save(indexCard);

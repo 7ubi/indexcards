@@ -15,6 +15,8 @@ public class ProjectResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate examDate;
 
+    private boolean archived;
+
     private List<IndexCardResponse> indexCardResponses;
 
     public ProjectResponse() {}
@@ -39,6 +41,14 @@ public class ProjectResponse {
 
     public void setExamDate(LocalDate examDate) {
         this.examDate = examDate;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     public List<IndexCardResponse> getIndexCardResponses() {

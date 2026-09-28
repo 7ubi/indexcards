@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
@@ -22,13 +23,14 @@ public class DeleteIndexCardService extends AbstractIndexCardService {
     }
 
     @Transactional
-    public void deleteIndexCard(String username, DeleteIndexCardRequest deleteIndexCardRequest) throws EntityNotFoundException, UnauthorizedException {
+    public void deleteIndexCard(String username, DeleteIndexCardRequest deleteIndexCardRequest) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         getIndexCardNotFoundError(deleteIndexCardRequest.getIndexcardId());
 
         IndexCard indexCard = indexCardRepo.findIndexCardByIndexcardId(deleteIndexCardRequest.getIndexcardId());
         User user = getUser(username);
 
         getProjectOwnerError(user, indexCard.getProject());
+        getProjectArchivedError(indexCard.getProject());
 
         this.indexCardRepo.delete(indexCard);
     }

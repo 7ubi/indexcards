@@ -4,9 +4,17 @@
       <app-loading-spinner />
     } @else {
       <div class="header-container">
-        <h1 class="title">
-          {{ userProject?.name }}
-        </h1>
+        <div class="title-row">
+          <h1 class="title">
+            {{ userProject?.name }}
+          </h1>
+          @if (isArchived()) {
+            <span class="archived-chip">
+              <mat-icon class="archived-chip-icon">inventory_2</mat-icon>
+              {{ 'project.archived' | translate }}
+            </span>
+          }
+        </div>
         @if (userProject?.examDate) {
           <div class="exam-date">
             {{ 'project.exam_date' | translate }}: {{ userProject?.examDate | date: 'dd.MM.yyyy' }}
@@ -14,23 +22,32 @@
         }
       </div>
 
+      @if (isArchived()) {
+        <div class="archived-hint full-width">
+          <mat-icon>info</mat-icon>
+          <span>{{ 'project.archived_hint' | translate }}</span>
+        </div>
+      }
+
       <div class="actions-container full-width">
-        <input
-          type="file"
-          accept=".csv"
-          class="file-input"
-          (change)="onClickImportCsv($event)"
-          #fileUpload
-        />
-        <button
-          matIconButton
-          class="upload-button"
-          type="button"
-          [matTooltip]="'indexcard.import_tooltip' | translate"
-          (click)="fileUpload.click()"
-        >
-          <mat-icon>upload</mat-icon>
-        </button>
+        @if (!isArchived()) {
+          <input
+            type="file"
+            accept=".csv"
+            class="file-input"
+            (change)="onClickImportCsv($event)"
+            #fileUpload
+          />
+          <button
+            matIconButton
+            class="upload-button"
+            type="button"
+            [matTooltip]="'indexcard.import_tooltip' | translate"
+            (click)="fileUpload.click()"
+          >
+            <mat-icon>upload</mat-icon>
+          </button>
+        }
         <button
           matIconButton
           class="upload-button"
@@ -42,13 +59,24 @@
           <mat-icon>download</mat-icon>
         </button>
         <button
-          mat-raised-button
-          color="primary"
-          (click)="onClickCreateIndexcardButton()"
+          matIconButton
+          class="upload-button"
           type="button"
+          [matTooltip]="(isArchived() ? 'project.unarchive' : 'project.archive') | translate"
+          (click)="onClickToggleArchive()"
         >
-          {{ 'indexcard.create' | translate }}
+          <mat-icon>{{ isArchived() ? 'unarchive' : 'archive' }}</mat-icon>
         </button>
+        @if (!isArchived()) {
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onClickCreateIndexcardButton()"
+            type="button"
+          >
+            {{ 'indexcard.create' | translate }}
+          </button>
+        }
         <button
           mat-raised-button
           color="primary"
@@ -85,7 +113,11 @@
 
       <div class="cards-grid full-width">
         @for (indexcard of userProject?.indexCardResponses; track indexcard.indexCardId) {
-          <app-card-overview [indexCard]="indexcard" (reloadIndexCards)="getIndexCards()" />
+          <app-card-overview
+            [indexCard]="indexcard"
+            [readonly]="isArchived()"
+            (reloadIndexCards)="getIndexCards()"
+          />
         }
       </div>
     }

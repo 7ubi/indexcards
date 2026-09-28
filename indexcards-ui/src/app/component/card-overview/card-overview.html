@@ -15,13 +15,15 @@
       </span>
     </div>
     <div class="question" [innerHTML]="indexCard?.question | markdownMath" appMathjax></div>
-    <div class="actions">
-      <button matIconButton type="button" (click)="editIndexCard()">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button matIconButton type="button" color="warn" (click)="deleteIndexCard()">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+    @if (!readonly) {
+      <div class="actions">
+        <button matIconButton type="button" (click)="editIndexCard()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button matIconButton type="button" color="warn" (click)="deleteIndexCard()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
   </div>
 </mat-card>

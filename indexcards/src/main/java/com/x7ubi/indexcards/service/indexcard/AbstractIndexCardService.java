@@ -61,6 +61,13 @@ public class AbstractIndexCardService {
         }
     }
 
+    protected void getProjectArchivedError(Project project) throws EntityCreationException {
+        if (project.isArchived()) {
+            logger.error(ErrorMessage.IndexCards.PROJECT_ARCHIVED);
+            throw new EntityCreationException(ErrorMessage.IndexCards.PROJECT_ARCHIVED);
+        }
+    }
+
     protected User getUser(String username) throws EntityNotFoundException {
         Optional<User> userOptional = userRepo.findByUsername(username);
 

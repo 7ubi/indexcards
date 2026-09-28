@@ -6,6 +6,7 @@ import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
+import com.x7ubi.indexcards.service.project.ArchiveProjectService;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.DeleteProjectService;
 import com.x7ubi.indexcards.service.project.EditProjectService;
@@ -33,16 +34,20 @@ public class ProjectRestController {
 
     private final EditProjectService editProjectService;
 
+    private final ArchiveProjectService archiveProjectService;
+
     public ProjectRestController(
             JwtUtils jwtUtils,
             ProjectService projectService,
             CreateProjectService createProjectService,
-            DeleteProjectService deleteProjectService, EditProjectService editProjectService) {
+            DeleteProjectService deleteProjectService, EditProjectService editProjectService,
+            ArchiveProjectService archiveProjectService) {
         this.jwtUtils = jwtUtils;
         this.projectService = projectService;
         this.createProjectService = createProjectService;
         this.deleteProjectService = deleteProjectService;
         this.editProjectService = editProjectService;
+        this.archiveProjectService = archiveProjectService;
     }
 
     @GetMapping("")
@@ -105,6 +110,30 @@ public class ProjectRestController {
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         editProjectService.editProject(createProjectRequest, id, username);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/{id}/archive")
+    public ResponseEntity<?> archiveProject(
+            @RequestHeader("Authorization") String authorization, @PathVariable Long id
+    ) throws EntityNotFoundException, UnauthorizedException {
+        logger.info("Archiving Project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        archiveProjectService.archiveProject(username, id);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/{id}/unarchive")
+    public ResponseEntity<?> unarchiveProject(
+            @RequestHeader("Authorization") String authorization, @PathVariable Long id
+    ) throws EntityNotFoundException, UnauthorizedException {
+        logger.info("Unarchiving Project");
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        archiveProjectService.unarchiveProject(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

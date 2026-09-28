@@ -169,3 +169,30 @@
   font-size: 0.9rem;
   opacity: 0.8;
 }
+
+.archived-panel {
+  margin-top: 24px;
+}
+
+.archived-panel-icon {
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.project-card.archived {
+  --accent-color: var(--mat-sys-outline);
+  --accent-on-color: var(--mat-sys-surface);
+  background-color: var(--mat-sys-surface-container);
+  opacity: 0.8;
+}
+
+.project-card.archived:hover,
+.project-card.archived:focus-visible {
+  opacity: 1;
+}
+
+/* A passed exam is expected for archived projects, so don't flag it. */
+.project-card.archived .exam-badge {
+  background-color: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface-variant);
+}

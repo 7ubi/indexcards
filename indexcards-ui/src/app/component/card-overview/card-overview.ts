@@ -50,6 +50,10 @@ export class CardOverview {
   @Input({ required: true })
   indexCard?: IndexCardResponse;
 
+  // Cards of archived projects can't be edited or deleted.
+  @Input()
+  readonly = false;
+
   isDue(): boolean {
     if (!this.indexCard?.dueDate) {
       return true;
