@@ -26,6 +26,7 @@ export interface ProjectResponse {
   readonly id: number;
   readonly name: string;
   readonly examDate: string | null;
+  readonly archived: boolean;
   readonly indexCardResponses: IndexCardResponse[];
 }
 

@@ -32,7 +32,6 @@
     "edit": "Editiere das Projekt",
     "yes": "Ja",
     "no": "Nein",
-    "delete_confirmation": "Bist du dir sicher, dass du das folgende Projekt löschen willst: ",
     "created": "Das Projekt wurde erfolgreich erstellt!",
     "edited": "Das Projekt wurde erfolgreich editiert!",
     "deleted": "Das Projekt wurde erfolgreich gelöscht!",
@@ -49,7 +48,15 @@
     "project": "Projekt",
     "due_column": "Fällige Karten",
     "total": "Gesamt",
-    "close": "Schließen"
+    "close": "Schließen",
+    "archive": "Projekt archivieren",
+    "unarchive": "Projekt wiederherstellen",
+    "archived": "Archiviert",
+    "archived_section": "Archiviert",
+    "archived_success": "Das Projekt wurde archiviert!",
+    "unarchived_success": "Das Projekt wurde wiederhergestellt!",
+    "archived_hint": "Dieses Projekt ist archiviert. Die Karten können weiterhin gelernt, aber nicht geändert werden und zählen nicht zu den fälligen Karten.",
+    "no_active_projects": "Alle deine Projekte sind archiviert."
   },
   "indexcard": {
     "create": "Erstelle eine Karteikarte",
@@ -110,6 +117,7 @@
     "indexcard_question_too_long": "Die Frage der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
+    "project_archived": "Das Projekt ist archiviert, seine Karteikarten können nicht geändert werden",
     "bad_credentials": "Falscher Nutzername oder Passwort!",
     "wrong_password": "Falsches Passwort!"
   },
@@ -288,5 +296,16 @@
         ]
       }
     }
+  },
+  "confirm_dialog": {
+    "cancel": "Abbrechen",
+    "delete_title": "Projekt löschen?",
+    "delete_message": "Willst du dieses Projekt wirklich löschen?",
+    "delete_warning": "Alle {{count}} Karteikarten und ihr Bewertungsverlauf werden endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+    "delete_confirm": "Löschen",
+    "archive_title": "Projekt archivieren?",
+    "archive_message": "Willst du dieses Projekt archivieren?",
+    "archive_warning": "Die Karteikarten können weiterhin gelernt, aber nicht mehr geändert werden und zählen nicht mehr zu den fälligen Karten. Du kannst das Projekt jederzeit wiederherstellen.",
+    "archive_confirm": "Archivieren"
   }
 }

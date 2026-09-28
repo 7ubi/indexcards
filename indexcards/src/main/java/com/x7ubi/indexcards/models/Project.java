@@ -20,6 +20,13 @@ public class Project {
 
     private LocalDate examDate;
 
+    @Column(nullable = false)
+    private boolean archived;
+
+    // The exam date auto-archiving last fired for; keeps a manually unarchived project from being archived again
+    // until its exam date changes.
+    private LocalDate autoArchivedExamDate;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "project")
     private Set<IndexCard> indexCards;
 
@@ -53,6 +60,22 @@ public class Project {
 
     public void setExamDate(LocalDate examDate) {
         this.examDate = examDate;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public LocalDate getAutoArchivedExamDate() {
+        return autoArchivedExamDate;
+    }
+
+    public void setAutoArchivedExamDate(LocalDate autoArchivedExamDate) {
+        this.autoArchivedExamDate = autoArchivedExamDate;
     }
 
     public Set<IndexCard> getIndexCards() {

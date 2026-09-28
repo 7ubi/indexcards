@@ -32,7 +32,6 @@
     "edit": "Edit project",
     "yes": "Yes",
     "no": "No",
-    "delete_confirmation": "Are you sure that you want to delete project",
     "created": "Project was successfully created!",
     "edited": "Project successfully edited!",
     "deleted": "Project was deleted successfully!",
@@ -49,7 +48,15 @@
     "project": "Project",
     "due_column": "Due cards",
     "total": "Total",
-    "close": "Close"
+    "close": "Close",
+    "archive": "Archive project",
+    "unarchive": "Unarchive project",
+    "archived": "Archived",
+    "archived_section": "Archived",
+    "archived_success": "Project was archived!",
+    "unarchived_success": "Project was unarchived!",
+    "archived_hint": "This project is archived. Its cards can still be studied but not changed, and they are not included in the due cards.",
+    "no_active_projects": "All your projects are archived."
   },
   "indexcard": {
     "create": "Create index card",
@@ -110,6 +117,7 @@
     "indexcard_question_too_long": "The question of the index card was too long, only 500 characters are allowed",
     "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed",
     "user_not_project_owner": "You are not the owner of this project",
+    "project_archived": "The project is archived, its index cards cannot be changed",
     "bad_credentials": "Wrong Username or Password!",
     "wrong_password": "Wrong password!"
   },
@@ -288,5 +296,16 @@
         ]
       }
     }
+  },
+  "confirm_dialog": {
+    "cancel": "Cancel",
+    "delete_title": "Delete project?",
+    "delete_message": "Do you really want to delete this project?",
+    "delete_warning": "All {{count}} index cards and their rating history will be deleted permanently. This cannot be undone.",
+    "delete_confirm": "Delete",
+    "archive_title": "Archive project?",
+    "archive_message": "Do you want to archive this project?",
+    "archive_warning": "Its index cards can still be studied but no longer changed, and they are not included in the due cards anymore. You can unarchive the project at any time.",
+    "archive_confirm": "Archive"
   }
 }

@@ -88,6 +88,12 @@ public abstract class IndexCardTestConfig extends TestConfig {
         userToEdit.setProjects(projects);
     }
 
+    protected void archiveProject() {
+        Project project = this.projects.getFirst();
+        project.setArchived(true);
+        this.projects.set(0, this.projectRepo.save(project));
+    }
+
     protected void createIndexCard() {
         this.indexCard = new IndexCard();
         this.indexCard.setQuestion(StandardCharsets.UTF_8.encode("Question").array());

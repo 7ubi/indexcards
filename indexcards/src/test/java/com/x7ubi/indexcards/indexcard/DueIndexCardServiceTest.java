@@ -121,4 +121,21 @@ public class DueIndexCardServiceTest extends IndexCardTestConfig {
         Assertions.assertThrows(EntityNotFoundException.class, () ->
                 this.dueIndexCardService.getDueIndexCards("doesNotExist", now));
     }
+
+    @Test
+    public void excludesArchivedProjectsTest() throws EntityNotFoundException {
+        // given
+        Project archivedProject = createProject("ArchivedProject", this.user);
+        archivedProject.setArchived(true);
+        this.projectRepo.save(archivedProject);
+        IndexCard archivedCard = createIndexCardWithDueDate(archivedProject, now.minusDays(1));
+        IndexCard activeCard = createIndexCardWithDueDate(this.projects.getFirst(), now.minusDays(1));
+
+        // when
+        List<Long> ids = dueIds();
+
+        // then
+        Assertions.assertEquals(List.of(activeCard.getId()), ids);
+        Assertions.assertFalse(ids.contains(archivedCard.getId()));
+    }
 }

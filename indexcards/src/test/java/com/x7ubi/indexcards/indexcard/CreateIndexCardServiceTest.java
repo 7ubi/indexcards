@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Assessment;
@@ -30,10 +31,10 @@ import java.nio.charset.StandardCharsets;
 public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
     @Test
-    public void createIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
+    public void createIndexCardTest() throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
-                projects.get(0).getId(),
+                projects.getFirst().getId(),
                 "Question",
                 "Answer"
         );
@@ -49,10 +50,10 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void importIndexCardsFromCsvWithEscapedQuotesTest() throws EntityNotFoundException, UnauthorizedException {
+    public void importIndexCardsFromCsvWithEscapedQuotesTest() throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         // given
         IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
-        indexCardCsvImportRequest.setProjectId(projects.get(0).getId());
+        indexCardCsvImportRequest.setProjectId(projects.getFirst().getId());
         indexCardCsvImportRequest.setCsv("\"He said \"\"hi\"\"\",\"Answer\"");
 
         // when
@@ -70,7 +71,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
     public void createIndexCardWithNonexistentProjectTest() {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
-                projects.get(0).getId() + 1,
+                projects.getFirst().getId() + 1,
                 "Question",
                 "Answer"
         );
@@ -89,7 +90,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
     public void createIndexCardWithUnauthorizedUserTest() {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
-                projects.get(0).getId(),
+                projects.getFirst().getId(),
                 "Question",
                 "Answer"
         );
@@ -108,7 +109,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
     public void importIndexCardsFromCsvWithUnauthorizedUserTest() {
         // given
         IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
-        indexCardCsvImportRequest.setProjectId(projects.get(0).getId());
+        indexCardCsvImportRequest.setProjectId(projects.getFirst().getId());
         indexCardCsvImportRequest.setCsv("Injected question,Injected answer");
 
         // when
@@ -125,7 +126,7 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
     public void importIndexCardsFromCsvWithNonexistentProjectTest() {
         // given
         IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
-        indexCardCsvImportRequest.setProjectId(projects.get(0).getId() + 1);
+        indexCardCsvImportRequest.setProjectId(projects.getFirst().getId() + 1);
         indexCardCsvImportRequest.setCsv("Question,Answer");
 
         // when
@@ -134,5 +135,43 @@ public class CreateIndexCardServiceTest extends IndexCardTestConfig {
 
         // then
         Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_NOT_FOUND, entityNotFoundException.getMessage());
+    }
+
+    @Test
+    public void createIndexCardInArchivedProjectTest() {
+        // given
+        this.archiveProject();
+        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
+                projects.getFirst().getId(),
+                "Question",
+                "Answer"
+        );
+
+        // when
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
+                this.createIndexCardService.createIndexCard(user.getUsername(), createIndexCardRequest));
+
+        // then
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode(createIndexCardRequest.getQuestion()).array());
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_ARCHIVED, entityCreationException.getMessage());
+        Assertions.assertNull(indexCard);
+    }
+
+    @Test
+    public void importIndexCardsFromCsvInArchivedProjectTest() {
+        // given
+        this.archiveProject();
+        IndexCardCsvImportRequest indexCardCsvImportRequest = new IndexCardCsvImportRequest();
+        indexCardCsvImportRequest.setProjectId(projects.getFirst().getId());
+        indexCardCsvImportRequest.setCsv("Archived question,Archived answer");
+
+        // when
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
+                this.createIndexCardService.importIndexCardsFromCsv(user.getUsername(), indexCardCsvImportRequest));
+
+        // then
+        IndexCard indexCard = this.indexCardRepo.findIndexCardByQuestion(StandardCharsets.UTF_8.encode("Archived question").array());
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_ARCHIVED, entityCreationException.getMessage());
+        Assertions.assertNull(indexCard);
     }
 }

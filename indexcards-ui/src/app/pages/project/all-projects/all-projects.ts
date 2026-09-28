@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   model,
   ModelSignal,
   OnInit,
@@ -17,17 +18,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ConfirmDialog } from '../../../component/confirm-dialog/confirm-dialog';
+import { ConfirmDialog, ConfirmDialogData } from '../../../component/confirm-dialog/confirm-dialog';
 import { DueDialog, DueDialogData, DueProject } from '../../../component/due-dialog/due-dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-export interface DialogData {
-  project: ProjectResponse;
-}
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ProjectArchiveService } from '../../../service/project/project-archive.service';
 
 @Component({
   selector: 'app-all-projects',
@@ -44,6 +43,8 @@ export interface DialogData {
     LoadingSpinner,
     DatePipe,
     MatTooltipModule,
+    MatExpansionModule,
+    NgTemplateOutlet,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -52,10 +53,17 @@ export class AllProjects implements OnInit {
   private router = inject(Router);
   private httpService = inject(HttpService);
   private dialog = inject(MatDialog);
+  private projectArchiveService = inject(ProjectArchiveService);
 
   readonly project: ModelSignal<ProjectResponse> = model({} as ProjectResponse);
   userProjectsResponse: WritableSignal<ProjectResponse[]> = signal([]);
   loading: WritableSignal<boolean> = signal(true);
+  readonly activeProjects = computed(() =>
+    this.userProjectsResponse().filter((project) => !project.archived),
+  );
+  readonly archivedProjects = computed(() =>
+    this.userProjectsResponse().filter((project) => project.archived),
+  );
 
   ngOnInit(): void {
     this.getAllProjects();
@@ -154,8 +162,11 @@ export class AllProjects implements OnInit {
   openDialog(project: ProjectResponse): void {
     this.project.set(project);
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {
-      data: { project: this.project() },
+    const dialogRef = this.dialog.open<ConfirmDialog, ConfirmDialogData, boolean>(ConfirmDialog, {
+      width: '480px',
+      maxWidth: '90vw',
+      autoFocus: 'dialog',
+      data: { project: this.project(), action: 'delete' },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -164,6 +175,10 @@ export class AllProjects implements OnInit {
         this.getAllProjects();
       }
     });
+  }
+
+  toggleArchive(project: ProjectResponse) {
+    this.projectArchiveService.toggleArchive(project, () => this.getAllProjects());
   }
 
   editProject(id: number) {

@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
@@ -34,7 +35,7 @@ public class EditIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void editIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
+    public void editIndexCardTest() throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         // given
         CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
                 null,
@@ -85,5 +86,25 @@ public class EditIndexCardServiceTest extends IndexCardTestConfig {
 
         // then
         Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
+    }
+
+    @Test
+    public void editIndexCardInArchivedProjectTest() {
+        // given
+        this.archiveProject();
+        CreateIndexCardRequest createIndexCardRequest = new CreateIndexCardRequest(
+                null,
+                "Question edit",
+                "Answer edit"
+        );
+
+        // when
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
+                this.editIndexCardService.editIndexCard(user.getUsername(), this.indexCard.getId(), createIndexCardRequest));
+
+        // then
+        IndexCard indexCardEdit = this.indexCardRepo.findById(this.indexCard.getId()).orElseThrow();
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_ARCHIVED, entityCreationException.getMessage());
+        Assertions.assertEquals("Question", StandardCharsets.UTF_8.decode(ByteBuffer.wrap(indexCardEdit.getQuestion())).toString().substring(0, "Question".length()));
     }
 }

@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.indexcard;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.mapper.IndexCardMapper;
@@ -29,13 +30,14 @@ public class CreateIndexCardService extends AbstractIndexCardService {
     }
 
     @Transactional
-    public void createIndexCard(String username, CreateIndexCardRequest createIndexCardRequest) throws EntityNotFoundException, UnauthorizedException {
+    public void createIndexCard(String username, CreateIndexCardRequest createIndexCardRequest) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         this.getProjectNotFoundError(createIndexCardRequest.getProjectId());
         User user = getUser(username);
 
         IndexCard indexCard = this.indexCardMapper.mapRequestToIndexCard(createIndexCardRequest);
         Project project = this.projectRepo.findProjectByProjectId(createIndexCardRequest.getProjectId());
         getProjectOwnerError(user, project);
+        getProjectArchivedError(project);
 
         indexCard.setProject(project);
         this.indexCardRepo.save(indexCard);
@@ -44,12 +46,13 @@ public class CreateIndexCardService extends AbstractIndexCardService {
     }
 
 
-    public void importIndexCardsFromCsv(String username, IndexCardCsvImportRequest indexCardCsvImportRequest) throws EntityNotFoundException, UnauthorizedException {
+    public void importIndexCardsFromCsv(String username, IndexCardCsvImportRequest indexCardCsvImportRequest) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         this.getProjectNotFoundError(indexCardCsvImportRequest.getProjectId());
         User user = getUser(username);
 
         Project project = this.projectRepo.findProjectByProjectId(indexCardCsvImportRequest.getProjectId());
         getProjectOwnerError(user, project);
+        getProjectArchivedError(project);
         String[] lines = indexCardCsvImportRequest.getCsv().split("\\r?\\n");
         for (String line : lines) {
             String[] values = parseCsvLine(line);

@@ -1,6 +1,7 @@
 package com.x7ubi.indexcards.indexcard;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.Project;
@@ -32,7 +33,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
     }
 
     @Test
-    public void deleteIndexCardTest() throws EntityNotFoundException, UnauthorizedException {
+    public void deleteIndexCardTest() throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         // given
         DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
                 this.indexCard.getIndexcardId()
@@ -42,7 +43,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
         this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest);
 
         // then
-        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        Project project = projectRepo.findProjectByProjectId(this.projects.getFirst().getId());
         Assertions.assertEquals(0, project.getIndexCards().size());
     }
 
@@ -58,7 +59,7 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
                 this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest));
 
         // then
-        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        Project project = projectRepo.findProjectByProjectId(this.projects.getFirst().getId());
         Assertions.assertEquals(ErrorMessage.IndexCards.INDEX_CARD_NOT_FOUND, entityNotFoundException.getMessage());
         Assertions.assertEquals(1, project.getIndexCards().size());
     }
@@ -75,8 +76,26 @@ public class DeleteIndexCardServiceTest extends IndexCardTestConfig {
                 this.deleteIndexCardService.deleteIndexCard(user2.getUsername(), deleteIndexCardRequest));
 
         // then
-        Project project = projectRepo.findProjectByProjectId(this.projects.get(0).getId());
+        Project project = projectRepo.findProjectByProjectId(this.projects.getFirst().getId());
         Assertions.assertEquals(ErrorMessage.Project.USER_NOT_PROJECT_OWNER, unauthorizedException.getMessage());
+        Assertions.assertEquals(1, project.getIndexCards().size());
+    }
+
+    @Test
+    public void deleteIndexCardArchivedProjectTest() {
+        // given
+        this.archiveProject();
+        DeleteIndexCardRequest deleteIndexCardRequest = new DeleteIndexCardRequest(
+                this.indexCard.getIndexcardId()
+        );
+
+        // when
+        EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
+                this.deleteIndexCardService.deleteIndexCard(user.getUsername(), deleteIndexCardRequest));
+
+        // then
+        Project project = projectRepo.findProjectByProjectId(this.projects.getFirst().getId());
+        Assertions.assertEquals(ErrorMessage.IndexCards.PROJECT_ARCHIVED, entityCreationException.getMessage());
         Assertions.assertEquals(1, project.getIndexCards().size());
     }
 }

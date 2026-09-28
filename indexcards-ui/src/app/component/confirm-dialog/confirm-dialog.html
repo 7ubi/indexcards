@@ -1,5 +1,47 @@
-<h2 mat-dialog-title>{{ 'project.delete_confirmation' | translate }} {{ data.project.name }}?</h2>
+<div class="dialog-header" [class.danger]="data.action === 'delete'">
+  <h2 mat-dialog-title class="confirm-title">
+    <span class="title-icon">
+      <mat-icon>{{ icon }}</mat-icon>
+    </span>
+    {{ keyPrefix + '_title' | translate }}
+  </h2>
+  <button
+    matIconButton
+    type="button"
+    [attr.aria-label]="'project.close' | translate"
+    [mat-dialog-close]="false"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <p class="message">{{ keyPrefix + '_message' | translate }}</p>
+
+  <div class="project-summary">
+    <mat-icon class="summary-icon">folder</mat-icon>
+    <div class="summary-info">
+      <div class="summary-name">{{ data.project.name }}</div>
+      <div class="summary-count">{{ cardCount }} {{ 'project.cards_label' | translate }}</div>
+    </div>
+  </div>
+
+  <div class="warning" [class.danger]="data.action === 'delete'" role="alert">
+    <mat-icon class="warning-icon">{{ data.action === 'delete' ? 'warning' : 'info' }}</mat-icon>
+    <span>{{ keyPrefix + '_warning' | translate: { count: cardCount } }}</span>
+  </div>
+</mat-dialog-content>
 <mat-dialog-actions>
-  <button matButton type="button" [mat-dialog-close]="false">{{ 'project.no' | translate }}</button>
-  <button matButton type="button" [mat-dialog-close]="true">{{ 'project.yes' | translate }}</button>
+  <button matButton type="button" [mat-dialog-close]="false">
+    {{ 'confirm_dialog.cancel' | translate }}
+  </button>
+  <button
+    matButton="filled"
+    type="button"
+    class="confirm-button"
+    [class.danger]="data.action === 'delete'"
+    [mat-dialog-close]="true"
+  >
+    <mat-icon>{{ icon }}</mat-icon>
+    {{ keyPrefix + '_confirm' | translate }}
+  </button>
 </mat-dialog-actions>

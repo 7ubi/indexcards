@@ -6,6 +6,7 @@ import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
+import com.x7ubi.indexcards.service.project.ArchiveProjectService;
 import com.x7ubi.indexcards.service.project.CreateProjectService;
 import com.x7ubi.indexcards.service.project.DeleteProjectService;
 import com.x7ubi.indexcards.service.project.EditProjectService;
@@ -54,6 +55,9 @@ public abstract class ProjectTestConfig extends TestConfig {
     @Autowired
     protected EditProjectService editProjectService;
 
+    @Autowired
+    protected ArchiveProjectService archiveProjectService;
+
     protected User user;
 
     protected User user2;
@@ -82,8 +86,8 @@ public abstract class ProjectTestConfig extends TestConfig {
 
         this.projects = new ArrayList<>();
         this.projects.add(new Project("TestProject", null));
-        projects.get(0).setUser(this.user);
-        this.projectRepo.save(this.projects.get(0));
+        projects.getFirst().setUser(this.user);
+        this.projectRepo.save(this.projects.getFirst());
 
         User userToEdit = this.userRepo.findByUsername(this.user.getUsername()).orElse(null);
         assert userToEdit != null;

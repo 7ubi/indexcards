@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.controller;
 
+import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
@@ -74,7 +75,7 @@ public class IndexCardsRestController {
     public ResponseEntity<?> createIndexCard(
             @RequestHeader("Authorization") String authorization,
             @RequestBody CreateIndexCardRequest createProjectRequest
-    ) throws EntityNotFoundException, UnauthorizedException {
+    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         logger.info("Creating Index Card");
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
@@ -90,7 +91,7 @@ public class IndexCardsRestController {
             @RequestHeader("Authorization") String authorization,
             @RequestParam Long id,
             @RequestBody CreateIndexCardRequest createProjectRequest
-    ) throws EntityNotFoundException, UnauthorizedException {
+    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         logger.info("Editing Index Card");
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
@@ -105,7 +106,7 @@ public class IndexCardsRestController {
     public ResponseEntity<?> deleteIndexCard(
             @RequestHeader("Authorization") String authorization,
             @RequestBody DeleteIndexCardRequest deleteIndexCardRequest)
-            throws EntityNotFoundException, UnauthorizedException {
+            throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         logger.info("Deleting index cards");
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
@@ -162,7 +163,7 @@ public class IndexCardsRestController {
     public ResponseEntity<?> importIndexCards(
             @RequestHeader("Authorization") String authorization,
             @RequestBody IndexCardCsvImportRequest indexCardCsvImportRequest
-    ) throws EntityNotFoundException, UnauthorizedException {
+    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
         logger.info("Importing Index Cards from CSV");
 
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
