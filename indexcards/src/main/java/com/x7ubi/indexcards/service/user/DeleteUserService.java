@@ -1,6 +1,5 @@
 package com.x7ubi.indexcards.service.user;
 
-import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
@@ -31,7 +30,7 @@ import java.util.regex.Pattern;
  * uploaded images referenced by the user's index cards.
  */
 @Service
-public class DeleteUserService {
+public class DeleteUserService extends AbstractUserService {
 
     private final Logger logger = LoggerFactory.getLogger(DeleteUserService.class);
 
@@ -44,10 +43,6 @@ public class DeleteUserService {
 
     private static final int SCAN_PAGE_SIZE = 500;
 
-    private final UserRepo userRepo;
-
-    private final PasswordEncoder passwordEncoder;
-
     private final ImageStorageService imageStorageService;
 
     private final EntityManager entityManager;
@@ -55,8 +50,7 @@ public class DeleteUserService {
     public DeleteUserService(
             UserRepo userRepo, PasswordEncoder passwordEncoder, ImageStorageService imageStorageService,
             EntityManager entityManager) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
+        super(userRepo, passwordEncoder);
         this.imageStorageService = imageStorageService;
         this.entityManager = entityManager;
     }
@@ -64,16 +58,8 @@ public class DeleteUserService {
     @Transactional
     public void deleteUser(String username, DeleteAccountRequest deleteAccountRequest)
             throws EntityNotFoundException, UnauthorizedException {
-        User user = userRepo.findByUsername(username).orElseThrow(() -> {
-            logger.error(ErrorMessage.Project.USERNAME_NOT_FOUND);
-            return new EntityNotFoundException(ErrorMessage.Project.USERNAME_NOT_FOUND);
-        });
-
-        String password = deleteAccountRequest == null ? null : deleteAccountRequest.getPassword();
-        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
-            logger.error(ErrorMessage.User.WRONG_PASSWORD);
-            throw new UnauthorizedException(ErrorMessage.User.WRONG_PASSWORD);
-        }
+        User user = getUser(username);
+        getWrongPasswordError(user, deleteAccountRequest == null ? null : deleteAccountRequest.getPassword());
 
         Set<UUID> imageIds = collectImageIds(user);
         // Never delete an image that another user's card still references (e.g. copied Markdown).

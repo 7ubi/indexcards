@@ -11,6 +11,14 @@ public class ErrorMessage {
 
     public static class User {
         public static final String WRONG_PASSWORD = "wrong_password";
+
+        public static final String USERNAME_EMPTY = "username_empty";
+
+        public static final String USERNAME_TOO_LONG = "username_too_long";
+
+        public static final String USERNAME_UNCHANGED = "username_unchanged";
+
+        public static final String PASSWORD_EMPTY = "password_empty";
     }
 
     public static class Project {

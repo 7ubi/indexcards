@@ -42,3 +42,13 @@
 .due-table .mat-mdc-footer-cell {
   font-weight: 600;
 }
+
+.dont-show-again {
+  margin-top: 16px;
+}
+
+.hint {
+  margin: 0 0 0 40px;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+}

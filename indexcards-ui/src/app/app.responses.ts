@@ -5,6 +5,12 @@ export interface LoginResponse {
   readonly username: string;
 }
 
+export interface UserResponse {
+  readonly username: string;
+  readonly firstname: string;
+  readonly surname: string;
+}
+
 export interface IndexCardResponse {
   readonly indexCardId: number;
   readonly question: string;

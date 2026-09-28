@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /login
+Allow: /signup
+Allow: /privacy
+Disallow: /api/
+Disallow: /due
+Disallow: /account/
+Disallow: /project/

@@ -1,0 +1,79 @@
+@if (loading) {
+  <app-loading-spinner />
+} @else {
+  <form [formGroup]="usernameFormGroup" (ngSubmit)="changeUsername()">
+    <div class="center">
+      <div class="form-container">
+        <div class="header-container">
+          <h1 class="title">{{ 'account.title' | translate }}</h1>
+        </div>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'auth.firstname' | translate }}</mat-label>
+          <input matInput [value]="user?.firstname" disabled />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'auth.lastname' | translate }}</mat-label>
+          <input matInput [value]="user?.surname" disabled />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'auth.username' | translate }}</mat-label>
+          <input matInput formControlName="username" name="username" id="username" type="text" />
+        </mat-form-field>
+        <app-password-input
+          class="full-width"
+          label="account.current_password"
+          formControlName="password"
+        ></app-password-input>
+        <button matButton="filled" type="submit">
+          {{ 'account.change_username' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="passwordFormGroup" (ngSubmit)="changePassword()">
+    <div class="center">
+      <div class="form-container">
+        <div class="header-container">
+          <h2 class="title">{{ 'account.change_password' | translate }}</h2>
+        </div>
+        <app-password-input
+          class="full-width"
+          label="account.current_password"
+          formControlName="currentPassword"
+        ></app-password-input>
+        <app-password-input
+          class="full-width"
+          label="account.new_password"
+          formControlName="newPassword"
+        ></app-password-input>
+        <app-password-input
+          class="full-width"
+          label="account.repeat_new_password"
+          formControlName="repeatPassword"
+        ></app-password-input>
+        <button matButton="filled" type="submit">
+          {{ 'account.change_password' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="center">
+    <div class="form-container">
+      <div class="header-container">
+        <h2 class="title">{{ 'account.settings' | translate }}</h2>
+      </div>
+      <mat-slide-toggle
+        class="full-width"
+        [checked]="showDueDialog"
+        (change)="toggleDueDialog($event)"
+      >
+        {{ 'account.show_due_dialog' | translate }}
+      </mat-slide-toggle>
+      <p class="full-width hint">{{ 'account.show_due_dialog_hint' | translate }}</p>
+    </div>
+  </div>
+
+  <app-delete-account />
+}

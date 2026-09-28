@@ -45,6 +45,8 @@
     "study_all_due": "Alle fälligen lernen",
     "later": "Später",
     "due_today": "Heute fällig",
+    "due_dont_show_again": "Nicht mehr anzeigen",
+    "due_dont_show_again_hint": "Du kannst diese Erinnerung später unter Konto → Einstellungen wieder aktivieren.",
     "project": "Projekt",
     "due_column": "Fällige Karten",
     "total": "Gesamt",
@@ -91,6 +93,7 @@
   },
   "account": {
     "menu": "Konto",
+    "title": "Konto",
     "logout": "Abmelden",
     "delete_title": "Konto löschen",
     "delete_warning": "Das Löschen deines Kontos ist endgültig und kann nicht rückgängig gemacht werden. Deine Daten können danach nicht wiederhergestellt werden.",
@@ -104,8 +107,18 @@
     },
     "delete_password_hint": "Bitte gib zur Bestätigung dein Passwort ein.",
     "delete_button": "Konto endgültig löschen",
-    "cancel": "Abbrechen",
-    "deleted": "Dein Konto und alle zugehörigen Daten wurden gelöscht."
+    "deleted": "Dein Konto und alle zugehörigen Daten wurden gelöscht.",
+    "current_password": "Aktuelles Passwort",
+    "new_password": "Neues Passwort",
+    "repeat_new_password": "Neues Passwort wiederholen",
+    "change_username": "Nutzername ändern",
+    "change_password": "Passwort ändern",
+    "username_changed": "Dein Nutzername wurde geändert.",
+    "username_not_changed": "Der Nutzername wurde nicht geändert.",
+    "password_changed": "Dein Passwort wurde geändert.",
+    "settings": "Einstellungen",
+    "show_due_dialog": "Erinnerung „Heute fällig“ anzeigen",
+    "show_due_dialog_hint": "Zeigt beim Öffnen deiner Projekte einen Dialog mit den heute fälligen Karteikarten an. Diese Einstellung wird in diesem Browser gespeichert."
   },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
@@ -119,7 +132,11 @@
     "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
     "project_archived": "Das Projekt ist archiviert, seine Karteikarten können nicht geändert werden",
     "bad_credentials": "Falscher Nutzername oder Passwort!",
-    "wrong_password": "Falsches Passwort!"
+    "wrong_password": "Falsches Passwort!",
+    "username_empty": "Der Nutzername darf nicht leer sein",
+    "username_too_long": "Der Nutzername ist zu lang. Es sind nur 100 Zeichen erlaubt",
+    "username_unchanged": "Der neue Nutzername ist identisch mit dem aktuellen",
+    "password_empty": "Das Passwort darf nicht leer sein"
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",

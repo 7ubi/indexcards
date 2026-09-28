@@ -45,6 +45,8 @@
     "study_all_due": "Study all due",
     "later": "Later",
     "due_today": "Due today",
+    "due_dont_show_again": "Don't show this again",
+    "due_dont_show_again_hint": "You can turn this reminder back on later under Account → Settings.",
     "project": "Project",
     "due_column": "Due cards",
     "total": "Total",
@@ -91,6 +93,7 @@
   },
   "account": {
     "menu": "Account",
+    "title": "Account",
     "logout": "Logout",
     "delete_title": "Delete account",
     "delete_warning": "Deleting your account is permanent and cannot be undone. Your data cannot be restored afterwards.",
@@ -104,8 +107,18 @@
     },
     "delete_password_hint": "Please enter your password to confirm.",
     "delete_button": "Delete account permanently",
-    "cancel": "Cancel",
-    "deleted": "Your account and all associated data were deleted."
+    "deleted": "Your account and all associated data were deleted.",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "repeat_new_password": "Repeat new password",
+    "change_username": "Change username",
+    "change_password": "Change password",
+    "username_changed": "Your username was changed.",
+    "username_not_changed": "The username was not changed.",
+    "password_changed": "Your password was changed.",
+    "settings": "Settings",
+    "show_due_dialog": "Show \"due today\" reminder",
+    "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser."
   },
   "backend": {
     "username_exists": "Username already exists!",
@@ -119,7 +132,11 @@
     "user_not_project_owner": "You are not the owner of this project",
     "project_archived": "The project is archived, its index cards cannot be changed",
     "bad_credentials": "Wrong Username or Password!",
-    "wrong_password": "Wrong password!"
+    "wrong_password": "Wrong password!",
+    "username_empty": "The username must not be empty",
+    "username_too_long": "The username is too long, only 100 characters are allowed",
+    "username_unchanged": "The new username is the same as the current one",
+    "password_empty": "The password must not be empty"
   },
   "unrated": "Unrated",
   "bad": "Bad",

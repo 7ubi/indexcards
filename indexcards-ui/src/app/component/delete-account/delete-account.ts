@@ -1,17 +1,16 @@
 import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import HttpService from '../../../service/http/http.service';
-import { LoginService } from '../../../service/login/login.service';
-import { SnackbarService } from '../../../service/snackbar/snackbar.service';
-import { PasswordInput } from '../../../component/password-input/password-input';
+import HttpService from '../../service/http/http.service';
+import { LoginService } from '../../service/login/login.service';
+import { SnackbarService } from '../../service/snackbar/snackbar.service';
+import { PasswordInput } from '../password-input/password-input';
 
 @Component({
   selector: 'app-delete-account',
-  imports: [ReactiveFormsModule, RouterLink, TranslatePipe, MatButton, MatIcon, PasswordInput],
+  imports: [ReactiveFormsModule, TranslatePipe, MatButton, MatIcon, PasswordInput],
   templateUrl: './delete-account.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './delete-account.css',

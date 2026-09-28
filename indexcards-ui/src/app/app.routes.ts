@@ -13,7 +13,6 @@ import { QuizStat } from './pages/indexcard/quiz-stat/quiz-stat';
 import { Practice } from './pages/indexcard/practice/practice';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
 import { Privacy } from './pages/privacy/privacy';
-import { DeleteAccount } from './pages/account/delete-account/delete-account';
 import { DueQuiz } from './pages/indexcard/due-quiz/due-quiz';
 
 export const routes: Routes = [
@@ -40,9 +39,14 @@ export const routes: Routes = [
     canActivate: [LoginRequired],
   },
   {
-    path: 'account/delete',
-    component: DeleteAccount,
+    path: 'account',
+    // Lazy loaded: rarely visited, and keeps its Material components out of the initial bundle.
+    loadComponent: () => import('./pages/account/account/account').then((m) => m.Account),
     canActivate: [LoginRequired],
+  },
+  {
+    path: 'account/delete',
+    redirectTo: 'account',
   },
   {
     path: 'project',
