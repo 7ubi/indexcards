@@ -7,6 +7,7 @@ import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.IndexCardCsvImportRequest;
+import com.x7ubi.indexcards.response.indexcard.DueIndexCardResponse;
 import com.x7ubi.indexcards.response.indexcard.IndexCardResponse;
 import com.x7ubi.indexcards.service.indexcard.*;
 import org.slf4j.Logger;
@@ -37,11 +38,13 @@ public class IndexCardsRestController {
 
     private final DeleteIndexCardService deleteIndexCardService;
 
+    private final DueIndexCardService dueIndexCardService;
+
     public IndexCardsRestController(
             JwtUtils jwtUtils, IndexCardService indexCardService, CreateIndexCardService createIndexCardService,
             IndexCardAssessmentService indexCardAssessmentService, EditIndexCardService editIndexCardService,
             IndexCardQuizService indexCardQuizService,
-            DeleteIndexCardService deleteIndexCardService) {
+            DeleteIndexCardService deleteIndexCardService, DueIndexCardService dueIndexCardService) {
         this.jwtUtils = jwtUtils;
         this.indexCardService = indexCardService;
         this.createIndexCardService = createIndexCardService;
@@ -49,6 +52,7 @@ public class IndexCardsRestController {
         this.editIndexCardService = editIndexCardService;
         this.indexCardQuizService = indexCardQuizService;
         this.deleteIndexCardService = deleteIndexCardService;
+        this.dueIndexCardService = dueIndexCardService;
     }
 
     @GetMapping("")
@@ -122,6 +126,20 @@ public class IndexCardsRestController {
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         List<IndexCardResponse> response = this.indexCardQuizService.getIndexCardResponsesForQuiz(username, id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/due")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<DueIndexCardResponse>> getDueIndexCards(
+            @RequestHeader("Authorization") String authorization
+    ) throws EntityNotFoundException {
+        logger.info("Getting due index cards across all projects");
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        List<DueIndexCardResponse> response = this.dueIndexCardService.getDueIndexCards(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

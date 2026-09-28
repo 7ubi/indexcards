@@ -8,7 +8,7 @@ import {
   WritableSignal,
   inject,
 } from '@angular/core';
-import { ProjectResponse } from '../../../app.responses';
+import { DueIndexCardResponse, ProjectResponse } from '../../../app.responses';
 import { Router, RouterLink } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
 import { SnackbarService } from '../../../service/snackbar/snackbar.service';
@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialog } from '../../../component/confirm-dialog/confirm-dialog';
+import { DueDialog, DueDialogData, DueProject } from '../../../component/due-dialog/due-dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
@@ -58,6 +59,7 @@ export class AllProjects implements OnInit {
 
   ngOnInit(): void {
     this.getAllProjects();
+    this.getDueIndexCards();
   }
 
   getAllProjects() {
@@ -65,6 +67,51 @@ export class AllProjects implements OnInit {
       this.userProjectsResponse.set(response);
       this.loading.set(false);
     });
+  }
+
+  getDueIndexCards() {
+    this.httpService.get<DueIndexCardResponse[]>(
+      '/api/indexCard/due',
+      (response: DueIndexCardResponse[]) => {
+        if (response.length > 0) {
+          this.openDueDialog(response);
+        }
+      },
+    );
+  }
+
+  openDueDialog(dueIndexCards: DueIndexCardResponse[]): void {
+    // Cards arrive most overdue first, so projects keep the order of their most overdue card.
+    const projects = new Map<number, DueProject>();
+    for (const indexCard of dueIndexCards) {
+      const project = projects.get(indexCard.projectId);
+      if (project) {
+        project.cardCount++;
+      } else {
+        projects.set(indexCard.projectId, { projectName: indexCard.projectName, cardCount: 1 });
+      }
+    }
+
+    const dialogRef = this.dialog.open<DueDialog, DueDialogData, boolean>(DueDialog, {
+      width: '600px',
+      maxWidth: '90vw',
+      // Focus the dialog itself, otherwise the close button is focused and shows its focus background on open.
+      autoFocus: 'dialog',
+      data: {
+        cardCount: dueIndexCards.length,
+        projects: [...projects.values()],
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.studyAllDue();
+      }
+    });
+  }
+
+  studyAllDue() {
+    this.router.navigate(['/due']).then();
   }
 
   goToProject(id: number) {

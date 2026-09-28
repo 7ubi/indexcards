@@ -42,7 +42,14 @@
     "delete": "Delete project",
     "no_projects": "No projects yet",
     "no_projects_hint": "Create your first project to start adding index cards.",
-    "cards_label": "cards"
+    "cards_label": "cards",
+    "study_all_due": "Study all due",
+    "later": "Later",
+    "due_today": "Due today",
+    "project": "Project",
+    "due_column": "Due cards",
+    "total": "Total",
+    "close": "Close"
   },
   "indexcard": {
     "create": "Create index card",
@@ -70,7 +77,10 @@
     "due_now": "Due now",
     "next_review": "Next review",
     "preview": "Preview",
-    "edit_mode": "Edit"
+    "edit_mode": "Edit",
+    "due_done": "You reviewed all due index cards!",
+    "nothing_due": "No index cards are due today!",
+    "to_projects": "Back to projects"
   },
   "account": {
     "menu": "Account",

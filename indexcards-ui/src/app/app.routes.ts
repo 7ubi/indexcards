@@ -14,6 +14,7 @@ import { Practice } from './pages/indexcard/practice/practice';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
 import { Privacy } from './pages/privacy/privacy';
 import { DeleteAccount } from './pages/account/delete-account/delete-account';
+import { DueQuiz } from './pages/indexcard/due-quiz/due-quiz';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,11 @@ export const routes: Routes = [
   {
     path: '',
     component: AllProjects,
+    canActivate: [LoginRequired],
+  },
+  {
+    path: 'due',
+    component: DueQuiz,
     canActivate: [LoginRequired],
   },
   {

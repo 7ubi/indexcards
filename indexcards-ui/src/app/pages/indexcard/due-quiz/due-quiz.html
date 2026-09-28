@@ -1,0 +1,62 @@
+<div class="quiz-page">
+  @if (loading) {
+    <app-loading-spinner />
+  } @else if (finished) {
+    <div class="center full-width quiz-summary">
+      <div class="container">
+        <h1 class="title">{{ 'indexcard.due_done' | translate }}</h1>
+
+        <mat-card class="full-width stat-card">
+          <app-assessment-chart [slices]="slices" />
+        </mat-card>
+
+        <div class="header-container">
+          <button matButton="filled" type="button" (click)="backToProjects()">
+            {{ 'indexcard.to_projects' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="quiz-progress">
+      <span class="project-label">{{ getIndexCard()?.projectName }}</span>
+      <span>{{ index + 1 }} / {{ getIndexCardLength() }}</span>
+    </div>
+
+    <div class="quiz-content">
+      <app-card-flip
+        [question]="getIndexCard()?.question"
+        [answer]="getIndexCard()?.answer"
+        [showAnswer]="showAnswer"
+        (showAnswerChange)="showAnswer = $event"
+      />
+    </div>
+
+    <div class="assessment-buttons">
+      <button
+        matButton="filled"
+        class="assessment-bad"
+        type="button"
+        (click)="assessIndexCard('BAD')"
+      >
+        {{ 'bad' | translate }}
+      </button>
+      <button
+        matButton="filled"
+        class="assessment-ok"
+        type="button"
+        (click)="assessIndexCard('OK')"
+      >
+        {{ 'ok' | translate }}
+      </button>
+      <button
+        matButton="filled"
+        class="assessment-good"
+        type="button"
+        (click)="assessIndexCard('GOOD')"
+      >
+        {{ 'good' | translate }}
+      </button>
+    </div>
+  }
+</div>

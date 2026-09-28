@@ -13,6 +13,11 @@ export interface IndexCardResponse {
   readonly dueDate: string;
 }
 
+export interface DueIndexCardResponse extends IndexCardResponse {
+  readonly projectId: number;
+  readonly projectName: string;
+}
+
 export interface ImageUploadResponse {
   readonly imageId: string;
 }
