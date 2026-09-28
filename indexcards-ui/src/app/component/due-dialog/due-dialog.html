@@ -32,6 +32,12 @@
     <tr mat-row *matRowDef="let row; columns: columns"></tr>
     <tr mat-footer-row *matFooterRowDef="columns"></tr>
   </table>
+  <div class="dont-show-again">
+    <mat-checkbox (change)="toggleDontShowAgain($event)">
+      {{ 'project.due_dont_show_again' | translate }}
+    </mat-checkbox>
+    <p class="hint">{{ 'project.due_dont_show_again_hint' | translate }}</p>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button matButton type="button" [mat-dialog-close]="false">

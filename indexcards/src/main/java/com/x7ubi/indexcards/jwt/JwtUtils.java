@@ -57,8 +57,12 @@ public class JwtUtils {
 
         SecurityUser userPrincipal = (SecurityUser) authentication.getPrincipal();
 
+        return generateJwtTokenForUsername(userPrincipal.getUsername());
+    }
+
+    public String generateJwtTokenForUsername(String username) {
         return Jwts.builder()
-                .subject(userPrincipal.getUsername())
+                .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(signingKey, Jwts.SIG.HS512)

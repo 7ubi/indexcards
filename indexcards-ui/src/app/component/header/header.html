@@ -10,9 +10,9 @@
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #accountMenu="matMenu">
-      <a mat-menu-item routerLink="/account/delete">
-        <mat-icon>delete_forever</mat-icon>
-        <span>{{ 'account.delete_title' | translate }}</span>
+      <a mat-menu-item routerLink="/account">
+        <mat-icon>manage_accounts</mat-icon>
+        <span>{{ 'account.title' | translate }}</span>
       </a>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>

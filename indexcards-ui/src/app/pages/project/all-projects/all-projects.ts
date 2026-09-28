@@ -19,7 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialog, ConfirmDialogData } from '../../../component/confirm-dialog/confirm-dialog';
-import { DueDialog, DueDialogData, DueProject } from '../../../component/due-dialog/due-dialog';
+import type { DueDialogData, DueProject } from '../../../component/due-dialog/due-dialog';
+import { SettingsService } from '../../../service/settings/settings.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
@@ -54,6 +55,7 @@ export class AllProjects implements OnInit {
   private httpService = inject(HttpService);
   private dialog = inject(MatDialog);
   private projectArchiveService = inject(ProjectArchiveService);
+  private settingsService = inject(SettingsService);
 
   readonly project: ModelSignal<ProjectResponse> = model({} as ProjectResponse);
   userProjectsResponse: WritableSignal<ProjectResponse[]> = signal([]);
@@ -78,6 +80,10 @@ export class AllProjects implements OnInit {
   }
 
   getDueIndexCards() {
+    if (!this.settingsService.isDueDialogEnabled()) {
+      return;
+    }
+
     this.httpService.get<DueIndexCardResponse[]>(
       '/api/indexCard/due',
       (response: DueIndexCardResponse[]) => {
@@ -88,7 +94,7 @@ export class AllProjects implements OnInit {
     );
   }
 
-  openDueDialog(dueIndexCards: DueIndexCardResponse[]): void {
+  async openDueDialog(dueIndexCards: DueIndexCardResponse[]): Promise<void> {
     // Cards arrive most overdue first, so projects keep the order of their most overdue card.
     const projects = new Map<number, DueProject>();
     for (const indexCard of dueIndexCards) {
@@ -100,16 +106,21 @@ export class AllProjects implements OnInit {
       }
     }
 
-    const dialogRef = this.dialog.open<DueDialog, DueDialogData, boolean>(DueDialog, {
-      width: '600px',
-      maxWidth: '90vw',
-      // Focus the dialog itself, otherwise the close button is focused and shows its focus background on open.
-      autoFocus: 'dialog',
-      data: {
-        cardCount: dueIndexCards.length,
-        projects: [...projects.values()],
+    // Lazy loaded: the dialog only opens when cards are due, so it stays out of the initial bundle.
+    const { DueDialog } = await import('../../../component/due-dialog/due-dialog');
+    const dialogRef = this.dialog.open<InstanceType<typeof DueDialog>, DueDialogData, boolean>(
+      DueDialog,
+      {
+        width: '600px',
+        maxWidth: '90vw',
+        // Focus the dialog itself, otherwise the close button is focused and shows its focus background on open.
+        autoFocus: 'dialog',
+        data: {
+          cardCount: dueIndexCards.length,
+          projects: [...projects.values()],
+        },
       },
-    });
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {

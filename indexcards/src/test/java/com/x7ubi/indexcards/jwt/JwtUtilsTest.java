@@ -48,4 +48,14 @@ public class JwtUtilsTest extends TestConfig {
         // then
         Assertions.assertFalse(valid);
     }
+
+    @Test
+    public void generateJwtTokenForUsernameTest() {
+        // when
+        String token = this.jwtUtils.generateJwtTokenForUsername("someone");
+
+        // then
+        Assertions.assertTrue(this.jwtUtils.validateJwtToken(token));
+        Assertions.assertEquals("someone", this.jwtUtils.getUsernameFromJwtToken(token));
+    }
 }

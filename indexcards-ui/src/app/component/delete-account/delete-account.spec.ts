@@ -4,9 +4,9 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { vi } from 'vitest';
 
 import { DeleteAccount } from './delete-account';
-import HttpService from '../../../service/http/http.service';
-import { LoginService } from '../../../service/login/login.service';
-import { SnackbarService } from '../../../service/snackbar/snackbar.service';
+import HttpService from '../../service/http/http.service';
+import { LoginService } from '../../service/login/login.service';
+import { SnackbarService } from '../../service/snackbar/snackbar.service';
 
 describe('DeleteAccount', () => {
   let component: DeleteAccount;
