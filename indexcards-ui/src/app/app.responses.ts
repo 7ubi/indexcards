@@ -81,6 +81,26 @@ export interface AnalyticsResponse {
   readonly users: UserAnalyticsResponse[];
 }
 
+export interface AiStatusResponse {
+  readonly enabled: boolean;
+  readonly apiKeyConfigured: boolean;
+  readonly apiKeyHint: string | null;
+  readonly model: string;
+  readonly maxCards: number;
+  readonly maxNotesChars: number;
+  readonly maxPdfBytes: number;
+  readonly maxPdfPages: number;
+}
+
+export interface GeneratedCardResponse {
+  readonly question: string;
+  readonly answer: string;
+}
+
+export interface GeneratedCardsResponse {
+  readonly cards: GeneratedCardResponse[];
+}
+
 export enum Assessment {
   UNRATED,
   BAD,

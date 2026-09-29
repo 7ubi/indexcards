@@ -66,6 +66,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stats-container {
+  display: flex;
   margin-bottom: 24px;
 }
 
@@ -81,7 +86,8 @@
     justify-content: center;
   }
 
-  .cta-button {
+  .cta-button,
+  .stats-container button {
     flex: 1 1 100%;
   }
 }

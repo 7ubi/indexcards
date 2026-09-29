@@ -1,12 +1,16 @@
 package com.x7ubi.indexcards.exceptions;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
@@ -46,6 +50,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
         logger.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorMessage.Authentication.BAD_CREDENTIALS);
+    }
+
+    @ExceptionHandler(AiGenerationException.class)
+    public ResponseEntity<String> handleAiGenerationException(AiGenerationException exception) {
+        logger.warn(exception.getMessage());
+        return ResponseEntity.status(exception.getStatus()).body(exception.getMessage());
+    }
+
+    /**
+     * Without this override Spring answers with a ProblemDetail JSON body, which the frontend cannot translate.
+     */
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        logger.warn(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(ErrorMessage.FILE_TOO_LARGE);
     }
 
     @ExceptionHandler(Exception.class)

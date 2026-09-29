@@ -92,6 +92,43 @@
     "nothing_due": "No index cards are due today!",
     "to_projects": "Back to projects"
   },
+  "ai": {
+    "generate_tooltip": "Generate index cards with AI",
+    "title": "Generate index cards with AI",
+    "notes": "Your notes",
+    "notes_hint": "Paste lecture notes, a summary or a text passage",
+    "upload_pdf": "Add PDF",
+    "remove_pdf": "Remove PDF",
+    "pdf_hint": "Optional PDF, max. {{size}} MB and {{pages}} pages",
+    "pdf_only": "Only PDF files can be uploaded",
+    "card_count": "Maximum number of cards",
+    "cost_hint": "Uses your own Gemini API key with the model {{model}}; Google bills the usage to your account or counts it against your free tier.",
+    "privacy_notice": "Your notes and the PDF are sent to Google (USA) with your own API key to create suggestions. Do not include personal data of yourself or others. On the free tier, Google may use the content to improve its products. Details in the",
+    "privacy_link": "privacy policy",
+    "generate": "Generate suggestions",
+    "generating": "Creating suggestions … this can take up to two minutes.",
+    "review_hint": "Check every card, AI can make mistakes. Edit or deselect cards before saving.",
+    "selected": "{{selected}} of {{total}} selected",
+    "select_all": "Select all",
+    "select_none": "Select none",
+    "back": "Back to input",
+    "save": "Save {{count}} cards",
+    "saved": "The index cards were added to the project",
+    "card_invalid": "Question and answer must not be empty",
+    "no_key": "To generate index cards with AI, first save your own Gemini API key in your account settings.",
+    "to_account": "Go to account",
+    "key_title": "AI card generation",
+    "key_intro": "To generate index cards with AI, enter your own Gemini API key from Google AI Studio (aistudio.google.com/apikey). Google bills the usage directly to your Google account, or it counts against the free tier.",
+    "key_privacy": "The key is stored encrypted and is only used for your own card generations. It is never shown again after saving. Details in the",
+    "key_label": "Gemini API key",
+    "key_replace": "New Gemini API key",
+    "key_hint": "Usually starts with AIza. It is checked with Google before it is saved.",
+    "key_configured": "A key ending in …{{hint}} is saved.",
+    "key_save": "Save key",
+    "key_delete": "Delete key",
+    "key_saved": "Your API key was saved",
+    "key_deleted": "Your API key was deleted"
+  },
   "account": {
     "menu": "Account",
     "title": "Account",
@@ -104,7 +141,8 @@
       "projects": "all of your projects,",
       "cards": "all index cards in these projects,",
       "progress": "your learning progress (ratings, rating history and review dates),",
-      "images": "uploaded images that are embedded in your index cards."
+      "images": "uploaded images that are embedded in your index cards,",
+      "ai_key": "your saved Gemini API key."
     },
     "delete_password_hint": "Please enter your password to confirm.",
     "delete_button": "Delete account permanently",
@@ -160,7 +198,30 @@
     "username_too_long": "The username is too long, only 100 characters are allowed",
     "username_unchanged": "The new username is the same as the current one",
     "password_empty": "The password must not be empty",
-    "forbidden": "You are not allowed to do this"
+    "forbidden": "You are not allowed to do this",
+    "ai_generation_disabled": "AI generation is not available on this server",
+    "ai_api_key_missing": "Save your Gemini API key in your account first",
+    "ai_api_key_invalid": "The Gemini API key is invalid",
+    "ai_api_key_forbidden": "The Gemini API key is not allowed to use this model",
+    "ai_api_key_unreadable": "Your saved API key can no longer be read. Please enter it again in your account.",
+    "ai_billing_error": "Google rejected the request because of your billing status. Check your billing account in Google AI Studio.",
+    "ai_rate_limited": "Your Gemini API key has reached its rate limit or quota. Please try again later.",
+    "ai_generation_in_progress": "A generation is already running. Please wait until it has finished.",
+    "ai_input_empty": "Enter notes or add a PDF",
+    "ai_notes_too_long": "The notes are too long",
+    "ai_pdf_invalid": "The file is not a readable PDF (password-protected PDFs are not supported)",
+    "ai_pdf_too_large": "The PDF is too large",
+    "ai_pdf_too_many_pages": "The PDF has too many pages",
+    "ai_generation_refused": "The AI declined to process this content",
+    "ai_output_truncated": "The result was too long. Request fewer cards or shorten the input.",
+    "ai_no_cards": "No index cards could be created from this content",
+    "ai_generation_timeout": "The AI took too long to answer. Please try again with less content.",
+    "ai_generation_unavailable": "The AI service is currently unavailable. Please try again later.",
+    "ai_generation_failed": "Generating index cards failed. Please try again.",
+    "indexcard_empty": "Question and answer must not be empty",
+    "too_many_indexcards": "Too many index cards in one request",
+    "file_too_large": "The file is too large",
+    "image_too_large": "The image is too large (max. 5 MB)"
   },
   "unrated": "Unrated",
   "bad": "Bad",
@@ -251,6 +312,16 @@
           "Please do not store special categories of personal data (e.g. health data) or personal data of other people in your index cards unless you are entitled to do so."
         ]
       },
+      "ai_generation": {
+        "title": "AI-assisted creation of index cards",
+        "paragraphs": [
+          "You can optionally save your own Gemini API key from Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA (“Google”) in your account. We store the key encrypted and linked to your account, together with its last four characters so you can recognise it. It is never shown again and is only used for your own requests. When you save it, we send it to Google once to check that it is valid. You can delete it at any time in your account; it is also deleted together with your account.",
+          "When you click “Generate suggestions”, the notes you entered and the PDF file you uploaded are transmitted to Google with your API key in order to generate index card suggestions with the AI model Gemini. No account data such as your username, name or password is transmitted. The processing by Google, including the transfer to the USA, retention and billing, is governed by the Gemini API terms you agreed to with Google for your API key. If your key uses the free tier, Google may use the transmitted content to improve its products.",
+          "Legal basis is Art. 6(1)(b) GDPR: you actively request this function. Using it is voluntary; you can create index cards manually at any time.",
+          "We do not store your notes, the PDF or the suggestions. Only the suggestions you save become index cards (see “Your content and learning progress”).",
+          "Please do not enter personal data of yourself or others in your notes. Suggestions are generated automatically and can be wrong; check them before saving."
+        ]
+      },
       "browser_storage": {
         "title": "Storage in your browser (no cookies)",
         "paragraphs": [
@@ -281,7 +352,7 @@
       "recipients": {
         "title": "Recipients of your data",
         "paragraphs": [
-          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
+          "Your account data and content are not passed on to third parties, except for the content you actively submit to the AI function and your API key (see section “AI-assisted creation of index cards”). Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
           "Data is only disclosed to authorities if we are legally obliged to do so (Art. 6(1)(c) GDPR)."
         ]
       },

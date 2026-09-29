@@ -40,6 +40,14 @@ public class User implements Serializable {
     // Null for users created before the V4 migration.
     private LocalDateTime createdAt;
 
+    // The user's own Gemini API key, AES-GCM encrypted (see ApiKeyEncryptor). Null if none is saved.
+    @Column(name = "ai_api_key_encrypted", length = 1024)
+    private String aiApiKeyEncrypted;
+
+    // Last characters of the key, shown in the UI so the user can tell which key is saved.
+    @Column(name = "ai_api_key_hint", length = 8)
+    private String aiApiKeyHint;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
 
@@ -104,6 +112,22 @@ public class User implements Serializable {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getAiApiKeyEncrypted() {
+        return aiApiKeyEncrypted;
+    }
+
+    public void setAiApiKeyEncrypted(String aiApiKeyEncrypted) {
+        this.aiApiKeyEncrypted = aiApiKeyEncrypted;
+    }
+
+    public String getAiApiKeyHint() {
+        return aiApiKeyHint;
+    }
+
+    public void setAiApiKeyHint(String aiApiKeyHint) {
+        this.aiApiKeyHint = aiApiKeyHint;
     }
 
     public List<Project> getProjects() {

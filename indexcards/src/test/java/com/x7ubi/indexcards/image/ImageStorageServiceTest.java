@@ -57,6 +57,19 @@ public class ImageStorageServiceTest extends TestConfig {
     }
 
     @Test
+    public void storeRejectsTooLargeImageTest() {
+        // given
+        MockMultipartFile file = new MockMultipartFile("file", "big.jpg", "image/jpeg", new byte[5 * 1024 * 1024 + 1]);
+
+        // when
+        EntityCreationException exception = Assertions.assertThrows(EntityCreationException.class, () ->
+                this.imageStorageService.store(file));
+
+        // then
+        Assertions.assertEquals(ErrorMessage.Images.IMAGE_TOO_LARGE, exception.getMessage());
+    }
+
+    @Test
     public void storeRejectsNonImageContentTypeTest() {
         // given
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "not-an-image".getBytes());

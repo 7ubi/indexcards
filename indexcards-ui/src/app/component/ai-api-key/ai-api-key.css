@@ -1,0 +1,10 @@
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}

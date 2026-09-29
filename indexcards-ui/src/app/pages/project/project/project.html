@@ -48,6 +48,18 @@
             <mat-icon>upload</mat-icon>
           </button>
         }
+        @if (!isArchived() && aiEnabled) {
+          <button
+            matIconButton
+            class="upload-button"
+            type="button"
+            data-testid="ai-generate"
+            [matTooltip]="'ai.generate_tooltip' | translate"
+            (click)="onClickGenerateButton()"
+          >
+            <mat-icon>auto_awesome</mat-icon>
+          </button>
+        }
         <button
           matIconButton
           class="upload-button"
@@ -69,23 +81,15 @@
         </button>
         @if (!isArchived()) {
           <button
-            mat-raised-button
-            color="primary"
-            (click)="onClickCreateIndexcardButton()"
+            matIconButton
+            class="upload-button"
             type="button"
+            [matTooltip]="'indexcard.create_tooltip' | translate"
+            (click)="onClickCreateIndexcardButton()"
           >
-            {{ 'indexcard.create' | translate }}
+            <mat-icon>add</mat-icon>
           </button>
         }
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!canStartQuiz()"
-          (click)="onClickStatButton()"
-          type="button"
-        >
-          {{ 'indexcard.statistics_button' | translate }}
-        </button>
       </div>
 
       <div class="cta-container full-width">
@@ -108,6 +112,19 @@
         >
           <mat-icon>psychology</mat-icon>
           {{ 'indexcard.spaced_repetition' | translate }}
+        </button>
+      </div>
+
+      <div class="stats-container full-width">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!canStartQuiz()"
+          (click)="onClickStatButton()"
+          type="button"
+        >
+          <mat-icon>bar_chart</mat-icon>
+          {{ 'indexcard.statistics_button' | translate }}
         </button>
       </div>
 

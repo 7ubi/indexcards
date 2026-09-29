@@ -21,7 +21,7 @@ export class DeleteAccount {
   private snackbarService = inject(SnackbarService);
   private formBuilder = inject(FormBuilder);
 
-  readonly deletedItems = ['account', 'projects', 'cards', 'progress', 'images'];
+  readonly deletedItems = ['account', 'projects', 'cards', 'progress', 'images', 'ai_key'];
 
   readonly deleting = signal(false);
 

@@ -152,6 +152,18 @@ Same body as create (`projectId` is ignored). Rating and schedule are not change
 
 See [Import & Export](../user-guide/import-export.md#format) for the CSV format.
 
+### Create several index cards
+
+`POST /api/indexCard/bulk` → `201 Created`
+
+```json
+{ "projectId": 1, "cards": [ { "question": "Q1", "answer": "A1" }, { "question": "Q2", "answer": "A2" } ] }
+```
+
+Adds up to 100 cards at once, all or nothing. Used to save [AI-generated](#ai-card-generation) cards.
+
+Errors: `400 indexcard_empty` (a question or answer is blank), `400 too_many_indexcards`
+
 ## Images
 
 ### Upload image
@@ -213,6 +225,66 @@ Gives the user the `ADMIN` role. Doing this for a user who is already an admin c
 to remove the role.
 
 Errors: `400 username_not_found`
+
+## AI card generation
+
+See [AI Card Generation](../user-guide/ai-generation.md). If the server has no `AI_KEY_ENCRYPTION_SECRET`, saving a
+key and generating return `503 ai_disabled`.
+
+### Get status
+
+`GET /api/ai/status` → `200 OK`
+
+```json
+{
+  "enabled": true, "apiKeyConfigured": true, "apiKeyHint": "abcd", "model": "gemini-3.8-flash",
+  "maxCards": 30, "maxNotesChars": 20000, "maxPdfBytes": 10485760, "maxPdfPages": 20
+}
+```
+
+### Save API key
+
+`PUT /api/ai/apiKey` → `200 OK`, status as above
+
+```json
+{ "apiKey": "AIza..." }
+```
+
+The key is verified with the Gemini API, then stored encrypted. Errors: `400 ai_api_key_invalid`,
+`400 ai_api_key_forbidden`, plus the Gemini errors below.
+
+### Delete API key
+
+`DELETE /api/ai/apiKey` → `200 OK`, status as above
+
+### Generate cards
+
+`POST /api/ai/generate` (`multipart/form-data`) → `200 OK`
+
+| Field       | Description                                   |
+|-------------|-----------------------------------------------|
+| `projectId` | Target project (must be owned by the user).   |
+| `notes`     | Text, optional if a file is given.            |
+| `cardCount` | Maximum number of cards (default 10, max 30). |
+| `file`      | Optional PDF.                                 |
+
+```json
+{ "cards": [ { "question": "...", "answer": "..." } ] }
+```
+
+The cards are **not** saved; the client saves the selected ones with [Create several index cards](#create-several-index-cards).
+
+| Status | Code                                                                        |
+|--------|-----------------------------------------------------------------------------|
+| 400    | `ai_api_key_missing`, `ai_api_key_invalid`, `ai_api_key_forbidden`, `ai_api_key_unreadable`, `ai_billing_error`, `ai_input_empty`, `ai_notes_too_long`, `ai_pdf_invalid`, `ai_pdf_too_large`, `ai_pdf_too_many_pages` |
+| 413    | `file_too_large` (upload over the multipart limit of 10 MB)                 |
+| 422    | `ai_refused`, `ai_output_truncated`, `ai_no_cards`                          |
+| 429    | `ai_rate_limited`, `ai_in_progress` (another generation of the same user is running) |
+| 502    | `ai_failed`                                                                 |
+| 503    | `ai_unavailable`, `ai_disabled`                                             |
+| 504    | `ai_timeout`                                                                |
+
+Errors of the user's key are returned as `400`, never `401`, because the frontend logs out on `401`.
 
 ## Common errors
 

@@ -4,6 +4,7 @@ import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
+import com.x7ubi.indexcards.request.indexcard.CreateIndexCardsRequest;
 import com.x7ubi.indexcards.request.indexcard.AssessmentRequest;
 import com.x7ubi.indexcards.request.indexcard.CreateIndexCardRequest;
 import com.x7ubi.indexcards.request.indexcard.DeleteIndexCardRequest;
@@ -169,6 +170,20 @@ public class IndexCardsRestController {
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         this.createIndexCardService.importIndexCardsFromCsv(username, indexCardCsvImportRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<?> createIndexCards(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody CreateIndexCardsRequest createIndexCardsRequest
+    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
+        logger.info("Creating index cards in bulk");
+
+        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+
+        this.createIndexCardService.createIndexCards(username, createIndexCardsRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

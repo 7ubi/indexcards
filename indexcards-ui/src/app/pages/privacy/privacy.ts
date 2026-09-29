@@ -16,6 +16,7 @@ export class Privacy {
     'hosting',
     'account',
     'content',
+    'ai_generation',
     'browser_storage',
     'third_parties',
     'recipients',

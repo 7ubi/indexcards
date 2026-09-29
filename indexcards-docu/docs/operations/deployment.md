@@ -56,13 +56,17 @@ environment variables.
 | `MYSQL_HOST`                   | `localhost`                              | Database host (if `SPRING_DATASOURCE_URL` is not set).        |
 | `IMAGES_STORAGE_PATH`          | `./data/images`                          | Directory for uploaded images.                                |
 | `DEFAULT_ADMINS`               | — (`7ubi` in Docker Compose)             | Comma-separated usernames made admins on every start, see [Creating an admin](#creating-an-admin). |
+| `AI_KEY_ENCRYPTION_SECRET`     | — (feature disabled)                     | Base64-encoded 32-byte key that encrypts users' Gemini API keys, see [AI card generation](#ai-card-generation). |
+| `AI_MODEL`                     | `gemini-3.8-flash`                       | Gemini model used for card generation.                        |
+| `AI_THINKING_LEVEL`            | `low`                                    | Gemini 3 thinking level (`low`, `medium`, `high`); empty uses the model default. Not sent to Gemini 2.x models. |
 
 Other settings in `application.properties`:
 
 | Property                                   | Value      | Description                        |
 |--------------------------------------------|------------|------------------------------------|
 | `bezkoder.app.jwtExpirationMs`             | `86400000` | Token lifetime (24 hours).         |
-| `spring.servlet.multipart.max-file-size`   | `5MB`      | Maximum size of an uploaded image. |
+| `spring.servlet.multipart.max-file-size`   | `10MB`     | Maximum size of an uploaded file (PDFs for AI generation; images are limited to 5 MB in code). |
+| `spring.servlet.multipart.max-request-size`| `11MB`     | Maximum size of a multipart request. |
 
 !!! warning
     Always set `JWT_SECRET` in production. Without it a new random key is generated on every start and all users are
@@ -72,11 +76,31 @@ Other settings in `application.properties`:
     openssl rand -base64 64 | tr -d '\n'
     ```
 
+## AI card generation
+
+[AI card generation](../user-guide/ai-generation.md) uses each user's own Gemini API key; the server has no API
+key of its own. Saved keys are encrypted with AES-256-GCM using `AI_KEY_ENCRYPTION_SECRET`. Generate it once with
+
+```bash
+openssl rand -base64 32
+```
+
+and store it as the GitHub secret `AI_KEY_ENCRYPTION_SECRET` (the pipeline passes it to Docker Compose).
+
+- Without the secret the feature is disabled and hidden in the frontend. A value that is not base64 or not 32 bytes
+  long stops the backend from starting.
+- **Never change or lose the secret.** Keys saved with another secret can no longer be decrypted; users then get
+  `ai_api_key_unreadable` and have to save their key again.
+- Generation requests upload PDFs of up to 10 MB and can take up to two minutes. `indexcards-ui/nginx.conf` allows
+  this for `/api/` (`client_max_body_size 12m`, `proxy_read_timeout 300s`); the reverse proxy in front of the frontend
+  needs the same limits.
+
 ## Deploying manually
 
 ```bash
 export DB_PASSWORD=<database password>
 export JWT_SECRET=<base64 key>
+export AI_KEY_ENCRYPTION_SECRET=<base64 key>   # optional, enables AI card generation
 docker-compose down
 docker-compose up --build -d
 ```

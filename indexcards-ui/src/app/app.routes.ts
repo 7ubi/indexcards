@@ -76,6 +76,14 @@ export const routes: Routes = [
         component: CreateIndexcard,
       },
       {
+        path: ':id/generate',
+        // Lazy loaded: optional feature, keeps its Material components out of the initial bundle.
+        loadComponent: () =>
+          import('./pages/indexcard/generate-indexcards/generate-indexcards').then(
+            (m) => m.GenerateIndexcards,
+          ),
+      },
+      {
         path: ':id/editIndexCard/:indexCardId',
         component: EditIndexcard,
       },

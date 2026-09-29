@@ -8,6 +8,7 @@ nav:
     - Index Cards: user-guide/indexcards.md
     - Studying: user-guide/studying.md
     - Import & Export: user-guide/import-export.md
+    - AI Card Generation: user-guide/ai-generation.md
     - Admin Analytics: user-guide/admin.md
   - Development:
     - Getting Started: development/getting-started.md

@@ -18,6 +18,7 @@ import { LoginResponse, UserResponse } from '../../../app.responses';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 import { PasswordInput } from '../../../component/password-input/password-input';
 import { DeleteAccount } from '../../../component/delete-account/delete-account';
+import { AiApiKey } from '../../../component/ai-api-key/ai-api-key';
 
 @Component({
   selector: 'app-account',
@@ -32,6 +33,7 @@ import { DeleteAccount } from '../../../component/delete-account/delete-account'
     LoadingSpinner,
     PasswordInput,
     DeleteAccount,
+    AiApiKey,
   ],
   templateUrl: './account.html',
   changeDetection: ChangeDetectionStrategy.Eager,

@@ -64,6 +64,7 @@ jobs:
         run: |
           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           export JWT_SECRET=${{ secrets.JWT_SECRET }}
+          export AI_KEY_ENCRYPTION_SECRET=${{ secrets.AI_KEY_ENCRYPTION_SECRET }}
           docker-compose down
           docker-compose up --build -d
   documentation:

@@ -1,0 +1,168 @@
+<div class="center">
+  <div class="form-container">
+    <div class="header-container">
+      <h1 class="title">{{ 'ai.title' | translate }}</h1>
+    </div>
+
+    @if (!status) {
+      <app-loading-spinner />
+    } @else if (!status.apiKeyConfigured) {
+      <div class="notice full-width" data-testid="ai-no-key">
+        <mat-icon>key</mat-icon>
+        <span>{{ 'ai.no_key' | translate }}</span>
+      </div>
+      <div class="row actions full-width">
+        <a matButton [routerLink]="['/project', id]">{{ 'indexcard.to_project' | translate }}</a>
+        <a matButton="filled" routerLink="/account">{{ 'ai.to_account' | translate }}</a>
+      </div>
+    } @else {
+      @if (step === 'input') {
+        <div class="notice full-width">
+          <mat-icon>info</mat-icon>
+          <span>
+            {{ 'ai.privacy_notice' | translate }}
+            <a href="/privacy" target="_blank" rel="noopener">{{
+              'ai.privacy_link' | translate
+            }}</a>
+          </span>
+        </div>
+
+        <mat-form-field class="full-width">
+          <mat-label>{{ 'ai.notes' | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="12"
+            name="notes"
+            [(ngModel)]="notes"
+            [attr.maxlength]="status.maxNotesChars"
+          ></textarea>
+          <mat-hint>{{ 'ai.notes_hint' | translate }}</mat-hint>
+          <mat-hint align="end">{{ notes.length }} / {{ status.maxNotesChars }}</mat-hint>
+        </mat-form-field>
+
+        <div class="row full-width">
+          <input
+            type="file"
+            accept="application/pdf"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            #pdfInput
+          />
+          @if (file) {
+            <span class="file-name"><mat-icon>picture_as_pdf</mat-icon>{{ file.name }}</span>
+            <button matButton type="button" (click)="removeFile()">
+              {{ 'ai.remove_pdf' | translate }}
+            </button>
+          } @else {
+            <button matButton="outlined" type="button" (click)="pdfInput.click()">
+              <mat-icon>upload_file</mat-icon>
+              {{ 'ai.upload_pdf' | translate }}
+            </button>
+          }
+          <span class="hint">
+            {{ 'ai.pdf_hint' | translate: { size: maxPdfMegabytes(), pages: status.maxPdfPages } }}
+          </span>
+        </div>
+
+        <div class="row full-width">
+          <mat-form-field>
+            <mat-label>{{ 'ai.card_count' | translate }}</mat-label>
+            <mat-select name="cardCount" [(ngModel)]="cardCount">
+              @for (count of allowedCardCounts(); track count) {
+                <mat-option [value]="count">{{ count }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <span class="hint">{{ 'ai.cost_hint' | translate: { model: status.model } }}</span>
+        </div>
+
+        <div class="row actions full-width">
+          <a matButton [routerLink]="['/project', id]">{{ 'indexcard.to_project' | translate }}</a>
+          <button matButton="filled" type="button" [disabled]="!canGenerate()" (click)="generate()">
+            <mat-icon>auto_awesome</mat-icon>
+            {{ 'ai.generate' | translate }}
+          </button>
+        </div>
+      }
+
+      @if (step === 'generating') {
+        <app-loading-spinner />
+        <p class="hint center-text">{{ 'ai.generating' | translate }}</p>
+      }
+
+      @if (step === 'review') {
+        <div class="notice full-width">
+          <mat-icon>fact_check</mat-icon>
+          <span>{{ 'ai.review_hint' | translate }}</span>
+        </div>
+        <div class="row full-width">
+          <span>{{
+            'ai.selected' | translate: { selected: selectedCount(), total: cards.length }
+          }}</span>
+          <button matButton type="button" (click)="setAllSelected(true)">
+            {{ 'ai.select_all' | translate }}
+          </button>
+          <button matButton type="button" (click)="setAllSelected(false)">
+            {{ 'ai.select_none' | translate }}
+          </button>
+        </div>
+
+        @for (card of cards; track $index) {
+          <div class="suggestion full-width" [class.deselected]="!card.selected">
+            <div class="suggestion-header">
+              <mat-checkbox [name]="'selected' + $index" [(ngModel)]="card.selected"></mat-checkbox>
+              <button matButton type="button" (click)="toggleEditing(card)">
+                {{ (card.editing ? 'indexcard.preview' : 'indexcard.edit_mode') | translate }}
+              </button>
+            </div>
+            @if (card.editing) {
+              <mat-form-field class="full-width">
+                <mat-label>{{ 'indexcard.question' | translate }}</mat-label>
+                <textarea
+                  matInput
+                  rows="3"
+                  [name]="'q' + $index"
+                  [(ngModel)]="card.question"
+                ></textarea>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <mat-label>{{ 'indexcard.answer' | translate }}</mat-label>
+                <textarea
+                  matInput
+                  rows="4"
+                  [name]="'a' + $index"
+                  [(ngModel)]="card.answer"
+                ></textarea>
+              </mat-form-field>
+            } @else {
+              <span class="preview-label">{{ 'indexcard.question' | translate }}</span>
+              <div
+                class="preview-content"
+                [innerHTML]="card.question | markdownMath"
+                appMathjax
+              ></div>
+              <span class="preview-label">{{ 'indexcard.answer' | translate }}</span>
+              <div
+                class="preview-content"
+                [innerHTML]="card.answer | markdownMath"
+                appMathjax
+              ></div>
+            }
+            @if (card.selected && !isCardValid(card)) {
+              <p class="error">{{ 'ai.card_invalid' | translate }}</p>
+            }
+          </div>
+        }
+
+        <div class="row actions sticky-actions full-width">
+          <button matButton type="button" (click)="backToInput()">
+            {{ 'ai.back' | translate }}
+          </button>
+          <button matButton="filled" type="button" [disabled]="!canSave()" (click)="save()">
+            {{ 'ai.save' | translate: { count: selectedCount() } }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -19,6 +19,9 @@ public class ImageStorageService {
 
     private final Logger logger = LoggerFactory.getLogger(ImageStorageService.class);
 
+    // The multipart limit is higher (AI PDF upload), so images get their own cap.
+    private static final long MAX_IMAGE_BYTES = 5L * 1024 * 1024;
+
     private final Path storageDir;
 
     public ImageStorageService(@Value("${app.images.storage-path}") String storagePath) throws IOException {
@@ -30,6 +33,9 @@ public class ImageStorageService {
         if (file == null || file.isEmpty() || file.getContentType() == null
                 || !file.getContentType().startsWith("image/")) {
             throw new EntityCreationException(ErrorMessage.Images.INVALID_IMAGE);
+        }
+        if (file.getSize() > MAX_IMAGE_BYTES) {
+            throw new EntityCreationException(ErrorMessage.Images.IMAGE_TOO_LARGE);
         }
 
         UUID imageId = UUID.randomUUID();

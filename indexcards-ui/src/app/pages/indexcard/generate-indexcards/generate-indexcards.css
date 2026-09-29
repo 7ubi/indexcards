@@ -1,0 +1,112 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.actions {
+  justify-content: flex-end;
+}
+
+.sticky-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--mat-sys-surface);
+  padding: 8px 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.9em;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.notice {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--mat-sys-surface-container);
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+/* Long notice text would otherwise squeeze the icon. */
+.notice mat-icon {
+  flex-shrink: 0;
+}
+
+.suggestion {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.suggestion.deselected {
+  opacity: 0.5;
+}
+
+.suggestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error {
+  color: var(--mat-sys-error);
+}
+
+.preview-label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  margin: 8px 0 4px;
+}
+
+.preview-content {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 4px;
+  padding: 12px;
+  overflow-wrap: break-word;
+}
+
+.preview-content ::ng-deep :first-child {
+  margin-top: 0;
+}
+
+.preview-content ::ng-deep :last-child {
+  margin-bottom: 0;
+}
+
+.preview-content ::ng-deep pre {
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

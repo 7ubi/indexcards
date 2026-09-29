@@ -19,6 +19,8 @@ erDiagram
         varchar(100) password "BCrypt hash"
         varchar(20) role "USER or ADMIN"
         datetime created_at "nullable"
+        varchar(1024) ai_api_key_encrypted "nullable"
+        varchar(8) ai_api_key_hint "nullable"
     }
     PROJECT {
         bigint project_id PK
@@ -55,6 +57,9 @@ erDiagram
 A user account. The username is unique (checked by the application), the password is stored as a BCrypt hash.
 `role` is `USER` or `ADMIN` (stored as text); admins can open the [analytics](user-guide/admin.md) page.
 `created_at` is the signup date; it is `null` for accounts created before migration 4.
+`ai_api_key_encrypted` holds the user's own Gemini API key for [AI card generation](user-guide/ai-generation.md),
+encrypted with AES-256-GCM (`v1:<base64(iv || ciphertext)>`, bound to the user id); `ai_api_key_hint` holds its
+last four characters.
 
 ### project
 
@@ -106,6 +111,7 @@ differ.
 | 2       | `V2__drop_legacy_join_tables.sql`  | Moves links from the old join tables `user_projects` / `project_index_cards` into the foreign keys and drops the tables. |
 | 3       | `V3__project_archive.sql`          | Adds `archived` and `auto_archived_exam_date` to `project`.                          |
 | 4       | `V4__user_role_created_at.sql`     | Adds `role` (default `USER`) and `created_at` to `user`.                              |
+| 5       | `V5__user_ai_api_key.sql`          | Adds `ai_api_key_encrypted` and `ai_api_key_hint` to `user`.                          |
 
 Databases that existed before Flyway was introduced are marked as version 1 (`spring.flyway.baseline-on-migrate`)
 instead of running the baseline script.

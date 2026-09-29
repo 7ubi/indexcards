@@ -92,6 +92,43 @@
     "nothing_due": "Heute sind keine Karteikarten fällig!",
     "to_projects": "Zurück zu den Projekten"
   },
+  "ai": {
+    "generate_tooltip": "Karteikarten mit KI erstellen",
+    "title": "Karteikarten mit KI erstellen",
+    "notes": "Deine Notizen",
+    "notes_hint": "Füge Vorlesungsnotizen, eine Zusammenfassung oder einen Textabschnitt ein",
+    "upload_pdf": "PDF hinzufügen",
+    "remove_pdf": "PDF entfernen",
+    "pdf_hint": "Optionales PDF, max. {{size}} MB und {{pages}} Seiten",
+    "pdf_only": "Es können nur PDF-Dateien hochgeladen werden",
+    "card_count": "Maximale Anzahl an Karten",
+    "cost_hint": "Nutzt deinen eigenen Gemini-API-Schlüssel mit dem Modell {{model}}; Google rechnet die Nutzung über dein Konto ab oder zieht sie von deinem kostenlosen Kontingent ab.",
+    "privacy_notice": "Deine Notizen und das PDF werden mit deinem eigenen API-Schlüssel zur Erstellung der Vorschläge an Google (USA) übermittelt. Gib keine personenbezogenen Daten von dir oder anderen ein. Im kostenlosen Kontingent darf Google die Inhalte zur Verbesserung seiner Produkte verwenden. Details in der",
+    "privacy_link": "Datenschutzerklärung",
+    "generate": "Vorschläge erstellen",
+    "generating": "Vorschläge werden erstellt … das kann bis zu zwei Minuten dauern.",
+    "review_hint": "Prüfe jede Karte, KI kann Fehler machen. Bearbeite oder entferne Karten vor dem Speichern.",
+    "selected": "{{selected}} von {{total}} ausgewählt",
+    "select_all": "Alle auswählen",
+    "select_none": "Keine auswählen",
+    "back": "Zurück zur Eingabe",
+    "save": "{{count}} Karten speichern",
+    "saved": "Die Karteikarten wurden zum Projekt hinzugefügt",
+    "card_invalid": "Frage und Antwort dürfen nicht leer sein",
+    "no_key": "Um Karteikarten mit KI zu erstellen, speichere zuerst deinen eigenen Gemini-API-Schlüssel in deinen Kontoeinstellungen.",
+    "to_account": "Zum Konto",
+    "key_title": "KI-Erstellung von Karteikarten",
+    "key_intro": "Um Karteikarten mit KI zu erstellen, gib deinen eigenen Gemini-API-Schlüssel aus Google AI Studio (aistudio.google.com/apikey) ein. Google rechnet die Nutzung direkt über dein Google-Konto ab oder zieht sie von deinem kostenlosen Kontingent ab.",
+    "key_privacy": "Der Schlüssel wird verschlüsselt gespeichert und nur für deine eigenen Erstellungen verwendet. Nach dem Speichern wird er nie wieder angezeigt. Details in der",
+    "key_label": "Gemini-API-Schlüssel",
+    "key_replace": "Neuer Gemini-API-Schlüssel",
+    "key_hint": "Beginnt meist mit AIza. Er wird vor dem Speichern bei Google geprüft.",
+    "key_configured": "Ein Schlüssel mit der Endung …{{hint}} ist gespeichert.",
+    "key_save": "Schlüssel speichern",
+    "key_delete": "Schlüssel löschen",
+    "key_saved": "Dein API-Schlüssel wurde gespeichert",
+    "key_deleted": "Dein API-Schlüssel wurde gelöscht"
+  },
   "account": {
     "menu": "Konto",
     "title": "Konto",
@@ -104,7 +141,8 @@
       "projects": "alle deine Projekte,",
       "cards": "alle Karteikarten in diesen Projekten,",
       "progress": "dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine),",
-      "images": "hochgeladene Bilder, die in deinen Karteikarten eingebunden sind."
+      "images": "hochgeladene Bilder, die in deinen Karteikarten eingebunden sind,",
+      "ai_key": "dein gespeicherter Gemini-API-Schlüssel."
     },
     "delete_password_hint": "Bitte gib zur Bestätigung dein Passwort ein.",
     "delete_button": "Konto endgültig löschen",
@@ -160,7 +198,30 @@
     "username_too_long": "Der Nutzername ist zu lang. Es sind nur 100 Zeichen erlaubt",
     "username_unchanged": "Der neue Nutzername ist identisch mit dem aktuellen",
     "password_empty": "Das Passwort darf nicht leer sein",
-    "forbidden": "Dafür fehlt dir die Berechtigung"
+    "forbidden": "Dafür fehlt dir die Berechtigung",
+    "ai_generation_disabled": "Die KI-Erstellung ist auf diesem Server nicht verfügbar",
+    "ai_api_key_missing": "Speichere zuerst deinen Gemini-API-Schlüssel in deinem Konto",
+    "ai_api_key_invalid": "Der Gemini-API-Schlüssel ist ungültig",
+    "ai_api_key_forbidden": "Der Gemini-API-Schlüssel darf dieses Modell nicht verwenden",
+    "ai_api_key_unreadable": "Dein gespeicherter API-Schlüssel kann nicht mehr gelesen werden. Bitte gib ihn in deinem Konto erneut ein.",
+    "ai_billing_error": "Google hat die Anfrage wegen deines Abrechnungsstatus abgelehnt. Prüfe dein Rechnungskonto in Google AI Studio.",
+    "ai_rate_limited": "Dein Gemini-API-Schlüssel hat sein Anfragelimit oder Kontingent erreicht. Bitte versuche es später erneut.",
+    "ai_generation_in_progress": "Es läuft bereits eine Erstellung. Bitte warte, bis sie abgeschlossen ist.",
+    "ai_input_empty": "Gib Notizen ein oder füge ein PDF hinzu",
+    "ai_notes_too_long": "Die Notizen sind zu lang",
+    "ai_pdf_invalid": "Die Datei ist kein lesbares PDF (passwortgeschützte PDFs werden nicht unterstützt)",
+    "ai_pdf_too_large": "Das PDF ist zu groß",
+    "ai_pdf_too_many_pages": "Das PDF hat zu viele Seiten",
+    "ai_generation_refused": "Die KI hat die Verarbeitung dieses Inhalts abgelehnt",
+    "ai_output_truncated": "Das Ergebnis war zu lang. Wähle weniger Karten oder kürze die Eingabe.",
+    "ai_no_cards": "Aus diesem Inhalt konnten keine Karteikarten erstellt werden",
+    "ai_generation_timeout": "Die KI hat zu lange gebraucht. Bitte versuche es mit weniger Inhalt erneut.",
+    "ai_generation_unavailable": "Der KI-Dienst ist gerade nicht erreichbar. Bitte versuche es später erneut.",
+    "ai_generation_failed": "Die Erstellung der Karteikarten ist fehlgeschlagen. Bitte versuche es erneut.",
+    "indexcard_empty": "Frage und Antwort dürfen nicht leer sein",
+    "too_many_indexcards": "Zu viele Karteikarten in einer Anfrage",
+    "file_too_large": "Die Datei ist zu groß",
+    "image_too_large": "Das Bild ist zu groß (max. 5 MB)"
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",
@@ -251,6 +312,16 @@
           "Bitte speichere in deinen Karteikarten keine besonderen Kategorien personenbezogener Daten (z. B. Gesundheitsdaten) oder personenbezogene Daten anderer Personen, sofern du dazu nicht berechtigt bist."
         ]
       },
+      "ai_generation": {
+        "title": "KI-gestützte Erstellung von Karteikarten",
+        "paragraphs": [
+          "Du kannst optional deinen eigenen Gemini-API-Schlüssel von Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA („Google“) in deinem Konto speichern. Wir speichern den Schlüssel verschlüsselt und mit deinem Konto verknüpft, zusammen mit seinen letzten vier Zeichen, damit du ihn wiedererkennst. Er wird nie wieder angezeigt und nur für deine eigenen Anfragen verwendet. Beim Speichern senden wir ihn einmal an Google, um zu prüfen, ob er gültig ist. Du kannst ihn jederzeit in deinem Konto löschen; er wird außerdem zusammen mit deinem Konto gelöscht.",
+          "Wenn du auf „Vorschläge erstellen“ klickst, werden die von dir eingegebenen Notizen und die hochgeladene PDF-Datei mit deinem API-Schlüssel an Google übermittelt, um mit dem KI-Modell Gemini Vorschläge für Karteikarten zu erstellen. Kontodaten wie Nutzername, Name oder Passwort werden nicht übermittelt. Die Verarbeitung durch Google, einschließlich der Übermittlung in die USA, der Speicherdauer und der Abrechnung, richtet sich nach den Gemini-API-Bedingungen, denen du für deinen API-Schlüssel bei Google zugestimmt hast. Nutzt dein Schlüssel das kostenlose Kontingent, darf Google die übermittelten Inhalte zur Verbesserung seiner Produkte verwenden.",
+          "Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO: Du forderst diese Funktion aktiv an. Die Nutzung ist freiwillig; Karteikarten kannst du jederzeit auch manuell anlegen.",
+          "Wir speichern weder deine Notizen noch das PDF noch die Vorschläge. Nur die Vorschläge, die du speicherst, werden zu Karteikarten (siehe „Deine Inhalte und dein Lernfortschritt“).",
+          "Bitte gib in deinen Notizen keine personenbezogenen Daten von dir oder anderen ein. Die Vorschläge werden automatisch erzeugt und können fehlerhaft sein; prüfe sie vor dem Speichern."
+        ]
+      },
       "browser_storage": {
         "title": "Speicherung im Browser (kein Einsatz von Cookies)",
         "paragraphs": [
@@ -281,7 +352,7 @@
       "recipients": {
         "title": "Empfänger deiner Daten",
         "paragraphs": [
-          "Deine Kontodaten und Inhalte werden nicht an Dritte weitergegeben. Zugriff haben ausschließlich wir als Betreiber sowie unser in unserem Auftrag tätiger Hosting-Anbieter STRATO (siehe Abschnitt „Hosting und Server-Logdateien“). Zu den in Abschnitt „Eingebundene Dienste Dritter“ genannten Anbietern gelangt nur deine IP-Adresse beim Laden der jeweiligen Ressource.",
+          "Deine Kontodaten und Inhalte werden nicht an Dritte weitergegeben, ausgenommen die Inhalte, die du aktiv an die KI-Funktion übermittelst, und dein API-Schlüssel (siehe Abschnitt „KI-gestützte Erstellung von Karteikarten“). Zugriff haben ausschließlich wir als Betreiber sowie unser in unserem Auftrag tätiger Hosting-Anbieter STRATO (siehe Abschnitt „Hosting und Server-Logdateien“). Zu den in Abschnitt „Eingebundene Dienste Dritter“ genannten Anbietern gelangt nur deine IP-Adresse beim Laden der jeweiligen Ressource.",
           "Eine Weitergabe an Behörden erfolgt nur, wenn wir hierzu gesetzlich verpflichtet sind (Art. 6 Abs. 1 lit. c DSGVO)."
         ]
       },

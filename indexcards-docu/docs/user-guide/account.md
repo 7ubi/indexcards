@@ -45,6 +45,11 @@ your projects. It is enabled by default. You can also turn it off directly in th
 again**. The setting is stored in the browser's local storage, so it applies to this
 browser only and is kept after logging out.
 
+### AI card generation
+
+Stores your own Gemini API key for [AI card generation](ai-generation.md#saving-your-api-key). The section is only
+shown if the feature is enabled on the server.
+
 ## Delete account
 
 Deleting your account is done at the bottom of the account page. To confirm, you have to enter your password again.
@@ -58,7 +63,8 @@ The following data is deleted:
 - all of your projects,
 - all index cards in these projects,
 - your learning progress (ratings, rating history and review dates),
-- uploaded images that are embedded in your index cards (unless another user's card references the same image).
+- uploaded images that are embedded in your index cards (unless another user's card references the same image),
+- your saved Gemini API key (see [AI Card Generation](ai-generation.md)).
 
 ## Language
 

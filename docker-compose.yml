@@ -35,6 +35,10 @@ services:
       JWT_SECRET: '${JWT_SECRET}'
       # Comma-separated usernames made admins on every start, if they exist
       DEFAULT_ADMINS: '${DEFAULT_ADMINS:-7ubi}'
+      # Base64-encoded 32-byte key that encrypts users' Gemini API keys (`openssl rand -base64 32`).
+      # Empty disables AI card generation. Never change it once set, or saved keys become unreadable.
+      AI_KEY_ENCRYPTION_SECRET: '${AI_KEY_ENCRYPTION_SECRET:-}'
+      AI_MODEL: '${AI_MODEL:-gemini-3.8-flash}'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images

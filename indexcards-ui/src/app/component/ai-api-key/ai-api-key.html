@@ -1,0 +1,51 @@
+@if (status?.enabled) {
+  <div class="center">
+    <div class="form-container">
+      <div class="header-container">
+        <h2 class="title">{{ 'ai.key_title' | translate }}</h2>
+      </div>
+      <p class="full-width hint">{{ 'ai.key_intro' | translate }}</p>
+      <p class="full-width hint">
+        {{ 'ai.key_privacy' | translate }}
+        <a routerLink="/privacy">{{ 'ai.privacy_link' | translate }}</a>
+      </p>
+
+      @if (status.apiKeyConfigured) {
+        <p class="full-width" data-testid="ai-key-saved">
+          {{ 'ai.key_configured' | translate: { hint: status.apiKeyHint } }}
+        </p>
+      }
+
+      <mat-form-field class="full-width">
+        <mat-label>{{
+          (status.apiKeyConfigured ? 'ai.key_replace' : 'ai.key_label') | translate
+        }}</mat-label>
+        <input
+          matInput
+          type="password"
+          autocomplete="off"
+          name="apiKey"
+          placeholder="AIza…"
+          [(ngModel)]="apiKey"
+        />
+        <mat-hint>{{ 'ai.key_hint' | translate }}</mat-hint>
+      </mat-form-field>
+
+      <div class="actions full-width">
+        @if (status.apiKeyConfigured) {
+          <button matButton type="button" (click)="deleteApiKey()">
+            {{ 'ai.key_delete' | translate }}
+          </button>
+        }
+        <button
+          matButton="filled"
+          type="button"
+          [disabled]="!apiKey.trim() || saving"
+          (click)="saveApiKey()"
+        >
+          {{ 'ai.key_save' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

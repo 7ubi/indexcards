@@ -6,7 +6,7 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ProjectResponse } from '../../../app.responses';
+import { AiStatusResponse, ProjectResponse } from '../../../app.responses';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import HttpService from '../../../service/http/http.service';
 import { SnackbarService } from '../../../service/snackbar/snackbar.service';
@@ -51,12 +51,18 @@ export class Project implements OnInit, OnDestroy {
   id: string | null = '';
   showChild = false;
   loading = true;
+  aiEnabled = false;
 
   private routerEventsSub?: Subscription;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getIndexCards();
+    // Via HttpService instead of AiService, which keeps AiService in the lazy-loaded chunks.
+    this.httpService.get<AiStatusResponse>('/api/ai/status', (status) => {
+      this.aiEnabled = status.enabled;
+      this.cdr.detectChanges();
+    });
 
     // Show child when a child route like 'quiz' is active
     this.routerEventsSub = this.router.events.subscribe((event) => {
@@ -87,6 +93,10 @@ export class Project implements OnInit, OnDestroy {
 
   onClickCreateIndexcardButton() {
     this.router.navigate(['createIndexCard'], { relativeTo: this.route });
+  }
+
+  onClickGenerateButton() {
+    this.router.navigate(['generate'], { relativeTo: this.route });
   }
 
   onClickQuizButton() {
