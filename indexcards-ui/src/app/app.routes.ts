@@ -3,6 +3,7 @@ import { Login } from './pages/auth/login/login';
 import { Signup } from './pages/auth/signup/signup';
 import { AllProjects } from './pages/project/all-projects/all-projects';
 import { LoginRequired } from './service/login/login-required';
+import { AdminRequired } from './service/login/admin-required';
 import { CreateProject } from './pages/project/create-project/create-project';
 import { Project } from './pages/project/project/project';
 import { Quiz } from './pages/indexcard/quiz/quiz';
@@ -43,6 +44,12 @@ export const routes: Routes = [
     // Lazy loaded: rarely visited, and keeps its Material components out of the initial bundle.
     loadComponent: () => import('./pages/account/account/account').then((m) => m.Account),
     canActivate: [LoginRequired],
+  },
+  {
+    path: 'admin',
+    // Lazy loaded: only admins ever open it.
+    loadComponent: () => import('./pages/admin/analytics/analytics').then((m) => m.Analytics),
+    canActivate: [LoginRequired, AdminRequired],
   },
   {
     path: 'account/delete',

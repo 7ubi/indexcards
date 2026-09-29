@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
@@ -39,6 +40,7 @@ public class AuthService {
         user.setFirstname(signupRequest.getFirstname());
         user.setSurname(signupRequest.getSurname());
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
 
         userRepo.save(user);
 

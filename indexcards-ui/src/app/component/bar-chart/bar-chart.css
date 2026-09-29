@@ -1,0 +1,48 @@
+.bar-chart {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 160px;
+  font-size: 0.8em;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.plot {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 160px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.bar-slot {
+  flex: 1 1 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+}
+
+.x-axis {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  font-size: 0.8em;
+  color: var(--mat-sys-on-surface-variant);
+}

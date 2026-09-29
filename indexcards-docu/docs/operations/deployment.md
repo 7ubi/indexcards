@@ -82,6 +82,19 @@ docker-compose up --build -d
 
 Database migrations run automatically when the backend starts (see [Migrations](../database.md#migrations)).
 
+## Creating an admin
+
+Admins can open the [analytics page](../user-guide/admin.md). The first admin has to be created directly in the
+database; after that, admins can make other users admins from the analytics page. Promote an existing account with:
+
+```bash
+docker exec -it dbcontainer mysql -uroot -p indexcardsdb \
+  -e "update user set role = 'ADMIN' where username = '<username>';"
+```
+
+Revoking the role is only possible in the database: set `role` back to `'USER'`. The role is read from the database on every request, so the change applies
+immediately without logging in again.
+
 ## Documentation
 
 The documentation has its own `indexcards-docu/docker-compose.yml`. It runs `mkdocs serve` on port `8005` in a Python

@@ -8,12 +8,15 @@ public class UserResponse {
 
     private String surname;
 
+    private boolean admin;
+
     public UserResponse() {}
 
-    public UserResponse(String username, String firstname, String surname) {
+    public UserResponse(String username, String firstname, String surname, boolean admin) {
         this.username = username;
         this.firstname = firstname;
         this.surname = surname;
+        this.admin = admin;
     }
 
     public String getUsername() {
@@ -38,5 +41,13 @@ public class UserResponse {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

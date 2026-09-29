@@ -18,16 +18,25 @@
   <p class="message">{{ keyPrefix + '_message' | translate }}</p>
 
   <div class="project-summary">
-    <mat-icon class="summary-icon">folder</mat-icon>
-    <div class="summary-info">
-      <div class="summary-name">{{ data.project.name }}</div>
-      <div class="summary-count">{{ cardCount }} {{ 'project.cards_label' | translate }}</div>
-    </div>
+    @if (data.project) {
+      <mat-icon class="summary-icon">folder</mat-icon>
+      <div class="summary-info">
+        <div class="summary-name">{{ data.project.name }}</div>
+        <div class="summary-count">{{ cardCount }} {{ 'project.cards_label' | translate }}</div>
+      </div>
+    } @else {
+      <mat-icon class="summary-icon">person</mat-icon>
+      <div class="summary-info">
+        <div class="summary-name">{{ data.username }}</div>
+      </div>
+    }
   </div>
 
   <div class="warning" [class.danger]="data.action === 'delete'" role="alert">
     <mat-icon class="warning-icon">{{ data.action === 'delete' ? 'warning' : 'info' }}</mat-icon>
-    <span>{{ keyPrefix + '_warning' | translate: { count: cardCount } }}</span>
+    <span>{{
+      keyPrefix + '_warning' | translate: { count: cardCount, username: data.username }
+    }}</span>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

@@ -14,6 +14,12 @@
         <mat-icon>manage_accounts</mat-icon>
         <span>{{ 'account.title' | translate }}</span>
       </a>
+      @if (isAdmin()) {
+        <a mat-menu-item routerLink="/admin">
+          <mat-icon>insights</mat-icon>
+          <span>{{ 'admin.title' | translate }}</span>
+        </a>
+      }
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>{{ 'account.logout' | translate }}</span>

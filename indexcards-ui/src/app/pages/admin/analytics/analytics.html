@@ -1,0 +1,152 @@
+@if (loading) {
+  <app-loading-spinner />
+} @else if (analytics) {
+  <div class="center">
+    <div class="container">
+      <div class="header-container">
+        <h1 class="title">{{ 'admin.title' | translate }}</h1>
+      </div>
+
+      <div class="tiles">
+        <mat-card class="tile" appearance="outlined">
+          <span class="tile-value">{{ analytics.totals.users }}</span>
+          <span class="tile-label">{{ 'admin.users' | translate }}</span>
+        </mat-card>
+        <mat-card class="tile" appearance="outlined">
+          <span class="tile-value">{{ analytics.totals.activeProjects }}</span>
+          <span class="tile-label">{{ 'admin.active_projects' | translate }}</span>
+          <span class="tile-hint">
+            {{
+              'admin.archived_projects' | translate: { count: analytics.totals.archivedProjects }
+            }}
+          </span>
+        </mat-card>
+        <mat-card class="tile" appearance="outlined">
+          <span class="tile-value">{{ analytics.totals.indexCards }}</span>
+          <span class="tile-label">{{ 'admin.index_cards' | translate }}</span>
+        </mat-card>
+        <mat-card class="tile" appearance="outlined">
+          <span class="tile-value">{{ analytics.totals.assessments }}</span>
+          <span class="tile-label">{{ 'admin.assessments' | translate }}</span>
+        </mat-card>
+      </div>
+
+      <mat-card class="section" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ 'admin.distribution' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-assessment-chart [slices]="slices" />
+        </mat-card-content>
+      </mat-card>
+
+      <div class="charts">
+        <mat-card class="section" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ 'admin.assessments_per_day' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-bar-chart [bars]="assessmentBars" />
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="section" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ 'admin.active_users_per_day' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-bar-chart [bars]="activeUserBars" color="var(--mat-sys-tertiary)" />
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="section" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ 'admin.signups_per_day' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-bar-chart [bars]="signupBars" color="var(--mat-sys-secondary)" />
+            <p class="hint">{{ 'admin.signups_hint' | translate }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-card class="section" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ 'admin.users' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="table-container">
+          <table
+            mat-table
+            [dataSource]="users"
+            matSort
+            matSortActive="lastActivity"
+            matSortDirection="desc"
+          >
+            <ng-container matColumnDef="username">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'auth.username' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+            </ng-container>
+            <ng-container matColumnDef="createdAt">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'admin.joined' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">
+                {{ user.createdAt ? (user.createdAt | date: 'dd.MM.yyyy') : '–' }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projects">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'common.projects' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">{{ user.projects }}</td>
+            </ng-container>
+            <ng-container matColumnDef="indexCards">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'admin.index_cards' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">{{ user.indexCards }}</td>
+            </ng-container>
+            <ng-container matColumnDef="assessments">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'admin.assessments' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">{{ user.assessments }}</td>
+            </ng-container>
+            <ng-container matColumnDef="lastActivity">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'admin.last_activity' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let user">
+                {{ user.lastActivity ? (user.lastActivity | date: 'dd.MM.yyyy HH:mm') : '–' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let user">
+                @if (user.admin) {
+                  <span class="admin-label">
+                    <mat-icon>admin_panel_settings</mat-icon>
+                    {{ 'admin.admin_label' | translate }}
+                  </span>
+                } @else {
+                  <button
+                    matButton
+                    type="button"
+                    class="make-admin"
+                    (click)="makeAdmin(user.username)"
+                  >
+                    {{ 'admin.make_admin' | translate }}
+                  </button>
+                }
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+}

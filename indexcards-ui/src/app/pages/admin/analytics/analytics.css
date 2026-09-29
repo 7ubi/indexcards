@@ -1,0 +1,82 @@
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.tile-value {
+  font-size: 2em;
+}
+
+.tile-label {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.tile-hint {
+  font-size: 0.85em;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.charts .section {
+  margin-bottom: 0;
+}
+
+.section {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.section mat-card-content {
+  padding-top: 16px;
+}
+
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.85em;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.admin-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.admin-label mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.make-admin {
+  white-space: nowrap;
+}
