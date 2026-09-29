@@ -14,7 +14,12 @@ import { SettingsService } from '../../../service/settings/settings.service';
 describe('Account', () => {
   let component: Account;
   let fixture: ComponentFixture<Account>;
-  const user: UserResponse = { username: 'test', firstname: 'Max', surname: 'Muster' };
+  const user: UserResponse = {
+    username: 'test',
+    firstname: 'Max',
+    surname: 'Muster',
+    admin: false,
+  };
   const httpService = {
     get: vi.fn((_url: string, subscribe: (response: UserResponse) => void) => subscribe(user)),
     put: vi.fn(),

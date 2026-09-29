@@ -7,6 +7,7 @@
     "warning": "Warnung"
   },
   "auth": {
+    "admin_required": "Nur Admins können diese Seite öffnen",
     "username": "Nutzername",
     "password": "Passwort",
     "no_account": "Du hast noch kein Konto? Erstelle eins",
@@ -120,6 +121,28 @@
     "show_due_dialog": "Erinnerung „Heute fällig“ anzeigen",
     "show_due_dialog_hint": "Zeigt beim Öffnen deiner Projekte einen Dialog mit den heute fälligen Karteikarten an. Diese Einstellung wird in diesem Browser gespeichert."
   },
+  "admin": {
+    "title": "Statistiken",
+    "users": "Nutzer",
+    "active_projects": "Aktive Projekte",
+    "archived_projects": "{{count}} archiviert",
+    "index_cards": "Karteikarten",
+    "assessments": "Bewertungen",
+    "distribution": "Aktuelle Bewertung aller Karteikarten",
+    "assessments_per_day": "Bewertungen pro Tag (30 Tage)",
+    "active_users_per_day": "Aktive Nutzer pro Tag (30 Tage)",
+    "signups_per_day": "Registrierungen pro Tag (30 Tage)",
+    "signups_hint": "Konten, die vor der Erfassung des Registrierungsdatums erstellt wurden, sind nicht enthalten.",
+    "joined": "Registriert",
+    "last_activity": "Letzte Aktivität",
+    "admin_label": "Admin",
+    "make_admin": "Zum Admin machen",
+    "make_admin_title": "Zum Admin machen?",
+    "make_admin_message": "Möchtest du diesen Nutzer zum Admin machen?",
+    "make_admin_warning": "{{username}} kann danach die Statistiken aller Nutzer sehen und andere Nutzer zu Admins machen. Die Rolle kann nur in der Datenbank wieder entzogen werden.",
+    "make_admin_confirm": "Zum Admin machen",
+    "made_admin": "Der Nutzer ist jetzt Admin."
+  },
   "backend": {
     "username_exists": "Nutzername existiert bereits!",
     "username_not_found": "Nutzername wurde nicht gefunden",
@@ -136,7 +159,8 @@
     "username_empty": "Der Nutzername darf nicht leer sein",
     "username_too_long": "Der Nutzername ist zu lang. Es sind nur 100 Zeichen erlaubt",
     "username_unchanged": "Der neue Nutzername ist identisch mit dem aktuellen",
-    "password_empty": "Das Passwort darf nicht leer sein"
+    "password_empty": "Das Passwort darf nicht leer sein",
+    "forbidden": "Dafür fehlt dir die Berechtigung"
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",

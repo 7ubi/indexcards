@@ -46,6 +46,16 @@ Errors: `401 bad_credentials`
 
 ## User
 
+### Get account
+
+`GET /api/user` → `200 OK`
+
+```json
+{ "username": "jane", "firstname": "Jane", "surname": "Doe", "admin": false }
+```
+
+`admin` is `true` if the user has the `ADMIN` role; the frontend uses it to show the analytics page.
+
 ### Delete account
 
 `DELETE /api/user` → `204 No Content`
@@ -160,6 +170,50 @@ The file must have an `image/*` content type and be at most 5 MB. Errors: `400 i
 
 Errors: `400 image_not_found`
 
+## Admin
+
+Endpoints under `/api/admin/**` require the `ADMIN` role. Other users get `403 forbidden`.
+
+### Get analytics
+
+`GET /api/admin/analytics` → `200 OK`
+
+```json
+{
+  "totals": { "users": 2, "activeProjects": 1, "archivedProjects": 0, "indexCards": 1, "assessments": 1 },
+  "assessmentDistribution": { "unrated": 0, "bad": 0, "ok": 0, "good": 1 },
+  "dailyActivity": [ { "date": "2026-09-29", "assessments": 1, "activeUsers": 1 } ],
+  "dailySignups": [ { "date": "2026-09-29", "count": 2 } ],
+  "users": [
+    {
+      "username": "bob",
+      "createdAt": "2026-09-29T09:39:25",
+      "projects": 1,
+      "indexCards": 1,
+      "assessments": 1,
+      "lastActivity": "2026-09-29T09:39:26",
+      "admin": false
+    }
+  ]
+}
+```
+
+- `assessmentDistribution` counts index cards by their current rating.
+- `dailyActivity` and `dailySignups` always contain the last 30 days (oldest first, today last); days without activity
+  have `0`. `activeUsers` is the number of distinct users who rated at least one card that day.
+- `users` is sorted by `lastActivity` (the latest rating), most recent first; users without ratings come last with
+  `lastActivity: null`. `createdAt` is `null` for accounts created before signup dates were recorded. `admin` is
+  `true` for users with the `ADMIN` role.
+
+### Make a user admin
+
+`PUT /api/admin/users/{username}/admin` → `204 No Content`
+
+Gives the user the `ADMIN` role. Doing this for a user who is already an admin changes nothing. There is no endpoint
+to remove the role.
+
+Errors: `400 username_not_found`
+
 ## Common errors
 
 | Status | Code                     | Meaning                                              |
@@ -169,6 +223,7 @@ Errors: `400 image_not_found`
 | 400    | `username_not_found`     | The user of the token does not exist anymore.        |
 | 401    | `user_not_project_owner` | The project or card belongs to another user.         |
 | 401    | —                        | Missing, invalid or expired token.                   |
+| 403    | `forbidden`              | The endpoint requires the `ADMIN` role.              |
 
 ## Response types
 

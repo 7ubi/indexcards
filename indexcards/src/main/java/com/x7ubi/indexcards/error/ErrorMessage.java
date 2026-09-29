@@ -6,6 +6,7 @@ public class ErrorMessage {
 
     public static class Authentication {
         public static final String BAD_CREDENTIALS = "bad_credentials";
+        public static final String FORBIDDEN = "forbidden";
         public static String USERNAME_EXITS = "username_exists";
     }
 

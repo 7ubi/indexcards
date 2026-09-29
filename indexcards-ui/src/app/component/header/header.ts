@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { LoginService } from '../../service/login/login.service';
+import { AdminService } from '../../service/admin/admin.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -25,9 +26,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class Header {
   private loginService = inject(LoginService);
+  private adminService = inject(AdminService);
 
   isLoggedIn() {
     return this.loginService.isLoggedIn();
+  }
+
+  isAdmin() {
+    return this.adminService.isAdmin();
   }
 
   logout() {

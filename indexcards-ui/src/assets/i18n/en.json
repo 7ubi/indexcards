@@ -7,6 +7,7 @@
     "warning": "Warning"
   },
   "auth": {
+    "admin_required": "Only admins can open this page",
     "username": "Username",
     "password": "Password",
     "no_account": "Don't have an Account? Then create one",
@@ -120,6 +121,28 @@
     "show_due_dialog": "Show \"due today\" reminder",
     "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser."
   },
+  "admin": {
+    "title": "Analytics",
+    "users": "Users",
+    "active_projects": "Active projects",
+    "archived_projects": "{{count}} archived",
+    "index_cards": "Index cards",
+    "assessments": "Ratings",
+    "distribution": "Current rating of all index cards",
+    "assessments_per_day": "Ratings per day (30 days)",
+    "active_users_per_day": "Active users per day (30 days)",
+    "signups_per_day": "Sign-ups per day (30 days)",
+    "signups_hint": "Accounts created before sign-up dates were recorded are not included.",
+    "joined": "Joined",
+    "last_activity": "Last activity",
+    "admin_label": "Admin",
+    "make_admin": "Make admin",
+    "make_admin_title": "Make admin?",
+    "make_admin_message": "Do you want to make this user an admin?",
+    "make_admin_warning": "{{username}} will be able to see the analytics of all users and make other users admins. The role can only be removed again in the database.",
+    "make_admin_confirm": "Make admin",
+    "made_admin": "The user is now an admin."
+  },
   "backend": {
     "username_exists": "Username already exists!",
     "username_not_found": "Username not found",
@@ -136,7 +159,8 @@
     "username_empty": "The username must not be empty",
     "username_too_long": "The username is too long, only 100 characters are allowed",
     "username_unchanged": "The new username is the same as the current one",
-    "password_empty": "The password must not be empty"
+    "password_empty": "The password must not be empty",
+    "forbidden": "You are not allowed to do this"
   },
   "unrated": "Unrated",
   "bad": "Bad",

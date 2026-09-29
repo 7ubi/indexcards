@@ -12,16 +12,21 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ProjectResponse } from '../../app.responses';
 
-export type ConfirmAction = 'delete' | 'archive';
+export type ConfirmAction = 'delete' | 'archive' | 'make_admin';
 
+/** Exactly one of `project` or `username` is the subject shown in the dialog. */
 export interface ConfirmDialogData {
-  project: ProjectResponse;
+  project?: ProjectResponse;
+  username?: string;
   action: ConfirmAction;
+  /** Translation key prefix for the texts; defaults to `confirm_dialog.<action>`. */
+  keyPrefix?: string;
 }
 
 const ICONS: Record<ConfirmAction, string> = {
   delete: 'delete_forever',
   archive: 'archive',
+  make_admin: 'admin_panel_settings',
 };
 
 @Component({
@@ -45,6 +50,6 @@ export class ConfirmDialog {
   readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
 
   readonly icon = ICONS[this.data.action];
-  readonly keyPrefix = `confirm_dialog.${this.data.action}`;
-  readonly cardCount = this.data.project.indexCardResponses?.length ?? 0;
+  readonly keyPrefix = this.data.keyPrefix ?? `confirm_dialog.${this.data.action}`;
+  readonly cardCount = this.data.project?.indexCardResponses?.length ?? 0;
 }

@@ -16,6 +16,7 @@ import HttpService from './service/http/http.service';
 import LocalService from './service/local/local.service';
 import { LoginService } from './service/login/login.service';
 import { LoginRequired } from './service/login/login-required';
+import { AdminRequired } from './service/login/admin-required';
 import { SnackbarService } from './service/snackbar/snackbar.service';
 
 const DD_MM_YYYY_DATE_FORMATS = {
@@ -72,6 +73,7 @@ export const appConfig: ApplicationConfig = {
     LoginService,
     SnackbarService,
     LoginRequired,
+    AdminRequired,
     provideAppInitializer(appInitFactory()),
     { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
     provideNativeDateAdapter(DD_MM_YYYY_DATE_FORMATS),

@@ -1,7 +1,11 @@
 package com.x7ubi.indexcards.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,6 +30,15 @@ public class User implements Serializable {
 
     @Column(nullable = false, length = 100)
     private String password;
+
+    // Stored as the enum name in a varchar column (see V4 migration), not as a native MySQL enum.
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private Role role = Role.USER;
+
+    // Null for users created before the V4 migration.
+    private LocalDateTime createdAt;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
@@ -75,6 +88,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<Project> getProjects() {

@@ -1,0 +1,21 @@
+<div class="bar-chart">
+  <div class="y-axis">
+    <span>{{ max }}</span>
+    <span>0</span>
+  </div>
+  <div class="plot">
+    <div class="bars">
+      @for (bar of bars; track bar.label) {
+        <div class="bar-slot" [title]="bar.label + ': ' + bar.value">
+          <div class="bar" [style.height.%]="height(bar)" [style.background-color]="color"></div>
+        </div>
+      }
+    </div>
+    @if (bars.length > 0) {
+      <div class="x-axis">
+        <span>{{ bars[0].label }}</span>
+        <span>{{ bars[bars.length - 1].label }}</span>
+      </div>
+    }
+  </div>
+</div>
