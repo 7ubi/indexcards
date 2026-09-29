@@ -55,6 +55,7 @@ environment variables.
 | `SPRING_DATASOURCE_PASSWORD`   | `12345678`                               | Database password.                                            |
 | `MYSQL_HOST`                   | `localhost`                              | Database host (if `SPRING_DATASOURCE_URL` is not set).        |
 | `IMAGES_STORAGE_PATH`          | `./data/images`                          | Directory for uploaded images.                                |
+| `DEFAULT_ADMINS`               | — (`7ubi` in Docker Compose)             | Comma-separated usernames made admins on every start, see [Creating an admin](#creating-an-admin). |
 
 Other settings in `application.properties`:
 
@@ -84,15 +85,21 @@ Database migrations run automatically when the backend starts (see [Migrations](
 
 ## Creating an admin
 
-Admins can open the [analytics page](../user-guide/admin.md). The first admin has to be created directly in the
-database; after that, admins can make other users admins from the analytics page. Promote an existing account with:
+Admins can open the [analytics page](../user-guide/admin.md). The usernames in `DEFAULT_ADMINS` (comma separated,
+`7ubi` by default in `docker-compose.yml`) are made admins every time the backend starts. Usernames that do not exist
+are skipped with a warning in the log; they are not reserved, so whoever signs up with such a name becomes an admin on
+the next start. Set `DEFAULT_ADMINS=` (empty) in `.env` to turn this off.
+
+After that, admins can make other users admins from the analytics page. Without a default admin, promote an existing
+account in the database:
 
 ```bash
 docker exec -it dbcontainer mysql -uroot -p indexcardsdb \
   -e "update user set role = 'ADMIN' where username = '<username>';"
 ```
 
-Revoking the role is only possible in the database: set `role` back to `'USER'`. The role is read from the database on every request, so the change applies
+Revoking the role is only possible in the database: set `role` back to `'USER'` (and remove the user from
+`DEFAULT_ADMINS`, otherwise the next start makes them admin again). The role is read from the database on every request, so the change applies
 immediately without logging in again.
 
 ## Documentation
