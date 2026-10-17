@@ -94,6 +94,7 @@
     "delete_items_intro": "The following data will be deleted:",
     "delete_items": {
       "account": "your user account (username, first and last name),",
+      "login": "your login account at the login service (username, name and password, or the link to your Google account),",
       "projects": "all of your projects,",
       "cards": "all index cards in these projects,",
       "progress": "your learning progress (ratings, rating history and review dates),",

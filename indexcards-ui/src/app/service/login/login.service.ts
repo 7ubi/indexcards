@@ -53,7 +53,10 @@ export class LoginService {
     if (!this.userManager) {
       await this.init();
     }
-    await this.userManager?.signinRedirect();
+    if (!this.userManager) {
+      throw new Error('Login is not configured');
+    }
+    await this.userManager.signinRedirect();
   }
 
   /** Finishes the login when Authentik redirects back to /login/callback. */

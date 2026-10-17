@@ -104,6 +104,22 @@ describe('LoginService', () => {
     expect(userManager.signinRedirect).toHaveBeenCalled();
   });
 
+  it('should reject the login when the login is not configured', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const done = service.login();
+    httpMock.expectOne('/api/auth/config').error(new ProgressEvent('error'));
+
+    await expect(done).rejects.toThrow('Login is not configured');
+    expect(userManager.signinRedirect).not.toHaveBeenCalled();
+  });
+
+  it('should reject the login when the redirect fails', async () => {
+    userManager.signinRedirect.mockRejectedValueOnce(new Error('network'));
+    await init();
+
+    await expect(service.login()).rejects.toThrow('network');
+  });
+
   it('should store the user after the redirect back', async () => {
     userManager.signinRedirectCallback.mockResolvedValue(user);
     await init();

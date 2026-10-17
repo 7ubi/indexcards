@@ -4,6 +4,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { vi } from 'vitest';
 
 import { Login } from './login';
+import { SnackbarService } from '../../../service/snackbar/snackbar.service';
 import { LoginService } from '../../../service/login/login.service';
 
 describe('Login', () => {
@@ -15,6 +16,8 @@ describe('Login', () => {
     login: vi.fn(() => Promise.resolve()),
   };
 
+  const snackbarService = { showErrorMessage: vi.fn() };
+
   async function create(): Promise<Router> {
     await TestBed.configureTestingModule({
       imports: [Login],
@@ -22,6 +25,7 @@ describe('Login', () => {
         provideRouter([]),
         provideTranslateService(),
         { provide: LoginService, useValue: loginService },
+        { provide: SnackbarService, useValue: snackbarService },
       ],
     }).compileComponents();
     const router = TestBed.inject(Router);
@@ -45,6 +49,17 @@ describe('Login', () => {
 
     expect(loginService.login).toHaveBeenCalled();
     expect(component).toBeTruthy();
+  });
+
+  it('should show a message when the login cannot be started', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    loginService.login.mockRejectedValueOnce(new Error('Login is not configured'));
+    await create();
+
+    (fixture.nativeElement as HTMLElement).querySelector('button')!.click();
+    await fixture.whenStable();
+
+    expect(snackbarService.showErrorMessage).toHaveBeenCalledWith('auth.login_failed');
   });
 
   it('should go to the projects when already logged in', async () => {

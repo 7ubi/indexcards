@@ -94,6 +94,7 @@
     "delete_items_intro": "Folgende Daten werden gelöscht:",
     "delete_items": {
       "account": "dein Benutzerkonto (Nutzername, Vor- und Nachname),",
+      "login": "dein Konto beim Anmeldedienst (Benutzername, Name und Passwort bzw. die Verknüpfung mit deinem Google-Konto),",
       "projects": "alle deine Projekte,",
       "cards": "alle Karteikarten in diesen Projekten,",
       "progress": "dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine),",

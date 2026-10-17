@@ -32,7 +32,7 @@ export class DeleteAccount {
   /** The user has to type it to confirm the deletion (there is no password to ask for anymore). */
   readonly username = input.required<string>();
 
-  readonly deletedItems = ['account', 'projects', 'cards', 'progress', 'images'];
+  readonly deletedItems = ['account', 'login', 'projects', 'cards', 'progress', 'images'];
 
   readonly deleting = signal(false);
 
