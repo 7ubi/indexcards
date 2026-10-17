@@ -63,7 +63,14 @@ jobs:
       - name: Start docker-compose
         run: |
           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export JWT_SECRET=${{ secrets.JWT_SECRET }}
+          export AUTHENTIK_SECRET_KEY=${{ secrets.AUTHENTIK_SECRET_KEY }}
+          export AUTHENTIK_PG_PASSWORD=${{ secrets.AUTHENTIK_PG_PASSWORD }}
+          export AUTHENTIK_BOOTSTRAP_PASSWORD=${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
+          export AUTHENTIK_BOOTSTRAP_EMAIL=${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
+          export AUTHENTIK_URL=${{ vars.AUTHENTIK_URL }}
+          export INDEXCARDS_URL=${{ vars.INDEXCARDS_URL }}
+          export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           docker-compose down
           docker-compose up --build -d
   documentation:

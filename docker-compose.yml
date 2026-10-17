@@ -31,8 +31,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/indexcardsdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: 'root'
       SPRING_DATASOURCE_PASSWORD: '${DB_PASSWORD}'
-      # Base64-encoded JWT signing key (set in .env, e.g. `openssl rand -base64 64 | tr -d '\n'`)
-      JWT_SECRET: '${JWT_SECRET}'
+      # Tokens are issued by Authentik. The issuer is the public URL (must match the token's `iss`); keys are fetched
+      # over the internal network.
+      AUTHENTIK_ISSUER: '${AUTHENTIK_URL}/application/o/indexcards/'
+      AUTHENTIK_JWKS_URI: 'http://authentikservercontainer:9000/application/o/indexcards/jwks/'
+      AUTHENTIK_CLIENT_ID: 'indexcards'
       # Comma-separated usernames made admins on every start, if they exist
       DEFAULT_ADMINS: '${DEFAULT_ADMINS:-7ubi}'
     volumes:
@@ -47,6 +50,7 @@ services:
     restart: always
     depends_on:
       - mysqldb
+      - authentik-server
   frontend:
     container_name: frontendcontainer
     logging: *default-logging
@@ -61,10 +65,67 @@ services:
       - nginx_backend
     ports:
       - '4200:80'
+  authentik-db:
+    container_name: authentikdbcontainer
+    logging: *default-logging
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: 'authentik'
+      POSTGRES_USER: 'authentik'
+      POSTGRES_PASSWORD: '${AUTHENTIK_PG_PASSWORD}'
+    networks:
+      - authentik-net
+    restart: always
+    volumes:
+      - authentik-db:/var/lib/postgresql/data
+  authentik-server:
+    container_name: authentikservercontainer
+    logging: *default-logging
+    # 2025.10+ no longer needs Redis. When pinning an older version, add a redis service and AUTHENTIK_REDIS__HOST.
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2025.10}
+    command: server
+    environment: &authentik-environment
+      AUTHENTIK_SECRET_KEY: '${AUTHENTIK_SECRET_KEY}'
+      AUTHENTIK_POSTGRESQL__HOST: 'authentik-db'
+      AUTHENTIK_POSTGRESQL__NAME: 'authentik'
+      AUTHENTIK_POSTGRESQL__USER: 'authentik'
+      AUTHENTIK_POSTGRESQL__PASSWORD: '${AUTHENTIK_PG_PASSWORD}'
+      # Only used on the very first start to create the admin user "akadmin".
+      AUTHENTIK_BOOTSTRAP_PASSWORD: '${AUTHENTIK_BOOTSTRAP_PASSWORD}'
+      AUTHENTIK_BOOTSTRAP_EMAIL: '${AUTHENTIK_BOOTSTRAP_EMAIL}'
+      # Read by authentik/blueprints/indexcards.yaml
+      GOOGLE_CLIENT_ID: '${GOOGLE_CLIENT_ID}'
+      GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
+      INDEXCARDS_URL: '${INDEXCARDS_URL}'
+    volumes:
+      - './authentik/blueprints:/blueprints/custom'
+    ports:
+      - '9000:9000'
+    networks:
+      - authentik-net
+      - backend
+      - nginx_backend
+    restart: always
+    depends_on:
+      - authentik-db
+  authentik-worker:
+    container_name: authentikworkercontainer
+    logging: *default-logging
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2025.10}
+    command: worker
+    environment: *authentik-environment
+    volumes:
+      - './authentik/blueprints:/blueprints/custom'
+    networks:
+      - authentik-net
+    restart: always
+    depends_on:
+      - authentik-db
 
 networks:
   springmysql-net:
   backend:
+  authentik-net:
   nginx_backend:
     external: true
 
@@ -72,3 +133,4 @@ networks:
 volumes:
   my-db:
   image-storage:
+  authentik-db:
