@@ -1,5 +1,7 @@
 package com.x7ubi.indexcards.service.user;
 
+import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.AuthentikDeletionException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
@@ -7,10 +9,10 @@ import com.x7ubi.indexcards.models.Project;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.user.DeleteAccountRequest;
+import com.x7ubi.indexcards.service.authentication.AuthentikUserDeletionService;
 import com.x7ubi.indexcards.service.image.ImageStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -27,7 +29,8 @@ import java.util.regex.Pattern;
 
 /**
  * Deletes a user account together with all of its data: projects, index cards, their assessment history and the
- * uploaded images referenced by the user's index cards.
+ * uploaded images referenced by the user's index cards. The account's Authentik user is deleted too; if that fails,
+ * nothing is deleted.
  */
 @Service
 public class DeleteUserService extends AbstractUserService {
@@ -47,19 +50,22 @@ public class DeleteUserService extends AbstractUserService {
 
     private final EntityManager entityManager;
 
+    private final AuthentikUserDeletionService authentikUserDeletionService;
+
     public DeleteUserService(
-            UserRepo userRepo, PasswordEncoder passwordEncoder, ImageStorageService imageStorageService,
-            EntityManager entityManager) {
-        super(userRepo, passwordEncoder);
+            UserRepo userRepo, ImageStorageService imageStorageService, EntityManager entityManager,
+            AuthentikUserDeletionService authentikUserDeletionService) {
+        super(userRepo);
+        this.authentikUserDeletionService = authentikUserDeletionService;
         this.imageStorageService = imageStorageService;
         this.entityManager = entityManager;
     }
 
-    @Transactional
+    @Transactional(rollbackOn = AuthentikDeletionException.class)
     public void deleteUser(String username, DeleteAccountRequest deleteAccountRequest)
-            throws EntityNotFoundException, UnauthorizedException {
+            throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
         User user = getUser(username);
-        getWrongPasswordError(user, deleteAccountRequest == null ? null : deleteAccountRequest.getPassword());
+        getUsernameConfirmationError(user, deleteAccountRequest == null ? null : deleteAccountRequest.getUsername());
 
         Set<UUID> imageIds = collectImageIds(user);
         // Never delete an image that another user's card still references (e.g. copied Markdown).
@@ -69,9 +75,24 @@ public class DeleteUserService extends AbstractUserService {
         userRepo.delete(user);
         userRepo.flush();
 
+        // Last step before the commit: if Authentik fails, the whole deletion is rolled back and can be retried.
+        if (user.getOidcSubject() != null) {
+            authentikUserDeletionService.deleteUser(user.getOidcSubject());
+        }
+
         deleteImagesAfterCommit(imageIds);
 
         logger.info("User account was deleted");
+    }
+
+    /**
+     * Deleting is irreversible, so the user has to type their username to confirm it.
+     */
+    private void getUsernameConfirmationError(User user, String confirmation) throws UnauthorizedException {
+        if (confirmation == null || !confirmation.trim().equals(user.getUsername())) {
+            logger.error(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH);
+            throw new UnauthorizedException(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH);
+        }
     }
 
     private Set<UUID> collectImageIds(User user) {

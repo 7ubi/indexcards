@@ -2,23 +2,20 @@ package com.x7ubi.indexcards.service.user;
 
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
-import com.x7ubi.indexcards.exceptions.UnauthorizedException;
+import com.x7ubi.indexcards.models.Role;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.UserRepo;
+import com.x7ubi.indexcards.response.user.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AbstractUserService {
     private final Logger logger = LoggerFactory.getLogger(AbstractUserService.class);
 
     protected final UserRepo userRepo;
 
-    protected final PasswordEncoder passwordEncoder;
-
-    public AbstractUserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public AbstractUserService(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
     }
 
     protected User getUser(String username) throws EntityNotFoundException {
@@ -28,13 +25,8 @@ public class AbstractUserService {
         });
     }
 
-    /**
-     * Sensitive account operations require the current password again, even with a valid token.
-     */
-    protected void getWrongPasswordError(User user, String password) throws UnauthorizedException {
-        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
-            logger.error(ErrorMessage.User.WRONG_PASSWORD);
-            throw new UnauthorizedException(ErrorMessage.User.WRONG_PASSWORD);
-        }
+    protected static UserResponse toUserResponse(User user) {
+        return new UserResponse(
+                user.getUsername(), user.getFirstname(), user.getSurname(), user.getRole() == Role.ADMIN);
     }
 }

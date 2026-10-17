@@ -13,8 +13,8 @@ The backend is a Spring Boot 4.1 application (Java 21) in `indexcards/`. The pac
 | `request`     | Request DTOs, grouped by domain.                                                          |
 | `response`    | Response DTOs, grouped by domain.                                                         |
 | `mapper`      | MapStruct mappers between entities and DTOs (`ProjectMapper`, `IndexCardMapper`).         |
-| `jwt`         | Creating and validating JWTs (`JwtUtils`) and the 401 entry point (`AuthEntryPointJwt`).  |
-| `config`      | Spring Security, JWT filter, CORS and web configuration.                                  |
+| `jwt`         | The 401 entry point for requests without a valid token (`AuthEntryPointJwt`).             |
+| `config`      | Spring Security (OAuth2 resource server, `AuthentikJwtAuthenticationConverter`), CORS and web configuration. |
 | `exceptions`  | Custom exceptions and the `GlobalExceptionHandler`.                                       |
 | `error`       | `ErrorMessage` — the error codes returned to the frontend.                                |
 
@@ -23,14 +23,14 @@ The backend is a Spring Boot 4.1 application (Java 21) in `indexcards/`. The pac
 ```mermaid
 sequenceDiagram
     participant C as Client
-    participant F as AuthTokenFilter
+    participant F as Spring Security
     participant Ctrl as Controller
     participant S as Service
     participant R as Repository
-    C->>F: request with "Authorization: Bearer <jwt>"
-    F->>F: validate JWT, set SecurityContext
+    C->>F: request with "Authorization: Bearer <access token>"
+    F->>F: validate token (Authentik JWKS), map to SecurityUser, set SecurityContext
     F->>Ctrl: authenticated request
-    Ctrl->>Ctrl: username = JwtUtils.getUsernameFromAuthorizationHeader(...)
+    Ctrl->>Ctrl: username = securityUser.getUsername()
     Ctrl->>S: operation(username, request)
     S->>R: load user + entity, check ownership
     S->>R: save / delete
@@ -40,8 +40,8 @@ sequenceDiagram
 
 ### Controllers
 
-Controllers are thin. They read the username from the `Authorization` header and delegate to a service. They never
-return entities, only response DTOs.
+Controllers are thin. They take the authenticated user as `@AuthenticationPrincipal SecurityUser` and pass its username
+to a service. They never return entities, only response DTOs.
 
 ### Services
 
@@ -75,8 +75,8 @@ Exceptions are translated into HTTP responses by `GlobalExceptionHandler`. The r
 | `EntityNotFoundException`  | 400    | `project_not_found`, `indexcard_not_found`, `image_not_found`, `username_not_found` |
 | `EntityCreationException`  | 400    | `project_name_exists`, `project_name_too_long`, `invalid_image` |
 | `UsernameExistsException`  | 400    | `username_exists`                                              |
-| `UnauthorizedException`    | 401    | `user_not_project_owner`, `wrong_password`                     |
-| `BadCredentialsException`  | 401    | `bad_credentials`                                              |
+| `UnauthorizedException`    | 401    | `user_not_project_owner`, `username_confirmation_mismatch`     |
+| `AuthentikDeletionException` | 503  | `authentik_deletion_failed`                                    |
 | any other exception        | 500    | `Internal server error`                                        |
 
 When adding a new error, add the code to `ErrorMessage` and a translation under `backend` in
@@ -84,16 +84,18 @@ When adding a new error, add the code to `ErrorMessage` and a translation under 
 
 ## Authentication
 
-Authentication is stateless with JWTs:
+Authentication is delegated to Authentik (OIDC). The backend is an OAuth2 resource server:
 
-- `POST /api/auth/login` checks the credentials with Spring Security's `AuthenticationManager` and returns a JWT
-  signed with HS512. Tokens expire after 24 hours (`bezkoder.app.jwtExpirationMs`).
-- `AuthTokenFilter` validates the token of every request and sets the security context.
-- Passwords are hashed with BCrypt.
+- Every request's bearer access token is validated against Authentik's signing keys (JWKS), issuer and audience
+  (`spring.security.oauth2.resourceserver.jwt.*`, see `config/AuthentikJwtAuthenticationConverter.java`).
+- The token's `sub` is mapped to the local user (`oidc_subject`), which is created on first use
+  (`OidcUserProvisioningService`). An account is only created for a fresh token (issued at most 5 minutes ago,
+  otherwise `401`): an access token stays valid up to 24 hours, so an old token must not re-create an account that was
+  deleted in the meantime.
+- Members of the Authentik group `indexcards-admins` (token claim `groups`) get the `ADMIN` role (`AdminGroupService`).
+- Passwords are stored and hashed only in Authentik; the backend never sees them.
 - `SecurityConfig` permits `/api/auth/**`, `/api/test/**` and `GET /api/images/**` without authentication; everything
   else requires a valid token. Unauthenticated requests get a `401` from `AuthEntryPointJwt`.
-
-The signing key is read from `JWT_SECRET` (see [configuration](../operations/deployment.md#configuration)).
 
 ## Index card content
 
@@ -109,7 +111,8 @@ does not interpret it, except when deleting a user (see below).
 Images are **not** linked to users or cards in the database. Cards reference them in their Markdown as
 `/api/images/<uuid>`. When a user deletes their account, `DeleteUserService` scans the user's cards for these
 references and deletes the image files after the database transaction was committed, skipping images that are still
-referenced by cards of other users.
+referenced by cards of other users. It also deletes the Authentik user through `AuthentikUserDeletionService` (Authentik
+API, service-account token `AUTHENTIK_API_TOKEN`); if that fails, the deletion is rolled back.
 
 ## Spaced repetition
 
@@ -117,6 +120,6 @@ Scheduling is implemented in `SpacedRepetitionScheduler`. See [Spaced Repetition
 
 ## Tests
 
-Tests are in `indexcards/src/test`, grouped like the services (`indexcard`, `project`, `user`, `image`, `jwt`). They use
+Tests are in `indexcards/src/test`, grouped like the services (`admin`, `image`, `indexcard`, `project`, `user`). They use
 JUnit 5 with an in-memory H2 database configured in `TestConfig.java` and the `*TestConfig.java` classes of each
 feature.

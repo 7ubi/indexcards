@@ -10,7 +10,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,8 +26,6 @@ import java.util.ArrayList;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class UserTestConfig extends TestConfig {
 
-    protected static final String PASSWORD = "1234";
-
     @Autowired
     protected UserRepo userRepo;
 
@@ -37,9 +34,6 @@ public abstract class UserTestConfig extends TestConfig {
 
     @Autowired
     protected IndexCardRepo indexCardRepo;
-
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
 
     protected User user;
 
@@ -61,7 +55,6 @@ public abstract class UserTestConfig extends TestConfig {
         newUser.setFirstname("Max");
         newUser.setSurname("Muster");
         newUser.setProjects(new ArrayList<>());
-        newUser.setPassword(this.passwordEncoder.encode(PASSWORD));
         return this.userRepo.save(newUser);
     }
 }

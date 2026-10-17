@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Login } from './pages/auth/login/login';
-import { Signup } from './pages/auth/signup/signup';
+import { LoginCallback } from './pages/auth/login-callback/login-callback';
 import { AllProjects } from './pages/project/all-projects/all-projects';
 import { LoginRequired } from './service/login/login-required';
 import { AdminRequired } from './service/login/admin-required';
@@ -18,12 +18,17 @@ import { DueQuiz } from './pages/indexcard/due-quiz/due-quiz';
 
 export const routes: Routes = [
   {
+    path: 'login/callback',
+    component: LoginCallback,
+  },
+  {
     path: 'login',
     component: Login,
   },
   {
+    // Signup now happens at Authentik, reached from the login page.
     path: 'signup',
-    component: Signup,
+    redirectTo: 'login',
   },
   {
     path: 'privacy',

@@ -28,9 +28,6 @@ public class User implements Serializable {
     @Column(nullable = false, length = 100)
     private String surname;
 
-    @Column(nullable = false, length = 100)
-    private String password;
-
     // Stored as the enum name in a varchar column (see V4 migration), not as a native MySQL enum.
     @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
@@ -40,17 +37,20 @@ public class User implements Serializable {
     // Null for users created before the V4 migration.
     private LocalDateTime createdAt;
 
+    // Subject ("sub") of the Authentik access token; null for accounts from the former password login.
+    @Column(unique = true)
+    private String oidcSubject;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
 
     public User() {
     }
 
-    public User(String username, String firstname, String surname, String password, List<Project> projects) {
+    public User(String username, String firstname, String surname, List<Project> projects) {
         this.username = username;
         this.firstname = firstname;
         this.surname = surname;
-        this.password = password;
         this.projects = projects;
     }
 
@@ -82,14 +82,6 @@ public class User implements Serializable {
         this.surname = surname;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -104,6 +96,14 @@ public class User implements Serializable {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getOidcSubject() {
+        return oidcSubject;
+    }
+
+    public void setOidcSubject(String oidcSubject) {
+        this.oidcSubject = oidcSubject;
     }
 
     public List<Project> getProjects() {

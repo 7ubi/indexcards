@@ -1,8 +1,6 @@
-export interface LoginResponse {
-  readonly token: string;
-  readonly type: string;
-  readonly id: string;
-  readonly username: string;
+export interface AuthConfigResponse {
+  readonly authority: string;
+  readonly clientId: string;
 }
 
 export interface UserResponse {

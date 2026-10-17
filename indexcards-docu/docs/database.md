@@ -16,7 +16,7 @@ erDiagram
         varchar(100) username
         varchar(100) firstname
         varchar(100) surname
-        varchar(100) password "BCrypt hash"
+        varchar(255) oidc_subject "unique, nullable"
         varchar(20) role "USER or ADMIN"
         datetime created_at "nullable"
     }
@@ -52,7 +52,9 @@ erDiagram
 
 ### user
 
-A user account. The username is unique (checked by the application), the password is stored as a BCrypt hash.
+A user account. The username is unique (checked by the application), `oidc_subject` is the
+Authentik user UUID (token claim `sub`, unique); it is `null` for legacy accounts that have not logged in via Authentik yet.
+Passwords are stored in Authentik, not in the app.
 `role` is `USER` or `ADMIN` (stored as text); admins can open the [analytics](user-guide/admin.md) page.
 `created_at` is the signup date; it is `null` for accounts created before migration 4.
 

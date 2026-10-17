@@ -5,13 +5,12 @@ public class ErrorMessage {
     public static String INTERNAL_SERVER_ERROR = "Internal server error";
 
     public static class Authentication {
-        public static final String BAD_CREDENTIALS = "bad_credentials";
         public static final String FORBIDDEN = "forbidden";
         public static String USERNAME_EXITS = "username_exists";
     }
 
     public static class User {
-        public static final String WRONG_PASSWORD = "wrong_password";
+        public static final String USERNAME_CONFIRMATION_MISMATCH = "username_confirmation_mismatch";
 
         public static final String USERNAME_EMPTY = "username_empty";
 
@@ -19,7 +18,7 @@ public class ErrorMessage {
 
         public static final String USERNAME_UNCHANGED = "username_unchanged";
 
-        public static final String PASSWORD_EMPTY = "password_empty";
+        public static final String AUTHENTIK_DELETION_FAILED = "authentik_deletion_failed";
     }
 
     public static class Project {

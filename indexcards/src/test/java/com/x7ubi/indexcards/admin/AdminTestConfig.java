@@ -66,7 +66,6 @@ public abstract class AdminTestConfig extends TestConfig {
         newUser.setFirstname("Max");
         newUser.setSurname("Muster");
         newUser.setProjects(new ArrayList<>());
-        newUser.setPassword("1234");
         newUser.setRole(role);
         newUser.setCreatedAt(createdAt);
         return this.userRepo.save(newUser);

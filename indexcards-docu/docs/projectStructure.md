@@ -24,8 +24,8 @@ flowchart LR
 
 ## Backend
 
-The backend is a Spring Boot REST API in the package `com.x7ubi.indexcards`. It handles authentication with JWTs,
-stores users, projects and index cards in MySQL and stores uploaded images on disk. See [Backend](development/backend.md).
+The backend is a Spring Boot REST API in the package `com.x7ubi.indexcards`. It validates the Authentik (OIDC)
+access tokens of the users, stores users, projects and index cards in MySQL and stores uploaded images on disk. See [Backend](development/backend.md).
 
 ## Frontend
 

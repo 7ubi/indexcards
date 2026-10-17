@@ -23,7 +23,7 @@ class HttpService {
         // These 401s are expected user errors, not an invalid session: stay logged in.
         if (
           err.status === 401 &&
-          !['user_not_project_owner', 'wrong_password'].includes(err.error)
+          !['user_not_project_owner', 'username_confirmation_mismatch'].includes(err.error)
         ) {
           this.loginService.logout();
         }

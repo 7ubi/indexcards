@@ -27,6 +27,10 @@ describe('Privacy', () => {
     expect(compiled.querySelectorAll('section h2').length).toBe(component.sections.length);
   });
 
+  it('should explain the login right after the user account', () => {
+    expect(component.sections.indexOf('login')).toBe(component.sections.indexOf('account') + 1);
+  });
+
   it('should only return string arrays from toLines', () => {
     expect(component.toLines(['a', 'b'])).toEqual(['a', 'b']);
     expect(component.toLines('privacy.sections.missing.items')).toEqual([]);

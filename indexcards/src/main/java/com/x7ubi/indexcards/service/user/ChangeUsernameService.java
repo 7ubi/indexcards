@@ -3,16 +3,13 @@ package com.x7ubi.indexcards.service.user;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
-import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
-import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.models.User;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.user.ChangeUsernameRequest;
-import com.x7ubi.indexcards.response.common.JwtResponse;
+import com.x7ubi.indexcards.response.user.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -22,21 +19,17 @@ public class ChangeUsernameService extends AbstractUserService {
 
     private final Logger logger = LoggerFactory.getLogger(ChangeUsernameService.class);
 
-    private final JwtUtils jwtUtils;
-
-    public ChangeUsernameService(UserRepo userRepo, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
-        super(userRepo, passwordEncoder);
-        this.jwtUtils = jwtUtils;
+    public ChangeUsernameService(UserRepo userRepo) {
+        super(userRepo);
     }
 
     /**
-     * The username is the subject of the JWT, so the caller receives a new token for the new username.
+     * Users are identified by their Authentik subject, not their username, so the access token stays valid.
      */
     @Transactional
-    public JwtResponse changeUsername(String username, ChangeUsernameRequest changeUsernameRequest)
-            throws EntityNotFoundException, UnauthorizedException, EntityCreationException, UsernameExistsException {
+    public UserResponse changeUsername(String username, ChangeUsernameRequest changeUsernameRequest)
+            throws EntityNotFoundException, EntityCreationException, UsernameExistsException {
         User user = getUser(username);
-        getWrongPasswordError(user, changeUsernameRequest.getPassword());
 
         String newUsername = changeUsernameRequest.getUsername() == null
                 ? "" : changeUsernameRequest.getUsername().trim();
@@ -47,7 +40,7 @@ public class ChangeUsernameService extends AbstractUserService {
 
         logger.info("Username was changed");
 
-        return new JwtResponse(jwtUtils.generateJwtTokenForUsername(newUsername), user.getId(), newUsername);
+        return toUserResponse(user);
     }
 
     private void getUsernameError(User user, String newUsername)

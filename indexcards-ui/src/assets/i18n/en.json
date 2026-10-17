@@ -9,21 +9,14 @@
   "auth": {
     "admin_required": "Only admins can open this page",
     "username": "Username",
-    "password": "Password",
-    "no_account": "Don't have an Account? Then create one",
-    "here": "here",
     "login": "Login",
     "firstname": "Firstname",
     "lastname": "Lastname",
-    "repeat_password": "Repeat Password",
-    "signup": "Create an account",
-    "have_account": "Already have an Account? Then login",
     "fields_required": "All fields are required!",
-    "password_match": "Passwords do not match!",
-    "account_created": "Account was created! Please login!",
-    "username_required": "Username is required",
-    "password_required": "Password is required",
-    "unauthorized": "You need to be logged in to enter this page!"
+    "unauthorized": "You need to be logged in to enter this page!",
+    "login_button": "Sign in or create account",
+    "login_hint": "Sign in with your username and password or with your Google account. New here? You can create an account on the next page.",
+    "login_failed": "Login failed. Please try again."
   },
   "project": {
     "your_projects": "Your Projects",
@@ -100,26 +93,23 @@
     "delete_warning": "Deleting your account is permanent and cannot be undone. Your data cannot be restored afterwards.",
     "delete_items_intro": "The following data will be deleted:",
     "delete_items": {
-      "account": "your user account (username, first and last name, password hash),",
+      "account": "your user account (username, first and last name),",
+      "login": "your login account at the login service (username, name and password, or the link to your Google account),",
       "projects": "all of your projects,",
       "cards": "all index cards in these projects,",
       "progress": "your learning progress (ratings, rating history and review dates),",
       "images": "uploaded images that are embedded in your index cards."
     },
-    "delete_password_hint": "Please enter your password to confirm.",
     "delete_button": "Delete account permanently",
     "deleted": "Your account and all associated data were deleted.",
-    "current_password": "Current password",
-    "new_password": "New password",
-    "repeat_new_password": "Repeat new password",
     "change_username": "Change username",
-    "change_password": "Change password",
     "username_changed": "Your username was changed.",
     "username_not_changed": "The username was not changed.",
-    "password_changed": "Your password was changed.",
     "settings": "Settings",
     "show_due_dialog": "Show \"due today\" reminder",
-    "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser."
+    "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser.",
+    "delete_username_hint": "Please type your username \"{{username}}\" to confirm.",
+    "delete_username_mismatch": "The entered username does not match your username."
   },
   "admin": {
     "title": "Analytics",
@@ -154,13 +144,12 @@
     "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed",
     "user_not_project_owner": "You are not the owner of this project",
     "project_archived": "The project is archived, its index cards cannot be changed",
-    "bad_credentials": "Wrong Username or Password!",
-    "wrong_password": "Wrong password!",
     "username_empty": "The username must not be empty",
     "username_too_long": "The username is too long, only 100 characters are allowed",
     "username_unchanged": "The new username is the same as the current one",
-    "password_empty": "The password must not be empty",
-    "forbidden": "You are not allowed to do this"
+    "forbidden": "You are not allowed to do this",
+    "username_confirmation_mismatch": "The entered username does not match your username.",
+    "authentik_deletion_failed": "Your login account could not be deleted right now, so nothing was deleted. Please try again later."
   },
   "unrated": "Unrated",
   "bad": "Bad",
@@ -171,7 +160,7 @@
     "signup_notice": "For information on how we process your data, please see our",
     "signup_notice_link": "privacy policy",
     "title": "Privacy Policy",
-    "last_updated": "Last updated: September 2026",
+    "last_updated": "Last updated: October 2026",
     "intro": [
       "In this privacy policy we inform you, in accordance with Articles 13 and 14 of the General Data Protection Regulation (GDPR), which personal data is processed when you use the web application “Indexcards”, for which purposes and on which legal basis, and which rights you have. In case of doubt, the German version of this privacy policy prevails."
     ],
@@ -194,10 +183,10 @@
           "data that is technically generated when you access the application (server log data),",
           "the data of your user account,",
           "the content you create and your learning progress,",
-          "entries in your browser's storage (no cookies)."
+          "entries in your browser's storage and a session cookie of our login service."
         ],
         "paragraphs_after": [
-          "We do not use cookies, analytics or tracking tools, or advertising. Your data is not sold and is not used for advertising purposes."
+          "We do not use analytics or tracking tools, or advertising. Apart from the cookies required for logging in, no cookies are used. Your data is not sold and is not used for advertising purposes."
         ]
       },
       "hosting": {
@@ -219,18 +208,34 @@
         ]
       },
       "account": {
-        "title": "Registration and user account",
+        "title": "User account",
         "paragraphs": [
-          "A user account is required to use Indexcards. When you register, we process:"
+          "A user account is required to use Indexcards. It is created automatically when you log in for the first time (see section “Login”). The application stores:"
         ],
         "items": [
-          "username,",
-          "first name and last name,",
-          "password – this is stored exclusively as a cryptographic hash (bcrypt) and cannot be viewed by us in plain text."
+          "a pseudonymous identifier of your login account that links your login to your user account,",
+          "username – initially the username you chose at our login service; you can change it on the account page,",
+          "first name and last name, taken from the name of your login account (the name you entered when signing up, or the name of your Google account)."
         ],
         "paragraphs_after": [
-          "No email address is collected. When you log in, your username and password are verified and an access token (JSON Web Token) is issued that contains your username and is valid for 24 hours.",
-          "This processing is carried out to provide the user account and thus to perform the user agreement (Art. 6(1)(b) GDPR). You may also use pseudonyms for your first and last name."
+          "The application itself does not store a password or an email address. When you log in, our login service issues an access token (JSON Web Token) that contains the identifier, your username and your name and is valid for 24 hours.",
+          "This processing is carried out to provide the user account and thus to perform the user agreement (Art. 6(1)(b) GDPR)."
+        ]
+      },
+      "login": {
+        "title": "Login",
+        "paragraphs": [
+          "You log in through our own login service (the open-source software authentik, operated by us on the servers named in section “Hosting and server log files”). You can either create an account there with a username and password or log in with your Google account.",
+          "Username and password: When you sign up, our login service stores your username, your name and your password. The password is stored only as a salted cryptographic hash and cannot be viewed by us in plain text. No email address is collected; if you forget your password, contact us using the address above.",
+          "Google: When you click the Google button, you are redirected to Google. Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland, then receives in particular your IP address, information about your browser and the information that you want to log in to Indexcards, and verifies your login. Google processes this data as a separate controller under its own privacy policy: https://policies.google.com/privacy. A transfer of data to Google LLC in the USA cannot be ruled out; Google LLC is certified under the EU-US Data Privacy Framework (adequacy decision of the European Commission, Art. 45 GDPR).",
+          "After a successful login, Google transmits your Google account ID, your email address and your name to our login service; you also choose a username on your first login.",
+          "Our login service stores this data for as long as your login account exists. In addition, it records:"
+        ],
+        "items": [
+          "login events (date, time, IP address and browser), which are deleted automatically after 365 days."
+        ],
+        "paragraphs_after": [
+          "Your password, email address and Google account ID are only used for logging in and are not passed on to the Indexcards application. Our login service sets a session cookie, and when you use Google, Google sets its own cookies; they are strictly necessary for logging in (Section 25(2) no. 2 TDDDG). The legal basis for the processing is Art. 6(1)(b) GDPR."
         ]
       },
       "content": {
@@ -252,12 +257,12 @@
         ]
       },
       "browser_storage": {
-        "title": "Storage in your browser (no cookies)",
+        "title": "Storage in your browser",
         "paragraphs": [
-          "The application does not set any cookies. It does, however, store the following entries in your browser's storage:"
+          "The application itself does not set any cookies (for the cookies of the login see section “Login”). It does, however, store the following entries in your browser's storage:"
         ],
         "items": [
-          "Session storage: your access token (JSON Web Token) after logging in and a technical status value. These entries are deleted when you log out or close the browser tab; the token also expires after 24 hours.",
+          "Session storage: your access and ID token after logging in and a technical status value; local storage: a temporary value while you are being redirected to the login. These entries are deleted when you log out or close the browser tab (respectively after the login is completed); the access token also expires after 24 hours.",
           "Local storage: your language setting (German or English) so that the application is displayed in your language. This entry remains until you delete it via your browser settings."
         ],
         "paragraphs_after": [
@@ -281,7 +286,7 @@
       "recipients": {
         "title": "Recipients of your data",
         "paragraphs": [
-          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
+          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. If you log in with Google, Google receives the data described in section “Login”. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
           "Data is only disclosed to authorities if we are legally obliged to do so (Art. 6(1)(c) GDPR)."
         ]
       },
@@ -293,7 +298,7 @@
         "items": [
           "Account data, projects, index cards and learning progress are stored for as long as your user account exists.",
           "You can delete projects and index cards yourself in the application at any time. Deleting a project also deletes all of its index cards and their rating history.",
-          "You can delete your user account yourself at any time in the application: after logging in, open the account menu (person icon at the top right) and select “Delete account”; confirm the deletion with your password. This immediately and permanently deletes your user account (username, first and last name, password hash), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards.",
+          "You can delete your user account yourself at any time in the application: after logging in, open the account page (via the person icon at the top right, then “Account”) and select “Delete account permanently”; confirm the deletion by entering your username. This immediately and permanently deletes your user account (identifier, username, first and last name), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards. This also deletes your login account at our login service (username, name and password hash, or the link to your Google account with Google account ID, email address and name); login events that have already been recorded are kept until they are deleted automatically after 365 days. If the login service is temporarily unavailable, nothing is deleted and you can try again later.",
           "Alternatively, you can request the deletion of your account, including all content and uploaded images, at any time and without any formal requirements using the contact address above; we will carry out the deletion without undue delay and within one month at the latest.",
           "Uploaded images are not removed automatically when an index card is deleted or an image is removed from an index card; such images are also not covered by the account deletion in the application, as they are no longer linked to your account. We will delete them completely on request.",
           "Server log data is rotated automatically and deleted with the next update of the application at the latest (see section “Hosting and server log files”)."
@@ -302,7 +307,7 @@
       "security": {
         "title": "Data security",
         "paragraphs": [
-          "We take appropriate technical and organisational measures to protect your data. These include, in particular, encrypted transmission via HTTPS (TLS), storing passwords exclusively as bcrypt hashes and token-based authentication in which every access to projects and index cards is checked against the permissions of the respective account."
+          "We take appropriate technical and organisational measures to protect your data. These include, in particular, encrypted transmission via HTTPS (TLS), storing passwords exclusively as salted hashes in our login service, which the application itself never receives, and token-based authentication in which every access to projects and index cards is checked against the permissions of the respective account."
         ]
       },
       "rights": {
@@ -326,7 +331,7 @@
       "obligation": {
         "title": "Obligation to provide data and automated decision-making",
         "paragraphs": [
-          "Providing a username, first and last name and password is required for registration. Without this information you cannot use the application. There is no legal obligation to provide this data.",
+          "To use the application you need a login account, either with username, name and password or via your Google account; your user account with username, first and last name is then created automatically. Without this you cannot use the application. There is no legal obligation to provide this data.",
           "No automated decision-making, including profiling, within the meaning of Art. 22 GDPR takes place. The automatic calculation of review dates for your index cards serves solely to plan your learning and has no legal or similarly significant effect."
         ]
       },

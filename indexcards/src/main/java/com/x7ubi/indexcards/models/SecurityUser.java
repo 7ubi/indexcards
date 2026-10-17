@@ -23,7 +23,8 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        // Users log in at Authentik; there is no local password.
+        return null;
     }
 
     @Override
