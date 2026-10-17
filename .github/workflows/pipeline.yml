@@ -68,6 +68,7 @@ jobs:
           export AUTHENTIK_BOOTSTRAP_PASSWORD=${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
           export AUTHENTIK_BOOTSTRAP_EMAIL=${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
           export AUTHENTIK_URL=${{ vars.AUTHENTIK_URL }}
+          export AUTHENTIK_API_TOKEN=${{ secrets.AUTHENTIK_API_TOKEN }}
           export INDEXCARDS_URL=${{ vars.INDEXCARDS_URL }}
           export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}

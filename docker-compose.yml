@@ -36,6 +36,9 @@ services:
       AUTHENTIK_ISSUER: '${AUTHENTIK_URL}/application/o/indexcards/'
       AUTHENTIK_JWKS_URI: 'http://authentikservercontainer:9000/application/o/indexcards/jwks/'
       AUTHENTIK_CLIENT_ID: 'indexcards'
+      # Deletes the Authentik user when an account is deleted (service account "indexcards-backend" from the blueprint).
+      AUTHENTIK_API_URL: 'http://authentikservercontainer:9000/api/v3'
+      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN}'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images
@@ -95,6 +98,7 @@ services:
       GOOGLE_CLIENT_ID: '${GOOGLE_CLIENT_ID}'
       GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
       INDEXCARDS_URL: '${INDEXCARDS_URL}'
+      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN}'
     volumes:
       - './authentik/blueprints:/blueprints/custom'
     ports:

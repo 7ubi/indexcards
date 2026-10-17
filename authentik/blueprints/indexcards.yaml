@@ -205,7 +205,8 @@ entries:
       signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
       # Same lifetime as the app's former own token.
       access_token_validity: hours=24
-      sub_mode: hashed_user_id
+      # The subject is the Authentik user's UUID, so the backend can find the user through the API to delete it.
+      sub_mode: user_uuid
       property_mappings:
         - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-openid]]
         - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-profile]]
@@ -227,3 +228,45 @@ entries:
     attrs:
       name: indexcards-admins
       is_superuser: false
+
+  # --- Backend access to the Authentik API ---
+  # The backend deletes a user's Authentik account when they delete their Index Cards account. The role only allows
+  # viewing and deleting users; the token key comes from the environment.
+  - model: authentik_rbac.role
+    id: indexcards-backend-role
+    identifiers:
+      name: indexcards-backend
+    attrs:
+      permissions:
+        - authentik_core.view_user
+        - authentik_core.delete_user
+
+  - model: authentik_core.group
+    id: indexcards-backend-group
+    identifiers:
+      name: indexcards-backend
+    attrs:
+      name: indexcards-backend
+      is_superuser: false
+      roles:
+        - !KeyOf indexcards-backend-role
+
+  - model: authentik_core.user
+    id: indexcards-backend-user
+    identifiers:
+      username: indexcards-backend
+    attrs:
+      name: Index Cards backend
+      type: service_account
+      groups:
+        - !KeyOf indexcards-backend-group
+
+  - model: authentik_core.token
+    identifiers:
+      identifier: indexcards-backend-api
+    attrs:
+      user: !KeyOf indexcards-backend-user
+      intent: api
+      expiring: false
+      key: !Env AUTHENTIK_API_TOKEN
+      description: Index Cards backend (deletes users together with their app account)
