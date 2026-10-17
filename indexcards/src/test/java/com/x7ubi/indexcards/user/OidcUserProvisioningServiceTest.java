@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class OidcUserProvisioningServiceTest extends UserTestConfig {
 
     @Autowired
@@ -93,7 +96,42 @@ public class OidcUserProvisioningServiceTest extends UserTestConfig {
     @Test
     public void tokenWithoutSubjectIsRejectedTest() {
         // given
-        Jwt jwt = Jwt.withTokenValue("token").header("alg", "RS256").claim("preferred_username", "alice").build();
+        Jwt jwt = Jwt.withTokenValue("token").header("alg", "RS256").issuedAt(Instant.now()).claim("preferred_username", "alice").build();
+
+        // when / then
+        Assertions.assertThrows(InvalidBearerTokenException.class,
+                () -> this.oidcUserProvisioningService.getOrCreateUser(jwt));
+        Assertions.assertEquals(2, this.userRepo.count());
+    }
+
+    @Test
+    public void staleTokenOfUnknownSubjectIsRejectedTest() {
+        // given
+        Jwt jwt = jwt("subject-1", "alice", "Alice Liddell", Instant.now().minus(Duration.ofMinutes(10)));
+
+        // when / then
+        Assertions.assertThrows(InvalidBearerTokenException.class,
+                () -> this.oidcUserProvisioningService.getOrCreateUser(jwt));
+        Assertions.assertEquals(2, this.userRepo.count());
+    }
+
+    @Test
+    public void staleTokenOfKnownSubjectReturnsExistingUserTest() {
+        // given
+        User first = this.oidcUserProvisioningService.getOrCreateUser(jwt("subject-1", "alice", "Alice Liddell"));
+
+        // when
+        User second = this.oidcUserProvisioningService.getOrCreateUser(
+                jwt("subject-1", "alice", "Alice Liddell", Instant.now().minus(Duration.ofHours(5))));
+
+        // then
+        Assertions.assertEquals(first.getId(), second.getId());
+    }
+
+    @Test
+    public void tokenWithoutIssuedAtOfUnknownSubjectIsRejectedTest() {
+        // given
+        Jwt jwt = jwt("subject-1", "alice", "Alice Liddell", null);
 
         // when / then
         Assertions.assertThrows(InvalidBearerTokenException.class,
@@ -102,7 +140,14 @@ public class OidcUserProvisioningServiceTest extends UserTestConfig {
     }
 
     private static Jwt jwt(String subject, String preferredUsername, String name) {
+        return jwt(subject, preferredUsername, name, Instant.now());
+    }
+
+    private static Jwt jwt(String subject, String preferredUsername, String name, Instant issuedAt) {
         Jwt.Builder builder = Jwt.withTokenValue("token").header("alg", "RS256").subject(subject);
+        if (issuedAt != null) {
+            builder.issuedAt(issuedAt);
+        }
         if (preferredUsername != null) {
             builder.claim("preferred_username", preferredUsername);
         }

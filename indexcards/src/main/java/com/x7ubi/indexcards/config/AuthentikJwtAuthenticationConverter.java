@@ -6,7 +6,9 @@ import com.x7ubi.indexcards.service.admin.AdminGroupService;
 import com.x7ubi.indexcards.service.authentication.OidcUserProvisioningService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,15 @@ public class AuthentikJwtAuthenticationConverter implements Converter<Jwt, Abstr
 
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
-        User user = adminGroupService.grantAdminFromGroups(oidcUserProvisioningService.getOrCreateUser(jwt), jwt);
+        User user;
+        try {
+            user = adminGroupService.grantAdminFromGroups(oidcUserProvisioningService.getOrCreateUser(jwt), jwt);
+        } catch (AuthenticationException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            // E.g. a database outage: the token is fine, so this must not look like a 401 (which logs the user out).
+            throw new AuthenticationServiceException("Could not load the user of the token", e);
+        }
         SecurityUser securityUser = new SecurityUser(user);
         return new UsernamePasswordAuthenticationToken(securityUser, jwt, securityUser.getAuthorities());
     }

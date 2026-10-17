@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.config.ObjectPostProcessor;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -52,6 +55,21 @@ public class SecurityConfig {
                 // spring.security.oauth2.resourceserver.jwt.* in application.properties.
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .authenticationEntryPoint(unauthorizedHandler)
+                        // Bad tokens answer 401 (the frontend logs out); an internal failure while loading the user
+                        // (AuthenticationServiceException) answers 503 and keeps the user logged in.
+                        .withObjectPostProcessor(new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
+                            @Override
+                            public <O extends BearerTokenAuthenticationFilter> O postProcess(O filter) {
+                                filter.setAuthenticationFailureHandler((request, response, exception) -> {
+                                    if (exception instanceof AuthenticationServiceException) {
+                                        response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                                    } else {
+                                        unauthorizedHandler.commence(request, response, exception);
+                                    }
+                                });
+                                return filter;
+                            }
+                        })
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(authentikJwtAuthenticationConverter)));
 
         return http.build();

@@ -89,7 +89,8 @@ not linked. The app never sees passwords or email addresses; the backend only va
 
 There is no email, so there is no self-service password reset. If a user forgets their password, open
 *Directory → Users* in the Authentik admin, select the user and use *Create recovery link*, then send them the link.
-Disabling or deleting a user there blocks their login. Authentik is configured by the blueprint
+Disabling or deleting a user there blocks their login. Sessions that are already open stay valid until their access
+token expires (up to 24 hours). Authentik is configured by the blueprint
 `authentik/blueprints/indexcards.yaml`, which the worker applies on every start.
 
 When a user deletes their account in the app, the backend also deletes the Authentik user through the Authentik API.

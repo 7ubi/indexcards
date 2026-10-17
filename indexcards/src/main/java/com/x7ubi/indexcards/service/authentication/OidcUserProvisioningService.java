@@ -10,6 +10,9 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -24,12 +27,17 @@ public class OidcUserProvisioningService {
 
     private static final String FALLBACK_USERNAME = "user";
 
+    private static final Duration MAX_PROVISIONING_TOKEN_AGE = Duration.ofMinutes(5);
+
     private final Logger logger = LoggerFactory.getLogger(OidcUserProvisioningService.class);
 
     private final UserRepo userRepo;
 
-    public OidcUserProvisioningService(UserRepo userRepo) {
+    private final Clock clock;
+
+    public OidcUserProvisioningService(UserRepo userRepo, Clock clock) {
         this.userRepo = userRepo;
+        this.clock = clock;
     }
 
     public User getOrCreateUser(Jwt jwt) {
@@ -42,6 +50,14 @@ public class OidcUserProvisioningService {
     }
 
     private User createUser(String subject, Jwt jwt) {
+        // An access token stays valid for up to 24 h, also after the account (and its Authentik user) was deleted.
+        // Without this check another tab with the old token would re-create the deleted account. A fresh token
+        // (issued by a new login) proves the Authentik user still exists.
+        Instant issuedAt = jwt.getIssuedAt();
+        if (issuedAt == null || issuedAt.isBefore(clock.instant().minus(MAX_PROVISIONING_TOKEN_AGE))) {
+            throw new InvalidBearerTokenException("Token is too old to create an account, please log in again");
+        }
+
         User user = new User();
         user.setOidcSubject(subject);
         user.setUsername(getUniqueUsername(jwt.getClaimAsString("preferred_username")));

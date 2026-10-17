@@ -3,17 +3,24 @@ package com.x7ubi.indexcards.user;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.x7ubi.indexcards.service.authentication.OidcUserProvisioningService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -35,6 +42,9 @@ public class AuthenticationSecurityTest extends UserTestConfig {
     // Replaces the Authentik-backed decoder; in these tests the token value is the token's subject.
     @MockitoBean
     private JwtDecoder jwtDecoder;
+
+    @MockitoSpyBean
+    private OidcUserProvisioningService oidcUserProvisioningService;
 
     private MockMvc mockMvc;
 
@@ -75,6 +85,23 @@ public class AuthenticationSecurityTest extends UserTestConfig {
     }
 
     @Test
+    public void staleTokenOfUnknownSubjectIsUnauthorizedTest() throws Exception {
+        this.mockMvc.perform(get("/api/user").header("Authorization", "Bearer stale-subject"))
+                .andExpect(status().isUnauthorized());
+
+        Assertions.assertEquals(2, this.userRepo.count());
+    }
+
+    @Test
+    public void databaseFailureDuringProvisioningIsServiceUnavailableTest() throws Exception {
+        doThrow(new DataAccessResourceFailureException("db down")).when(this.oidcUserProvisioningService)
+                .getOrCreateUser(argThat(jwt -> jwt != null && "db-down".equals(jwt.getSubject())));
+
+        this.mockMvc.perform(get("/api/user").header("Authorization", "Bearer db-down"))
+                .andExpect(status().isServiceUnavailable());
+    }
+
+    @Test
     public void missingTokenIsUnauthorizedTest() throws Exception {
         this.mockMvc.perform(get("/api/user")).andExpect(status().isUnauthorized());
     }
@@ -95,8 +122,10 @@ public class AuthenticationSecurityTest extends UserTestConfig {
     }
 
     private static Jwt jwt(String subject) {
+        Instant issuedAt = subject.startsWith("stale-") ? Instant.now().minus(Duration.ofHours(1)) : Instant.now();
         return Jwt.withTokenValue(subject)
                 .header("alg", "RS256")
+                .issuedAt(issuedAt)
                 .subject(subject)
                 .claim("preferred_username", "alice")
                 .claim("name", "Alice Liddell")

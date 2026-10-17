@@ -89,7 +89,9 @@ Authentication is delegated to Authentik (OIDC). The backend is an OAuth2 resour
 - Every request's bearer access token is validated against Authentik's signing keys (JWKS), issuer and audience
   (`spring.security.oauth2.resourceserver.jwt.*`, see `config/AuthentikJwtAuthenticationConverter.java`).
 - The token's `sub` is mapped to the local user (`oidc_subject`), which is created on first use
-  (`OidcUserProvisioningService`).
+  (`OidcUserProvisioningService`). An account is only created for a fresh token (issued at most 5 minutes ago,
+  otherwise `401`): an access token stays valid up to 24 hours, so an old token must not re-create an account that was
+  deleted in the meantime.
 - Members of the Authentik group `indexcards-admins` (token claim `groups`) get the `ADMIN` role (`AdminGroupService`).
 - Passwords are stored and hashed only in Authentik; the backend never sees them.
 - `SecurityConfig` permits `/api/auth/**`, `/api/test/**` and `GET /api/images/**` without authentication; everything
@@ -118,6 +120,6 @@ Scheduling is implemented in `SpacedRepetitionScheduler`. See [Spaced Repetition
 
 ## Tests
 
-Tests are in `indexcards/src/test`, grouped like the services (`indexcard`, `project`, `user`, `image`, `jwt`). They use
+Tests are in `indexcards/src/test`, grouped like the services (`admin`, `image`, `indexcard`, `project`, `user`). They use
 JUnit 5 with an in-memory H2 database configured in `TestConfig.java` and the `*TestConfig.java` classes of each
 feature.
