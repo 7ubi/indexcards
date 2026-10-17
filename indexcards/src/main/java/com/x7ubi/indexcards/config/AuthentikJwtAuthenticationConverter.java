@@ -1,6 +1,8 @@
 package com.x7ubi.indexcards.config;
 
 import com.x7ubi.indexcards.models.SecurityUser;
+import com.x7ubi.indexcards.models.User;
+import com.x7ubi.indexcards.service.admin.AdminGroupService;
 import com.x7ubi.indexcards.service.authentication.OidcUserProvisioningService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -17,13 +19,18 @@ public class AuthentikJwtAuthenticationConverter implements Converter<Jwt, Abstr
 
     private final OidcUserProvisioningService oidcUserProvisioningService;
 
-    public AuthentikJwtAuthenticationConverter(OidcUserProvisioningService oidcUserProvisioningService) {
+    private final AdminGroupService adminGroupService;
+
+    public AuthentikJwtAuthenticationConverter(OidcUserProvisioningService oidcUserProvisioningService,
+                                               AdminGroupService adminGroupService) {
         this.oidcUserProvisioningService = oidcUserProvisioningService;
+        this.adminGroupService = adminGroupService;
     }
 
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
-        SecurityUser securityUser = new SecurityUser(oidcUserProvisioningService.getOrCreateUser(jwt));
+        User user = adminGroupService.grantAdminFromGroups(oidcUserProvisioningService.getOrCreateUser(jwt), jwt);
+        SecurityUser securityUser = new SecurityUser(user);
         return new UsernamePasswordAuthenticationToken(securityUser, jwt, securityUser.getAuthorities());
     }
 }

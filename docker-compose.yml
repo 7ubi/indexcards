@@ -36,8 +36,6 @@ services:
       AUTHENTIK_ISSUER: '${AUTHENTIK_URL}/application/o/indexcards/'
       AUTHENTIK_JWKS_URI: 'http://authentikservercontainer:9000/application/o/indexcards/jwks/'
       AUTHENTIK_CLIENT_ID: 'indexcards'
-      # Comma-separated usernames made admins on every start, if they exist
-      DEFAULT_ADMINS: '${DEFAULT_ADMINS:-7ubi}'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images

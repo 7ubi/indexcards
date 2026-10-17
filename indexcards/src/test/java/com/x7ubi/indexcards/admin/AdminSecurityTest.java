@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -64,6 +66,20 @@ public class AdminSecurityTest extends AdminTestConfig {
     public void analyticsAsAdminIsOkTest() throws Exception {
         this.mockMvc.perform(get(ANALYTICS_URL).header("Authorization", bearer(this.admin.getUsername())))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void analyticsAsAdminGroupMemberIsOkTest() throws Exception {
+        String bearer = bearer(this.user.getUsername());
+        when(this.jwtDecoder.decode("subject-test")).thenReturn(Jwt.withTokenValue("subject-test")
+                .header("alg", "RS256")
+                .subject("subject-test")
+                .claim("groups", List.of("indexcards-admins"))
+                .build());
+
+        this.mockMvc.perform(get(ANALYTICS_URL).header("Authorization", bearer)).andExpect(status().isOk());
+
+        Assertions.assertEquals(Role.ADMIN, this.userRepo.findByUsername("test").orElseThrow().getRole());
     }
 
     @Test
