@@ -52,7 +52,10 @@ The following data is deleted:
 - all of your projects,
 - all index cards in these projects,
 - your learning progress (ratings, rating history and review dates),
-- uploaded images that are embedded in your index cards (unless another user's card references the same image).
+- uploaded images that are embedded in your index cards (unless another user's card references the same image),
+- your login account (username and password, or the link to your Google account).
+
+If the login service is unavailable at that moment, nothing is deleted and you can try again later.
 
 ## Language
 

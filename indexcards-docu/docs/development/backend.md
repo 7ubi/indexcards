@@ -76,6 +76,7 @@ Exceptions are translated into HTTP responses by `GlobalExceptionHandler`. The r
 | `EntityCreationException`  | 400    | `project_name_exists`, `project_name_too_long`, `invalid_image` |
 | `UsernameExistsException`  | 400    | `username_exists`                                              |
 | `UnauthorizedException`    | 401    | `user_not_project_owner`, `username_confirmation_mismatch`     |
+| `AuthentikDeletionException` | 503  | `authentik_deletion_failed`                                    |
 | any other exception        | 500    | `Internal server error`                                        |
 
 When adding a new error, add the code to `ErrorMessage` and a translation under `backend` in
@@ -108,7 +109,8 @@ does not interpret it, except when deleting a user (see below).
 Images are **not** linked to users or cards in the database. Cards reference them in their Markdown as
 `/api/images/<uuid>`. When a user deletes their account, `DeleteUserService` scans the user's cards for these
 references and deletes the image files after the database transaction was committed, skipping images that are still
-referenced by cards of other users.
+referenced by cards of other users. It also deletes the Authentik user through `AuthentikUserDeletionService` (Authentik
+API, service-account token `AUTHENTIK_API_TOKEN`); if that fails, the deletion is rolled back.
 
 ## Spaced repetition
 

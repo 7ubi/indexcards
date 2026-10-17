@@ -49,7 +49,10 @@ Deletes the logged-in user with all projects, index cards, rating history and im
 
 The username must be typed again as confirmation.
 
-Errors: `401 username_confirmation_mismatch`
+Also deletes the user's Authentik account through the Authentik API.
+
+Errors: `401 username_confirmation_mismatch`, `503 authentik_deletion_failed` (Authentik could not delete the user;
+nothing was deleted)
 
 ## Projects
 

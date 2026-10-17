@@ -67,11 +67,13 @@ environment variables.
 | `AUTHENTIK_PG_PASSWORD`        | —                                        | Password of Authentik's PostgreSQL database.                  |
 | `AUTHENTIK_BOOTSTRAP_PASSWORD` | —                                        | Password of the Authentik admin `akadmin`, only used on the first start. |
 | `AUTHENTIK_BOOTSTRAP_EMAIL`    | —                                        | Email of `akadmin`, only used on the first start.             |
+| `AUTHENTIK_API_TOKEN`          | —                                        | Secret token of the Authentik service account `indexcards-backend` (`openssl rand -hex 32`). Read by the blueprint and sent by the backend to delete Authentik users. |
 | `GOOGLE_CLIENT_ID`             | —                                        | OAuth client of the Google Cloud project.                     |
 | `GOOGLE_CLIENT_SECRET`         | —                                        | Secret of that OAuth client.                                  |
 | `AUTHENTIK_ISSUER`             | `http://localhost:9000/application/o/indexcards/` | Backend: expected token issuer (set by Docker Compose from `AUTHENTIK_URL`). |
 | `AUTHENTIK_JWKS_URI`           | `http://localhost:9000/application/o/indexcards/jwks/` | Backend: where the token signing keys are fetched. |
 | `AUTHENTIK_CLIENT_ID`          | `indexcards`                             | Backend: OIDC client id / expected token audience.            |
+| `AUTHENTIK_API_URL`            | `http://localhost:9000/api/v3`           | Backend: Authentik API used to delete users (set by Docker Compose to the internal Authentik address). |
 
 Other settings in `application.properties`:
 
@@ -90,6 +92,12 @@ There is no email, so there is no self-service password reset. If a user forgets
 Disabling or deleting a user there blocks their login. Authentik is configured by the blueprint
 `authentik/blueprints/indexcards.yaml`, which the worker applies on every start.
 
+When a user deletes their account in the app, the backend also deletes the Authentik user through the Authentik API.
+For this the blueprint creates the service account `indexcards-backend` with a role that may only view and delete users;
+its token is `AUTHENTIK_API_TOKEN`. Authentik superusers are never deleted this way. The OIDC provider uses
+`sub_mode: user_uuid`, so the token's `sub` is the Authentik user UUID, which the backend uses to find the user to delete.
+If Authentik cannot be reached or refuses, the deletion fails with `503` and nothing is deleted.
+
 ### One-time setup
 
 1. **Google OAuth client:** In the Google Cloud Console (APIs & Services → Credentials) create an OAuth client ID of
@@ -99,7 +107,7 @@ Disabling or deleting a user there blocks their login. Authentik is configured b
    the `nginx_backend` network. Pass the `Host` header and `X-Forwarded-Proto: https` through, because Authentik
    builds the token issuer from them and it must equal `<AUTHENTIK_URL>/application/o/indexcards/`.
 3. **GitHub:** Create the repository secrets `AUTHENTIK_SECRET_KEY`, `AUTHENTIK_PG_PASSWORD`,
-   `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and the
+   `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `AUTHENTIK_API_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and the
    repository variables `AUTHENTIK_URL`, `INDEXCARDS_URL`. Remove the old `JWT_SECRET` secret.
 4. After the first deployment, log in to `<AUTHENTIK_URL>/if/admin/` as `akadmin` and check under
    *Customization → Blueprints* that `indexcards` was applied successfully. Under *System → Settings*, check that
@@ -110,7 +118,7 @@ Disabling or deleting a user there blocks their login. Authentik is configured b
 The former username/password accounts were not migrated. Migration `V6` renamed them to `legacy-<username>` and
 removed their password hashes; they cannot log in anymore. Their data stays in the database until it is deleted by
 hand. Deleting the Authentik user (*Directory → Users*) does not delete the app account; users do that themselves on
-the account page.
+the account page, which also deletes their Authentik user.
 
 ## Deploying manually
 
@@ -120,6 +128,7 @@ export AUTHENTIK_SECRET_KEY=<base64 key>
 export AUTHENTIK_PG_PASSWORD=<database password of Authentik>
 export AUTHENTIK_BOOTSTRAP_PASSWORD=<password of akadmin>
 export AUTHENTIK_BOOTSTRAP_EMAIL=<email of akadmin>
+export AUTHENTIK_API_TOKEN=<random token, openssl rand -hex 32>
 export AUTHENTIK_URL=https://auth.indexcards.7ubi.de
 export INDEXCARDS_URL=https://indexcards.7ubi.de
 export GOOGLE_CLIENT_ID=<client id>
