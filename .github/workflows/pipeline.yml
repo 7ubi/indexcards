@@ -61,17 +61,18 @@ jobs:
         uses: actions/checkout@v3
         if: github.event_name != 'pull_request'
       - name: Start docker-compose
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          AUTHENTIK_SECRET_KEY: ${{ secrets.AUTHENTIK_SECRET_KEY }}
+          AUTHENTIK_PG_PASSWORD: ${{ secrets.AUTHENTIK_PG_PASSWORD }}
+          AUTHENTIK_BOOTSTRAP_PASSWORD: ${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
+          AUTHENTIK_BOOTSTRAP_EMAIL: ${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
+          AUTHENTIK_URL: ${{ vars.AUTHENTIK_URL }}
+          AUTHENTIK_API_TOKEN: ${{ secrets.AUTHENTIK_API_TOKEN }}
+          INDEXCARDS_URL: ${{ vars.INDEXCARDS_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: |
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export AUTHENTIK_SECRET_KEY=${{ secrets.AUTHENTIK_SECRET_KEY }}
-          export AUTHENTIK_PG_PASSWORD=${{ secrets.AUTHENTIK_PG_PASSWORD }}
-          export AUTHENTIK_BOOTSTRAP_PASSWORD=${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
-          export AUTHENTIK_BOOTSTRAP_EMAIL=${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
-          export AUTHENTIK_URL=${{ vars.AUTHENTIK_URL }}
-          export AUTHENTIK_API_TOKEN=${{ secrets.AUTHENTIK_API_TOKEN }}
-          export INDEXCARDS_URL=${{ vars.INDEXCARDS_URL }}
-          export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-          export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           docker-compose down
           docker-compose up --build -d
   documentation:
@@ -84,6 +85,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Start docker-compose
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          AUTHENTIK_SECRET_KEY: ${{ secrets.AUTHENTIK_SECRET_KEY }}
+          AUTHENTIK_PG_PASSWORD: ${{ secrets.AUTHENTIK_PG_PASSWORD }}
+          AUTHENTIK_BOOTSTRAP_PASSWORD: ${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
+          AUTHENTIK_BOOTSTRAP_EMAIL: ${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
+          AUTHENTIK_URL: ${{ vars.AUTHENTIK_URL }}
+          AUTHENTIK_API_TOKEN: ${{ secrets.AUTHENTIK_API_TOKEN }}
+          INDEXCARDS_URL: ${{ vars.INDEXCARDS_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: |
           cd indexcards-docu
           docker-compose down

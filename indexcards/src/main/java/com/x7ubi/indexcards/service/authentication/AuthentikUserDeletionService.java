@@ -44,6 +44,9 @@ public class AuthentikUserDeletionService {
     }
 
     public AuthentikUserDeletionService(RestClient.Builder builder, String apiUrl, String apiToken) {
+        if (apiToken == null || apiToken.isBlank()) {
+            logger.warn("AUTHENTIK_API_TOKEN is not set; account deletion will fail");
+        }
         this.restClient = builder
                 .baseUrl(apiUrl)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiToken)

@@ -33,12 +33,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: '${DB_PASSWORD}'
       # Tokens are issued by Authentik. The issuer is the public URL (must match the token's `iss`); keys are fetched
       # over the internal network.
-      AUTHENTIK_ISSUER: '${AUTHENTIK_URL}/application/o/indexcards/'
+      AUTHENTIK_ISSUER: '${AUTHENTIK_URL:?AUTHENTIK_URL is required}/application/o/indexcards/'
       AUTHENTIK_JWKS_URI: 'http://authentikservercontainer:9000/application/o/indexcards/jwks/'
       AUTHENTIK_CLIENT_ID: 'indexcards'
       # Deletes the Authentik user when an account is deleted (service account "indexcards-backend" from the blueprint).
       AUTHENTIK_API_URL: 'http://authentikservercontainer:9000/api/v3'
-      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN}'
+      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN:?AUTHENTIK_API_TOKEN is required}'
     volumes:
       - './indexcards:/usr/src/app'
       - image-storage:/app/data/images
@@ -97,12 +97,12 @@ services:
       # Read by authentik/blueprints/indexcards.yaml
       GOOGLE_CLIENT_ID: '${GOOGLE_CLIENT_ID}'
       GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
-      INDEXCARDS_URL: '${INDEXCARDS_URL}'
-      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN}'
+      INDEXCARDS_URL: '${INDEXCARDS_URL:?INDEXCARDS_URL is required}'
+      AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN:?AUTHENTIK_API_TOKEN is required}'
     volumes:
       - './authentik/blueprints:/blueprints/custom'
     ports:
-      - '9000:9000'
+      - '127.0.0.1:9000:9000'
     networks:
       - authentik-net
       - backend
