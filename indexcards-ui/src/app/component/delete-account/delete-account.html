@@ -14,8 +14,13 @@
           <li>{{ 'account.delete_items.' + item | translate }}</li>
         }
       </ul>
-      <p class="full-width">{{ 'account.delete_password_hint' | translate }}</p>
-      <app-password-input class="full-width" formControlName="password"></app-password-input>
+      <p class="full-width">
+        {{ 'account.delete_username_hint' | translate: { username: username() } }}
+      </p>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'auth.username' | translate }}</mat-label>
+        <input matInput formControlName="username" autocomplete="off" />
+      </mat-form-field>
       <div class="actions full-width">
         <button matButton="filled" class="danger" type="submit" [disabled]="deleting()">
           {{ 'account.delete_button' | translate }}

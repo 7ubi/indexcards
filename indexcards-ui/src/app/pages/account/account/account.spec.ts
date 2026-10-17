@@ -25,7 +25,7 @@ describe('Account', () => {
     put: vi.fn(),
     delete: vi.fn(),
   };
-  const loginService = { saveBearer: vi.fn(), logout: vi.fn() };
+  const loginService = { logout: vi.fn() };
   const settingsService = { isDueDialogEnabled: vi.fn(() => true), setDueDialogEnabled: vi.fn() };
   const snackbarService = {
     showErrorMessage: vi.fn(),
@@ -42,6 +42,7 @@ describe('Account', () => {
         provideRouter([]),
         provideTranslateService(),
         { provide: HttpService, useValue: httpService },
+        // Used by the embedded DeleteAccount component.
         { provide: LoginService, useValue: loginService },
         { provide: SnackbarService, useValue: snackbarService },
         { provide: SettingsService, useValue: settingsService },
@@ -60,8 +61,8 @@ describe('Account', () => {
     expect(component.usernameFormGroup.get('username')?.value).toBe('test');
   });
 
-  it('should not change the username without the password', () => {
-    component.usernameFormGroup.setValue({ username: 'renamed', password: '' });
+  it('should not change the username when it is empty', () => {
+    component.usernameFormGroup.setValue({ username: '' });
 
     component.changeUsername();
 
@@ -70,7 +71,7 @@ describe('Account', () => {
   });
 
   it('should not call the API when the username is unchanged', () => {
-    component.usernameFormGroup.setValue({ username: ' test ', password: 'secret' });
+    component.usernameFormGroup.setValue({ username: ' test ' });
 
     component.changeUsername();
 
@@ -78,59 +79,31 @@ describe('Account', () => {
     expect(snackbarService.showWarnMessage).toHaveBeenCalledWith('account.username_not_changed');
   });
 
-  it('should change the username and store the new token', () => {
-    const loginResponse = { token: 'new-token', type: 'Bearer', id: '1', username: 'renamed' };
+  it('should change the username without a password', () => {
+    const renamed: UserResponse = { ...user, username: 'renamed' };
     httpService.put.mockImplementation(
-      (_url: string, _request: unknown, subscribe: (response: unknown) => void) =>
-        subscribe(loginResponse),
+      (_url: string, _request: unknown, subscribe: (response: UserResponse) => void) =>
+        subscribe(renamed),
     );
-    component.usernameFormGroup.setValue({ username: 'renamed', password: 'secret' });
+    component.usernameFormGroup.setValue({ username: 'renamed' });
 
     component.changeUsername();
 
     expect(httpService.put).toHaveBeenCalledWith(
       '/api/user/username',
-      { username: 'renamed', password: 'secret' },
+      { username: 'renamed' },
       expect.any(Function),
     );
-    expect(loginService.saveBearer).toHaveBeenCalledWith(loginResponse);
-    expect(component.user?.username).toBe('renamed');
-    expect(component.usernameFormGroup.get('password')?.value).toBe('');
+    expect(component.user).toEqual(renamed);
+    expect(component.usernameFormGroup.get('username')?.value).toBe('renamed');
     expect(snackbarService.showSuccessMessage).toHaveBeenCalledWith('account.username_changed');
   });
 
-  it('should not change the password when the new passwords do not match', () => {
-    component.passwordFormGroup.setValue({
-      currentPassword: 'old',
-      newPassword: 'new',
-      repeatPassword: 'other',
-    });
+  it('should not offer a password change anymore', () => {
+    const element = fixture.nativeElement as HTMLElement;
 
-    component.changePassword();
-
-    expect(httpService.put).not.toHaveBeenCalled();
-    expect(snackbarService.showErrorMessage).toHaveBeenCalledWith('auth.password_match');
-  });
-
-  it('should change the password', () => {
-    httpService.put.mockImplementation((_url: string, _request: unknown, subscribe: () => void) =>
-      subscribe(),
-    );
-    component.passwordFormGroup.setValue({
-      currentPassword: 'old',
-      newPassword: 'new',
-      repeatPassword: 'new',
-    });
-
-    component.changePassword();
-
-    expect(httpService.put).toHaveBeenCalledWith(
-      '/api/user/password',
-      { currentPassword: 'old', newPassword: 'new' },
-      expect.any(Function),
-    );
-    expect(component.passwordFormGroup.get('currentPassword')?.value).toBe('');
-    expect(snackbarService.showSuccessMessage).toHaveBeenCalledWith('account.password_changed');
+    expect(element.querySelector('app-password-input')).toBeNull();
+    expect((component as unknown as Record<string, unknown>)['changePassword']).toBeUndefined();
   });
 
   it('should save the due dialog setting', () => {

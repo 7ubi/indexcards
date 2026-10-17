@@ -100,26 +100,22 @@
     "delete_warning": "Das Löschen deines Kontos ist endgültig und kann nicht rückgängig gemacht werden. Deine Daten können danach nicht wiederhergestellt werden.",
     "delete_items_intro": "Folgende Daten werden gelöscht:",
     "delete_items": {
-      "account": "dein Benutzerkonto (Nutzername, Vor- und Nachname, Passwort-Hash),",
+      "account": "dein Benutzerkonto (Nutzername, Vor- und Nachname),",
       "projects": "alle deine Projekte,",
       "cards": "alle Karteikarten in diesen Projekten,",
       "progress": "dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine),",
       "images": "hochgeladene Bilder, die in deinen Karteikarten eingebunden sind."
     },
-    "delete_password_hint": "Bitte gib zur Bestätigung dein Passwort ein.",
     "delete_button": "Konto endgültig löschen",
     "deleted": "Dein Konto und alle zugehörigen Daten wurden gelöscht.",
-    "current_password": "Aktuelles Passwort",
-    "new_password": "Neues Passwort",
-    "repeat_new_password": "Neues Passwort wiederholen",
     "change_username": "Nutzername ändern",
-    "change_password": "Passwort ändern",
     "username_changed": "Dein Nutzername wurde geändert.",
     "username_not_changed": "Der Nutzername wurde nicht geändert.",
-    "password_changed": "Dein Passwort wurde geändert.",
     "settings": "Einstellungen",
     "show_due_dialog": "Erinnerung „Heute fällig“ anzeigen",
-    "show_due_dialog_hint": "Zeigt beim Öffnen deiner Projekte einen Dialog mit den heute fälligen Karteikarten an. Diese Einstellung wird in diesem Browser gespeichert."
+    "show_due_dialog_hint": "Zeigt beim Öffnen deiner Projekte einen Dialog mit den heute fälligen Karteikarten an. Diese Einstellung wird in diesem Browser gespeichert.",
+    "delete_username_hint": "Bitte gib zur Bestätigung deinen Nutzernamen „{{username}}“ ein.",
+    "delete_username_mismatch": "Der eingegebene Nutzername stimmt nicht mit deinem Nutzernamen überein."
   },
   "admin": {
     "title": "Statistiken",
@@ -155,12 +151,11 @@
     "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
     "project_archived": "Das Projekt ist archiviert, seine Karteikarten können nicht geändert werden",
     "bad_credentials": "Falscher Nutzername oder Passwort!",
-    "wrong_password": "Falsches Passwort!",
     "username_empty": "Der Nutzername darf nicht leer sein",
     "username_too_long": "Der Nutzername ist zu lang. Es sind nur 100 Zeichen erlaubt",
     "username_unchanged": "Der neue Nutzername ist identisch mit dem aktuellen",
-    "password_empty": "Das Passwort darf nicht leer sein",
-    "forbidden": "Dafür fehlt dir die Berechtigung"
+    "forbidden": "Dafür fehlt dir die Berechtigung",
+    "username_confirmation_mismatch": "Der eingegebene Nutzername stimmt nicht mit deinem Nutzernamen überein."
   },
   "unrated": "Unbewertet",
   "bad": "Schlecht",

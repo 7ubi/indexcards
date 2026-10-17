@@ -1,16 +1,24 @@
-import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, input, ChangeDetectionStrategy, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import HttpService from '../../service/http/http.service';
 import { LoginService } from '../../service/login/login.service';
 import { SnackbarService } from '../../service/snackbar/snackbar.service';
-import { PasswordInput } from '../password-input/password-input';
 
 @Component({
   selector: 'app-delete-account',
-  imports: [ReactiveFormsModule, TranslatePipe, MatButton, MatIcon, PasswordInput],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    MatButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    MatLabel,
+  ],
   templateUrl: './delete-account.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './delete-account.css',
@@ -21,12 +29,15 @@ export class DeleteAccount {
   private snackbarService = inject(SnackbarService);
   private formBuilder = inject(FormBuilder);
 
+  /** The user has to type it to confirm the deletion (there is no password to ask for anymore). */
+  readonly username = input.required<string>();
+
   readonly deletedItems = ['account', 'projects', 'cards', 'progress', 'images'];
 
   readonly deleting = signal(false);
 
   deleteAccountFormGroup: FormGroup = this.formBuilder.group({
-    password: ['', Validators.required],
+    username: [''],
   });
 
   deleteAccount(): void {
@@ -34,8 +45,9 @@ export class DeleteAccount {
       return;
     }
 
-    if (!this.deleteAccountFormGroup.valid) {
-      this.snackbarService.showErrorMessage('auth.password_required');
+    const confirmation = (this.deleteAccountFormGroup.get('username')?.value ?? '').trim();
+    if (confirmation === '' || confirmation !== this.username()) {
+      this.snackbarService.showErrorMessage('account.delete_username_mismatch');
       return;
     }
 
@@ -47,7 +59,7 @@ export class DeleteAccount {
         this.snackbarService.showSuccessMessage('account.deleted');
       },
       () => this.deleting.set(false),
-      { password: this.deleteAccountFormGroup.get('password')?.value },
+      { username: confirmation },
     );
   }
 }

@@ -100,26 +100,22 @@
     "delete_warning": "Deleting your account is permanent and cannot be undone. Your data cannot be restored afterwards.",
     "delete_items_intro": "The following data will be deleted:",
     "delete_items": {
-      "account": "your user account (username, first and last name, password hash),",
+      "account": "your user account (username, first and last name),",
       "projects": "all of your projects,",
       "cards": "all index cards in these projects,",
       "progress": "your learning progress (ratings, rating history and review dates),",
       "images": "uploaded images that are embedded in your index cards."
     },
-    "delete_password_hint": "Please enter your password to confirm.",
     "delete_button": "Delete account permanently",
     "deleted": "Your account and all associated data were deleted.",
-    "current_password": "Current password",
-    "new_password": "New password",
-    "repeat_new_password": "Repeat new password",
     "change_username": "Change username",
-    "change_password": "Change password",
     "username_changed": "Your username was changed.",
     "username_not_changed": "The username was not changed.",
-    "password_changed": "Your password was changed.",
     "settings": "Settings",
     "show_due_dialog": "Show \"due today\" reminder",
-    "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser."
+    "show_due_dialog_hint": "Shows a dialog with the index cards due today when you open your projects. This setting is saved in this browser.",
+    "delete_username_hint": "Please type your username \"{{username}}\" to confirm.",
+    "delete_username_mismatch": "The entered username does not match your username."
   },
   "admin": {
     "title": "Analytics",
@@ -155,12 +151,11 @@
     "user_not_project_owner": "You are not the owner of this project",
     "project_archived": "The project is archived, its index cards cannot be changed",
     "bad_credentials": "Wrong Username or Password!",
-    "wrong_password": "Wrong password!",
     "username_empty": "The username must not be empty",
     "username_too_long": "The username is too long, only 100 characters are allowed",
     "username_unchanged": "The new username is the same as the current one",
-    "password_empty": "The password must not be empty",
-    "forbidden": "You are not allowed to do this"
+    "forbidden": "You are not allowed to do this",
+    "username_confirmation_mismatch": "The entered username does not match your username."
   },
   "unrated": "Unrated",
   "bad": "Bad",

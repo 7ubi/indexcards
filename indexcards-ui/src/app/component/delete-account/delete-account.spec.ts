@@ -30,6 +30,7 @@ describe('DeleteAccount', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DeleteAccount);
+    fixture.componentRef.setInput('username', 'test');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -38,16 +39,29 @@ describe('DeleteAccount', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call the API without a password', () => {
+  it('should not call the API when the typed username does not match', () => {
+    component.deleteAccountFormGroup.setValue({ username: 'other' });
+
     component.deleteAccount();
 
     expect(httpService.delete).not.toHaveBeenCalled();
-    expect(snackbarService.showErrorMessage).toHaveBeenCalledWith('auth.password_required');
+    expect(snackbarService.showErrorMessage).toHaveBeenCalledWith(
+      'account.delete_username_mismatch',
+    );
   });
 
-  it('should delete the account with the password and log out on success', () => {
+  it('should not call the API without a typed username', () => {
+    component.deleteAccount();
+
+    expect(httpService.delete).not.toHaveBeenCalled();
+    expect(snackbarService.showErrorMessage).toHaveBeenCalledWith(
+      'account.delete_username_mismatch',
+    );
+  });
+
+  it('should delete the account with the confirmed username and log out on success', () => {
     httpService.delete.mockImplementation((_url: string, subscribe: () => void) => subscribe());
-    component.deleteAccountFormGroup.setValue({ password: 'secret' });
+    component.deleteAccountFormGroup.setValue({ username: ' test ' });
 
     component.deleteAccount();
 
@@ -55,9 +69,7 @@ describe('DeleteAccount', () => {
       '/api/user',
       expect.any(Function),
       expect.any(Function),
-      {
-        password: 'secret',
-      },
+      { username: 'test' },
     );
     expect(loginService.logout).toHaveBeenCalled();
     expect(snackbarService.showSuccessMessage).toHaveBeenCalledWith('account.deleted');
@@ -67,7 +79,7 @@ describe('DeleteAccount', () => {
     httpService.delete.mockImplementation(
       (_url: string, _subscribe: () => void, error: () => void) => error(),
     );
-    component.deleteAccountFormGroup.setValue({ password: 'wrong' });
+    component.deleteAccountFormGroup.setValue({ username: 'test' });
 
     component.deleteAccount();
 
