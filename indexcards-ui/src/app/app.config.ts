@@ -75,6 +75,8 @@ export const appConfig: ApplicationConfig = {
     LoginRequired,
     AdminRequired,
     provideAppInitializer(appInitFactory()),
+    // Restores the login before the first route guard runs.
+    provideAppInitializer(() => inject(LoginService).init()),
     { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
     provideNativeDateAdapter(DD_MM_YYYY_DATE_FORMATS),
   ],

@@ -9,21 +9,14 @@
   "auth": {
     "admin_required": "Only admins can open this page",
     "username": "Username",
-    "password": "Password",
-    "no_account": "Don't have an Account? Then create one",
-    "here": "here",
     "login": "Login",
     "firstname": "Firstname",
     "lastname": "Lastname",
-    "repeat_password": "Repeat Password",
-    "signup": "Create an account",
-    "have_account": "Already have an Account? Then login",
     "fields_required": "All fields are required!",
-    "password_match": "Passwords do not match!",
-    "account_created": "Account was created! Please login!",
-    "username_required": "Username is required",
-    "password_required": "Password is required",
-    "unauthorized": "You need to be logged in to enter this page!"
+    "unauthorized": "You need to be logged in to enter this page!",
+    "login_button": "Sign in or create account",
+    "login_hint": "Sign in with your username and password or with your Google account. New here? You can create an account on the next page.",
+    "login_failed": "Login failed. Please try again."
   },
   "project": {
     "your_projects": "Your Projects",
@@ -150,7 +143,6 @@
     "indexcard_answer_too_long": "The answer of the index card was too long, only 500 characters are allowed",
     "user_not_project_owner": "You are not the owner of this project",
     "project_archived": "The project is archived, its index cards cannot be changed",
-    "bad_credentials": "Wrong Username or Password!",
     "username_empty": "The username must not be empty",
     "username_too_long": "The username is too long, only 100 characters are allowed",
     "username_unchanged": "The new username is the same as the current one",

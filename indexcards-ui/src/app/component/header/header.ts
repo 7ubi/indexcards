@@ -37,6 +37,6 @@ export class Header {
   }
 
   logout() {
-    this.loginService.logout();
+    this.loginService.signOut();
   }
 }

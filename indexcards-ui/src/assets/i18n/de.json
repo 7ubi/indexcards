@@ -9,21 +9,14 @@
   "auth": {
     "admin_required": "Nur Admins können diese Seite öffnen",
     "username": "Nutzername",
-    "password": "Passwort",
-    "no_account": "Du hast noch kein Konto? Erstelle eins",
-    "here": "hier",
     "login": "Anmelden",
     "firstname": "Vorname",
     "lastname": "Nachname",
-    "repeat_password": "Passwort Wiederholen",
-    "signup": "Registrieren",
-    "have_account": "Du hast bereits ein Konto? Dann melde dich an: ",
     "fields_required": "Alle Felder müssen ausgefüllt werden!",
-    "password_match": "Passwörter sind nicht gleich!",
-    "account_created": "Konto wurde erstellt! Bitte melde dich an!",
-    "username_required": "Nutzername ist ein Pflichtfeld",
-    "password_required": "Passwort ist ein Pflichtfeld",
-    "unauthorized": "Du musst angemeldet sein, um auf diese Seite zu kommen!"
+    "unauthorized": "Du musst angemeldet sein, um auf diese Seite zu kommen!",
+    "login_button": "Anmelden oder registrieren",
+    "login_hint": "Melde dich mit Nutzername und Passwort oder mit deinem Google-Konto an. Neu hier? Auf der nächsten Seite kannst du ein Konto erstellen.",
+    "login_failed": "Die Anmeldung ist fehlgeschlagen. Bitte versuche es erneut."
   },
   "project": {
     "your_projects": "Deine Projekte",
@@ -150,7 +143,6 @@
     "indexcard_answer_too_long": "Die Antwort der Karteikarte ist zu lang. Es sind nur 500 Zeichen sind erlaubt",
     "user_not_project_owner": "Du bist nicht der Besitzer dieses Projekts",
     "project_archived": "Das Projekt ist archiviert, seine Karteikarten können nicht geändert werden",
-    "bad_credentials": "Falscher Nutzername oder Passwort!",
     "username_empty": "Der Nutzername darf nicht leer sein",
     "username_too_long": "Der Nutzername ist zu lang. Es sind nur 100 Zeichen erlaubt",
     "username_unchanged": "Der neue Nutzername ist identisch mit dem aktuellen",
