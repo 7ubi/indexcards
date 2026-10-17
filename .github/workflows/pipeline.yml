@@ -85,17 +85,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Start docker-compose
-        env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AUTHENTIK_SECRET_KEY: ${{ secrets.AUTHENTIK_SECRET_KEY }}
-          AUTHENTIK_PG_PASSWORD: ${{ secrets.AUTHENTIK_PG_PASSWORD }}
-          AUTHENTIK_BOOTSTRAP_PASSWORD: ${{ secrets.AUTHENTIK_BOOTSTRAP_PASSWORD }}
-          AUTHENTIK_BOOTSTRAP_EMAIL: ${{ secrets.AUTHENTIK_BOOTSTRAP_EMAIL }}
-          AUTHENTIK_URL: ${{ vars.AUTHENTIK_URL }}
-          AUTHENTIK_API_TOKEN: ${{ secrets.AUTHENTIK_API_TOKEN }}
-          INDEXCARDS_URL: ${{ vars.INDEXCARDS_URL }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: |
           cd indexcards-docu
           docker-compose down
