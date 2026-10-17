@@ -4,7 +4,7 @@ import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
-import com.x7ubi.indexcards.jwt.JwtUtils;
+import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.user.ChangeUsernameRequest;
 import com.x7ubi.indexcards.request.user.DeleteAccountRequest;
 import com.x7ubi.indexcards.response.user.UserResponse;
@@ -15,14 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserRestController {
     Logger logger = LoggerFactory.getLogger(UserRestController.class);
-
-    private final JwtUtils jwtUtils;
 
     private final UserService userService;
 
@@ -31,9 +30,8 @@ public class UserRestController {
     private final DeleteUserService deleteUserService;
 
     public UserRestController(
-            JwtUtils jwtUtils, UserService userService, ChangeUsernameService changeUsernameService,
+            UserService userService, ChangeUsernameService changeUsernameService,
             DeleteUserService deleteUserService) {
-        this.jwtUtils = jwtUtils;
         this.userService = userService;
         this.changeUsernameService = changeUsernameService;
         this.deleteUserService = deleteUserService;
@@ -42,10 +40,10 @@ public class UserRestController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserResponse> getUser(
-            @RequestHeader("Authorization") String authorization
+            @AuthenticationPrincipal SecurityUser securityUser
     ) throws EntityNotFoundException {
         logger.info("Getting user account");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         return ResponseEntity.ok(userService.getUserResponse(username));
     }
@@ -53,11 +51,11 @@ public class UserRestController {
     @PutMapping("/username")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserResponse> changeUsername(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody ChangeUsernameRequest changeUsernameRequest
     ) throws EntityNotFoundException, EntityCreationException, UsernameExistsException {
         logger.info("Changing username");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         return ResponseEntity.ok(changeUsernameService.changeUsername(username, changeUsernameRequest));
     }
@@ -65,11 +63,11 @@ public class UserRestController {
     @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteUser(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody DeleteAccountRequest deleteAccountRequest
     ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Deleting user account");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         deleteUserService.deleteUser(username, deleteAccountRequest);
 

@@ -27,7 +27,6 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -54,8 +53,6 @@ import java.util.UUID;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DeleteUserServiceTest extends TestConfig {
 
-    private static final String PASSWORD = "1234";
-
     @TempDir
     static Path storageDir;
 
@@ -75,9 +72,6 @@ public class DeleteUserServiceTest extends TestConfig {
 
     @Autowired
     private IndexCardAssessmentRepo indexCardAssessmentRepo;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ImageStorageService imageStorageService;
@@ -152,7 +146,6 @@ public class DeleteUserServiceTest extends TestConfig {
         newUser.setFirstname("Max");
         newUser.setSurname("Muster");
         newUser.setProjects(new ArrayList<>());
-        newUser.setPassword(this.passwordEncoder.encode(PASSWORD));
         return this.userRepo.save(newUser);
     }
 

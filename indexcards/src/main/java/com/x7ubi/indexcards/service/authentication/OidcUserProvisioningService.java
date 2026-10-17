@@ -46,8 +46,6 @@ public class OidcUserProvisioningService {
         user.setOidcSubject(subject);
         user.setUsername(getUniqueUsername(jwt.getClaimAsString("preferred_username")));
         setNames(user, jwt.getClaimAsString("name"));
-        // Password login only exists in Authentik now; an empty password is never a valid BCrypt hash, so it cannot match.
-        user.setPassword("");
         user.setProjects(new ArrayList<>());
         user.setCreatedAt(LocalDateTime.now());
 

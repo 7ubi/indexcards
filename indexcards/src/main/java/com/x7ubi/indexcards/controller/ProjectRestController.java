@@ -3,7 +3,7 @@ package com.x7ubi.indexcards.controller;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
-import com.x7ubi.indexcards.jwt.JwtUtils;
+import com.x7ubi.indexcards.models.SecurityUser;
 import com.x7ubi.indexcards.request.project.CreateProjectRequest;
 import com.x7ubi.indexcards.response.project.ProjectResponse;
 import com.x7ubi.indexcards.service.project.ArchiveProjectService;
@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,6 @@ import java.util.List;
 @RequestMapping("/api/project")
 public class ProjectRestController {
     Logger logger = LoggerFactory.getLogger(ProjectRestController.class);
-
-    private final JwtUtils jwtUtils;
 
     private final ProjectService projectService;
 
@@ -37,12 +36,10 @@ public class ProjectRestController {
     private final ArchiveProjectService archiveProjectService;
 
     public ProjectRestController(
-            JwtUtils jwtUtils,
             ProjectService projectService,
             CreateProjectService createProjectService,
             DeleteProjectService deleteProjectService, EditProjectService editProjectService,
             ArchiveProjectService archiveProjectService) {
-        this.jwtUtils = jwtUtils;
         this.projectService = projectService;
         this.createProjectService = createProjectService;
         this.deleteProjectService = deleteProjectService;
@@ -53,10 +50,10 @@ public class ProjectRestController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProjectResponse>> getProjects(
-            @RequestHeader("Authorization") String authorization
+            @AuthenticationPrincipal SecurityUser securityUser
     ) throws EntityNotFoundException {
         logger.info("Getting projects from User");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         List<ProjectResponse> response = projectService.getUserProjects(username);
 
@@ -66,9 +63,9 @@ public class ProjectRestController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProjectResponse> getProject(
-            @RequestHeader("Authorization") String authorization, @PathVariable Long id) throws EntityNotFoundException, UnauthorizedException {
+            @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Getting project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         ProjectResponse response = projectService.getProject(username, id);
 
@@ -78,11 +75,11 @@ public class ProjectRestController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createProject(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody CreateProjectRequest createProjectRequest
     ) throws EntityNotFoundException, EntityCreationException {
         logger.info("Creating Project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         createProjectService.createProject(username, createProjectRequest);
 
@@ -91,9 +88,9 @@ public class ProjectRestController {
 
     @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteProject(@RequestHeader("Authorization") String authorization, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
+    public ResponseEntity<?> deleteProject(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long id) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Deleting Project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         deleteProjectService.deleteProject(username, id);
 
@@ -102,12 +99,12 @@ public class ProjectRestController {
 
     @PutMapping("")
     public ResponseEntity<?> editProject(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal SecurityUser securityUser,
             @RequestParam Long id,
             @RequestBody CreateProjectRequest createProjectRequest
     ) throws EntityNotFoundException, EntityCreationException, UnauthorizedException {
         logger.info("Editing Project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         editProjectService.editProject(createProjectRequest, id, username);
 
@@ -116,10 +113,10 @@ public class ProjectRestController {
 
     @PutMapping("/{id}/archive")
     public ResponseEntity<?> archiveProject(
-            @RequestHeader("Authorization") String authorization, @PathVariable Long id
+            @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id
     ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Archiving Project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         archiveProjectService.archiveProject(username, id);
 
@@ -128,10 +125,10 @@ public class ProjectRestController {
 
     @PutMapping("/{id}/unarchive")
     public ResponseEntity<?> unarchiveProject(
-            @RequestHeader("Authorization") String authorization, @PathVariable Long id
+            @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id
     ) throws EntityNotFoundException, UnauthorizedException {
         logger.info("Unarchiving Project");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
+        String username = securityUser.getUsername();
 
         archiveProjectService.unarchiveProject(username, id);
 

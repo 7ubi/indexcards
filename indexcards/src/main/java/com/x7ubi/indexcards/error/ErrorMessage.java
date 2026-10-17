@@ -5,7 +5,6 @@ public class ErrorMessage {
     public static String INTERNAL_SERVER_ERROR = "Internal server error";
 
     public static class Authentication {
-        public static final String BAD_CREDENTIALS = "bad_credentials";
         public static final String FORBIDDEN = "forbidden";
         public static String USERNAME_EXITS = "username_exists";
     }

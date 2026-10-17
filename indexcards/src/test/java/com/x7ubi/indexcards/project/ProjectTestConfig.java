@@ -16,7 +16,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -41,8 +40,6 @@ public abstract class ProjectTestConfig extends TestConfig {
     @Autowired
     protected IndexCardRepo indexCardRepo;
 
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
     @Autowired
     protected CreateProjectService createProjectService;
 
@@ -71,7 +68,6 @@ public abstract class ProjectTestConfig extends TestConfig {
         this.user.setFirstname("Max");
         this.user.setSurname("Muster");
         this.user.setProjects(new ArrayList<>());
-        this.user.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(this.user);
 
@@ -80,7 +76,6 @@ public abstract class ProjectTestConfig extends TestConfig {
         this.user2.setFirstname("Max");
         this.user2.setSurname("Muster");
         this.user2.setProjects(new ArrayList<>());
-        this.user2.setPassword(this.passwordEncoder.encode("1234"));
 
         this.userRepo.save(this.user2);
 

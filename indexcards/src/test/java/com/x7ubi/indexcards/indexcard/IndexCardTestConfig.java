@@ -63,7 +63,6 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.user.setFirstname("Max");
         this.user.setSurname("Muster");
         this.user.setProjects(new ArrayList<>());
-        this.user.setPassword("1234");
 
         this.user = this.userRepo.save(this.user);
 
@@ -72,7 +71,6 @@ public abstract class IndexCardTestConfig extends TestConfig {
         this.user2.setFirstname("Max");
         this.user2.setSurname("Muster");
         this.user2.setProjects(new ArrayList<>());
-        this.user2.setPassword("1234");
 
         this.userRepo.save(this.user2);
 
