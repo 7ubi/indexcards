@@ -158,7 +158,7 @@
     "signup_notice": "Informationen dazu, wie wir deine Daten verarbeiten, findest du in der",
     "signup_notice_link": "Datenschutzerklärung",
     "title": "Datenschutzerklärung",
-    "last_updated": "Stand: September 2026",
+    "last_updated": "Stand: Oktober 2026",
     "intro": [
       "Mit dieser Datenschutzerklärung informieren wir dich gemäß Art. 13 und 14 der Datenschutz-Grundverordnung (DSGVO) darüber, welche personenbezogenen Daten bei der Nutzung der Webanwendung „Indexcards“ verarbeitet werden, zu welchen Zwecken und auf welcher Rechtsgrundlage dies geschieht und welche Rechte du hast."
     ],
@@ -181,10 +181,10 @@
           "Daten, die beim Aufruf der Anwendung technisch anfallen (Server-Logdaten),",
           "Daten deines Benutzerkontos,",
           "die von dir erstellten Inhalte und dein Lernfortschritt,",
-          "Einträge im Speicher deines Browsers (keine Cookies)."
+          "Einträge im Speicher deines Browsers sowie ein Sitzungs-Cookie unseres Anmeldedienstes,"
         ],
         "paragraphs_after": [
-          "Wir setzen keine Cookies, keine Analyse- oder Tracking-Werkzeuge und keine Werbung ein. Deine Daten werden nicht verkauft und nicht für Werbezwecke genutzt."
+          "Wir setzen keine Analyse- oder Tracking-Werkzeuge und keine Werbung ein. Abgesehen von den für die Anmeldung erforderlichen Cookies werden keine Cookies verwendet. Deine Daten werden nicht verkauft und nicht zu Werbezwecken genutzt."
         ]
       },
       "hosting": {
@@ -206,18 +206,34 @@
         ]
       },
       "account": {
-        "title": "Registrierung und Benutzerkonto",
+        "title": "Benutzerkonto",
         "paragraphs": [
-          "Für die Nutzung von Indexcards ist ein Benutzerkonto erforderlich. Bei der Registrierung verarbeiten wir:"
+          "Für die Nutzung von Indexcards ist ein Benutzerkonto erforderlich. Es wird bei deiner ersten Anmeldung automatisch angelegt (siehe Abschnitt „Anmeldung“). Die Anwendung speichert:"
         ],
         "items": [
-          "Nutzername,",
-          "Vorname und Nachname,",
-          "Passwort – dieses wird ausschließlich als kryptografischer Hash (bcrypt) gespeichert und ist für uns nicht im Klartext einsehbar."
+          "eine pseudonyme Kennung deines Anmeldekontos, die deine Anmeldung mit deinem Benutzerkonto verknüpft,",
+          "Nutzername – zunächst der Nutzername, den du bei unserem Anmeldedienst gewählt hast; du kannst ihn auf der Kontoseite ändern,",
+          "Vorname und Nachname, übernommen aus dem Namen deines Anmeldekontos (der bei der Registrierung angegebene Name bzw. der Name deines Google-Kontos)."
         ],
         "paragraphs_after": [
-          "Eine E-Mail-Adresse wird nicht erhoben. Bei der Anmeldung werden Nutzername und Passwort geprüft und anschließend ein Zugangstoken (JSON Web Token) ausgestellt, das deinen Nutzernamen enthält und 24 Stunden gültig ist.",
-          "Die Verarbeitung erfolgt zur Bereitstellung des Benutzerkontos und damit zur Erfüllung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO). Du kannst für Vor- und Nachname auch Pseudonyme verwenden."
+          "Die Anwendung selbst speichert weder ein Passwort noch eine E-Mail-Adresse. Bei der Anmeldung stellt unser Anmeldedienst ein Zugangstoken (JSON Web Token) aus, das die Kennung, deinen Nutzernamen und deinen Namen enthält und 24 Stunden gültig ist.",
+          "Die Verarbeitung erfolgt zur Bereitstellung des Benutzerkontos und damit zur Erfüllung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO)."
+        ]
+      },
+      "login": {
+        "title": "Anmeldung",
+        "paragraphs": [
+          "Du meldest dich über unseren eigenen Anmeldedienst an (die Open-Source-Software authentik, von uns betrieben auf den in Abschnitt „Hosting und Server-Logdateien“ genannten Servern). Du kannst dort entweder ein Konto mit Nutzername und Passwort anlegen oder dich mit deinem Google-Konto anmelden.",
+          "Nutzername und Passwort: Bei der Registrierung speichert unser Anmeldedienst deinen Nutzernamen, deinen Namen und dein Passwort. Das Passwort wird ausschließlich als gesalzener kryptografischer Hash gespeichert und ist für uns nicht im Klartext einsehbar. Eine E-Mail-Adresse wird nicht erhoben; wenn du dein Passwort vergisst, wende dich an die oben genannte Kontaktadresse.",
+          "Google: Wenn du auf die Google-Schaltfläche klickst, wirst du zu Google weitergeleitet. Die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, erhält dabei insbesondere deine IP-Adresse, Informationen zu deinem Browser und die Information, dass du dich bei Indexcards anmelden möchtest, und prüft deine Anmeldung. Google verarbeitet diese Daten als eigenständig Verantwortlicher nach seiner eigenen Datenschutzerklärung: https://policies.google.com/privacy. Eine Übermittlung an die Google LLC in den USA ist nicht auszuschließen; die Google LLC ist unter dem EU-US Data Privacy Framework zertifiziert (Angemessenheitsbeschluss der Europäischen Kommission, Art. 45 DSGVO).",
+          "Nach erfolgreicher Anmeldung übermittelt Google deine Google-Konto-ID, deine E-Mail-Adresse und deinen Namen an unseren Anmeldedienst; bei der ersten Anmeldung wählst du zudem einen Nutzernamen.",
+          "Unser Anmeldedienst speichert diese Daten, solange dein Anmeldekonto besteht. Zusätzlich protokolliert er:"
+        ],
+        "items": [
+          "Anmeldeereignisse (Datum, Uhrzeit, IP-Adresse und Browser), die nach 365 Tagen automatisch gelöscht werden."
+        ],
+        "paragraphs_after": [
+          "Dein Passwort, deine E-Mail-Adresse und deine Google-Konto-ID werden nur für die Anmeldung verwendet und nicht an die Anwendung Indexcards weitergegeben. Unser Anmeldedienst setzt ein Sitzungs-Cookie, bei der Anmeldung mit Google setzt Google eigene Cookies; diese sind für die Anmeldung unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Rechtsgrundlage der Verarbeitung ist Art. 6 Abs. 1 lit. b DSGVO."
         ]
       },
       "content": {
@@ -239,12 +255,12 @@
         ]
       },
       "browser_storage": {
-        "title": "Speicherung im Browser (kein Einsatz von Cookies)",
+        "title": "Speicherung im Browser",
         "paragraphs": [
-          "Die Anwendung setzt keine Cookies. Sie legt jedoch folgende Einträge im Speicher deines Browsers ab:"
+          "Die Anwendung selbst setzt keine Cookies (zu den Cookies der Anmeldung siehe Abschnitt „Anmeldung“). Sie legt jedoch folgende Einträge im Speicher deines Browsers ab:"
         ],
         "items": [
-          "Session Storage: dein Zugangstoken (JSON Web Token) nach der Anmeldung sowie ein technischer Statuswert. Diese Einträge werden beim Abmelden oder beim Schließen des Browser-Tabs gelöscht; das Token verliert zudem nach 24 Stunden seine Gültigkeit.",
+          "Session Storage: dein Zugangs- und ID-Token nach der Anmeldung sowie ein technischer Statuswert; Local Storage: ein temporärer Wert während der Weiterleitung zur Anmeldung. Diese Einträge werden beim Abmelden oder beim Schließen des Browser-Tabs (bzw. nach Abschluss der Anmeldung) gelöscht; das Zugangstoken verliert zudem nach 24 Stunden seine Gültigkeit.",
           "Local Storage: deine Spracheinstellung (Deutsch oder Englisch), damit die Anwendung in deiner Sprache angezeigt wird. Dieser Eintrag bleibt bestehen, bis du ihn über die Einstellungen deines Browsers löschst."
         ],
         "paragraphs_after": [
@@ -268,7 +284,7 @@
       "recipients": {
         "title": "Empfänger deiner Daten",
         "paragraphs": [
-          "Deine Kontodaten und Inhalte werden nicht an Dritte weitergegeben. Zugriff haben ausschließlich wir als Betreiber sowie unser in unserem Auftrag tätiger Hosting-Anbieter STRATO (siehe Abschnitt „Hosting und Server-Logdateien“). Zu den in Abschnitt „Eingebundene Dienste Dritter“ genannten Anbietern gelangt nur deine IP-Adresse beim Laden der jeweiligen Ressource.",
+          "Deine Kontodaten und Inhalte werden nicht an Dritte weitergegeben. Zugriff haben ausschließlich wir als Betreiber sowie unser in unserem Auftrag tätiger Hosting-Anbieter STRATO (siehe Abschnitt „Hosting und Server-Logdateien“). Wenn du dich mit Google anmeldest, erhält Google die in Abschnitt „Anmeldung“ beschriebenen Daten. Zu den in Abschnitt „Eingebundene Dienste Dritter“ genannten Anbietern gelangt nur deine IP-Adresse beim Laden der jeweiligen Ressource.",
           "Eine Weitergabe an Behörden erfolgt nur, wenn wir hierzu gesetzlich verpflichtet sind (Art. 6 Abs. 1 lit. c DSGVO)."
         ]
       },
@@ -280,7 +296,7 @@
         "items": [
           "Kontodaten, Projekte, Karteikarten und Lernfortschritt werden gespeichert, solange dein Benutzerkonto besteht.",
           "Projekte und Karteikarten kannst du jederzeit selbst in der Anwendung löschen. Beim Löschen eines Projekts werden auch alle zugehörigen Karteikarten und deren Bewertungsverlauf gelöscht.",
-          "Dein Benutzerkonto kannst du jederzeit selbst in der Anwendung löschen: Öffne nach dem Anmelden das Kontomenü (Personen-Symbol oben rechts) und wähle „Konto löschen“; die Löschung bestätigst du mit deinem Passwort. Dabei werden sofort und endgültig dein Benutzerkonto (Nutzername, Vor- und Nachname, Passwort-Hash), alle deine Projekte und Karteikarten, dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine) sowie die hochgeladenen Bilder gelöscht, die zum Zeitpunkt der Löschung in deinen Karteikarten eingebunden sind. Bilder, die auch in Karteikarten anderer Nutzer eingebunden sind, bleiben für diese Karteikarten erhalten.",
+          "Dein Benutzerkonto kannst du jederzeit selbst in der Anwendung löschen: Öffne nach dem Anmelden das Kontomenü (Personen-Symbol oben rechts) und wähle „Konto löschen“; die Löschung bestätigst du durch Eingabe deines Nutzernamens. Dabei werden sofort und endgültig dein Benutzerkonto (Kennung, Nutzername, Vor- und Nachname), alle deine Projekte und Karteikarten, dein Lernfortschritt (Bewertungen, Bewertungsverlauf und Wiederholungstermine) sowie die hochgeladenen Bilder gelöscht, die zum Zeitpunkt der Löschung in deinen Karteikarten eingebunden sind. Bilder, die auch in Karteikarten anderer Nutzer eingebunden sind, bleiben für diese Karteikarten erhalten. Dein Anmeldekonto bei unserem Anmeldedienst (Nutzername, Name und Passwort-Hash bzw. Google-Konto-ID, E-Mail-Adresse und Name) wird dabei nicht automatisch gelöscht; die Löschung kannst du formlos über die oben genannte Kontaktadresse verlangen.",
           "Alternativ kannst du die Löschung deines Kontos einschließlich aller Inhalte und hochgeladenen Bilder jederzeit formlos unter der oben genannten Kontaktadresse verlangen; wir setzen die Löschung unverzüglich, spätestens innerhalb eines Monats, um.",
           "Hochgeladene Bilder werden nicht automatisch entfernt, wenn eine Karteikarte gelöscht oder ein Bild aus einer Karteikarte entfernt wird; solche Bilder werden auch von der Kontolöschung in der Anwendung nicht erfasst, da sie nicht mehr mit deinem Konto verknüpft sind. Auf Anfrage löschen wir sie vollständig.",
           "Server-Logdaten werden automatisch rotiert und spätestens bei der nächsten Aktualisierung der Anwendung gelöscht (siehe Abschnitt „Hosting und Server-Logdateien“)."
@@ -289,7 +305,7 @@
       "security": {
         "title": "Datensicherheit",
         "paragraphs": [
-          "Wir treffen angemessene technische und organisatorische Maßnahmen, um deine Daten zu schützen. Dazu gehören insbesondere die verschlüsselte Übertragung über HTTPS (TLS), die ausschließliche Speicherung von Passwörtern als bcrypt-Hash sowie eine tokenbasierte Anmeldung, bei der jeder Zugriff auf Projekte und Karteikarten auf die Berechtigung des jeweiligen Kontos geprüft wird."
+          "Wir treffen angemessene technische und organisatorische Maßnahmen, um deine Daten zu schützen. Dazu gehören insbesondere die verschlüsselte Übertragung über HTTPS (TLS), die ausschließliche Speicherung von Passwörtern als gesalzener Hash in unserem Anmeldedienst, an die Anwendung selbst werden sie nie übermittelt, sowie eine tokenbasierte Anmeldung, bei der jeder Zugriff auf Projekte und Karteikarten auf die Berechtigung des jeweiligen Kontos geprüft wird."
         ]
       },
       "rights": {
@@ -313,7 +329,7 @@
       "obligation": {
         "title": "Pflicht zur Bereitstellung und automatisierte Entscheidungsfindung",
         "paragraphs": [
-          "Die Angabe von Nutzername, Vor- und Nachname und Passwort ist für die Registrierung erforderlich. Ohne diese Angaben kannst du die Anwendung nicht nutzen. Eine gesetzliche Pflicht zur Bereitstellung besteht nicht.",
+          "Für die Nutzung der Anwendung benötigst du ein Anmeldekonto, entweder mit Nutzername, Name und Passwort oder über dein Google-Konto; dein Benutzerkonto mit Nutzername, Vor- und Nachname wird dann automatisch angelegt. Ohne diese Angaben kannst du die Anwendung nicht nutzen. Eine gesetzliche Pflicht zur Bereitstellung besteht nicht.",
           "Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt. Die automatische Berechnung von Wiederholungsterminen für deine Karteikarten dient allein der Lernplanung und entfaltet keine rechtliche oder ähnlich erhebliche Wirkung."
         ]
       },

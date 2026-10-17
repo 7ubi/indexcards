@@ -15,6 +15,7 @@ export class Privacy {
     'overview',
     'hosting',
     'account',
+    'login',
     'content',
     'browser_storage',
     'third_parties',
