@@ -181,7 +181,7 @@
           "data that is technically generated when you access the application (server log data),",
           "the data of your user account,",
           "the content you create and your learning progress,",
-          "entries in your browser's storage and a session cookie of our login service,"
+          "entries in your browser's storage and a session cookie of our login service."
         ],
         "paragraphs_after": [
           "We do not use analytics or tracking tools, or advertising. Apart from the cookies required for logging in, no cookies are used. Your data is not sold and is not used for advertising purposes."
@@ -296,7 +296,7 @@
         "items": [
           "Account data, projects, index cards and learning progress are stored for as long as your user account exists.",
           "You can delete projects and index cards yourself in the application at any time. Deleting a project also deletes all of its index cards and their rating history.",
-          "You can delete your user account yourself at any time in the application: after logging in, open the account menu (person icon at the top right) and select “Delete account”; confirm the deletion by entering your username. This immediately and permanently deletes your user account (identifier, username, first and last name), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards. Your login account at our login service (username, name and password hash, or Google account ID, email address and name) is not deleted automatically; to have it deleted, contact us using the address above.",
+          "You can delete your user account yourself at any time in the application: after logging in, open the account page (via the person icon at the top right, then “Account”) and select “Delete account permanently”; confirm the deletion by entering your username. This immediately and permanently deletes your user account (identifier, username, first and last name), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards. Your login account at our login service (username, name and password hash, or Google account ID, email address and name) is not deleted automatically; to have it deleted, contact us using the address above.",
           "Alternatively, you can request the deletion of your account, including all content and uploaded images, at any time and without any formal requirements using the contact address above; we will carry out the deletion without undue delay and within one month at the latest.",
           "Uploaded images are not removed automatically when an index card is deleted or an image is removed from an index card; such images are also not covered by the account deletion in the application, as they are no longer linked to your account. We will delete them completely on request.",
           "Server log data is rotated automatically and deleted with the next update of the application at the latest (see section “Hosting and server log files”)."
