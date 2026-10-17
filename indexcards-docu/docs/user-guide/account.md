@@ -2,41 +2,35 @@
 
 All projects and index cards belong to a user account, so you need to sign up and log in before using the app.
 
-## Signup
-
-On the signup page (`/signup`) enter a username, first name, last name and a password (twice). All fields are
-required and the username must not be taken by another user. After the account was created you are redirected to the
-login page.
-
-
 ## Login
 
-Log in on `/login` with your username and password. The app then stores an access token (a JWT) in the browser's
-local storage and sends it with every request. The token is valid for **24 hours**; after it expires, or if the
-backend rejects it, you are logged out automatically and redirected to the login page.
+Click **Sign in or create account** on `/login`. You are redirected to the app's login service (Authentik), where you
+can log in with your username and password, create a new account via **Sign up** (username, name and password, no
+email address), or log in with Google (on the first Google login you choose a username once). Your Index Cards
+account is created automatically on the first login, using your name as first and last name (the last word is the
+surname). Password accounts and Google accounts are separate accounts.
 
-Pages other than login, signup and the privacy policy can only be opened while logged in.
+If you forget your password, contact the operator; there is no reset by email. The app stores the access token for the
+current browser tab only; when it expires (after 24 hours) or the backend rejects it, you are logged out and redirected
+to the login page.
+
+Pages other than login and the privacy policy can only be opened while logged in.
 
 ## Logout
 
 Open the account menu (the account icon in the top right corner) and choose **Logout**. This removes the token from
-the browser.
+the browser. Logging out also ends your session at the login service, so the next login asks for your credentials again.
 
 ## Account page
 
 Open the account menu and choose **Account** (`/account`). The page shows your first and last name (read-only) and
-lets you change your username and password or delete your account.
+lets you change your username or delete your account.
 
 ### Change username
 
-Enter the new username and your current password, then click **Change username**. The new username must not be empty,
-must be at most 100 characters long and must not be taken by another user. You stay logged in: the app receives a new
-access token for the new username. Use the new username for future logins.
-
-### Change password
-
-Enter your current password and the new password twice, then click **Change password**. You stay logged in; use the
-new password for future logins.
+Enter the new username, then click **Change username**. The new username must not be empty, must be at most 100
+characters long and must not be taken by another user. Your login at Authentik is not affected, so you keep logging in
+with the same credentials.
 
 ### Settings
 
@@ -47,14 +41,14 @@ browser only and is kept after logging out.
 
 ## Delete account
 
-Deleting your account is done at the bottom of the account page. To confirm, you have to enter your password again.
+Deleting your account is done at the bottom of the account page. To confirm, you have to type your username.
 
 !!! warning
     Deleting your account is permanent and cannot be undone.
 
 The following data is deleted:
 
-- your user account (username, first and last name, password hash),
+- your user account (username, first and last name),
 - all of your projects,
 - all index cards in these projects,
 - your learning progress (ratings, rating history and review dates),
@@ -67,4 +61,4 @@ The app is available in English and German. On the first visit the language is c
 
 ## Privacy policy
 
-The privacy policy is available at `/privacy` and linked from the footer and the signup page.
+The privacy policy is available at `/privacy` and linked from the footer and the login page.

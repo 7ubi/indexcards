@@ -24,6 +24,7 @@ src/
 | Path                                    | Page                          | Login required |
 |-----------------------------------------|-------------------------------|----------------|
 | `/login`                                | Login                         | no             |
+| `/login/callback`                       | Login callback from Authentik | no             |
 | `/signup`                               | Signup                        | no             |
 | `/privacy`                              | Privacy policy                | no             |
 | `/`                                     | All projects                  | yes            |

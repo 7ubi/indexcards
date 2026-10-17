@@ -8,41 +8,22 @@ Except for `/api/auth/**` and `GET /api/images/{id}`, every request needs the he
 Authorization: Bearer <token>
 ```
 
-with a token from [login](#login). Errors are returned as a plain text error code, see
+with an Authentik access token (see [Authentication](#authentication)). Errors are returned as a plain text error code, see
 [Error handling](backend.md#error-handling).
 
 ## Authentication
 
-### Signup
+Users log in at Authentik (OIDC Authorization Code + PKCE; username/password or Google). Every endpoint except the ones
+below and `GET /api/images/{id}` requires `Authorization: Bearer <access token>`. On the first request with a new
+token subject the backend creates the user account automatically.
 
-`POST /api/auth/signup` → `201 Created`
+### Get login configuration
 
-```json
-{
-  "username": "jane",
-  "firstname": "Jane",
-  "surname": "Doe",
-  "password": "secret"
-}
-```
-
-Errors: `400 username_exists`
-
-### Login
-
-`POST /api/auth/login` → `200 OK`
+`GET /api/auth/config` → `200 OK` (no token required)
 
 ```json
-{ "username": "jane", "password": "secret" }
+{ "authority": "https://auth.indexcards.7ubi.de/application/o/indexcards/", "clientId": "indexcards" }
 ```
-
-Response:
-
-```json
-{ "token": "eyJhbGciOi...", "type": "Bearer", "id": 1, "username": "jane" }
-```
-
-Errors: `401 bad_credentials`
 
 ## User
 
@@ -63,10 +44,12 @@ Errors: `401 bad_credentials`
 Deletes the logged-in user with all projects, index cards, rating history and images.
 
 ```json
-{ "password": "secret" }
+{ "username": "jane" }
 ```
 
-Errors: `401 wrong_password`
+The username must be typed again as confirmation.
+
+Errors: `401 username_confirmation_mismatch`
 
 ## Projects
 

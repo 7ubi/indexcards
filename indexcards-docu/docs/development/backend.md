@@ -84,16 +84,16 @@ When adding a new error, add the code to `ErrorMessage` and a translation under 
 
 ## Authentication
 
-Authentication is stateless with JWTs:
+Authentication is delegated to Authentik (OIDC). The backend is an OAuth2 resource server:
 
-- `POST /api/auth/login` checks the credentials with Spring Security's `AuthenticationManager` and returns a JWT
-  signed with HS512. Tokens expire after 24 hours (`bezkoder.app.jwtExpirationMs`).
-- `AuthTokenFilter` validates the token of every request and sets the security context.
-- Passwords are hashed with BCrypt.
+- Every request's bearer access token is validated against Authentik's signing keys (JWKS), issuer and audience
+  (`spring.security.oauth2.resourceserver.jwt.*`, see `config/AuthentikJwtAuthenticationConverter.java`).
+- The token's `sub` is mapped to the local user (`oidc_subject`), which is created on first use
+  (`OidcUserProvisioningService`).
+- Members of the Authentik group `indexcards-admins` (token claim `groups`) get the `ADMIN` role (`AdminGroupService`).
+- Passwords are stored and hashed only in Authentik; the backend never sees them.
 - `SecurityConfig` permits `/api/auth/**`, `/api/test/**` and `GET /api/images/**` without authentication; everything
   else requires a valid token. Unauthenticated requests get a `401` from `AuthEntryPointJwt`.
-
-The signing key is read from `JWT_SECRET` (see [configuration](../operations/deployment.md#configuration)).
 
 ## Index card content
 

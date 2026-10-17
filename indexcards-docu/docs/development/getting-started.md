@@ -12,6 +12,30 @@ This page describes how to run Indexcards locally for development.
 | MySQL        | 5.7     | Database (e.g. via Docker)       |
 | Python       | 3.9+    | Documentation (optional)         |
 
+## Login for local development
+
+The app has no own login anymore; it needs Authentik:
+
+1. Create a Google OAuth client (see [Deployment → Login](../operations/deployment.md#login-authentik)) with
+   the redirect URI `http://localhost:9000/source/oauth/callback/google/`.
+2. Create `.env` in the repository root (not committed):
+
+    ```dotenv
+    AUTHENTIK_SECRET_KEY=<openssl rand -base64 60 | tr -d '\n'>
+    AUTHENTIK_PG_PASSWORD=<random>
+    AUTHENTIK_BOOTSTRAP_PASSWORD=<admin password>
+    AUTHENTIK_BOOTSTRAP_EMAIL=<your email>
+    AUTHENTIK_URL=http://localhost:9000
+    INDEXCARDS_URL=http://localhost:4200
+    GOOGLE_CLIENT_ID=<client id>
+    GOOGLE_CLIENT_SECRET=<client secret>
+    ```
+
+3. `docker network create nginx_backend` (once), then
+   `docker compose up -d mysqldb authentik-db authentik-server authentik-worker`.
+4. Start the backend (`./mvnw spring-boot:run`; its defaults point to `http://localhost:9000`) and the frontend
+   (`npm start`), open `http://localhost:4200`, click *Sign in or create account* and use *Sign up* (or Google).
+
 ## Database
 
 The backend expects a MySQL database `indexcardsdb` on port `3306` (host from `MYSQL_HOST`, default `localhost`) with
@@ -32,9 +56,9 @@ cd indexcards
 ./mvnw spring-boot:run
 ```
 
-The backend starts on [http://localhost:8080](http://localhost:8080). Without `JWT_SECRET` set, a random signing key is
-generated on every start, which means you have to log in again after restarting the backend. Uploaded images are stored
-in `./data/images` (see [configuration](../operations/deployment.md#configuration)).
+The backend starts on [http://localhost:8080](http://localhost:8080). It validates the access tokens issued by Authentik,
+so Authentik has to be running (see [Login for local development](#login-for-local-development)). Uploaded images are
+stored in `./data/images` (see [configuration](../operations/deployment.md#configuration)).
 
 ### Tests
 
