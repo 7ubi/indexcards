@@ -13,8 +13,8 @@ The backend is a Spring Boot 4.1 application (Java 21) in `indexcards/`. The pac
 | `request`     | Request DTOs, grouped by domain.                                                          |
 | `response`    | Response DTOs, grouped by domain.                                                         |
 | `mapper`      | MapStruct mappers between entities and DTOs (`ProjectMapper`, `IndexCardMapper`).         |
-| `jwt`         | Creating and validating JWTs (`JwtUtils`) and the 401 entry point (`AuthEntryPointJwt`).  |
-| `config`      | Spring Security, JWT filter, CORS and web configuration.                                  |
+| `jwt`         | The 401 entry point for requests without a valid token (`AuthEntryPointJwt`).             |
+| `config`      | Spring Security (OAuth2 resource server, `AuthentikJwtAuthenticationConverter`), CORS and web configuration. |
 | `exceptions`  | Custom exceptions and the `GlobalExceptionHandler`.                                       |
 | `error`       | `ErrorMessage` — the error codes returned to the frontend.                                |
 
@@ -23,14 +23,14 @@ The backend is a Spring Boot 4.1 application (Java 21) in `indexcards/`. The pac
 ```mermaid
 sequenceDiagram
     participant C as Client
-    participant F as AuthTokenFilter
+    participant F as Spring Security
     participant Ctrl as Controller
     participant S as Service
     participant R as Repository
-    C->>F: request with "Authorization: Bearer <jwt>"
-    F->>F: validate JWT, set SecurityContext
+    C->>F: request with "Authorization: Bearer <access token>"
+    F->>F: validate token (Authentik JWKS), map to SecurityUser, set SecurityContext
     F->>Ctrl: authenticated request
-    Ctrl->>Ctrl: username = JwtUtils.getUsernameFromAuthorizationHeader(...)
+    Ctrl->>Ctrl: username = securityUser.getUsername()
     Ctrl->>S: operation(username, request)
     S->>R: load user + entity, check ownership
     S->>R: save / delete
@@ -40,8 +40,8 @@ sequenceDiagram
 
 ### Controllers
 
-Controllers are thin. They read the username from the `Authorization` header and delegate to a service. They never
-return entities, only response DTOs.
+Controllers are thin. They take the authenticated user as `@AuthenticationPrincipal SecurityUser` and pass its username
+to a service. They never return entities, only response DTOs.
 
 ### Services
 
@@ -75,8 +75,7 @@ Exceptions are translated into HTTP responses by `GlobalExceptionHandler`. The r
 | `EntityNotFoundException`  | 400    | `project_not_found`, `indexcard_not_found`, `image_not_found`, `username_not_found` |
 | `EntityCreationException`  | 400    | `project_name_exists`, `project_name_too_long`, `invalid_image` |
 | `UsernameExistsException`  | 400    | `username_exists`                                              |
-| `UnauthorizedException`    | 401    | `user_not_project_owner`, `wrong_password`                     |
-| `BadCredentialsException`  | 401    | `bad_credentials`                                              |
+| `UnauthorizedException`    | 401    | `user_not_project_owner`, `username_confirmation_mismatch`     |
 | any other exception        | 500    | `Internal server error`                                        |
 
 When adding a new error, add the code to `ErrorMessage` and a translation under `backend` in

@@ -25,7 +25,7 @@ src/
 |-----------------------------------------|-------------------------------|----------------|
 | `/login`                                | Login                         | no             |
 | `/login/callback`                       | Login callback from Authentik | no             |
-| `/signup`                               | Signup                        | no             |
+| `/signup`                               | Redirects to `/login`         | no             |
 | `/privacy`                              | Privacy policy                | no             |
 | `/`                                     | All projects                  | yes            |
 | `/account/delete`                       | Delete account                | yes            |
