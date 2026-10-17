@@ -3,11 +3,9 @@ package com.x7ubi.indexcards.user;
 import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
-import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
-import com.x7ubi.indexcards.jwt.JwtUtils;
 import com.x7ubi.indexcards.request.user.ChangeUsernameRequest;
-import com.x7ubi.indexcards.response.common.JwtResponse;
+import com.x7ubi.indexcards.response.user.UserResponse;
 import com.x7ubi.indexcards.service.user.ChangeUsernameService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,35 +16,20 @@ public class ChangeUsernameServiceTest extends UserTestConfig {
     @Autowired
     private ChangeUsernameService changeUsernameService;
 
-    @Autowired
-    private JwtUtils jwtUtils;
-
     @Test
     public void changeUsernameTest()
-            throws EntityNotFoundException, UnauthorizedException, EntityCreationException, UsernameExistsException {
+            throws EntityNotFoundException, EntityCreationException, UsernameExistsException {
         // when
-        JwtResponse jwtResponse = this.changeUsernameService.changeUsername(
-                this.user.getUsername(), new ChangeUsernameRequest("  renamed  ", PASSWORD));
+        UserResponse userResponse = this.changeUsernameService.changeUsername(
+                this.user.getUsername(), new ChangeUsernameRequest("  renamed  "));
 
         // then
         Assertions.assertTrue(this.userRepo.findByUsername("test").isEmpty());
         Assertions.assertTrue(this.userRepo.findByUsername("renamed").isPresent());
-        Assertions.assertEquals("renamed", jwtResponse.getUsername());
-        Assertions.assertEquals(this.user.getId(), jwtResponse.getId());
-        Assertions.assertTrue(this.jwtUtils.validateJwtToken(jwtResponse.getToken()));
-        Assertions.assertEquals("renamed", this.jwtUtils.getUsernameFromJwtToken(jwtResponse.getToken()));
-    }
-
-    @Test
-    public void changeUsernameWithWrongPasswordTest() {
-        // when
-        UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
-                this.changeUsernameService.changeUsername(
-                        this.user.getUsername(), new ChangeUsernameRequest("renamed", "wrong")));
-
-        // then
-        Assertions.assertEquals(ErrorMessage.User.WRONG_PASSWORD, unauthorizedException.getMessage());
-        assertUsernameUnchanged();
+        Assertions.assertEquals("renamed", userResponse.getUsername());
+        Assertions.assertEquals("Max", userResponse.getFirstname());
+        Assertions.assertEquals("Muster", userResponse.getSurname());
+        Assertions.assertFalse(userResponse.isAdmin());
     }
 
     @Test
@@ -54,7 +37,7 @@ public class ChangeUsernameServiceTest extends UserTestConfig {
         // when
         UsernameExistsException usernameExistsException = Assertions.assertThrows(UsernameExistsException.class, () ->
                 this.changeUsernameService.changeUsername(
-                        this.user.getUsername(), new ChangeUsernameRequest(this.user2.getUsername(), PASSWORD)));
+                        this.user.getUsername(), new ChangeUsernameRequest(this.user2.getUsername())));
 
         // then
         Assertions.assertEquals(ErrorMessage.Authentication.USERNAME_EXITS, usernameExistsException.getMessage());
@@ -81,7 +64,7 @@ public class ChangeUsernameServiceTest extends UserTestConfig {
         // when
         EntityCreationException entityCreationException = Assertions.assertThrows(EntityCreationException.class, () ->
                 this.changeUsernameService.changeUsername(
-                        this.user.getUsername(), new ChangeUsernameRequest(newUsername, PASSWORD)));
+                        this.user.getUsername(), new ChangeUsernameRequest(newUsername)));
 
         // then
         Assertions.assertEquals(error, entityCreationException.getMessage());

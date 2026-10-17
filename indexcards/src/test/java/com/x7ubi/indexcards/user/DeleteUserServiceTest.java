@@ -182,16 +182,16 @@ public class DeleteUserServiceTest extends TestConfig {
         return Files.exists(storageDir.resolve(imageId + ".jpg"));
     }
 
-    private DeleteAccountRequest request(String password) {
+    private DeleteAccountRequest request(String username) {
         DeleteAccountRequest deleteAccountRequest = new DeleteAccountRequest();
-        deleteAccountRequest.setPassword(password);
+        deleteAccountRequest.setUsername(username);
         return deleteAccountRequest;
     }
 
     @Test
     public void deleteUserTest() throws EntityNotFoundException, UnauthorizedException {
         // when
-        this.deleteUserService.deleteUser(this.user.getUsername(), request(PASSWORD));
+        this.deleteUserService.deleteUser(this.user.getUsername(), request(this.user.getUsername()));
 
         // then
         Assertions.assertTrue(this.userRepo.findByUsername(this.user.getUsername()).isEmpty());
@@ -214,32 +214,41 @@ public class DeleteUserServiceTest extends TestConfig {
     }
 
     @Test
-    public void deleteUserWithWrongPasswordTest() {
+    public void deleteUserWithWrongConfirmationTest() {
         // when
         UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
-                this.deleteUserService.deleteUser(this.user.getUsername(), request("wrong")));
+                this.deleteUserService.deleteUser(this.user.getUsername(), request(this.user2.getUsername())));
 
         // then
-        Assertions.assertEquals(ErrorMessage.User.WRONG_PASSWORD, unauthorizedException.getMessage());
+        Assertions.assertEquals(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH, unauthorizedException.getMessage());
         assertNothingDeleted();
     }
 
     @Test
-    public void deleteUserWithoutPasswordTest() {
+    public void deleteUserWithoutConfirmationTest() {
         // when
         UnauthorizedException unauthorizedException = Assertions.assertThrows(UnauthorizedException.class, () ->
                 this.deleteUserService.deleteUser(this.user.getUsername(), request(null)));
 
         // then
-        Assertions.assertEquals(ErrorMessage.User.WRONG_PASSWORD, unauthorizedException.getMessage());
+        Assertions.assertEquals(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH, unauthorizedException.getMessage());
         assertNothingDeleted();
+    }
+
+    @Test
+    public void deleteUserTrimsConfirmationTest() throws EntityNotFoundException, UnauthorizedException {
+        // when
+        this.deleteUserService.deleteUser(this.user.getUsername(), request("  " + this.user.getUsername() + " "));
+
+        // then
+        Assertions.assertTrue(this.userRepo.findByUsername(this.user.getUsername()).isEmpty());
     }
 
     @Test
     public void deleteUnknownUserTest() {
         // when
         EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () ->
-                this.deleteUserService.deleteUser("unknown", request(PASSWORD)));
+                this.deleteUserService.deleteUser("unknown", request("unknown")));
 
         // then
         Assertions.assertEquals(ErrorMessage.Project.USERNAME_NOT_FOUND, entityNotFoundException.getMessage());

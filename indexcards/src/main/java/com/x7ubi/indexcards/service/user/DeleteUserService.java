@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.service.user;
 
+import com.x7ubi.indexcards.error.ErrorMessage;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.models.IndexCard;
@@ -10,7 +11,6 @@ import com.x7ubi.indexcards.request.user.DeleteAccountRequest;
 import com.x7ubi.indexcards.service.image.ImageStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -48,9 +48,8 @@ public class DeleteUserService extends AbstractUserService {
     private final EntityManager entityManager;
 
     public DeleteUserService(
-            UserRepo userRepo, PasswordEncoder passwordEncoder, ImageStorageService imageStorageService,
-            EntityManager entityManager) {
-        super(userRepo, passwordEncoder);
+            UserRepo userRepo, ImageStorageService imageStorageService, EntityManager entityManager) {
+        super(userRepo);
         this.imageStorageService = imageStorageService;
         this.entityManager = entityManager;
     }
@@ -59,7 +58,7 @@ public class DeleteUserService extends AbstractUserService {
     public void deleteUser(String username, DeleteAccountRequest deleteAccountRequest)
             throws EntityNotFoundException, UnauthorizedException {
         User user = getUser(username);
-        getWrongPasswordError(user, deleteAccountRequest == null ? null : deleteAccountRequest.getPassword());
+        getUsernameConfirmationError(user, deleteAccountRequest == null ? null : deleteAccountRequest.getUsername());
 
         Set<UUID> imageIds = collectImageIds(user);
         // Never delete an image that another user's card still references (e.g. copied Markdown).
@@ -72,6 +71,16 @@ public class DeleteUserService extends AbstractUserService {
         deleteImagesAfterCommit(imageIds);
 
         logger.info("User account was deleted");
+    }
+
+    /**
+     * Deleting is irreversible, so the user has to type their username to confirm it.
+     */
+    private void getUsernameConfirmationError(User user, String confirmation) throws UnauthorizedException {
+        if (confirmation == null || !confirmation.trim().equals(user.getUsername())) {
+            logger.error(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH);
+            throw new UnauthorizedException(ErrorMessage.User.USERNAME_CONFIRMATION_MISMATCH);
+        }
     }
 
     private Set<UUID> collectImageIds(User user) {

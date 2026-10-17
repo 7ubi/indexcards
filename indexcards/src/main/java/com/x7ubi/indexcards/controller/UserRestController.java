@@ -5,12 +5,9 @@ import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
 import com.x7ubi.indexcards.exceptions.UsernameExistsException;
 import com.x7ubi.indexcards.jwt.JwtUtils;
-import com.x7ubi.indexcards.request.user.ChangePasswordRequest;
 import com.x7ubi.indexcards.request.user.ChangeUsernameRequest;
 import com.x7ubi.indexcards.request.user.DeleteAccountRequest;
-import com.x7ubi.indexcards.response.common.JwtResponse;
 import com.x7ubi.indexcards.response.user.UserResponse;
-import com.x7ubi.indexcards.service.user.ChangePasswordService;
 import com.x7ubi.indexcards.service.user.ChangeUsernameService;
 import com.x7ubi.indexcards.service.user.DeleteUserService;
 import com.x7ubi.indexcards.service.user.UserService;
@@ -31,17 +28,14 @@ public class UserRestController {
 
     private final ChangeUsernameService changeUsernameService;
 
-    private final ChangePasswordService changePasswordService;
-
     private final DeleteUserService deleteUserService;
 
     public UserRestController(
             JwtUtils jwtUtils, UserService userService, ChangeUsernameService changeUsernameService,
-            ChangePasswordService changePasswordService, DeleteUserService deleteUserService) {
+            DeleteUserService deleteUserService) {
         this.jwtUtils = jwtUtils;
         this.userService = userService;
         this.changeUsernameService = changeUsernameService;
-        this.changePasswordService = changePasswordService;
         this.deleteUserService = deleteUserService;
     }
 
@@ -58,28 +52,14 @@ public class UserRestController {
 
     @PutMapping("/username")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<JwtResponse> changeUsername(
+    public ResponseEntity<UserResponse> changeUsername(
             @RequestHeader("Authorization") String authorization,
             @RequestBody ChangeUsernameRequest changeUsernameRequest
-    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException, UsernameExistsException {
+    ) throws EntityNotFoundException, EntityCreationException, UsernameExistsException {
         logger.info("Changing username");
         String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
 
         return ResponseEntity.ok(changeUsernameService.changeUsername(username, changeUsernameRequest));
-    }
-
-    @PutMapping("/password")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> changePassword(
-            @RequestHeader("Authorization") String authorization,
-            @RequestBody ChangePasswordRequest changePasswordRequest
-    ) throws EntityNotFoundException, UnauthorizedException, EntityCreationException {
-        logger.info("Changing password");
-        String username = jwtUtils.getUsernameFromAuthorizationHeader(authorization);
-
-        changePasswordService.changePassword(username, changePasswordRequest);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("")
