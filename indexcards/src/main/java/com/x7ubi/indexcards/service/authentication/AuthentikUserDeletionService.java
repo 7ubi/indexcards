@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
+import java.net.http.HttpClient;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -29,7 +32,15 @@ public class AuthentikUserDeletionService {
     @Autowired
     public AuthentikUserDeletionService(
             @Value("${app.authentik.api-url}") String apiUrl, @Value("${app.authentik.api-token}") String apiToken) {
-        this(RestClient.builder(), apiUrl, apiToken);
+        // The call runs inside the open database transaction of the account deletion, so it must not hang.
+        this(RestClient.builder().requestFactory(timeoutRequestFactory()), apiUrl, apiToken);
+    }
+
+    private static JdkClientHttpRequestFactory timeoutRequestFactory() {
+        JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(
+                HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build());
+        factory.setReadTimeout(Duration.ofSeconds(10));
+        return factory;
     }
 
     public AuthentikUserDeletionService(RestClient.Builder builder, String apiUrl, String apiToken) {
@@ -49,12 +60,15 @@ public class AuthentikUserDeletionService {
                     .uri(uri -> uri.path("/core/users/").queryParam("uuid", oidcSubject).build())
                     .retrieve()
                     .body(UserPage.class);
-            if (page == null || page.results() == null || page.results().isEmpty()) {
+            // Only ever delete the account whose uuid is exactly the token subject.
+            AuthentikUser user = page == null || page.results() == null ? null : page.results().stream()
+                    .filter(candidate -> oidcSubject.equals(candidate.uuid()))
+                    .findFirst()
+                    .orElse(null);
+            if (user == null) {
                 logger.warn("Authentik user of the deleted account was not found");
                 return;
             }
-
-            AuthentikUser user = page.results().getFirst();
             if (user.superuser()) {
                 logger.warn("Authentik superuser is not deleted together with the app account");
                 return;
@@ -72,6 +86,6 @@ public class AuthentikUserDeletionService {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    record AuthentikUser(int pk, @JsonProperty("is_superuser") boolean superuser) {
+    record AuthentikUser(int pk, String uuid, @JsonProperty("is_superuser") boolean superuser) {
     }
 }

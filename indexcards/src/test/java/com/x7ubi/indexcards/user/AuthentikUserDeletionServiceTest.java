@@ -40,7 +40,7 @@ public class AuthentikUserDeletionServiceTest {
     public void deletesUserFoundBySubjectTest() throws AuthentikDeletionException {
         this.server.expect(requestTo(LOOKUP)).andExpect(method(HttpMethod.GET))
                 .andExpect(header("Authorization", "Bearer secret-token"))
-                .andRespond(withSuccess("{\"results\":[{\"pk\":42,\"is_superuser\":false,\"username\":\"alice\"}]}",
+                .andRespond(withSuccess("{\"results\":[{\"pk\":42,\"uuid\":\"" + SUBJECT + "\",\"is_superuser\":false,\"username\":\"alice\"}]}",
                         MediaType.APPLICATION_JSON));
         this.server.expect(requestTo(API + "/core/users/42/")).andExpect(method(HttpMethod.DELETE))
                 .andExpect(header("Authorization", "Bearer secret-token"))
@@ -64,7 +64,19 @@ public class AuthentikUserDeletionServiceTest {
     @Test
     public void superuserIsNotDeletedTest() throws AuthentikDeletionException {
         this.server.expect(requestTo(LOOKUP))
-                .andRespond(withSuccess("{\"results\":[{\"pk\":1,\"is_superuser\":true}]}", MediaType.APPLICATION_JSON));
+                .andRespond(withSuccess("{\"results\":[{\"pk\":1,\"uuid\":\"" + SUBJECT + "\",\"is_superuser\":true}]}", MediaType.APPLICATION_JSON));
+
+        this.service.deleteUser(SUBJECT);
+
+        // no DELETE request expected
+        this.server.verify();
+    }
+
+    @Test
+    public void otherUsersUuidIsNotDeletedTest() throws AuthentikDeletionException {
+        this.server.expect(requestTo(LOOKUP))
+                .andRespond(withSuccess("{\"results\":[{\"pk\":7,\"uuid\":\"00000000-0000-0000-0000-000000000000\","
+                        + "\"is_superuser\":false}]}", MediaType.APPLICATION_JSON));
 
         this.service.deleteUser(SUBJECT);
 
@@ -82,7 +94,7 @@ public class AuthentikUserDeletionServiceTest {
     @Test
     public void deleteErrorFailsTest() {
         this.server.expect(requestTo(LOOKUP))
-                .andRespond(withSuccess("{\"results\":[{\"pk\":42,\"is_superuser\":false}]}", MediaType.APPLICATION_JSON));
+                .andRespond(withSuccess("{\"results\":[{\"pk\":42,\"uuid\":\"" + SUBJECT + "\",\"is_superuser\":false}]}", MediaType.APPLICATION_JSON));
         this.server.expect(requestTo(API + "/core/users/42/")).andRespond(withServerError());
 
         Assertions.assertThrows(AuthentikDeletionException.class, () -> this.service.deleteUser(SUBJECT));
