@@ -40,6 +40,10 @@ public class User implements Serializable {
     // Null for users created before the V4 migration.
     private LocalDateTime createdAt;
 
+    // Subject ("sub") of the Authentik access token; null for accounts from the former password login.
+    @Column(unique = true)
+    private String oidcSubject;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
 
@@ -104,6 +108,14 @@ public class User implements Serializable {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getOidcSubject() {
+        return oidcSubject;
+    }
+
+    public void setOidcSubject(String oidcSubject) {
+        this.oidcSubject = oidcSubject;
     }
 
     public List<Project> getProjects() {
