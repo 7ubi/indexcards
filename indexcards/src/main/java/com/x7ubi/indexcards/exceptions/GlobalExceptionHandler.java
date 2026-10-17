@@ -40,6 +40,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
+    @ExceptionHandler(AuthentikDeletionException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<?> handleAuthentikDeletionException(AuthentikDeletionException exception) {
+        logger.error(exception.getMessage(), exception);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ErrorMessage.User.AUTHENTIK_DELETION_FAILED);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleAllUnhandledExceptions(Exception exception) {

@@ -2,6 +2,7 @@ package com.x7ubi.indexcards.user;
 
 import com.x7ubi.indexcards.TestConfig;
 import com.x7ubi.indexcards.error.ErrorMessage;
+import com.x7ubi.indexcards.exceptions.AuthentikDeletionException;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
@@ -15,6 +16,7 @@ import com.x7ubi.indexcards.repository.IndexCardRepo;
 import com.x7ubi.indexcards.repository.ProjectRepo;
 import com.x7ubi.indexcards.repository.UserRepo;
 import com.x7ubi.indexcards.request.user.DeleteAccountRequest;
+import com.x7ubi.indexcards.service.authentication.AuthentikUserDeletionService;
 import com.x7ubi.indexcards.service.image.ImageStorageService;
 import com.x7ubi.indexcards.service.user.DeleteUserService;
 import org.junit.jupiter.api.AfterEach;
@@ -31,6 +33,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.charset.StandardCharsets;
@@ -41,11 +44,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
 @TestPropertySource(properties = {
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER"
+        "spring.datasource.url=jdbc:h2:mem:deleteusertestdb;NON_KEYWORDS=USER"
 })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 // AFTER_EACH (not BEFORE_EACH): this class has its own context configuration (image storage path), so its last
@@ -60,6 +68,12 @@ public class DeleteUserServiceTest extends TestConfig {
     static void registerStorageDir(DynamicPropertyRegistry registry) {
         registry.add("app.images.storage-path", () -> storageDir.toString());
     }
+
+    private static final String SUBJECT = "6a2f41a3-c54c-4fd4-9a2b-2f0b6c1e9a10";
+
+    // The real service would call Authentik.
+    @MockitoBean
+    private AuthentikUserDeletionService authentikUserDeletionService;
 
     @Autowired
     private UserRepo userRepo;
@@ -118,6 +132,8 @@ public class DeleteUserServiceTest extends TestConfig {
         this.otherUsersImageId = storeImage();
 
         this.user = saveUser("test");
+        this.user.setOidcSubject(SUBJECT);
+        this.user = this.userRepo.save(this.user);
         this.user2 = saveUser("test2");
 
         this.project = saveProject("TestProject", this.user);
@@ -182,7 +198,7 @@ public class DeleteUserServiceTest extends TestConfig {
     }
 
     @Test
-    public void deleteUserTest() throws EntityNotFoundException, UnauthorizedException {
+    public void deleteUserTest() throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
         // when
         this.deleteUserService.deleteUser(this.user.getUsername(), request(this.user.getUsername()));
 
@@ -229,7 +245,7 @@ public class DeleteUserServiceTest extends TestConfig {
     }
 
     @Test
-    public void deleteUserTrimsConfirmationTest() throws EntityNotFoundException, UnauthorizedException {
+    public void deleteUserTrimsConfirmationTest() throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
         // when
         this.deleteUserService.deleteUser(this.user.getUsername(), request("  " + this.user.getUsername() + " "));
 
@@ -246,6 +262,37 @@ public class DeleteUserServiceTest extends TestConfig {
         // then
         Assertions.assertEquals(ErrorMessage.Project.USERNAME_NOT_FOUND, entityNotFoundException.getMessage());
         assertNothingDeleted();
+    }
+
+    @Test
+    public void deleteUserDeletesAuthentikUserTest()
+            throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
+        this.deleteUserService.deleteUser(this.user.getUsername(), request(this.user.getUsername()));
+
+        verify(this.authentikUserDeletionService).deleteUser(SUBJECT);
+        Assertions.assertTrue(this.userRepo.findByUsername(this.user.getUsername()).isEmpty());
+    }
+
+    // Not @Transactional on purpose: the service's own transaction must really roll back.
+    @Test
+    public void authentikFailureRollsBackTest() throws AuthentikDeletionException {
+        doThrow(new AuthentikDeletionException("down")).when(this.authentikUserDeletionService)
+                .deleteUser(anyString());
+
+        Assertions.assertThrows(AuthentikDeletionException.class, () ->
+                this.deleteUserService.deleteUser(this.user.getUsername(), request(this.user.getUsername())));
+
+        assertNothingDeleted();
+        Assertions.assertTrue(this.userRepo.findByUsername(this.user.getUsername()).isPresent());
+    }
+
+    @Test
+    public void legacyUserSkipsAuthentikTest()
+            throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
+        this.deleteUserService.deleteUser(this.user2.getUsername(), request(this.user2.getUsername()));
+
+        Assertions.assertTrue(this.userRepo.findByUsername(this.user2.getUsername()).isEmpty());
+        verifyNoInteractions(this.authentikUserDeletionService);
     }
 
     private void assertNothingDeleted() {

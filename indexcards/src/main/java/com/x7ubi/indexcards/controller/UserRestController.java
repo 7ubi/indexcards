@@ -1,5 +1,6 @@
 package com.x7ubi.indexcards.controller;
 
+import com.x7ubi.indexcards.exceptions.AuthentikDeletionException;
 import com.x7ubi.indexcards.exceptions.EntityCreationException;
 import com.x7ubi.indexcards.exceptions.EntityNotFoundException;
 import com.x7ubi.indexcards.exceptions.UnauthorizedException;
@@ -65,7 +66,7 @@ public class UserRestController {
     public ResponseEntity<?> deleteUser(
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody DeleteAccountRequest deleteAccountRequest
-    ) throws EntityNotFoundException, UnauthorizedException {
+    ) throws EntityNotFoundException, UnauthorizedException, AuthentikDeletionException {
         logger.info("Deleting user account");
         String username = securityUser.getUsername();
 

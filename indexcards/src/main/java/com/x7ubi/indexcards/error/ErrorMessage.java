@@ -17,6 +17,8 @@ public class ErrorMessage {
         public static final String USERNAME_TOO_LONG = "username_too_long";
 
         public static final String USERNAME_UNCHANGED = "username_unchanged";
+
+        public static final String AUTHENTIK_DELETION_FAILED = "authentik_deletion_failed";
     }
 
     public static class Project {
