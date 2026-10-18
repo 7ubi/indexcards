@@ -18,7 +18,7 @@
 }
 
 .danger-zone {
-  border-color: var(--mat-sys-error);
+  border: solid 3px var(--mat-sys-error);
 }
 
 .actions {
