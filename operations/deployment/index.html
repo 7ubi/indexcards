@@ -992,6 +992,11 @@ environment variables.</p>
 <td>Secret of that OAuth client.</td>
 </tr>
 <tr>
+<td><code>RESEND_API_KEY</code></td>
+<td>—</td>
+<td>Resend API key, used by Authentik as SMTP password (<code>smtp.resend.com</code>) to send mail from <code>noreply@7ubi.de</code>.</td>
+</tr>
+<tr>
 <td><code>AUTHENTIK_ISSUER</code></td>
 <td><code>http://localhost:9000/application/o/indexcards/</code></td>
 <td>Backend: expected token issuer (set by Docker Compose from <code>AUTHENTIK_URL</code>).</td>
@@ -1032,9 +1037,23 @@ environment variables.</p>
 </table>
 <h2 id="login-authentik">Login (Authentik)<a class="headerlink" href="#login-authentik" title="Permanent link">&para;</a></h2>
 <p>Users log in through <a href="https://goauthentik.io">Authentik</a>, either with a username and password stored in Authentik
-(self-service signup on the login page, no email address) or with their Google account. The two kinds of account are
-not linked. The app never sees passwords or email addresses; the backend only validates Authentik's access tokens.</p>
-<p>There is no email, so there is no self-service password reset. If a user forgets their password, open
+(self-service signup on the login page) or with their Google account. The two kinds of account are not linked. The app
+never sees passwords or email addresses; the backend only validates Authentik's access tokens.</p>
+<p>Every account needs an email address. Signup asks for one (unique, case-insensitive) and creates the account inactive;
+it is activated when the user opens the confirmation link Authentik sends to that address (valid for 24 hours).
+Accounts created before email was required are asked for an address on their next login and have to confirm it before
+they are logged in. Authentik sends the mails through Resend (<code>RESEND_API_KEY</code>); the domain <code>7ubi.de</code> must be verified
+in Resend. Google accounts take their address from Google and are not checked for uniqueness.</p>
+<p>Two-factor authentication is optional. Users add an authenticator app (TOTP), a passkey/security key (WebAuthn),
+email codes or recovery codes (static tokens: 10 one-time codes, offered once another factor exists) on the account
+page, which opens the setup flows <code>indexcards-mfa-totp-setup</code>, <code>indexcards-mfa-webauthn-setup</code>,
+<code>indexcards-mfa-email-setup</code> and <code>indexcards-mfa-static-setup</code> through the login flow (skipped while the Authentik
+session is active) and returns to <code>/account</code>. The login flow, and the default source authentication flow for Google
+logins, then ask for the second factor; users without one log in with their password only. The account page lists and
+removes devices through the backend, which uses the Authentik API with the service account <code>indexcards-backend</code>. If a
+user has lost their second factors and recovery codes, delete the device in the Authentik admin (<em>Directory → Users</em> → user → <em>MFA
+Authenticators</em>).</p>
+<p>There is no self-service password reset yet. If a user forgets their password, open
 <em>Directory → Users</em> in the Authentik admin, select the user and use <em>Create recovery link</em>, then send them the link.
 Disabling or deleting a user there blocks their login. Sessions that are already open stay valid until their access
 token expires (up to 24 hours). Authentik is configured by the blueprint
@@ -1053,7 +1072,7 @@ If Authentik cannot be reached or refuses, the deletion fails with <code>503</co
    the <code>nginx_backend</code> network. Pass the <code>Host</code> header and <code>X-Forwarded-Proto: https</code> through, because Authentik
    builds the token issuer from them and it must equal <code>&lt;AUTHENTIK_URL&gt;/application/o/indexcards/</code>.</li>
 <li><strong>GitHub:</strong> Create the repository secrets <code>AUTHENTIK_SECRET_KEY</code>, <code>AUTHENTIK_PG_PASSWORD</code>,
-   <code>AUTHENTIK_BOOTSTRAP_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_EMAIL</code>, <code>AUTHENTIK_API_TOKEN</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code> and the
+   <code>AUTHENTIK_BOOTSTRAP_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_EMAIL</code>, <code>AUTHENTIK_API_TOKEN</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code>, <code>RESEND_API_KEY</code> and the
    repository variables <code>AUTHENTIK_URL</code>, <code>INDEXCARDS_URL</code>. Remove the old <code>JWT_SECRET</code> secret.</li>
 <li>After the first deployment, log in to <code>&lt;AUTHENTIK_URL&gt;/if/admin/</code> as <code>akadmin</code> and check under
    <em>Customization → Blueprints</em> that <code>indexcards</code> was applied successfully. Under <em>System → Settings</em>, check that
@@ -1071,6 +1090,7 @@ the account page, which also deletes their Authentik user.</p>
 <span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_BOOTSTRAP_PASSWORD</span><span class="o">=</span>&lt;password<span class="w"> </span>of<span class="w"> </span>akadmin&gt;
 <span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_BOOTSTRAP_EMAIL</span><span class="o">=</span>&lt;email<span class="w"> </span>of<span class="w"> </span>akadmin&gt;
 <span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_API_TOKEN</span><span class="o">=</span>&lt;random<span class="w"> </span>token,<span class="w"> </span>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">32</span>&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">RESEND_API_KEY</span><span class="o">=</span>&lt;Resend<span class="w"> </span>API<span class="w"> </span>key&gt;
 <span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_URL</span><span class="o">=</span>https://auth.indexcards.7ubi.de
 <span class="nb">export</span><span class="w"> </span><span class="nv">INDEXCARDS_URL</span><span class="o">=</span>https://indexcards.7ubi.de
 <span class="nb">export</span><span class="w"> </span><span class="nv">GOOGLE_CLIENT_ID</span><span class="o">=</span>&lt;client<span class="w"> </span>id&gt;

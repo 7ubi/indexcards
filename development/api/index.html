@@ -510,6 +510,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#get-2fa-devices" class="md-nav__link">
+    Get 2FA devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-a-2fa-device" class="md-nav__link">
+    Remove a 2FA device
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -902,6 +916,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#get-2fa-devices" class="md-nav__link">
+    Get 2FA devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-a-2fa-device" class="md-nav__link">
+    Remove a 2FA device
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1153,6 +1181,20 @@ token subject the backend creates the user account automatically.</p>
 <p>Also deletes the user's Authentik account through the Authentik API.</p>
 <p>Errors: <code>401 username_confirmation_mismatch</code>, <code>503 authentik_deletion_failed</code> (Authentik could not delete the user;
 nothing was deleted)</p>
+<h3 id="get-2fa-devices">Get 2FA devices<a class="headerlink" href="#get-2fa-devices" title="Permanent link">&para;</a></h3>
+<p><code>GET /api/user/mfa</code> → <code>200 OK</code></p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"totp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Authenticator app"</span><span class="p">,</span><span class="w"> </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-10-19T13:06:37Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"lastUsed"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webauthn"</span><span class="p">,</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YubiKey"</span><span class="p">,</span><span class="w"> </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-10-18T10:00:00Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"lastUsed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-10-19T09:00:00Z"</span><span class="w"> </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>The user's confirmed second factors, loaded from Authentik. <code>type</code> is <code>totp</code> (authenticator app), <code>webauthn</code> (passkey
+or security key), <code>email</code> (email code) or <code>static</code> (recovery codes). Devices are set up in Authentik's setup flows, not through this API.</p>
+<p>Errors: <code>503 authentik_mfa_failed</code></p>
+<h3 id="remove-a-2fa-device">Remove a 2FA device<a class="headerlink" href="#remove-a-2fa-device" title="Permanent link">&para;</a></h3>
+<p><code>DELETE /api/user/mfa/{type}/{id}</code> → <code>204 No Content</code></p>
+<p>Deletes the device in Authentik. Only the user's own devices can be removed.</p>
+<p>Errors: <code>400 mfa_device_not_found</code>, <code>503 authentik_mfa_failed</code></p>
 <h2 id="projects">Projects<a class="headerlink" href="#projects" title="Permanent link">&para;</a></h2>
 <h3 id="get-all-projects">Get all projects<a class="headerlink" href="#get-all-projects" title="Permanent link">&para;</a></h3>
 <p><code>GET /api/project</code> → <code>200 OK</code>, list of <a href="#projectresponse"><code>ProjectResponse</code></a></p>

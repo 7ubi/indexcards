@@ -754,7 +754,7 @@ does not stop the deployment.</p>
 <h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
 <p>Runs only on pushes to <code>main</code> after <em>Build and Test</em> succeeded. It is executed on a self-hosted runner on the server,
 which stops the running containers and starts containers with the new version using the <code>docker-compose.yml</code> in the
-repository root. The secrets <code>DB_PASSWORD</code>, <code>AUTHENTIK_SECRET_KEY</code>, <code>AUTHENTIK_PG_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_EMAIL</code>, <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> and the variables <code>AUTHENTIK_URL</code> and <code>INDEXCARDS_URL</code> are passed to Docker Compose as environment variables.</p>
+repository root. The secrets <code>DB_PASSWORD</code>, <code>AUTHENTIK_SECRET_KEY</code>, <code>AUTHENTIK_PG_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_EMAIL</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code> and <code>RESEND_API_KEY</code> and the variables <code>AUTHENTIK_URL</code> and <code>INDEXCARDS_URL</code> are passed to Docker Compose as environment variables.</p>
 <p>See <a href="../operations/deployment/">Deployment</a> for details. The app is available at
 <a href="https://indexcard.7ubi.de">https://indexcard.7ubi.de</a>.</p>
 <h2 id="deploy-documentation">Deploy documentation<a class="headerlink" href="#deploy-documentation" title="Permanent link">&para;</a></h2>
