@@ -26,11 +26,14 @@ export class LoginService {
 
   private userManager?: UserManager;
   private user: User | null = null;
+  private authentikUrl?: string;
 
   /** Runs on app start: loads the Authentik settings from the backend and restores this tab's session. */
   public async init(): Promise<void> {
     try {
       const config = await firstValueFrom(this.http.get<AuthConfigResponse>('/api/auth/config'));
+      // The authority is `<AUTHENTIK_URL>/application/o/<app>/`.
+      this.authentikUrl = config.authority.replace(/\/application\/o\/.*$/, '');
       this.userManager = this.createUserManager({
         authority: config.authority,
         client_id: config.clientId,
@@ -68,6 +71,11 @@ export class LoginService {
       throw new Error('Login is not configured');
     }
     this.user = await this.userManager.signinRedirectCallback();
+  }
+
+  /** Base URL of Authentik, e.g. for its 2FA setup flows; undefined until the login settings were loaded. */
+  public getAuthentikUrl(): string | undefined {
+    return this.authentikUrl;
   }
 
   public getBearer(): string {

@@ -1,0 +1,49 @@
+<div class="center">
+  <div class="form-container form-card">
+    <div class="header-container">
+      <h2 class="title">{{ 'two_factor.title' | translate }}</h2>
+    </div>
+    <p class="full-width hint">{{ 'two_factor.hint' | translate }}</p>
+
+    @if (!loading()) {
+      @if (devices().length === 0) {
+        <p class="full-width">{{ 'two_factor.none' | translate }}</p>
+      } @else {
+        <ul class="devices full-width">
+          @for (device of devices(); track device.type + device.id) {
+            <li class="device">
+              <mat-icon class="device-icon">{{ icons[device.type] }}</mat-icon>
+              <div class="device-info">
+                <div class="device-name">{{ device.name }}</div>
+                <div class="hint">
+                  {{ 'two_factor.types.' + device.type | translate }} ·
+                  {{
+                    'two_factor.added' | translate: { date: (device.created | date: 'mediumDate') }
+                  }}
+                </div>
+              </div>
+              <button
+                matIconButton
+                type="button"
+                [attr.aria-label]="'two_factor.remove' | translate"
+                [disabled]="removing() !== null"
+                (click)="remove(device)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    }
+
+    <div class="actions full-width">
+      @for (type of types; track type) {
+        <button matButton="outlined" type="button" (click)="setUp(type)">
+          <mat-icon>{{ icons[type] }}</mat-icon>
+          {{ 'two_factor.add.' + type | translate }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

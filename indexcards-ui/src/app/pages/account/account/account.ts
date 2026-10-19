@@ -16,6 +16,7 @@ import { SettingsService } from '../../../service/settings/settings.service';
 import { UserResponse } from '../../../app.responses';
 import { LoadingSpinner } from '../../../component/loading-spinner/loading-spinner';
 import { DeleteAccount } from '../../../component/delete-account/delete-account';
+import { TwoFactor } from '../../../component/two-factor/two-factor';
 
 @Component({
   selector: 'app-account',
@@ -29,6 +30,7 @@ import { DeleteAccount } from '../../../component/delete-account/delete-account'
     MatSlideToggle,
     LoadingSpinner,
     DeleteAccount,
+    TwoFactor,
   ],
   templateUrl: './account.html',
   changeDetection: ChangeDetectionStrategy.Eager,

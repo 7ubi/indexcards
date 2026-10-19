@@ -3,6 +3,16 @@ export interface AuthConfigResponse {
   readonly clientId: string;
 }
 
+export type MfaDeviceType = 'totp' | 'webauthn' | 'email';
+
+export interface MfaDeviceResponse {
+  readonly type: MfaDeviceType;
+  readonly id: string;
+  readonly name: string;
+  readonly created: string;
+  readonly lastUsed: string | null;
+}
+
 export interface UserResponse {
   readonly username: string;
   readonly firstname: string;

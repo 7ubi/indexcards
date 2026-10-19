@@ -21,8 +21,10 @@ entries:
       enrollment_flow: !Find [authentik_flows.flow, [slug, default-source-enrollment]]
 
   # --- Username/password accounts, stored in Authentik ---
-  # No email address is collected, so there is no email verification and no self-service password reset. An admin
-  # can create a recovery link for a user in the Authentik admin interface (Directory → Users).
+  # Every account needs an email address: signup asks for one and only activates the account once it is confirmed via
+  # the link sent to it. Accounts created before that are asked for an address on their next login. There is no
+  # self-service password reset yet; an admin can create a recovery link in the Authentik admin interface
+  # (Directory → Users).
   - model: authentik_policies_password.passwordpolicy
     id: indexcards-password-policy
     identifiers:
@@ -62,6 +64,34 @@ entries:
       order: 1
 
   - model: authentik_stages_prompt.prompt
+    id: indexcards-prompt-email
+    identifiers:
+      name: indexcards-enrollment-email
+    attrs:
+      field_key: email
+      label: Email
+      type: email
+      required: true
+      placeholder: Email
+      placeholder_expression: false
+      order: 2
+
+  # Email addresses are unique (case-insensitive), so an address always identifies one account.
+  - model: authentik_policies_expression.expressionpolicy
+    id: indexcards-email-unique-policy
+    identifiers:
+      name: indexcards-email-unique
+    attrs:
+      expression: |
+        from authentik.core.models import User
+
+        email = request.context.get("prompt_data", {}).get("email", "")
+        if User.objects.filter(email__iexact=email).exclude(pk=request.user.pk).exists():
+            ak_message("This email address is already used by another account.")
+            return False
+        return True
+
+  - model: authentik_stages_prompt.prompt
     id: indexcards-prompt-password
     identifiers:
       name: indexcards-enrollment-password
@@ -72,7 +102,7 @@ entries:
       required: true
       placeholder: Password
       placeholder_expression: false
-      order: 2
+      order: 3
 
   # Authentik checks that the fields "password" and "password_repeat" match.
   - model: authentik_stages_prompt.prompt
@@ -86,7 +116,7 @@ entries:
       required: true
       placeholder: Password (repeat)
       placeholder_expression: false
-      order: 3
+      order: 4
 
   - model: authentik_stages_prompt.promptstage
     id: indexcards-enrollment-prompt-stage
@@ -96,10 +126,12 @@ entries:
       fields:
         - !KeyOf indexcards-prompt-username
         - !KeyOf indexcards-prompt-name
+        - !KeyOf indexcards-prompt-email
         - !KeyOf indexcards-prompt-password
         - !KeyOf indexcards-prompt-password-repeat
       validation_policies:
         - !KeyOf indexcards-password-policy
+        - !KeyOf indexcards-email-unique-policy
 
   - model: authentik_stages_user_write.userwritestage
     id: indexcards-enrollment-user-write-stage
@@ -107,7 +139,21 @@ entries:
       name: indexcards-enrollment-user-write
     attrs:
       user_creation_mode: always_create
-      create_users_as_inactive: false
+      # Activated by the email stage once the address is confirmed.
+      create_users_as_inactive: true
+
+  # Sends a confirmation link via the global email settings (Resend, see docker-compose.yml). Opening it continues the
+  # flow and activates the user.
+  - model: authentik_stages_email.emailstage
+    id: indexcards-email-confirmation-stage
+    identifiers:
+      name: indexcards-email-confirmation
+    attrs:
+      use_global_settings: true
+      subject: Confirm your email address for Indexcards
+      template: email/account_confirmation.html
+      token_expiry: hours=24
+      activate_user_on_success: true
 
   - model: authentik_stages_user_login.userloginstage
     id: indexcards-login-stage
@@ -123,7 +169,7 @@ entries:
         - authentik.core.auth.InbuiltBackend
       failed_attempts_before_cancel: 5
 
-  # Signup: username, name, password -> create the user -> log them in.
+  # Signup: username, name, email, password -> create the (inactive) user -> confirm the email -> log them in.
   - model: authentik_flows.flow
     id: indexcards-enrollment-flow
     identifiers:
@@ -148,6 +194,12 @@ entries:
   - model: authentik_flows.flowstagebinding
     identifiers:
       target: !KeyOf indexcards-enrollment-flow
+      stage: !KeyOf indexcards-email-confirmation-stage
+      order: 25
+
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf indexcards-enrollment-flow
       stage: !KeyOf indexcards-login-stage
       order: 30
 
@@ -162,6 +214,8 @@ entries:
       name: Indexcards login
       title: Sign in to Indexcards
       designation: authentication
+      # A user who is already logged in skips the flow and goes straight to `?next=` (used by the 2FA setup links).
+      authentication: require_unauthenticated
 
   - model: authentik_stages_identification.identificationstage
     id: indexcards-identification-stage
@@ -182,11 +236,258 @@ entries:
       stage: !KeyOf indexcards-identification-stage
       order: 10
 
+  # Accounts without an email address (created before it was required) enter and confirm one before they are logged
+  # in. The user is only known after the identification stage, so these bindings are evaluated when they are reached.
+  - model: authentik_policies_expression.expressionpolicy
+    id: indexcards-email-missing-policy
+    identifiers:
+      name: indexcards-email-missing
+    attrs:
+      expression: |
+        return not request.user.email
+
+  - model: authentik_policies_expression.expressionpolicy
+    id: indexcards-email-entered-policy
+    identifiers:
+      name: indexcards-email-entered
+    attrs:
+      expression: |
+        return bool(request.context.get("prompt_data", {}).get("email"))
+
+  - model: authentik_stages_prompt.promptstage
+    id: indexcards-add-email-prompt-stage
+    identifiers:
+      name: indexcards-add-email-prompt
+    attrs:
+      fields:
+        - !KeyOf indexcards-prompt-email
+      validation_policies:
+        - !KeyOf indexcards-email-unique-policy
+
+  - model: authentik_stages_user_write.userwritestage
+    id: indexcards-add-email-user-write-stage
+    identifiers:
+      name: indexcards-add-email-user-write
+    attrs:
+      user_creation_mode: never_create
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-add-email-prompt-binding
+    identifiers:
+      target: !KeyOf indexcards-authentication-flow
+      stage: !KeyOf indexcards-add-email-prompt-stage
+      order: 12
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-add-email-user-write-binding
+    identifiers:
+      target: !KeyOf indexcards-authentication-flow
+      stage: !KeyOf indexcards-add-email-user-write-stage
+      order: 14
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-add-email-confirmation-binding
+    identifiers:
+      target: !KeyOf indexcards-authentication-flow
+      stage: !KeyOf indexcards-email-confirmation-stage
+      order: 16
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-email-missing-policy
+      target: !KeyOf indexcards-add-email-prompt-binding
+      order: 0
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-email-entered-policy
+      target: !KeyOf indexcards-add-email-user-write-binding
+      order: 0
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-email-entered-policy
+      target: !KeyOf indexcards-add-email-confirmation-binding
+      order: 0
+
   - model: authentik_flows.flowstagebinding
     identifiers:
       target: !KeyOf indexcards-authentication-flow
       stage: !KeyOf indexcards-login-stage
       order: 20
+
+  # --- Two-factor authentication (optional) ---
+  # Users add an authenticator app, a passkey/security key or email codes on the app's account page, which opens the
+  # matching setup flow below through the login flow (`/if/flow/indexcards-authentication/?next=/if/flow/<slug>/`), so
+  # an expired Authentik session logs in first. Each setup flow returns to the account page. The backend lists and
+  # removes the devices through the API (service account "indexcards-backend").
+  - model: authentik_stages_authenticator_validate.authenticatorvalidatestage
+    id: indexcards-mfa-validation-stage
+    identifiers:
+      name: indexcards-mfa-validation
+    attrs:
+      device_classes:
+        - totp
+        - webauthn
+        - email
+      # 2FA is optional: users without a device log in with their password only.
+      not_configured_action: skip
+      last_auth_threshold: seconds=0
+      webauthn_user_verification: preferred
+
+  # Checked right after the password, before anything else happens in the login flow.
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf indexcards-authentication-flow
+      stage: !KeyOf indexcards-mfa-validation-stage
+      order: 11
+
+  # Returns to the app's account page once a setup flow is finished. This sets the plan's `redirect` (honoured when the
+  # flow completes) instead of ending with a redirect stage: a redirect stage never completes its flow, and the plan
+  # left in the session makes Authentik's end-session endpoint show only "Logout successful" on the next logout.
+  # Bound with evaluate_on_plan false / re_evaluate_policies true, so it runs uncached on the live plan.
+  - model: authentik_policies_expression.expressionpolicy
+    id: indexcards-redirect-to-account-policy
+    identifiers:
+      name: indexcards-redirect-to-account
+    attrs:
+      expression: !Format
+        - |
+          context["flow_plan"].context["redirect"] = "%s/account"
+          return True
+        - !Env INDEXCARDS_URL
+
+  # Former redirect stage of the setup flows (see above).
+  - model: authentik_stages_redirect.redirectstage
+    state: absent
+    identifiers:
+      name: indexcards-account-redirect
+
+  - model: authentik_flows.flow
+    id: indexcards-mfa-totp-setup-flow
+    identifiers:
+      slug: indexcards-mfa-totp-setup
+    attrs:
+      name: Indexcards authenticator app setup
+      title: Set up an authenticator app
+      designation: stage_configuration
+      authentication: require_authenticated
+
+  - model: authentik_stages_authenticator_totp.authenticatortotpstage
+    id: indexcards-mfa-totp-setup-stage
+    identifiers:
+      name: indexcards-mfa-totp-setup
+    attrs:
+      digits: 6
+      friendly_name: Authenticator app
+      configure_flow: !KeyOf indexcards-mfa-totp-setup-flow
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-mfa-totp-setup-binding
+    identifiers:
+      target: !KeyOf indexcards-mfa-totp-setup-flow
+      stage: !KeyOf indexcards-mfa-totp-setup-stage
+      order: 10
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-redirect-to-account-policy
+      target: !KeyOf indexcards-mfa-totp-setup-binding
+      order: 0
+
+  - model: authentik_flows.flow
+    id: indexcards-mfa-webauthn-setup-flow
+    identifiers:
+      slug: indexcards-mfa-webauthn-setup
+    attrs:
+      name: Indexcards passkey setup
+      title: Set up a passkey or security key
+      designation: stage_configuration
+      authentication: require_authenticated
+
+  - model: authentik_stages_authenticator_webauthn.authenticatorwebauthnstage
+    id: indexcards-mfa-webauthn-setup-stage
+    identifiers:
+      name: indexcards-mfa-webauthn-setup
+    attrs:
+      friendly_name: Passkey or security key
+      user_verification: preferred
+      resident_key_requirement: preferred
+      configure_flow: !KeyOf indexcards-mfa-webauthn-setup-flow
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-mfa-webauthn-setup-binding
+    identifiers:
+      target: !KeyOf indexcards-mfa-webauthn-setup-flow
+      stage: !KeyOf indexcards-mfa-webauthn-setup-stage
+      order: 10
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-redirect-to-account-policy
+      target: !KeyOf indexcards-mfa-webauthn-setup-binding
+      order: 0
+
+  - model: authentik_flows.flow
+    id: indexcards-mfa-email-setup-flow
+    identifiers:
+      slug: indexcards-mfa-email-setup
+    attrs:
+      name: Indexcards email code setup
+      title: Set up sign-in codes by email
+      designation: stage_configuration
+      authentication: require_authenticated
+
+  # Sends the codes to the account's (confirmed) email address via the global email settings.
+  - model: authentik_stages_authenticator_email.authenticatoremailstage
+    id: indexcards-mfa-email-setup-stage
+    identifiers:
+      name: indexcards-mfa-email-setup
+    attrs:
+      friendly_name: Email code
+      use_global_settings: true
+      subject: Your Indexcards sign-in code
+      token_expiry: minutes=15
+      configure_flow: !KeyOf indexcards-mfa-email-setup-flow
+
+  - model: authentik_flows.flowstagebinding
+    id: indexcards-mfa-email-setup-binding
+    identifiers:
+      target: !KeyOf indexcards-mfa-email-setup-flow
+      stage: !KeyOf indexcards-mfa-email-setup-stage
+      order: 10
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    identifiers:
+      policy: !KeyOf indexcards-redirect-to-account-policy
+      target: !KeyOf indexcards-mfa-email-setup-binding
+      order: 0
+
+  # Google logins use Authentik's default source authentication flow; a second factor set up for such an account is
+  # checked there too.
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, default-source-authentication]]
+      stage: !KeyOf indexcards-mfa-validation-stage
+      order: -10
 
   # --- Logout: end the Authentik session and go back to the app ---
   # Authentik ignores the post_logout_redirect_uri the app sends, so the provider gets its own invalidation flow that
@@ -269,8 +570,9 @@ entries:
       is_superuser: false
 
   # --- Backend access to the Authentik API ---
-  # The backend deletes a user's Authentik account when they delete their Indexcards account. The role only allows
-  # viewing and deleting users; the token key comes from the environment.
+  # The backend deletes a user's Authentik account when they delete their Indexcards account, and lists and removes
+  # their 2FA devices on the account page. The role only allows viewing and deleting users and these devices; the token
+  # key comes from the environment.
   - model: authentik_rbac.role
     id: indexcards-backend-role
     identifiers:
@@ -279,6 +581,12 @@ entries:
       permissions:
         - authentik_core.view_user
         - authentik_core.delete_user
+        - authentik_stages_authenticator_totp.view_totpdevice
+        - authentik_stages_authenticator_totp.delete_totpdevice
+        - authentik_stages_authenticator_webauthn.view_webauthndevice
+        - authentik_stages_authenticator_webauthn.delete_webauthndevice
+        - authentik_stages_authenticator_email.view_emaildevice
+        - authentik_stages_authenticator_email.delete_emaildevice
 
   - model: authentik_core.group
     id: indexcards-backend-group
@@ -308,4 +616,4 @@ entries:
       intent: api
       expiring: false
       key: !Env AUTHENTIK_API_TOKEN
-      description: Indexcards backend (deletes users together with their app account)
+      description: Indexcards backend (deletes users together with their app account, manages their 2FA devices)

@@ -37,7 +37,7 @@ Run `npm run format` locally to fix formatting errors.
 
 Runs only on pushes to `main` after *Build and Test* succeeded. It is executed on a self-hosted runner on the server,
 which stops the running containers and starts containers with the new version using the `docker-compose.yml` in the
-repository root. The secrets `DB_PASSWORD`, `AUTHENTIK_SECRET_KEY`, `AUTHENTIK_PG_PASSWORD`, `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` and the variables `AUTHENTIK_URL` and `INDEXCARDS_URL` are passed to Docker Compose as environment variables.
+repository root. The secrets `DB_PASSWORD`, `AUTHENTIK_SECRET_KEY`, `AUTHENTIK_PG_PASSWORD`, `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `RESEND_API_KEY` and the variables `AUTHENTIK_URL` and `INDEXCARDS_URL` are passed to Docker Compose as environment variables.
 
 See [Deployment](operations/deployment.md) for details. The app is available at
 [https://indexcard.7ubi.de](https://indexcard.7ubi.de).

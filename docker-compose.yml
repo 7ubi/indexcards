@@ -126,6 +126,13 @@ services:
       GOOGLE_CLIENT_SECRET: '${GOOGLE_CLIENT_SECRET}'
       INDEXCARDS_URL: '${INDEXCARDS_URL:?INDEXCARDS_URL is required}'
       AUTHENTIK_API_TOKEN: '${AUTHENTIK_API_TOKEN:?AUTHENTIK_API_TOKEN is required}'
+      # Outgoing mail (recovery links, notifications) via Resend; the sender domain is verified in Resend.
+      AUTHENTIK_EMAIL__HOST: 'smtp.resend.com'
+      AUTHENTIK_EMAIL__PORT: '587'
+      AUTHENTIK_EMAIL__USE_TLS: 'true'
+      AUTHENTIK_EMAIL__USERNAME: 'resend'
+      AUTHENTIK_EMAIL__PASSWORD: '${RESEND_API_KEY}'
+      AUTHENTIK_EMAIL__FROM: 'indexcards <noreply@7ubi.de>'
     volumes:
       - './authentik/blueprints:/blueprints/custom'
     ports:
