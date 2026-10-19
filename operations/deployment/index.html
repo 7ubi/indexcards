@@ -1,0 +1,1151 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../pipeline/">
+      
+      
+        <link rel="next" href="../../license/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.20">
+    
+    
+      
+        <title>Deployment - Indexcards Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deployment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Indexcards Documentation" class="md-header__button md-logo" aria-label="Indexcards Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Indexcards Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deployment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/7ubi/indexcards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Indexcards Documentation" class="md-nav__button md-logo" aria-label="Indexcards Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Indexcards Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/7ubi/indexcards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Indexcards
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          User Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          User Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/account/" class="md-nav__link">
+        Account
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/projects/" class="md-nav__link">
+        Projects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/indexcards/" class="md-nav__link">
+        Index Cards
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/studying/" class="md-nav__link">
+        Studying
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/import-export/" class="md-nav__link">
+        Import & Export
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/admin/" class="md-nav__link">
+        Admin Analytics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projectStructure/" class="md-nav__link">
+        Project Structure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/backend/" class="md-nav__link">
+        Backend
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/frontend/" class="md-nav__link">
+        Frontend
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/api/" class="md-nav__link">
+        REST API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/" class="md-nav__link">
+        Database
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/spaced-repetition/" class="md-nav__link">
+        Spaced Repetition
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Operations
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline/" class="md-nav__link">
+        Pipeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Deployment
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#containers" class="md-nav__link">
+    Containers
+  </a>
+  
+    <nav class="md-nav" aria-label="Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#login-authentik" class="md-nav__link">
+    Login (Authentik)
+  </a>
+  
+    <nav class="md-nav" aria-label="Login (Authentik)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-setup" class="md-nav__link">
+    One-time setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accounts-from-the-password-login" class="md-nav__link">
+    Accounts from the password login
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-manually" class="md-nav__link">
+    Deploying manually
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-admin" class="md-nav__link">
+    Creating an admin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#containers" class="md-nav__link">
+    Containers
+  </a>
+  
+    <nav class="md-nav" aria-label="Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#login-authentik" class="md-nav__link">
+    Login (Authentik)
+  </a>
+  
+    <nav class="md-nav" aria-label="Login (Authentik)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-setup" class="md-nav__link">
+    One-time setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accounts-from-the-password-login" class="md-nav__link">
+    Accounts from the password login
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-manually" class="md-nav__link">
+    Deploying manually
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-admin" class="md-nav__link">
+    Creating an admin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h1>
+<p>The application is deployed with Docker Compose using <code>docker-compose.yml</code> in the repository root. The
+<a href="../../pipeline/#deployment">pipeline</a> does this automatically on every push to <code>main</code>.</p>
+<h2 id="containers">Containers<a class="headerlink" href="#containers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Container</th>
+<th>Image / Build</th>
+<th>Port (host:container)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mysqldb</code></td>
+<td><code>dbcontainer</code></td>
+<td><code>mysql:5.7</code></td>
+<td><code>3306:3306</code></td>
+<td>Database <code>indexcardsdb</code></td>
+</tr>
+<tr>
+<td><code>backend</code></td>
+<td><code>backendcontainer</code></td>
+<td><code>indexcards/Dockerfile</code></td>
+<td><code>8081:8080</code></td>
+<td>Spring Boot backend</td>
+</tr>
+<tr>
+<td><code>frontend</code></td>
+<td><code>frontendcontainer</code></td>
+<td><code>indexcards-ui/Dockerfile</code></td>
+<td><code>4200:80</code></td>
+<td>Angular app served by nginx</td>
+</tr>
+<tr>
+<td><code>authentik-db</code></td>
+<td><code>authentikdbcontainer</code></td>
+<td><code>postgres:16-alpine</code></td>
+<td>—</td>
+<td>Database of Authentik</td>
+</tr>
+<tr>
+<td><code>authentik-server</code></td>
+<td><code>authentikservercontainer</code></td>
+<td><code>ghcr.io/goauthentik/server:2025.10</code></td>
+<td><code>9000:9000</code></td>
+<td>Login service (OIDC, Google login)</td>
+</tr>
+<tr>
+<td><code>authentik-worker</code></td>
+<td><code>authentikworkercontainer</code></td>
+<td><code>ghcr.io/goauthentik/server:2025.10</code></td>
+<td>—</td>
+<td>Background tasks, applies blueprints</td>
+</tr>
+</tbody>
+</table>
+<pre class="mermaid"><code>flowchart LR
+    Proxy[Reverse proxy] --&gt; Frontend["frontendcontainer&lt;br/&gt;nginx :80"]
+    Frontend --&gt;|/api/| Backend["backendcontainer&lt;br/&gt;:8080"]
+    Backend --&gt; DB[("dbcontainer&lt;br/&gt;MySQL :3306")]
+    Backend --&gt; Vol[/"volume image-storage"/]
+    DB --&gt; DBVol[/"volume my-db"/]
+    Proxy --&gt; Authentik["authentikservercontainer&lt;br/&gt;:9000"]
+    Backend --&gt;|JWKS| Authentik
+    Authentik --&gt; AuthDB[("authentikdbcontainer&lt;br/&gt;PostgreSQL")]</code></pre>
+<ul>
+<li>The <strong>frontend</strong> image builds the Angular app with Node and serves it with nginx (<code>indexcards-ui/nginx.conf</code>).
+  nginx serves the app for all paths (falling back to <code>index.html</code> for client-side routing) and forwards <code>/api/</code> to
+  <code>backendcontainer:8080</code>.</li>
+<li>The <strong>backend</strong> image builds the jar with Maven and runs it on Java 21.</li>
+<li>The frontend and backend are also attached to the external network <code>nginx_backend</code>, which is used by the reverse
+  proxy on the server. It has to exist before starting: <code>docker network create nginx_backend</code>.</li>
+</ul>
+<h3 id="volumes">Volumes<a class="headerlink" href="#volumes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Volume</th>
+<th>Mounted at</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>my-db</code></td>
+<td><code>/var/lib/mysql</code></td>
+<td>MySQL data</td>
+</tr>
+<tr>
+<td><code>image-storage</code></td>
+<td><code>/app/data/images</code></td>
+<td>Uploaded images of index cards</td>
+</tr>
+<tr>
+<td><code>authentik-db</code></td>
+<td><code>/var/lib/postgresql/data</code></td>
+<td>Authentik users, sessions, events</td>
+</tr>
+</tbody>
+</table>
+<p>All volumes must be included in backups.</p>
+<h3 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h3>
+<p>All containers use the <code>json-file</code> log driver with at most 3 files of 10 MB each, so logs (including nginx access logs
+with IP addresses) are rotated automatically.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>The backend is configured in <code>indexcards/src/main/resources/application.properties</code>. Values can be overridden with
+environment variables.</p>
+<table>
+<thead>
+<tr>
+<th>Environment variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DB_PASSWORD</code></td>
+<td>—</td>
+<td>Used by Docker Compose as MySQL root password and for the backend.</td>
+</tr>
+<tr>
+<td><code>SPRING_DATASOURCE_URL</code></td>
+<td><code>jdbc:mysql://${MYSQL_HOST:localhost}:3306/indexcardsdb</code></td>
+<td>Database URL.</td>
+</tr>
+<tr>
+<td><code>SPRING_DATASOURCE_USERNAME</code></td>
+<td><code>root</code></td>
+<td>Database user.</td>
+</tr>
+<tr>
+<td><code>SPRING_DATASOURCE_PASSWORD</code></td>
+<td><code>12345678</code></td>
+<td>Database password.</td>
+</tr>
+<tr>
+<td><code>MYSQL_HOST</code></td>
+<td><code>localhost</code></td>
+<td>Database host (if <code>SPRING_DATASOURCE_URL</code> is not set).</td>
+</tr>
+<tr>
+<td><code>IMAGES_STORAGE_PATH</code></td>
+<td><code>./data/images</code></td>
+<td>Directory for uploaded images.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_URL</code></td>
+<td>—</td>
+<td>Public URL of Authentik, e.g. <code>https://auth.indexcards.7ubi.de</code> (no trailing slash).</td>
+</tr>
+<tr>
+<td><code>INDEXCARDS_URL</code></td>
+<td>—</td>
+<td>Public URL of the app, e.g. <code>https://indexcards.7ubi.de</code>; used for the OIDC redirect URI.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_SECRET_KEY</code></td>
+<td>—</td>
+<td>Authentik's secret key (<code>openssl rand -base64 60 \| tr -d '\n'</code>). Never change it after the first start.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_PG_PASSWORD</code></td>
+<td>—</td>
+<td>Password of Authentik's PostgreSQL database.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_BOOTSTRAP_PASSWORD</code></td>
+<td>—</td>
+<td>Password of the Authentik admin <code>akadmin</code>, only used on the first start.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_BOOTSTRAP_EMAIL</code></td>
+<td>—</td>
+<td>Email of <code>akadmin</code>, only used on the first start.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_API_TOKEN</code></td>
+<td>—</td>
+<td>Secret token of the Authentik service account <code>indexcards-backend</code> (<code>openssl rand -hex 32</code>). Read by the blueprint and sent by the backend to delete Authentik users.</td>
+</tr>
+<tr>
+<td><code>GOOGLE_CLIENT_ID</code></td>
+<td>—</td>
+<td>OAuth client of the Google Cloud project.</td>
+</tr>
+<tr>
+<td><code>GOOGLE_CLIENT_SECRET</code></td>
+<td>—</td>
+<td>Secret of that OAuth client.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_ISSUER</code></td>
+<td><code>http://localhost:9000/application/o/indexcards/</code></td>
+<td>Backend: expected token issuer (set by Docker Compose from <code>AUTHENTIK_URL</code>).</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_JWKS_URI</code></td>
+<td><code>http://localhost:9000/application/o/indexcards/jwks/</code></td>
+<td>Backend: where the token signing keys are fetched.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_CLIENT_ID</code></td>
+<td><code>indexcards</code></td>
+<td>Backend: OIDC client id / expected token audience.</td>
+</tr>
+<tr>
+<td><code>AUTHENTIK_API_URL</code></td>
+<td><code>http://localhost:9000/api/v3</code></td>
+<td>Backend: Authentik API used to delete users (set by Docker Compose to the internal Authentik address).</td>
+</tr>
+</tbody>
+</table>
+<p>Other settings in <code>application.properties</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spring.servlet.multipart.max-file-size</code></td>
+<td><code>5MB</code></td>
+<td>Maximum size of an uploaded image.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="login-authentik">Login (Authentik)<a class="headerlink" href="#login-authentik" title="Permanent link">&para;</a></h2>
+<p>Users log in through <a href="https://goauthentik.io">Authentik</a>, either with a username and password stored in Authentik
+(self-service signup on the login page, no email address) or with their Google account. The two kinds of account are
+not linked. The app never sees passwords or email addresses; the backend only validates Authentik's access tokens.</p>
+<p>There is no email, so there is no self-service password reset. If a user forgets their password, open
+<em>Directory → Users</em> in the Authentik admin, select the user and use <em>Create recovery link</em>, then send them the link.
+Disabling or deleting a user there blocks their login. Sessions that are already open stay valid until their access
+token expires (up to 24 hours). Authentik is configured by the blueprint
+<code>authentik/blueprints/indexcards.yaml</code>, which the worker applies on every start.</p>
+<p>When a user deletes their account in the app, the backend also deletes the Authentik user through the Authentik API.
+For this the blueprint creates the service account <code>indexcards-backend</code> with a role that may only view and delete users;
+its token is <code>AUTHENTIK_API_TOKEN</code>. Authentik superusers are never deleted this way. The OIDC provider uses
+<code>sub_mode: user_uuid</code>, so the token's <code>sub</code> is the Authentik user UUID, which the backend uses to find the user to delete.
+If Authentik cannot be reached or refuses, the deletion fails with <code>503</code> and nothing is deleted.</p>
+<h3 id="one-time-setup">One-time setup<a class="headerlink" href="#one-time-setup" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Google OAuth client:</strong> In the Google Cloud Console (APIs &amp; Services → Credentials) create an OAuth client ID of
+   type <em>Web application</em> with the authorized redirect URI <code>&lt;AUTHENTIK_URL&gt;/source/oauth/callback/google/</code>. Configure
+   the consent screen with the scopes <code>openid</code>, <code>email</code> and <code>profile</code>, and publish it.</li>
+<li><strong>Reverse proxy:</strong> Route <code>AUTHENTIK_URL</code> (e.g. <code>auth.indexcards.7ubi.de</code>) to <code>authentikservercontainer:9000</code> on
+   the <code>nginx_backend</code> network. Pass the <code>Host</code> header and <code>X-Forwarded-Proto: https</code> through, because Authentik
+   builds the token issuer from them and it must equal <code>&lt;AUTHENTIK_URL&gt;/application/o/indexcards/</code>.</li>
+<li><strong>GitHub:</strong> Create the repository secrets <code>AUTHENTIK_SECRET_KEY</code>, <code>AUTHENTIK_PG_PASSWORD</code>,
+   <code>AUTHENTIK_BOOTSTRAP_PASSWORD</code>, <code>AUTHENTIK_BOOTSTRAP_EMAIL</code>, <code>AUTHENTIK_API_TOKEN</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code> and the
+   repository variables <code>AUTHENTIK_URL</code>, <code>INDEXCARDS_URL</code>. Remove the old <code>JWT_SECRET</code> secret.</li>
+<li>After the first deployment, log in to <code>&lt;AUTHENTIK_URL&gt;/if/admin/</code> as <code>akadmin</code> and check under
+   <em>Customization → Blueprints</em> that <code>indexcards</code> was applied successfully. Under <em>System → Settings</em>, check that
+   <em>Event retention</em> is <code>days=365</code> (stated in the privacy policy).</li>
+</ol>
+<h3 id="accounts-from-the-password-login">Accounts from the password login<a class="headerlink" href="#accounts-from-the-password-login" title="Permanent link">&para;</a></h3>
+<p>The former username/password accounts were not migrated. Migration <code>V6</code> renamed them to <code>legacy-&lt;username&gt;</code> and
+removed their password hashes; they cannot log in anymore. Their data stays in the database until it is deleted by
+hand. Deleting the Authentik user (<em>Directory → Users</em>) does not delete the app account; users do that themselves on
+the account page, which also deletes their Authentik user.</p>
+<h2 id="deploying-manually">Deploying manually<a class="headerlink" href="#deploying-manually" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DB_PASSWORD</span><span class="o">=</span>&lt;database<span class="w"> </span>password&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_SECRET_KEY</span><span class="o">=</span>&lt;base64<span class="w"> </span>key&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_PG_PASSWORD</span><span class="o">=</span>&lt;database<span class="w"> </span>password<span class="w"> </span>of<span class="w"> </span>Authentik&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_BOOTSTRAP_PASSWORD</span><span class="o">=</span>&lt;password<span class="w"> </span>of<span class="w"> </span>akadmin&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_BOOTSTRAP_EMAIL</span><span class="o">=</span>&lt;email<span class="w"> </span>of<span class="w"> </span>akadmin&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_API_TOKEN</span><span class="o">=</span>&lt;random<span class="w"> </span>token,<span class="w"> </span>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">32</span>&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTHENTIK_URL</span><span class="o">=</span>https://auth.indexcards.7ubi.de
+<span class="nb">export</span><span class="w"> </span><span class="nv">INDEXCARDS_URL</span><span class="o">=</span>https://indexcards.7ubi.de
+<span class="nb">export</span><span class="w"> </span><span class="nv">GOOGLE_CLIENT_ID</span><span class="o">=</span>&lt;client<span class="w"> </span>id&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">GOOGLE_CLIENT_SECRET</span><span class="o">=</span>&lt;client<span class="w"> </span>secret&gt;
+docker-compose<span class="w"> </span>down
+docker-compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w"> </span>-d
+</code></pre></div>
+<p>Database migrations run automatically when the backend starts (see <a href="../../database/#migrations">Migrations</a>).</p>
+<h2 id="creating-an-admin">Creating an admin<a class="headerlink" href="#creating-an-admin" title="Permanent link">&para;</a></h2>
+<p>Admins can open the <a href="../../user-guide/admin/">analytics page</a>. Members of the Authentik group <code>indexcards-admins</code>
+(created by the blueprint) become admins in the app:</p>
+<ol>
+<li>The user logs in to the app once.</li>
+<li>In the Authentik admin (<code>&lt;AUTHENTIK_URL&gt;/if/admin/</code>), open <em>Directory → Groups → indexcards-admins</em> and add the user.</li>
+<li>The user logs out of the app and logs in again. Group memberships are only sent in new access tokens, so an
+   existing session (up to 24 h) keeps the old state.</li>
+</ol>
+<p>The group only grants the app's admin role; it gives no rights in Authentik itself. Usernames are not used for this,
+because users choose them freely. After that, admins can make other users admins from the analytics page; those users
+don't have to be group members.</p>
+<p>Revoking takes two steps. Remove the user from the group (otherwise their next request makes them admin again), then
+set the role back in the database:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>dbcontainer<span class="w"> </span>mysql<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>indexcardsdb<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="s2">"update user set role = 'USER' where username = '&lt;username&gt;';"</span>
+</code></pre></div>
+<p>The role is read from the database on every request, so this applies immediately.</p>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
+<p>The documentation is hosted on GitHub Pages. The pipeline runs <code>mkdocs gh-deploy</code>, which pushes the built site to the
+<code>gh-pages</code> branch. <code>docs/CNAME</code> keeps the custom domain <code>documentation.indexcards.7ubi.de</code> on every deploy. To deploy
+by hand:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>indexcards-docu
+mkdocs<span class="w"> </span>gh-deploy
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
