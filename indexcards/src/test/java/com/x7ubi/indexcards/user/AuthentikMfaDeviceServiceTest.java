@@ -40,7 +40,9 @@ public class AuthentikMfaDeviceServiceTest {
             + "\"confirmed\":true,\"created\":\"2026-10-18T10:00:00Z\",\"last_used\":\"2026-10-19T09:00:00Z\"},"
             + "{\"pk\":\"3\",\"name\":\"Unfinished\",\"meta_model_name\":\"authentik_stages_authenticator_totp.totpdevice\","
             + "\"confirmed\":false,\"created\":\"2026-10-19T13:00:00Z\",\"last_used\":null},"
-            + "{\"pk\":\"4\",\"name\":\"Codes\",\"meta_model_name\":\"authentik_stages_authenticator_static.staticdevice\","
+            + "{\"pk\":\"4\",\"name\":\"Static Token\",\"meta_model_name\":\"authentik_stages_authenticator_static.staticdevice\","
+            + "\"confirmed\":true,\"created\":\"2026-10-19T13:00:00Z\",\"last_used\":null},"
+            + "{\"pk\":\"5\",\"name\":\"Duo\",\"meta_model_name\":\"authentik_stages_authenticator_duo.duodevice\","
             + "\"confirmed\":true,\"created\":\"2026-10-19T13:00:00Z\",\"last_used\":null}"
             + "]";
 
@@ -65,13 +67,15 @@ public class AuthentikMfaDeviceServiceTest {
 
         List<MfaDeviceResponse> devices = this.service.getDevices(SUBJECT);
 
-        Assertions.assertEquals(2, devices.size());
+        Assertions.assertEquals(3, devices.size());
         Assertions.assertEquals("totp", devices.get(0).getType());
         Assertions.assertEquals("1", devices.get(0).getId());
         Assertions.assertEquals("Phone", devices.get(0).getName());
         Assertions.assertNull(devices.get(0).getLastUsed());
         Assertions.assertEquals("webauthn", devices.get(1).getType());
         Assertions.assertEquals("2026-10-19T09:00:00Z", devices.get(1).getLastUsed());
+        Assertions.assertEquals("static", devices.get(2).getType());
+        Assertions.assertEquals("4", devices.get(2).getId());
         this.server.verify();
     }
 
@@ -104,6 +108,17 @@ public class AuthentikMfaDeviceServiceTest {
                 .andRespond(withNoContent());
 
         Assertions.assertTrue(this.service.deleteDevice(SUBJECT, MfaDeviceType.WEBAUTHN, "2"));
+        this.server.verify();
+    }
+
+    @Test
+    public void deletesOwnRecoveryCodesTest() throws AuthentikMfaException {
+        this.server.expect(requestTo(LOOKUP)).andRespond(withSuccess(USER, MediaType.APPLICATION_JSON));
+        this.server.expect(requestTo(DEVICES)).andRespond(withSuccess(DEVICE_LIST, MediaType.APPLICATION_JSON));
+        this.server.expect(requestTo(API + "/authenticators/admin/static/4/")).andExpect(method(HttpMethod.DELETE))
+                .andRespond(withNoContent());
+
+        Assertions.assertTrue(this.service.deleteDevice(SUBJECT, MfaDeviceType.STATIC, "4"));
         this.server.verify();
     }
 

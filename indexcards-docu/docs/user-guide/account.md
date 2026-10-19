@@ -22,7 +22,13 @@ Pages other than login and the privacy policy can only be opened while logged in
 Under **Two-factor authentication** on the account page you can add a second factor that the login asks for after your
 password: an authenticator app (e.g. Aegis, Google Authenticator), a passkey or security key, or a code sent to your
 email address. Setting one up opens the login service, which brings you back to the account page afterwards. You can add
-several second factors and remove them there at any time. If you lose access to all of them, contact the operator.
+several second factors and remove them there at any time.
+
+Once a second factor is set up, you can also **Create recovery codes**: ten one-time codes that the login accepts
+instead of your other factors, e.g. if you lose your phone. Each code works once. The codes are shown only while they
+are created, so save them somewhere safe (a password manager or a printout). There is one set of recovery codes at a
+time; to get new codes, remove the recovery codes on the account page and create them again. If you lose access to
+all second factors including the recovery codes, contact the operator.
 
 ## Logout
 

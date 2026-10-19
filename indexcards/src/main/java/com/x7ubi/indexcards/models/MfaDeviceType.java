@@ -10,7 +10,9 @@ import java.util.Optional;
 public enum MfaDeviceType {
     TOTP("totp", "authentik_stages_authenticator_totp.totpdevice", "totp"),
     WEBAUTHN("webauthn", "authentik_stages_authenticator_webauthn.webauthndevice", "webauthn"),
-    EMAIL("email", "authentik_stages_authenticator_email.emaildevice", "email");
+    EMAIL("email", "authentik_stages_authenticator_email.emaildevice", "email"),
+    // Recovery codes: one-time codes for when the other factors are not at hand.
+    STATIC("static", "authentik_stages_authenticator_static.staticdevice", "static");
 
     private final String key;
 

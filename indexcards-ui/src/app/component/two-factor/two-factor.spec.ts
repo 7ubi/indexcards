@@ -100,4 +100,31 @@ describe('TwoFactor', () => {
     expect(component.devices()).toEqual(devices);
     expect(component.removing()).toBeNull();
   });
+
+  it('should offer recovery codes once another factor is set up', () => {
+    expect(component.types()).toEqual(['totp', 'webauthn', 'email', 'static']);
+
+    component.devices.set([]);
+    expect(component.types()).not.toContain('static');
+  });
+
+  it('should not offer a second set of recovery codes', () => {
+    component.devices.set([
+      ...devices,
+      {
+        type: 'static',
+        id: '4',
+        name: 'Static Token',
+        created: '2026-10-19T13:00:00Z',
+        lastUsed: null,
+      },
+    ]);
+    fixture.detectChanges();
+
+    expect(component.types()).not.toContain('static');
+    const names = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll('.device-name'),
+    ).map((element) => element.textContent?.trim());
+    expect(names).toEqual(['Phone', 'YubiKey', 'two_factor.recovery_codes']);
+  });
 });
