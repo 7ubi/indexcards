@@ -78,14 +78,22 @@ jobs:
   documentation:
     name: Deploy documentation
     if: github.event_name != 'pull_request'
-    runs-on: self-hosted
-    needs:
-      - deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Start docker-compose
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install Dependencies
+        run: pip install -r indexcards-docu/requirements.txt
+      - name: Deploy to GitHub Pages
         run: |
-          cd indexcards-docu
-          docker-compose down
-          docker-compose up --build -d
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --force --config-file indexcards-docu/mkdocs.yml

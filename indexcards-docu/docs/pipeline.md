@@ -12,7 +12,7 @@ and on every pull request targeting `main`.
 | Build and Test       | ubuntu-latest | yes           | yes            | —           |
 | Linting              | ubuntu-latest | yes           | yes            | —           |
 | Deployment           | self-hosted   | no            | yes            | Build and Test |
-| Deploy documentation | self-hosted   | no            | yes            | Deployment  |
+| Deploy documentation | ubuntu-latest | no            | yes            | —           |
 
 ## Build and Test
 
@@ -44,6 +44,6 @@ See [Deployment](operations/deployment.md) for details. The app is available at
 
 ## Deploy documentation
 
-Runs after the deployment on the self-hosted runner. It rebuilds and restarts the MkDocs container from
-`indexcards-docu/docker-compose.yml`, which serves this documentation at
+Runs only on pushes to `main`. It installs MkDocs and runs `mkdocs gh-deploy`, which builds the site and pushes it
+to the `gh-pages` branch. GitHub Pages serves that branch at
 [https://documentation.indexcards.7ubi.de](https://documentation.indexcards.7ubi.de/).
