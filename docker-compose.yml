@@ -1,5 +1,3 @@
-version: '3'
-
 # Rotate container logs (incl. nginx access logs with IP addresses): at most 3 x 10 MB per container.
 x-logging: &default-logging
   driver: json-file
@@ -23,6 +21,12 @@ services:
     restart: always
     volumes:
       - my-db:/var/lib/mysql
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD" --silent']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
   backend:
     container_name: backendcontainer
     logging: *default-logging
@@ -49,9 +53,18 @@ services:
       - backend
       - nginx_backend
     restart: always
+    # Actuator health includes the database connection.
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:8080/actuator/health']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
     depends_on:
-      - mysqldb
-      - authentik-server
+      mysqldb:
+        condition: service_healthy
+      authentik-server:
+        condition: service_healthy
   frontend:
     container_name: frontendcontainer
     logging: *default-logging
@@ -59,8 +72,16 @@ services:
     volumes:
       - './indexcards-ui:/usr/src/app'
     restart: always
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1/healthz']
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    # nginx resolves the `backend` upstream on startup, so the backend has to be up first.
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - backend
       - nginx_backend
@@ -79,6 +100,12 @@ services:
     restart: always
     volumes:
       - authentik-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U authentik -d authentik']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
   authentik-server:
     container_name: authentikservercontainer
     logging: *default-logging
@@ -108,8 +135,15 @@ services:
       - backend
       - nginx_backend
     restart: always
+    healthcheck:
+      test: ['CMD', 'ak', 'healthcheck']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
     depends_on:
-      - authentik-db
+      authentik-db:
+        condition: service_healthy
   authentik-worker:
     container_name: authentikworkercontainer
     logging: *default-logging
@@ -121,8 +155,15 @@ services:
     networks:
       - authentik-net
     restart: always
+    healthcheck:
+      test: ['CMD', 'ak', 'healthcheck']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
     depends_on:
-      - authentik-db
+      authentik-db:
+        condition: service_healthy
 
 networks:
   springmysql-net:

@@ -16,50 +16,76 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Backend - Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
       - name: Build and Test with Maven
         run: mvn -B package --file indexcards/pom.xml
-  linting:
-    name: Linting # job name (unique id)
-    runs-on: ubuntu-latest # on which machine to run
-    steps: # list of steps
+  frontend:
+    name: Frontend - Lint, Test and Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: indexcards-ui
+    steps:
       - name: Code Checkout
         uses: actions/checkout@v4
 
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # Same major version as the frontend Dockerfile
+          node-version: 24
           cache: 'npm'
           cache-dependency-path: indexcards-ui/package-lock.json
 
       - name: Install Dependencies
-        run: cd indexcards-ui && npm ci
+        run: npm ci --no-audit --no-fund
 
       - name: Code Linting
-        run: cd indexcards-ui && npm run lint
+        run: npm run lint
 
       - name: Code Formatting
-        run: cd indexcards-ui && npm run format:check
+        run: npm run format:check
+
+      - name: Unit Tests
+        run: npm test -- --watch=false
+
+      - name: Production Build
+        run: npm run build
+  docker:
+    name: Docker - Validate Compose and Build Images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate docker-compose.yml
+        env:
+          AUTHENTIK_URL: https://auth.example.com
+          AUTHENTIK_API_TOKEN: ci
+          INDEXCARDS_URL: https://indexcards.example.com
+        run: docker compose config --quiet
+      - name: Build images
+        run: |
+          docker build -t indexcards-backend ./indexcards
+          docker build -t indexcards-frontend ./indexcards-ui
   deploy:
     name: Deployment
     runs-on: self-hosted
     if: github.event_name != 'pull_request'
     needs:
       - build
+      - frontend
+      - docker
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
-        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v4
       - name: Start docker-compose
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -75,6 +101,23 @@ jobs:
         run: |
           docker-compose down
           docker-compose up --build -d
+      - name: Wait for healthy containers
+        run: |
+          # Fails the deployment if a container does not become healthy within 5 minutes.
+          for i in $(seq 1 60); do
+            unhealthy=$(for c in dbcontainer backendcontainer frontendcontainer authentikdbcontainer authentikservercontainer authentikworkercontainer; do
+              [ "$(docker inspect -f '{{.State.Health.Status}}' "$c" 2>/dev/null)" = healthy ] || echo "$c"
+            done)
+            if [ -z "$unhealthy" ]; then
+              echo "All containers are healthy"
+              exit 0
+            fi
+            echo "Waiting for: $unhealthy"
+            sleep 5
+          done
+          docker-compose ps
+          docker-compose logs --tail=100 backend frontend
+          exit 1
   documentation:
     name: Deploy documentation
     if: github.event_name != 'pull_request'
