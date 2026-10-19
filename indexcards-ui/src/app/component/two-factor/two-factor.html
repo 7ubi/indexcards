@@ -14,7 +14,14 @@
             <li class="device">
               <mat-icon class="device-icon">{{ icons[device.type] }}</mat-icon>
               <div class="device-info">
-                <div class="device-name">{{ device.name }}</div>
+                <div class="device-name">
+                  <!-- Authentik names every set of recovery codes "Static Token". -->
+                  {{
+                    device.type === 'static'
+                      ? ('two_factor.recovery_codes' | translate)
+                      : device.name
+                  }}
+                </div>
                 <div class="hint">
                   {{ 'two_factor.types.' + device.type | translate }} ·
                   {{
@@ -38,7 +45,7 @@
     }
 
     <div class="actions full-width">
-      @for (type of types; track type) {
+      @for (type of types(); track type) {
         <button matButton="outlined" type="button" (click)="setUp(type)">
           <mat-icon>{{ icons[type] }}</mat-icon>
           {{ 'two_factor.add.' + type | translate }}

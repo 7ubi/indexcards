@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -13,12 +20,14 @@ const SETUP_FLOWS: Record<MfaDeviceType, string> = {
   totp: 'indexcards-mfa-totp-setup',
   webauthn: 'indexcards-mfa-webauthn-setup',
   email: 'indexcards-mfa-email-setup',
+  static: 'indexcards-mfa-static-setup',
 };
 
 const ICONS: Record<MfaDeviceType, string> = {
   totp: 'smartphone',
   webauthn: 'key',
   email: 'mail',
+  static: 'password',
 };
 
 /**
@@ -37,11 +46,20 @@ export class TwoFactor implements OnInit {
   private loginService = inject(LoginService);
   private snackbarService = inject(SnackbarService);
 
-  readonly types: MfaDeviceType[] = ['totp', 'webauthn', 'email'];
-
   readonly icons = ICONS;
 
   readonly devices = signal<MfaDeviceResponse[]>([]);
+
+  /**
+   * Recovery codes are offered once another factor is set up, and only one set at a time (remove it to get new codes).
+   */
+  readonly types = computed<MfaDeviceType[]>(() => {
+    const devices = this.devices();
+    const hasOtherFactor = devices.some((device) => device.type !== 'static');
+    const hasRecoveryCodes = devices.some((device) => device.type === 'static');
+    const types: MfaDeviceType[] = ['totp', 'webauthn', 'email'];
+    return hasOtherFactor && !hasRecoveryCodes ? [...types, 'static'] : types;
+  });
 
   readonly loading = signal(true);
 

@@ -113,21 +113,24 @@
   },
   "two_factor": {
     "title": "Zwei-Faktor-Authentifizierung",
-    "hint": "Optional: Nach dem Passwort fragt die Anmeldung zusätzlich nach einem zweiten Faktor. Du kannst mehrere hinzufügen und jederzeit wieder entfernen. Zum Einrichten öffnet sich der Anmeldedienst, der dich danach hierher zurückbringt.",
+    "hint": "Optional: Nach dem Passwort fragt die Anmeldung zusätzlich nach einem zweiten Faktor. Du kannst mehrere hinzufügen und jederzeit wieder entfernen. Zum Einrichten öffnet sich der Anmeldedienst, der dich danach hierher zurückbringt. Wiederherstellungscodes sind Einmalcodes für die Anmeldung, wenn du deine anderen Faktoren nicht nutzen kannst; jeder Code funktioniert nur einmal. Bewahre sie sicher auf, sie werden nur beim Erstellen angezeigt.",
     "none": "Es ist kein zweiter Faktor eingerichtet. Du meldest dich nur mit deinem Passwort an.",
     "added": "hinzugefügt am {{date}}",
     "remove": "Entfernen",
     "removed": "Der zweite Faktor wurde entfernt.",
+    "recovery_codes": "Wiederherstellungscodes",
     "setup_unavailable": "Der Anmeldedienst ist gerade nicht erreichbar. Bitte versuche es später erneut.",
     "types": {
       "totp": "Authenticator-App",
       "webauthn": "Passkey oder Sicherheitsschlüssel",
-      "email": "E-Mail-Code"
+      "email": "E-Mail-Code",
+      "static": "Wiederherstellungscodes"
     },
     "add": {
       "totp": "Authenticator-App hinzufügen",
       "webauthn": "Passkey oder Sicherheitsschlüssel hinzufügen",
-      "email": "E-Mail-Code hinzufügen"
+      "email": "E-Mail-Code hinzufügen",
+      "static": "Wiederherstellungscodes erstellen"
     }
   },
   "admin": {
@@ -250,7 +253,7 @@
           "Nutzername und Passwort: Bei der Registrierung speichert unser Anmeldedienst deinen Nutzernamen, deinen Namen, deine E-Mail-Adresse und dein Passwort. Das Passwort wird ausschließlich als gesalzener kryptografischer Hash gespeichert und ist für uns nicht im Klartext einsehbar. Die E-Mail-Adresse ist erforderlich: Dein Konto wird erst freigeschaltet, wenn du den Bestätigungslink öffnest, den wir an sie senden, und jede E-Mail-Adresse kann nur für ein Konto verwendet werden. Wurde dein Konto angelegt, bevor eine E-Mail-Adresse erforderlich war, wirst du bei der nächsten Anmeldung nach einer gefragt und musst sie bestätigen. Wenn du dein Passwort vergisst, wende dich an die oben genannte Kontaktadresse.",
           "Google: Wenn du auf die Google-Schaltfläche klickst, wirst du zu Google weitergeleitet. Die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, erhält dabei insbesondere deine IP-Adresse, Informationen zu deinem Browser und die Information, dass du dich bei Indexcards anmelden möchtest, und prüft deine Anmeldung. Google verarbeitet diese Daten als eigenständig Verantwortlicher nach seiner eigenen Datenschutzerklärung: https://policies.google.com/privacy. Eine Übermittlung an die Google LLC in den USA ist nicht auszuschließen; die Google LLC ist unter dem EU-US Data Privacy Framework zertifiziert (Angemessenheitsbeschluss der Europäischen Kommission, Art. 45 DSGVO).",
           "Nach erfolgreicher Anmeldung übermittelt Google deine Google-Konto-ID, deine E-Mail-Adresse und deinen Namen an unseren Anmeldedienst; bei der ersten Anmeldung wählst du zudem einen Nutzernamen.",
-          "Zwei-Faktor-Authentifizierung (optional): Auf der Kontoseite kannst du einen zweiten Faktor einrichten, den die Anmeldung zusätzlich zu deinem Passwort abfragt. Je nach Verfahren speichert unser Anmeldedienst den geheimen Schlüssel einer Authenticator-App, den öffentlichen Schlüssel und die Kennung eines Passkeys oder Sicherheitsschlüssels (einschließlich der Kennung des Gerätemodells) oder die E-Mail-Adresse, an die bei jeder Anmeldung ein 15 Minuten gültiger Einmalcode gesendet wird; außerdem den Namen des zweiten Faktors sowie das Datum der Einrichtung und der letzten Verwendung. Zweite Faktoren kannst du jederzeit auf der Kontoseite entfernen.",
+          "Zwei-Faktor-Authentifizierung (optional): Auf der Kontoseite kannst du einen zweiten Faktor einrichten, den die Anmeldung zusätzlich zu deinem Passwort abfragt. Je nach Verfahren speichert unser Anmeldedienst den geheimen Schlüssel einer Authenticator-App, den öffentlichen Schlüssel und die Kennung eines Passkeys oder Sicherheitsschlüssels (einschließlich der Kennung des Gerätemodells) die E-Mail-Adresse, an die bei jeder Anmeldung ein 15 Minuten gültiger Einmalcode gesendet wird, oder deine noch nicht verwendeten Wiederherstellungscodes (jeder Code wird bei der Verwendung gelöscht); außerdem den Namen des zweiten Faktors sowie das Datum der Einrichtung und der letzten Verwendung. Zweite Faktoren kannst du jederzeit auf der Kontoseite entfernen.",
           "Unser Anmeldedienst speichert diese Daten, solange dein Anmeldekonto besteht. Zusätzlich protokolliert er:"
         ],
         "items": [

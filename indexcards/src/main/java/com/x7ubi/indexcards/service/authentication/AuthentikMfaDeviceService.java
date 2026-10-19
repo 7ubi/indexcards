@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Lists and removes a user's second factors (authenticator app, passkey/security key, email code) through the
+ * Lists and removes a user's second factors (authenticator app, passkey/security key, email code, recovery codes)
+ * through the
  * Authentik API. Users set them up in Authentik's setup flows, which the account page links to.
  */
 @Service

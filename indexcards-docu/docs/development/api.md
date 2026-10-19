@@ -66,7 +66,7 @@ nothing was deleted)
 ```
 
 The user's confirmed second factors, loaded from Authentik. `type` is `totp` (authenticator app), `webauthn` (passkey
-or security key) or `email` (email code). Devices are set up in Authentik's setup flows, not through this API.
+or security key), `email` (email code) or `static` (recovery codes). Devices are set up in Authentik's setup flows, not through this API.
 
 Errors: `503 authentik_mfa_failed`
 

@@ -94,13 +94,14 @@ Accounts created before email was required are asked for an address on their nex
 they are logged in. Authentik sends the mails through Resend (`RESEND_API_KEY`); the domain `7ubi.de` must be verified
 in Resend. Google accounts take their address from Google and are not checked for uniqueness.
 
-Two-factor authentication is optional. Users add an authenticator app (TOTP), a passkey/security key (WebAuthn) or
-email codes on the account page, which opens the setup flows `indexcards-mfa-totp-setup`,
-`indexcards-mfa-webauthn-setup` and `indexcards-mfa-email-setup` through the login flow (skipped while the Authentik
+Two-factor authentication is optional. Users add an authenticator app (TOTP), a passkey/security key (WebAuthn),
+email codes or recovery codes (static tokens: 10 one-time codes, offered once another factor exists) on the account
+page, which opens the setup flows `indexcards-mfa-totp-setup`, `indexcards-mfa-webauthn-setup`,
+`indexcards-mfa-email-setup` and `indexcards-mfa-static-setup` through the login flow (skipped while the Authentik
 session is active) and returns to `/account`. The login flow, and the default source authentication flow for Google
 logins, then ask for the second factor; users without one log in with their password only. The account page lists and
 removes devices through the backend, which uses the Authentik API with the service account `indexcards-backend`. If a
-user has lost their second factor, delete the device in the Authentik admin (*Directory → Users* → user → *MFA
+user has lost their second factors and recovery codes, delete the device in the Authentik admin (*Directory → Users* → user → *MFA
 Authenticators*).
 
 There is no self-service password reset yet. If a user forgets their password, open
