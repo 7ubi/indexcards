@@ -111,6 +111,25 @@
     "delete_username_hint": "Please type your username \"{{username}}\" to confirm.",
     "delete_username_mismatch": "The entered username does not match your username."
   },
+  "two_factor": {
+    "title": "Two-factor authentication",
+    "hint": "Optional: after your password, the login also asks for a second factor. You can add several and remove them at any time. Setting one up opens the login service, which brings you back here afterwards.",
+    "none": "No second factor is set up. You log in with your password only.",
+    "added": "added {{date}}",
+    "remove": "Remove",
+    "removed": "The second factor was removed.",
+    "setup_unavailable": "The login service is not available right now. Please try again later.",
+    "types": {
+      "totp": "Authenticator app",
+      "webauthn": "Passkey or security key",
+      "email": "Email code"
+    },
+    "add": {
+      "totp": "Add authenticator app",
+      "webauthn": "Add passkey or security key",
+      "email": "Add email code"
+    }
+  },
   "admin": {
     "title": "Analytics",
     "users": "Users",
@@ -149,7 +168,9 @@
     "username_unchanged": "The new username is the same as the current one",
     "forbidden": "You are not allowed to do this",
     "username_confirmation_mismatch": "The entered username does not match your username.",
-    "authentik_deletion_failed": "Your login account could not be deleted right now, so nothing was deleted. Please try again later."
+    "authentik_deletion_failed": "Your login account could not be deleted right now, so nothing was deleted. Please try again later.",
+    "authentik_mfa_failed": "Your second factors could not be loaded or changed right now. Please try again later.",
+    "mfa_device_not_found": "This second factor does not exist (anymore)."
   },
   "unrated": "Unrated",
   "bad": "Bad",
@@ -218,7 +239,7 @@
           "first name and last name, taken from the name of your login account (the name you entered when signing up, or the name of your Google account)."
         ],
         "paragraphs_after": [
-          "The application itself does not store a password or an email address. When you log in, our login service issues an access token (JSON Web Token) that contains the identifier, your username and your name and is valid for 24 hours.",
+          "The application itself does not store a password, an email address or your second factors. When you log in, our login service issues an access token (JSON Web Token) that contains the identifier, your username and your name and is valid for 24 hours. When you open the account page, the application loads the list of your second factors (type, name and date added) from the login service to display it, without storing it.",
           "This processing is carried out to provide the user account and thus to perform the user agreement (Art. 6(1)(b) GDPR)."
         ]
       },
@@ -226,16 +247,18 @@
         "title": "Login",
         "paragraphs": [
           "You log in through our own login service (the open-source software authentik, operated by us on the servers named in section “Hosting and server log files”). You can either create an account there with a username and password or log in with your Google account.",
-          "Username and password: When you sign up, our login service stores your username, your name and your password. The password is stored only as a salted cryptographic hash and cannot be viewed by us in plain text. No email address is collected; if you forget your password, contact us using the address above.",
+          "Username and password: When you sign up, our login service stores your username, your name, your email address and your password. The password is stored only as a salted cryptographic hash and cannot be viewed by us in plain text. Your email address is required: your account is only activated once you open the confirmation link we send to it, and each email address can only be used for one account. If your account was created before an email address was required, you are asked for one and to confirm it on your next login. If you forget your password, contact us using the address above.",
           "Google: When you click the Google button, you are redirected to Google. Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland, then receives in particular your IP address, information about your browser and the information that you want to log in to Indexcards, and verifies your login. Google processes this data as a separate controller under its own privacy policy: https://policies.google.com/privacy. A transfer of data to Google LLC in the USA cannot be ruled out; Google LLC is certified under the EU-US Data Privacy Framework (adequacy decision of the European Commission, Art. 45 GDPR).",
           "After a successful login, Google transmits your Google account ID, your email address and your name to our login service; you also choose a username on your first login.",
+          "Two-factor authentication (optional): On the account page you can set up a second factor that the login asks for in addition to your password. Depending on the method, our login service stores an authenticator app's secret key, the public key and identifier of a passkey or security key (including the identifier of the authenticator model), or the email address to which a one-time code valid for 15 minutes is sent at each login; in addition, the name of the second factor and the dates it was added and last used. You can remove second factors on the account page at any time.",
           "Our login service stores this data for as long as your login account exists. In addition, it records:"
         ],
         "items": [
           "login events (date, time, IP address and browser), which are deleted automatically after 365 days."
         ],
         "paragraphs_after": [
-          "Your password, email address and Google account ID are only used for logging in and are not passed on to the Indexcards application. Our login service sets a session cookie, and when you use Google, Google sets its own cookies; they are strictly necessary for logging in (Section 25(2) no. 2 TDDDG). The legal basis for the processing is Art. 6(1)(b) GDPR."
+          "Sending emails: Our login service sends emails (confirmation links and one-time login codes) via the email service Resend, operated by Plus Five Five, Inc., 2261 Market Street #5039, San Francisco, CA 94114, USA. Resend processes your email address, your name, the content of the email and technical delivery data (e.g. time and delivery status) solely on our behalf under a data processing agreement pursuant to Art. 28 GDPR. The emails are sent from servers in the EU (Ireland); however, Resend stores delivery data and logs in the USA. Plus Five Five, Inc. is certified under the EU-US Data Privacy Framework (adequacy decision of the European Commission, Art. 45 GDPR), and the EU standard contractual clauses (Art. 46(2)(c) GDPR) have also been agreed.",
+          "Your password, email address, second factors and Google account ID are only used for logging in and for the emails mentioned above and are not passed on to the Indexcards application. Our login service sets a session cookie, and when you use Google, Google sets its own cookies; they are strictly necessary for logging in (Section 25(2) no. 2 TDDDG). The legal basis for the processing is Art. 6(1)(b) GDPR."
         ]
       },
       "content": {
@@ -286,7 +309,7 @@
       "recipients": {
         "title": "Recipients of your data",
         "paragraphs": [
-          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. If you log in with Google, Google receives the data described in section “Login”. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
+          "Your account data and content are not passed on to third parties. Only we as the operator and our hosting provider STRATO, acting on our behalf (see section “Hosting and server log files”) have access. To send emails, our email service Resend, also acting on our behalf, receives your email address and name (see section “Login”). If you log in with Google, Google receives the data described in section “Login”. The providers named in section “Embedded third-party services” only receive your IP address when the respective resource is loaded.",
           "Data is only disclosed to authorities if we are legally obliged to do so (Art. 6(1)(c) GDPR)."
         ]
       },
@@ -298,7 +321,7 @@
         "items": [
           "Account data, projects, index cards and learning progress are stored for as long as your user account exists.",
           "You can delete projects and index cards yourself in the application at any time. Deleting a project also deletes all of its index cards and their rating history.",
-          "You can delete your user account yourself at any time in the application: after logging in, open the account page (via the person icon at the top right, then “Account”) and select “Delete account permanently”; confirm the deletion by entering your username. This immediately and permanently deletes your user account (identifier, username, first and last name), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards. This also deletes your login account at our login service (username, name and password hash, or the link to your Google account with Google account ID, email address and name); login events that have already been recorded are kept until they are deleted automatically after 365 days. If the login service is temporarily unavailable, nothing is deleted and you can try again later.",
+          "You can delete your user account yourself at any time in the application: after logging in, open the account page (via the person icon at the top right, then “Account”) and select “Delete account permanently”; confirm the deletion by entering your username. This immediately and permanently deletes your user account (identifier, username, first and last name), all of your projects and index cards, your learning progress (ratings, rating history and review dates) as well as the uploaded images that are embedded in your index cards at the time of deletion. Images that are also embedded in index cards of other users are kept for those cards. This also deletes your login account at our login service (username, name, email address and password hash, or the link to your Google account with Google account ID, email address and name, as well as your second factors); login events that have already been recorded are kept until they are deleted automatically after 365 days. If the login service is temporarily unavailable, nothing is deleted and you can try again later.",
           "Alternatively, you can request the deletion of your account, including all content and uploaded images, at any time and without any formal requirements using the contact address above; we will carry out the deletion without undue delay and within one month at the latest.",
           "Uploaded images are not removed automatically when an index card is deleted or an image is removed from an index card; such images are also not covered by the account deletion in the application, as they are no longer linked to your account. We will delete them completely on request.",
           "Server log data is rotated automatically and deleted with the next update of the application at the latest (see section “Hosting and server log files”)."
@@ -307,7 +330,7 @@
       "security": {
         "title": "Data security",
         "paragraphs": [
-          "We take appropriate technical and organisational measures to protect your data. These include, in particular, encrypted transmission via HTTPS (TLS), storing passwords exclusively as salted hashes in our login service, which the application itself never receives, and token-based authentication in which every access to projects and index cards is checked against the permissions of the respective account."
+          "We take appropriate technical and organisational measures to protect your data. These include, in particular, encrypted transmission via HTTPS (TLS), storing passwords exclusively as salted hashes in our login service, which the application itself never receives, optional two-factor authentication, and token-based authentication in which every access to projects and index cards is checked against the permissions of the respective account."
         ]
       },
       "rights": {
@@ -331,7 +354,7 @@
       "obligation": {
         "title": "Obligation to provide data and automated decision-making",
         "paragraphs": [
-          "To use the application you need a login account, either with username, name and password or via your Google account; your user account with username, first and last name is then created automatically. Without this you cannot use the application. There is no legal obligation to provide this data.",
+          "To use the application you need a login account, either with username, name, email address and password or via your Google account; your user account with username, first and last name is then created automatically. Without this you cannot use the application. Setting up a second factor is optional. There is no legal obligation to provide this data.",
           "No automated decision-making, including profiling, within the meaning of Art. 22 GDPR takes place. The automatic calculation of review dates for your index cards serves solely to plan your learning and has no legal or similarly significant effect."
         ]
       },

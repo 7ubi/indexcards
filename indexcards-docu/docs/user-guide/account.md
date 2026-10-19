@@ -5,16 +5,24 @@ All projects and index cards belong to a user account, so you need to sign up an
 ## Login
 
 Click **Sign in or create account** on `/login`. You are redirected to the app's login service (Authentik), where you
-can log in with your username and password, create a new account via **Sign up** (username, name and password, no
-email address), or log in with Google (on the first Google login you choose a username once). Your Index Cards
+can log in with your username and password, create a new account via **Sign up** (username, name, email address and
+password; the account becomes usable once you open the confirmation link sent to your email address), or log in with Google (on the first Google login you choose a username once). Your Index Cards
 account is created automatically on the first login, using your name as first and last name (the last word is the
 surname). Password accounts and Google accounts are separate accounts.
 
-If you forget your password, contact the operator; there is no reset by email. The app stores the access token for the
+Accounts created before an email address was required are asked for one on the next login and have to confirm it
+before they can continue. If you forget your password, contact the operator; there is no reset by email yet. The app stores the access token for the
 current browser tab only; when it expires (after 24 hours) or the backend rejects it, you are logged out and redirected
 to the login page.
 
 Pages other than login and the privacy policy can only be opened while logged in.
+
+## Two-factor authentication
+
+Under **Two-factor authentication** on the account page you can add a second factor that the login asks for after your
+password: an authenticator app (e.g. Aegis, Google Authenticator), a passkey or security key, or a code sent to your
+email address. Setting one up opens the login service, which brings you back to the account page afterwards. You can add
+several second factors and remove them there at any time. If you lose access to all of them, contact the operator.
 
 ## Logout
 

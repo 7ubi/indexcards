@@ -19,6 +19,10 @@ public class ErrorMessage {
         public static final String USERNAME_UNCHANGED = "username_unchanged";
 
         public static final String AUTHENTIK_DELETION_FAILED = "authentik_deletion_failed";
+
+        public static final String AUTHENTIK_MFA_FAILED = "authentik_mfa_failed";
+
+        public static final String MFA_DEVICE_NOT_FOUND = "mfa_device_not_found";
     }
 
     public static class Project {

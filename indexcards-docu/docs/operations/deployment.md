@@ -70,6 +70,7 @@ environment variables.
 | `AUTHENTIK_API_TOKEN`          | —                                        | Secret token of the Authentik service account `indexcards-backend` (`openssl rand -hex 32`). Read by the blueprint and sent by the backend to delete Authentik users. |
 | `GOOGLE_CLIENT_ID`             | —                                        | OAuth client of the Google Cloud project.                     |
 | `GOOGLE_CLIENT_SECRET`         | —                                        | Secret of that OAuth client.                                  |
+| `RESEND_API_KEY`               | —                                        | Resend API key, used by Authentik as SMTP password (`smtp.resend.com`) to send mail from `noreply@7ubi.de`. |
 | `AUTHENTIK_ISSUER`             | `http://localhost:9000/application/o/indexcards/` | Backend: expected token issuer (set by Docker Compose from `AUTHENTIK_URL`). |
 | `AUTHENTIK_JWKS_URI`           | `http://localhost:9000/application/o/indexcards/jwks/` | Backend: where the token signing keys are fetched. |
 | `AUTHENTIK_CLIENT_ID`          | `indexcards`                             | Backend: OIDC client id / expected token audience.            |
@@ -84,10 +85,25 @@ Other settings in `application.properties`:
 ## Login (Authentik)
 
 Users log in through [Authentik](https://goauthentik.io), either with a username and password stored in Authentik
-(self-service signup on the login page, no email address) or with their Google account. The two kinds of account are
-not linked. The app never sees passwords or email addresses; the backend only validates Authentik's access tokens.
+(self-service signup on the login page) or with their Google account. The two kinds of account are not linked. The app
+never sees passwords or email addresses; the backend only validates Authentik's access tokens.
 
-There is no email, so there is no self-service password reset. If a user forgets their password, open
+Every account needs an email address. Signup asks for one (unique, case-insensitive) and creates the account inactive;
+it is activated when the user opens the confirmation link Authentik sends to that address (valid for 24 hours).
+Accounts created before email was required are asked for an address on their next login and have to confirm it before
+they are logged in. Authentik sends the mails through Resend (`RESEND_API_KEY`); the domain `7ubi.de` must be verified
+in Resend. Google accounts take their address from Google and are not checked for uniqueness.
+
+Two-factor authentication is optional. Users add an authenticator app (TOTP), a passkey/security key (WebAuthn) or
+email codes on the account page, which opens the setup flows `indexcards-mfa-totp-setup`,
+`indexcards-mfa-webauthn-setup` and `indexcards-mfa-email-setup` through the login flow (skipped while the Authentik
+session is active) and returns to `/account`. The login flow, and the default source authentication flow for Google
+logins, then ask for the second factor; users without one log in with their password only. The account page lists and
+removes devices through the backend, which uses the Authentik API with the service account `indexcards-backend`. If a
+user has lost their second factor, delete the device in the Authentik admin (*Directory → Users* → user → *MFA
+Authenticators*).
+
+There is no self-service password reset yet. If a user forgets their password, open
 *Directory → Users* in the Authentik admin, select the user and use *Create recovery link*, then send them the link.
 Disabling or deleting a user there blocks their login. Sessions that are already open stay valid until their access
 token expires (up to 24 hours). Authentik is configured by the blueprint
@@ -108,7 +124,7 @@ If Authentik cannot be reached or refuses, the deletion fails with `503` and not
    the `nginx_backend` network. Pass the `Host` header and `X-Forwarded-Proto: https` through, because Authentik
    builds the token issuer from them and it must equal `<AUTHENTIK_URL>/application/o/indexcards/`.
 3. **GitHub:** Create the repository secrets `AUTHENTIK_SECRET_KEY`, `AUTHENTIK_PG_PASSWORD`,
-   `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `AUTHENTIK_API_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and the
+   `AUTHENTIK_BOOTSTRAP_PASSWORD`, `AUTHENTIK_BOOTSTRAP_EMAIL`, `AUTHENTIK_API_TOKEN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API_KEY` and the
    repository variables `AUTHENTIK_URL`, `INDEXCARDS_URL`. Remove the old `JWT_SECRET` secret.
 4. After the first deployment, log in to `<AUTHENTIK_URL>/if/admin/` as `akadmin` and check under
    *Customization → Blueprints* that `indexcards` was applied successfully. Under *System → Settings*, check that
@@ -130,6 +146,7 @@ export AUTHENTIK_PG_PASSWORD=<database password of Authentik>
 export AUTHENTIK_BOOTSTRAP_PASSWORD=<password of akadmin>
 export AUTHENTIK_BOOTSTRAP_EMAIL=<email of akadmin>
 export AUTHENTIK_API_TOKEN=<random token, openssl rand -hex 32>
+export RESEND_API_KEY=<Resend API key>
 export AUTHENTIK_URL=https://auth.indexcards.7ubi.de
 export INDEXCARDS_URL=https://indexcards.7ubi.de
 export GOOGLE_CLIENT_ID=<client id>

@@ -21,11 +21,14 @@ describe('Account', () => {
     admin: false,
   };
   const httpService = {
-    get: vi.fn((_url: string, subscribe: (response: UserResponse) => void) => subscribe(user)),
+    // The embedded TwoFactor component loads the 2FA devices.
+    get: vi.fn((url: string, subscribe: (response: unknown) => void) =>
+      subscribe(url === '/api/user/mfa' ? [] : user),
+    ),
     put: vi.fn(),
     delete: vi.fn(),
   };
-  const loginService = { logout: vi.fn() };
+  const loginService = { logout: vi.fn(), getAuthentikUrl: vi.fn() };
   const settingsService = { isDueDialogEnabled: vi.fn(() => true), setDueDialogEnabled: vi.fn() };
   const snackbarService = {
     showErrorMessage: vi.fn(),

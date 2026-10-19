@@ -1,0 +1,36 @@
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.devices {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+.device {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.device-icon {
+  flex-shrink: 0;
+}
+
+.device-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.device-name {
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

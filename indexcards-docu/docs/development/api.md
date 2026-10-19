@@ -54,6 +54,30 @@ Also deletes the user's Authentik account through the Authentik API.
 Errors: `401 username_confirmation_mismatch`, `503 authentik_deletion_failed` (Authentik could not delete the user;
 nothing was deleted)
 
+### Get 2FA devices
+
+`GET /api/user/mfa` → `200 OK`
+
+```json
+[
+  { "type": "totp", "id": "1", "name": "Authenticator app", "created": "2026-10-19T13:06:37Z", "lastUsed": null },
+  { "type": "webauthn", "id": "3", "name": "YubiKey", "created": "2026-10-18T10:00:00Z", "lastUsed": "2026-10-19T09:00:00Z" }
+]
+```
+
+The user's confirmed second factors, loaded from Authentik. `type` is `totp` (authenticator app), `webauthn` (passkey
+or security key) or `email` (email code). Devices are set up in Authentik's setup flows, not through this API.
+
+Errors: `503 authentik_mfa_failed`
+
+### Remove a 2FA device
+
+`DELETE /api/user/mfa/{type}/{id}` → `204 No Content`
+
+Deletes the device in Authentik. Only the user's own devices can be removed.
+
+Errors: `400 mfa_device_not_found`, `503 authentik_mfa_failed`
+
 ## Projects
 
 ### Get all projects

@@ -98,6 +98,7 @@ jobs:
           INDEXCARDS_URL: ${{ vars.INDEXCARDS_URL }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           docker-compose down
           docker-compose up --build -d
