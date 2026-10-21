@@ -659,3 +659,179 @@ entries:
       expiring: false
       key: !Env AUTHENTIK_API_TOKEN
       description: Indexcards backend (deletes users together with their app account, manages their 2FA devices)
+
+  # --- Look of the Authentik pages ---
+  # The login, signup and 2FA pages take the app's look (Angular Material 3 theme in indexcards-ui/src/material-theme.scss:
+  # magenta primary, Roboto, light/dark following the system). The colors are the theme's compiled `--mat-sys-*` values;
+  # update them here when the theme changes. Authentik adds this CSS to the page and to every component's shadow root,
+  # so it also applies to the admin interface. Blueprints are only re-applied when this file changes, so the CSS lives
+  # here and not in a file of its own.
+  # Identified like Authentik's own default brand blueprint, which only creates the brand and never overwrites it.
+  - model: authentik_brands.brand
+    identifiers:
+      domain: authentik-default
+      default: true
+    attrs:
+      branding_title: Indexcards
+      branding_favicon: !Format ["%s/favicon.ico", !Env INDEXCARDS_URL]
+      branding_custom_css: |
+        /* No "&" in here: Authentik escapes it to &, which breaks the URL. */
+        @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500");
+
+        :root,
+        :host {
+          --ic-primary: #a900a9;
+          --ic-primary-hover: #810081;
+          --ic-on-primary: #ffffff;
+          --ic-surface: #fff7f9;
+          --ic-surface-container-high: #efe6ea;
+          --ic-surface-container-highest: #e9e0e4;
+          --ic-on-surface: #1e1a1d;
+          --ic-on-surface-variant: #4e444b;
+          --ic-outline: #80747c;
+          --ic-error: #ba1a1a;
+          --ic-font: Roboto, "Helvetica Neue", Arial, sans-serif;
+
+          --pf-global--FontFamily--sans-serif: var(--ic-font);
+          --pf-global--FontFamily--heading--sans-serif: var(--ic-font);
+          --pf-global--primary-color--100: var(--ic-primary);
+          --pf-global--primary-color--200: var(--ic-primary-hover);
+          --pf-global--primary-color--light-100: var(--ic-primary);
+          --pf-global--primary-color--dark-100: var(--ic-primary);
+          --pf-global--active-color--100: var(--ic-primary);
+          --pf-global--link--Color: var(--ic-primary);
+          --pf-global--link--Color--hover: var(--ic-primary-hover);
+          --pf-global--link--Color--light: var(--ic-primary);
+          --pf-global--link--Color--light--hover: var(--ic-primary-hover);
+          --pf-global--link--Color--dark: var(--ic-primary);
+          --pf-global--link--Color--dark--hover: var(--ic-primary-hover);
+          --pf-global--danger-color--100: var(--ic-error);
+          --pf-c-login__main--BackgroundColor: var(--ic-surface-container-high);
+          --pf-c-button--m-primary--Color: var(--ic-on-primary);
+          --pf-c-button--m-primary--hover--Color: var(--ic-on-primary);
+          --pf-c-button--m-primary--focus--Color: var(--ic-on-primary);
+          --pf-c-button--m-primary--active--Color: var(--ic-on-primary);
+          --pf-c-button--BorderRadius: 9999px;
+
+          font-family: var(--ic-font);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :root,
+          :host {
+            --ic-primary: #ffabf3;
+            --ic-primary-hover: #ffd7f5;
+            --ic-on-primary: #5b005b;
+            --ic-surface: #161215;
+            --ic-surface-container-high: #2d292c;
+            --ic-surface-container-highest: #383337;
+            --ic-on-surface: #e9e0e4;
+            --ic-on-surface-variant: #eedee7;
+            --ic-outline: #9a8d95;
+            --ic-error: #ffb4ab;
+          }
+        }
+
+        /* Plain surface instead of Authentik's background picture. */
+        .pf-c-background-image::before {
+          background: var(--ic-surface) !important;
+        }
+
+        /* The card, like the app's .form-card. */
+        .pf-c-login__main {
+          --pf-c-login__main--BackgroundColor: var(--ic-surface-container-high);
+          background-color: var(--ic-surface-container-high);
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+          color: var(--ic-on-surface);
+        }
+
+        .pf-c-login__main-footer-band {
+          --pf-c-login__main-footer-band--BackgroundColor: var(--ic-surface-container-highest);
+          background-color: var(--ic-surface-container-highest);
+          color: var(--ic-on-surface);
+        }
+
+        .pf-c-login .pf-c-login__footer {
+          color: var(--ic-on-surface-variant);
+          font-size: 0.75rem;
+        }
+
+        /* App name instead of the Authentik logo. */
+        .pf-c-login__main-header.ak-brand img {
+          display: none;
+        }
+        .pf-c-login__main-header.ak-brand::after {
+          content: "Indexcards";
+          font: 500 2.25rem / 2.75rem var(--ic-font);
+          color: var(--ic-primary);
+        }
+
+        .pf-c-title {
+          font-family: var(--ic-font);
+          font-weight: 400;
+        }
+        .pf-c-title.pf-m-3xl {
+          font-size: 1.5rem;
+          line-height: 2rem;
+        }
+
+        /* The login page (identification stage) and the signup form (prompt stage) show only the app name: neither
+           the flow title nor "Login to continue to Indexcards.". The title is in the shadow root of the stage's card,
+           so the stage passes the setting down as an (inherited) custom property. */
+        ak-stage-identification,
+        ak-stage-prompt {
+          --ic-flow-title-display: none;
+        }
+        .pf-c-login__main-header:not(.ak-brand) {
+          display: var(--ic-flow-title-display, block);
+        }
+        :host(ak-stage-identification) .pf-c-form > p:first-child {
+          display: none;
+        }
+
+        /* Outlined text fields. */
+        .pf-c-form-control {
+          border: 1px solid var(--ic-outline);
+          border-radius: 4px;
+          background-color: transparent;
+          color: var(--ic-on-surface);
+        }
+        .pf-c-input-group {
+          --pf-c-input-group--BackgroundColor: transparent;
+          background-color: transparent;
+        }
+        .pf-c-form-control:hover {
+          border-color: var(--ic-on-surface);
+        }
+        .pf-c-form-control:focus,
+        .pf-c-form-control:focus-within {
+          border-color: var(--ic-primary);
+          box-shadow: inset 0 0 0 1px var(--ic-primary);
+          outline: none;
+        }
+        .pf-c-form-control::after {
+          display: none;
+        }
+
+        .pf-c-form__label,
+        .pf-c-form__helper-text {
+          color: var(--ic-on-surface-variant);
+        }
+
+        .pf-c-button {
+          font-family: var(--ic-font);
+          font-weight: 500;
+          border-radius: 9999px;
+        }
+        .pf-c-button::after {
+          border-radius: 9999px;
+        }
+        .pf-c-button.pf-m-primary {
+          background-color: var(--ic-primary);
+          color: var(--ic-on-primary);
+        }
+        .pf-c-button.pf-m-primary:hover {
+          background-color: var(--ic-primary-hover);
+        }
