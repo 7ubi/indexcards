@@ -8,7 +8,7 @@ This repo has three parts:
 
 - `indexcards/` — Backend (Spring Boot 4.1, Java 21)
 - `indexcards-ui/` — Frontend (Angular 22, standalone components, Angular Material)
-- `indexcards-docu/` — Documentation site (MkDocs), published via GitHub Pages (`gh-pages` branch) to https://documentation.indexcards.7ubi.de/
+- `indexcards-docu/` — Documentation site (MkDocs) (not published by CI)
 
 The app is index cards for studying: users create Projects, each containing IndexCards (question/answer pairs) that get quizzed and rated (`UNRATED`/`BAD`/`OK`/`GOOD`) to drive spaced repetition.
 
@@ -35,7 +35,7 @@ The app is index cards for studying: users create Projects, each containing Inde
 
 ## CI Pipeline
 
-`.github/workflows/pipeline.yml`: on push/PR to `main` — builds+tests backend (Maven), then lints+format-checks frontend (Eslint/Prettier). On push to `main` only, deploys via `docker-compose` on a self-hosted runner, and deploys the docs site to GitHub Pages with `mkdocs gh-deploy`.
+`.github/workflows/pipeline.yml`: on push/PR to `main` — builds+tests backend (Maven), then lints+format-checks frontend (Eslint/Prettier). On push to `main` only, deploys via `docker-compose` on a self-hosted runner.
 
 ## Backend architecture
 

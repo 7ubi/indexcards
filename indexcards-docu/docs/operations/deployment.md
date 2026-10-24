@@ -184,9 +184,7 @@ The role is read from the database on every request, so this applies immediately
 
 ## Documentation
 
-The documentation is hosted on GitHub Pages. The pipeline runs `mkdocs gh-deploy`, which pushes the built site to the
-`gh-pages` branch. `docs/CNAME` keeps the custom domain `documentation.indexcards.7ubi.de` on every deploy. To deploy
-by hand:
+The pipeline does not publish the documentation. To publish it to GitHub Pages (`gh-pages` branch) by hand:
 
 ```bash
 cd indexcards-docu

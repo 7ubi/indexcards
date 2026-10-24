@@ -12,7 +12,6 @@ and on every pull request targeting `main`.
 | Build and Test       | ubuntu-latest | yes           | yes            | —           |
 | Linting              | ubuntu-latest | yes           | yes            | —           |
 | Deployment           | self-hosted   | no            | yes            | Build and Test |
-| Deploy documentation | ubuntu-latest | no            | yes            | —           |
 
 ## Build and Test
 
@@ -41,9 +40,3 @@ repository root. The secrets `DB_PASSWORD`, `AUTHENTIK_SECRET_KEY`, `AUTHENTIK_P
 
 See [Deployment](operations/deployment.md) for details. The app is available at
 [https://indexcard.7ubi.de](https://indexcard.7ubi.de).
-
-## Deploy documentation
-
-Runs only on pushes to `main`. It installs MkDocs and runs `mkdocs gh-deploy`, which builds the site and pushes it
-to the `gh-pages` branch. GitHub Pages serves that branch at
-[https://documentation.indexcards.7ubi.de](https://documentation.indexcards.7ubi.de/).
